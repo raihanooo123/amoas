@@ -127,6 +127,7 @@
                 @endif
 
                 <div id="categories_holder">
+                    <a href="{{route('verfiy.tazkira')}}">Verification of Tazkira</a>
                     <br>
                     <div class="row"><div class="col-md-12"><h5>{{ __('app.booking_category') }}</h5></div></div>
                     <br>
