@@ -21,6 +21,8 @@ class Google_Service_Sheets_Response extends Google_Model
   protected $addBandingDataType = '';
   protected $addChartType = 'Google_Service_Sheets_AddChartResponse';
   protected $addChartDataType = '';
+  protected $addDimensionGroupType = 'Google_Service_Sheets_AddDimensionGroupResponse';
+  protected $addDimensionGroupDataType = '';
   protected $addFilterViewType = 'Google_Service_Sheets_AddFilterViewResponse';
   protected $addFilterViewDataType = '';
   protected $addNamedRangeType = 'Google_Service_Sheets_AddNamedRangeResponse';
@@ -35,12 +37,18 @@ class Google_Service_Sheets_Response extends Google_Model
   protected $deleteConditionalFormatRuleDataType = '';
   protected $deleteDeveloperMetadataType = 'Google_Service_Sheets_DeleteDeveloperMetadataResponse';
   protected $deleteDeveloperMetadataDataType = '';
+  protected $deleteDimensionGroupType = 'Google_Service_Sheets_DeleteDimensionGroupResponse';
+  protected $deleteDimensionGroupDataType = '';
+  protected $deleteDuplicatesType = 'Google_Service_Sheets_DeleteDuplicatesResponse';
+  protected $deleteDuplicatesDataType = '';
   protected $duplicateFilterViewType = 'Google_Service_Sheets_DuplicateFilterViewResponse';
   protected $duplicateFilterViewDataType = '';
   protected $duplicateSheetType = 'Google_Service_Sheets_DuplicateSheetResponse';
   protected $duplicateSheetDataType = '';
   protected $findReplaceType = 'Google_Service_Sheets_FindReplaceResponse';
   protected $findReplaceDataType = '';
+  protected $trimWhitespaceType = 'Google_Service_Sheets_TrimWhitespaceResponse';
+  protected $trimWhitespaceDataType = '';
   protected $updateConditionalFormatRuleType = 'Google_Service_Sheets_UpdateConditionalFormatRuleResponse';
   protected $updateConditionalFormatRuleDataType = '';
   protected $updateDeveloperMetadataType = 'Google_Service_Sheets_UpdateDeveloperMetadataResponse';
@@ -75,6 +83,20 @@ class Google_Service_Sheets_Response extends Google_Model
   public function getAddChart()
   {
     return $this->addChart;
+  }
+  /**
+   * @param Google_Service_Sheets_AddDimensionGroupResponse
+   */
+  public function setAddDimensionGroup(Google_Service_Sheets_AddDimensionGroupResponse $addDimensionGroup)
+  {
+    $this->addDimensionGroup = $addDimensionGroup;
+  }
+  /**
+   * @return Google_Service_Sheets_AddDimensionGroupResponse
+   */
+  public function getAddDimensionGroup()
+  {
+    return $this->addDimensionGroup;
   }
   /**
    * @param Google_Service_Sheets_AddFilterViewResponse
@@ -175,6 +197,34 @@ class Google_Service_Sheets_Response extends Google_Model
     return $this->deleteDeveloperMetadata;
   }
   /**
+   * @param Google_Service_Sheets_DeleteDimensionGroupResponse
+   */
+  public function setDeleteDimensionGroup(Google_Service_Sheets_DeleteDimensionGroupResponse $deleteDimensionGroup)
+  {
+    $this->deleteDimensionGroup = $deleteDimensionGroup;
+  }
+  /**
+   * @return Google_Service_Sheets_DeleteDimensionGroupResponse
+   */
+  public function getDeleteDimensionGroup()
+  {
+    return $this->deleteDimensionGroup;
+  }
+  /**
+   * @param Google_Service_Sheets_DeleteDuplicatesResponse
+   */
+  public function setDeleteDuplicates(Google_Service_Sheets_DeleteDuplicatesResponse $deleteDuplicates)
+  {
+    $this->deleteDuplicates = $deleteDuplicates;
+  }
+  /**
+   * @return Google_Service_Sheets_DeleteDuplicatesResponse
+   */
+  public function getDeleteDuplicates()
+  {
+    return $this->deleteDuplicates;
+  }
+  /**
    * @param Google_Service_Sheets_DuplicateFilterViewResponse
    */
   public function setDuplicateFilterView(Google_Service_Sheets_DuplicateFilterViewResponse $duplicateFilterView)
@@ -215,6 +265,20 @@ class Google_Service_Sheets_Response extends Google_Model
   public function getFindReplace()
   {
     return $this->findReplace;
+  }
+  /**
+   * @param Google_Service_Sheets_TrimWhitespaceResponse
+   */
+  public function setTrimWhitespace(Google_Service_Sheets_TrimWhitespaceResponse $trimWhitespace)
+  {
+    $this->trimWhitespace = $trimWhitespace;
+  }
+  /**
+   * @return Google_Service_Sheets_TrimWhitespaceResponse
+   */
+  public function getTrimWhitespace()
+  {
+    return $this->trimWhitespace;
   }
   /**
    * @param Google_Service_Sheets_UpdateConditionalFormatRuleResponse

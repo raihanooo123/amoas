@@ -19,7 +19,7 @@
  * Service definition for Script (v1).
  *
  * <p>
- * An API for managing and executing Google Apps Script projects.</p>
+ * Manages and executes Google Apps Script projects.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -30,13 +30,13 @@
  */
 class Google_Service_Script extends Google_Service
 {
-  /** Read, send, delete, and manage your email. */
+  /** Read, compose, send, and permanently delete all your email from Gmail. */
   const MAIL_GOOGLE_COM =
       "https://mail.google.com/";
-  /** Manage your calendars. */
+  /** See, edit, share, and permanently delete all the calendars you can access using Google Calendar. */
   const WWW_GOOGLE_COM_CALENDAR_FEEDS =
       "https://www.google.com/calendar/feeds";
-  /** Manage your contacts. */
+  /** See, edit, download, and permanently delete your contacts. */
   const WWW_GOOGLE_COM_M8_FEEDS =
       "https://www.google.com/m8/feeds";
   /** View and manage the provisioning of groups on your domain. */
@@ -45,7 +45,10 @@ class Google_Service_Script extends Google_Service
   /** View and manage the provisioning of users on your domain. */
   const ADMIN_DIRECTORY_USER =
       "https://www.googleapis.com/auth/admin.directory.user";
-  /** View and manage the files in your Google Drive. */
+  /** View and manage your Google Docs documents. */
+  const DOCUMENTS =
+      "https://www.googleapis.com/auth/documents";
+  /** See, edit, create, and delete all of your Google Drive files. */
   const DRIVE =
       "https://www.googleapis.com/auth/drive";
   /** View and manage your forms in Google Drive. */
@@ -57,7 +60,25 @@ class Google_Service_Script extends Google_Service
   /** View and manage your Google Groups. */
   const GROUPS =
       "https://www.googleapis.com/auth/groups";
-  /** View and manage your spreadsheets in Google Drive. */
+  /** Create and update Google Apps Script deployments. */
+  const SCRIPT_DEPLOYMENTS =
+      "https://www.googleapis.com/auth/script.deployments";
+  /** View Google Apps Script deployments. */
+  const SCRIPT_DEPLOYMENTS_READONLY =
+      "https://www.googleapis.com/auth/script.deployments.readonly";
+  /** View Google Apps Script project's metrics. */
+  const SCRIPT_METRICS =
+      "https://www.googleapis.com/auth/script.metrics";
+  /** View Google Apps Script processes. */
+  const SCRIPT_PROCESSES =
+      "https://www.googleapis.com/auth/script.processes";
+  /** Create and update Google Apps Script projects. */
+  const SCRIPT_PROJECTS =
+      "https://www.googleapis.com/auth/script.projects";
+  /** View Google Apps Script projects. */
+  const SCRIPT_PROJECTS_READONLY =
+      "https://www.googleapis.com/auth/script.projects.readonly";
+  /** See, edit, create, and delete your spreadsheets in Google Drive. */
   const SPREADSHEETS =
       "https://www.googleapis.com/auth/spreadsheets";
   /** View your email address. */
@@ -73,13 +94,15 @@ class Google_Service_Script extends Google_Service
   /**
    * Constructs the internal representation of the Script service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://script.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://script.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'script';
 
@@ -97,11 +120,11 @@ class Google_Service_Script extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'userProcessFilter.endTime' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'userProcessFilter.endTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -130,12 +153,12 @@ class Google_Service_Script extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'userProcessFilter.statuses' => array(
+                'userProcessFilter.types' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'userProcessFilter.types' => array(
+                'userProcessFilter.statuses' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
@@ -145,16 +168,25 @@ class Google_Service_Script extends Google_Service
               'path' => 'v1/processes:listScriptProcesses',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'scriptProcessFilter.endTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'scriptProcessFilter.userAccessLevels' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
                 'scriptProcessFilter.statuses' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'scriptProcessFilter.startTime' => array(
+                'scriptProcessFilter.functionName' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'scriptProcessFilter.functionName' => array(
+                'scriptProcessFilter.startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -178,15 +210,6 @@ class Google_Service_Script extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'scriptProcessFilter.endTime' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'scriptProcessFilter.userAccessLevels' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
                 ),
               ),
             ),

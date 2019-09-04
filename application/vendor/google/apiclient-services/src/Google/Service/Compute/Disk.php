@@ -34,6 +34,10 @@ class Google_Service_Compute_Disk extends Google_Collection
   public $licenses;
   public $name;
   public $options;
+  public $physicalBlockSizeBytes;
+  public $region;
+  public $replicaZones;
+  public $resourcePolicies;
   public $selfLink;
   public $sizeGb;
   public $sourceImage;
@@ -172,6 +176,38 @@ class Google_Service_Compute_Disk extends Google_Collection
   public function getOptions()
   {
     return $this->options;
+  }
+  public function setPhysicalBlockSizeBytes($physicalBlockSizeBytes)
+  {
+    $this->physicalBlockSizeBytes = $physicalBlockSizeBytes;
+  }
+  public function getPhysicalBlockSizeBytes()
+  {
+    return $this->physicalBlockSizeBytes;
+  }
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  public function getRegion()
+  {
+    return $this->region;
+  }
+  public function setReplicaZones($replicaZones)
+  {
+    $this->replicaZones = $replicaZones;
+  }
+  public function getReplicaZones()
+  {
+    return $this->replicaZones;
+  }
+  public function setResourcePolicies($resourcePolicies)
+  {
+    $this->resourcePolicies = $resourcePolicies;
+  }
+  public function getResourcePolicies()
+  {
+    return $this->resourcePolicies;
   }
   public function setSelfLink($selfLink)
   {

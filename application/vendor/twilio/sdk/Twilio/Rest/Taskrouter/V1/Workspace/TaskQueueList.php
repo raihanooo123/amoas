@@ -17,17 +17,17 @@ use Twilio\Values;
 use Twilio\Version;
 
 /**
- * @property \Twilio\Rest\Taskrouter\V1\Workspace\TaskQueue\TaskQueuesStatisticsList statistics
+ * @property \Twilio\Rest\Taskrouter\V1\Workspace\TaskQueue\TaskQueuesStatisticsList $statistics
  */
 class TaskQueueList extends ListResource {
     protected $_statistics = null;
 
     /**
      * Construct the TaskQueueList
-     * 
+     *
      * @param Version $version Version that contains the resource
      * @param string $workspaceSid The ID of the Workspace that owns this TaskQueue
-     * @return \Twilio\Rest\Taskrouter\V1\Workspace\TaskQueueList 
+     * @return \Twilio\Rest\Taskrouter\V1\Workspace\TaskQueueList
      */
     public function __construct(Version $version, $workspaceSid) {
         parent::__construct($version);
@@ -45,7 +45,7 @@ class TaskQueueList extends ListResource {
      * is reached.
      * The results are returned as a generator, so this operation is memory
      * efficient.
-     * 
+     *
      * @param array|Options $options Optional Arguments
      * @param int $limit Upper limit for the number of records to return. stream()
      *                   guarantees to never return more than limit.  Default is no
@@ -69,7 +69,7 @@ class TaskQueueList extends ListResource {
      * Reads TaskQueueInstance records from the API as a list.
      * Unlike stream(), this operation is eager and will load `limit` records into
      * memory before returning.
-     * 
+     *
      * @param array|Options $options Optional Arguments
      * @param int $limit Upper limit for the number of records to return. read()
      *                   guarantees to never return more than limit.  Default is no
@@ -88,7 +88,7 @@ class TaskQueueList extends ListResource {
     /**
      * Retrieve a single page of TaskQueueInstance records from the API.
      * Request is executed immediately
-     * 
+     *
      * @param array|Options $options Optional Arguments
      * @param mixed $pageSize Number of records to return, defaults to 50
      * @param string $pageToken PageToken provided by the API
@@ -118,7 +118,7 @@ class TaskQueueList extends ListResource {
     /**
      * Retrieve a specific page of TaskQueueInstance records from the API.
      * Request is executed immediately
-     * 
+     *
      * @param string $targetUrl API-generated URL for the requested results page
      * @return \Twilio\Page Page of TaskQueueInstance
      */
@@ -133,26 +133,22 @@ class TaskQueueList extends ListResource {
 
     /**
      * Create a new TaskQueueInstance
-     * 
+     *
      * @param string $friendlyName Human readable description of this TaskQueue
-     * @param string $reservationActivitySid ActivitySID to assign workers once a
-     *                                       task is reserved for them
-     * @param string $assignmentActivitySid ActivitySID to assign workers once a
-     *                                      task is assigned for them
      * @param array|Options $options Optional Arguments
      * @return TaskQueueInstance Newly created TaskQueueInstance
      * @throws TwilioException When an HTTP error occurs.
      */
-    public function create($friendlyName, $reservationActivitySid, $assignmentActivitySid, $options = array()) {
+    public function create($friendlyName, $options = array()) {
         $options = new Values($options);
 
         $data = Values::of(array(
             'FriendlyName' => $friendlyName,
-            'ReservationActivitySid' => $reservationActivitySid,
-            'AssignmentActivitySid' => $assignmentActivitySid,
             'TargetWorkers' => $options['targetWorkers'],
             'MaxReservedWorkers' => $options['maxReservedWorkers'],
             'TaskOrder' => $options['taskOrder'],
+            'ReservationActivitySid' => $options['reservationActivitySid'],
+            'AssignmentActivitySid' => $options['assignmentActivitySid'],
         ));
 
         $payload = $this->version->create(
@@ -178,9 +174,9 @@ class TaskQueueList extends ListResource {
 
     /**
      * Constructs a TaskQueueContext
-     * 
+     *
      * @param string $sid The sid
-     * @return \Twilio\Rest\Taskrouter\V1\Workspace\TaskQueueContext 
+     * @return \Twilio\Rest\Taskrouter\V1\Workspace\TaskQueueContext
      */
     public function getContext($sid) {
         return new TaskQueueContext($this->version, $this->solution['workspaceSid'], $sid);
@@ -188,10 +184,10 @@ class TaskQueueList extends ListResource {
 
     /**
      * Magic getter to lazy load subresources
-     * 
+     *
      * @param string $name Subresource to return
      * @return \Twilio\ListResource The requested subresource
-     * @throws \Twilio\Exceptions\TwilioException For unknown subresources
+     * @throws TwilioException For unknown subresources
      */
     public function __get($name) {
         if (property_exists($this, '_' . $name)) {
@@ -204,11 +200,11 @@ class TaskQueueList extends ListResource {
 
     /**
      * Magic caller to get resource contexts
-     * 
+     *
      * @param string $name Resource to return
      * @param array $arguments Context parameters
      * @return \Twilio\InstanceContext The requested resource context
-     * @throws \Twilio\Exceptions\TwilioException For unknown resource
+     * @throws TwilioException For unknown resource
      */
     public function __call($name, $arguments) {
         $property = $this->$name;
@@ -221,7 +217,7 @@ class TaskQueueList extends ListResource {
 
     /**
      * Provide a friendly representation
-     * 
+     *
      * @return string Machine friendly representation
      */
     public function __toString() {

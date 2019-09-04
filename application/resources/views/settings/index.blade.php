@@ -59,12 +59,9 @@
                                         <label><strong>{{ __('backend.language') }}</strong></label>
                                         <select class="form-control" name="lang">
                                             <option value="en"{{ $settings->lang == 'en' ? ' selected' : '' }}>{{ __('backend.en') }}</option>
-                                            <option value="es"{{ $settings->lang == 'es' ? ' selected' : '' }}>{{ __('backend.es') }}</option>
-                                            <option value="fr"{{ $settings->lang == 'fr' ? ' selected' : '' }}>{{ __('backend.fr') }}</option>
-                                            <option value="pt"{{ $settings->lang == 'pt' ? ' selected' : '' }}>{{ __('backend.pt') }}</option>
-                                            <option value="it"{{ $settings->lang == 'it' ? ' selected' : '' }}>{{ __('backend.it') }}</option>
+                                            <option value="es"{{ $settings->lang == 'fa' ? ' selected' : '' }}>{{ Farsi }}</option>
+                                            <option value="fr"{{ $settings->lang == 'ps' ? ' selected' : '' }}>{{ Pashto }}</option>
                                             <option value="de"{{ $settings->lang == 'de' ? ' selected' : '' }}>{{ __('backend.de') }}</option>
-                                            <option value="da"{{ $settings->lang == 'da' ? ' selected' : '' }}>{{ __('backend.da') }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">

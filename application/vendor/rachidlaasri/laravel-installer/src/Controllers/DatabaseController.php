@@ -3,8 +3,6 @@
 namespace RachidLaasri\LaravelInstaller\Controllers;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use RachidLaasri\LaravelInstaller\Helpers\DatabaseManager;
 
 class DatabaseController extends Controller
@@ -29,17 +27,9 @@ class DatabaseController extends Controller
      */
     public function database()
     {
-        if(DB::connection()->getDatabaseName())
-        {
-            $response = $this->databaseManager->migrateAndSeed();
+        $response = $this->databaseManager->migrateAndSeed();
 
-            return redirect()->route('LaravelInstaller::settings')
-                ->with(['message' => $response]);
-        }
-        else
-        {
-            Session::flash('db_connection_failed', __('installer_messages.environment.wizard.db_connection_failed'));
-            return redirect()->route('LaravelInstaller::environmentWizard');
-        }
+        return redirect()->route('LaravelInstaller::final')
+                         ->with(['message' => $response]);
     }
 }

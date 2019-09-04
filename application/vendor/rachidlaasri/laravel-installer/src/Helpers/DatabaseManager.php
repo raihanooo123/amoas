@@ -51,6 +51,13 @@ class DatabaseManager
      */
     private function seed($outputLog)
     {
+        try{
+            Artisan::call('db:seed', ['--force' => true], $outputLog);
+        }
+        catch(Exception $e){
+            return $this->response($e->getMessage(), 'error', $outputLog);
+        }
+
         return $this->response(trans('installer_messages.final.finished'), 'success', $outputLog);
     }
 

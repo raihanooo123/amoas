@@ -27,8 +27,8 @@ Route::get('/','UserBookingController@loadBooking')->name('index');
 
 // ** AUTHORIZATION ROUTE ** //
 
-Auth::routes();
-
+//Auth::routes();
+Auth::routes(['verify' => true]);
 // ** DASHBOARD ROUTE ** //
 
 Route::get('/home', 'HomeController@index')->name('home');
