@@ -21,17 +21,18 @@
 namespace Mockery;
 
 use Closure;
-use Mockery\Matcher\MultiArgumentClosure;
-use Mockery\Matcher\ArgumentListMatcher;
-use Mockery\Matcher\AnyArgs;
 use Mockery\Matcher\NoArgs;
+use Mockery\Matcher\AnyArgs;
+use Mockery\Matcher\AndAnyOtherArgs;
+use Mockery\Matcher\ArgumentListMatcher;
+use Mockery\Matcher\MultiArgumentClosure;
 
 class Expectation implements ExpectationInterface
 {
     /**
      * Mock object to which this expectation belongs
      *
-     * @var object
+     * @var \Mockery\LegacyMockInterface
      */
     protected $_mock = null;
 
@@ -45,7 +46,7 @@ class Expectation implements ExpectationInterface
     /**
      * Exception message
      *
-     * @var null
+     * @var string|null
      */
     protected $_because = null;
 
@@ -146,10 +147,10 @@ class Expectation implements ExpectationInterface
     /**
      * Constructor
      *
-     * @param \Mockery\MockInterface $mock
+     * @param \Mockery\LegacyMockInterface $mock
      * @param string $name
      */
-    public function __construct(\Mockery\MockInterface $mock, $name)
+    public function __construct(\Mockery\LegacyMockInterface $mock, $name)
     {
         $this->_mock = $mock;
         $this->_name = $name;
@@ -301,7 +302,7 @@ class Expectation implements ExpectationInterface
     /**
      * Verify this expectation
      *
-     * @return bool
+     * @return void
      */
     public function verify()
     {
@@ -319,6 +320,11 @@ class Expectation implements ExpectationInterface
         return (count($this->_expectedArgs) === 1 && ($this->_expectedArgs[0] instanceof ArgumentListMatcher));
     }
 
+    private function isAndAnyOtherArgumentsMatcher($expectedArg)
+    {
+        return $expectedArg instanceof AndAnyOtherArgs;
+    }
+
     /**
      * Check if passed arguments match an argument expectation
      *
@@ -332,15 +338,36 @@ class Expectation implements ExpectationInterface
         }
         $argCount = count($args);
         if ($argCount !== count((array) $this->_expectedArgs)) {
+            $lastExpectedArgument = end($this->_expectedArgs);
+            reset($this->_expectedArgs);
+
+            if ($this->isAndAnyOtherArgumentsMatcher($lastExpectedArgument)) {
+                $argCountToSkipMatching = $argCount - count($this->_expectedArgs);
+                $args = array_slice($args, 0, $argCountToSkipMatching);
+                return $this->_matchArgs($args);
+            }
+
             return false;
         }
+
+        return $this->_matchArgs($args);
+    }
+
+    /**
+     * Check if the passed arguments match the expectations, one by one.
+     *
+     * @param array $args
+     * @return bool
+     */
+    protected function _matchArgs($args)
+    {
+        $argCount = count($args);
         for ($i=0; $i<$argCount; $i++) {
             $param =& $args[$i];
             if (!$this->_matchArg($this->_expectedArgs[$i], $param)) {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -348,7 +375,7 @@ class Expectation implements ExpectationInterface
      * Check if passed argument matches an argument expectation
      *
      * @param mixed $expected
-     * @param mixed &$actual
+     * @param mixed $actual
      * @return bool
      */
     protected function _matchArg($expected, &$actual)
@@ -377,7 +404,7 @@ class Expectation implements ExpectationInterface
     /**
      * Expected argument setter for the expectation
      *
-     * @param mixed[] ...
+     * @param mixed[] ...$args
      * @return self
      */
     public function with(...$args)
@@ -455,9 +482,27 @@ class Expectation implements ExpectationInterface
     }
 
     /**
+     * Expected arguments should partially match the real arguments
+     *
+     * @param mixed[] ...$expectedArgs
+     * @return self
+     */
+    public function withSomeOfArgs(...$expectedArgs)
+    {
+        return $this->withArgs(function (...$args) use ($expectedArgs) {
+            foreach ($expectedArgs as $expectedArg) {
+                if (!in_array($expectedArg, $args, true)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
+    /**
      * Set a return value, or sequential queue of return values
      *
-     * @param mixed[] ...
+     * @param mixed[] ...$args
      * @return self
      */
     public function andReturn(...$args)
@@ -469,7 +514,7 @@ class Expectation implements ExpectationInterface
     /**
      * Set a return value, or sequential queue of return values
      *
-     * @param mixed[] ...
+     * @param mixed[] ...$args
      * @return self
      */
     public function andReturns(...$args)
@@ -504,7 +549,7 @@ class Expectation implements ExpectationInterface
      * values. The arguments passed to the expected method are passed to the
      * closures as parameters.
      *
-     * @param callable[] $args
+     * @param callable[] ...$args
      * @return self
      */
     public function andReturnUsing(...$args)
@@ -590,7 +635,7 @@ class Expectation implements ExpectationInterface
      * Register values to be set to a public property each time this expectation occurs
      *
      * @param string $name
-     * @param array $values
+     * @param array ...$values
      * @return self
      */
     public function andSet($name, ...$values)
@@ -794,7 +839,7 @@ class Expectation implements ExpectationInterface
     /**
      * Return the parent mock of the expectation
      *
-     * @return \Mockery\MockInterface
+     * @return \Mockery\LegacyMockInterface|\Mockery\MockInterface
      */
     public function getMock()
     {

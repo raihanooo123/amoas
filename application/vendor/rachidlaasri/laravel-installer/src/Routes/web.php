@@ -6,27 +6,30 @@ Route::group(['prefix' => 'install','as' => 'LaravelInstaller::','namespace' => 
         'uses' => 'WelcomeController@welcome'
     ]);
 
-
-    Route::get('verify-purchase', [
-        'as' => 'verifyPurchase',
-        'uses' => 'verifyPurchaseController@index'
+    Route::get('environment', [
+        'as' => 'environment',
+        'uses' => 'EnvironmentController@environmentMenu'
     ]);
 
-    Route::post('verify-purchase-post', [
-        'as' => 'verifyPurchasePost',
-        'uses' => 'verifyPurchaseController@verify'
-    ]);
-
-    Route::get('app/configure', [
+    Route::get('environment/wizard', [
         'as' => 'environmentWizard',
         'uses' => 'EnvironmentController@environmentWizard'
     ]);
 
-    Route::post('app/configuration/save', [
+    Route::post('environment/saveWizard', [
         'as' => 'environmentSaveWizard',
         'uses' => 'EnvironmentController@saveWizard'
     ]);
 
+    Route::get('environment/classic', [
+        'as' => 'environmentClassic',
+        'uses' => 'EnvironmentController@environmentClassic'
+    ]);
+
+    Route::post('environment/saveClassic', [
+        'as' => 'environmentSaveClassic',
+        'uses' => 'EnvironmentController@saveClassic'
+    ]);
 
     Route::get('requirements', [
         'as' => 'requirements',
@@ -43,19 +46,36 @@ Route::group(['prefix' => 'install','as' => 'LaravelInstaller::','namespace' => 
         'uses' => 'DatabaseController@database'
     ]);
 
-    Route::get('settings', [
-        'as' => 'settings',
-        'uses' => 'settingsController@load'
-    ]);
-
-    Route::post('settings/save', [
-        'as' => 'saveSettings',
-        'uses' => 'settingsController@save'
-    ]);
-
-    Route::get('setup-completed', [
+    Route::get('final', [
         'as' => 'final',
         'uses' => 'FinalController@finish'
     ]);
 
+});
+
+Route::group(['prefix' => 'update','as' => 'LaravelUpdater::','namespace' => 'RachidLaasri\LaravelInstaller\Controllers','middleware' => 'web'],function() {
+    Route::group(['middleware' => 'update'], function() {
+
+        Route::get('/', [
+            'as' => 'welcome',
+            'uses' => 'UpdateController@welcome'
+        ]);
+
+        Route::get('overview', [
+            'as' => 'overview',
+            'uses' => 'UpdateController@overview'
+        ]);
+
+        Route::get('database', [
+            'as' => 'database',
+            'uses' => 'UpdateController@database'
+        ]);
+    });
+
+    // This needs to be out of the middleware because right after the migration has been
+    // run, the middleware sends a 404.
+    Route::get('final', [
+        'as' => 'final',
+        'uses' => 'UpdateController@finish'
+    ]);
 });

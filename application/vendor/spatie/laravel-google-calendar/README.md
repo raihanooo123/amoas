@@ -3,7 +3,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-google-calendar.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-google-calendar)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/spatie/laravel-google-calendar/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-google-calendar)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/a966412b-091b-4407-b509-6f7472935b0e.svg?style=flat-square)](https://insight.sensiolabs.com/projects/a966412b-091b-4407-b509-6f7472935b0e)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-google-calendar.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-google-calendar)
 [![StyleCI](https://styleci.io/repos/58305903/shield?branch=master)](https://styleci.io/repos/58305903)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-google-calendar.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-google-calendar)
@@ -36,7 +35,7 @@ $firstEvent->update(['name' => 'updated again']);
 
 // create a new event
 Event::create([
-   'name' => 'A new event'
+   'name' => 'A new event',
    'startDateTime' => Carbon\Carbon::now(),
    'endDateTime' => Carbon\Carbon::now()->addHour(),
 ]);
@@ -102,11 +101,11 @@ The first thing you’ll need to do is to get some credentials to use Google API
 
 ![1](https://spatie.github.io/laravel-google-calendar/v2/1.jpg)
 
-Next up we must specify which API’s the project may consume. In the list of available API’s click "Google Analytics API". On the next screen click "Enable".
+Next up we must specify which API's the project may consume. In the list of available API's click "Google Calendar API". On the next screen click "Enable".
 
 ![2](https://spatie.github.io/laravel-google-calendar/v2/2.jpg)
 
-Now that you’ve created a project that has access to the Analytics API it’s time to download a file with these credentials. Click "Credentials" in the sidebar. You’ll want to create a "Service account key".
+Now that you've created a project that has access to the Calendar API it's time to download a file with these credentials. Click "Credentials" in the sidebar. You'll want to create a "Service account key".
 
 ![3](https://spatie.github.io/laravel-google-calendar/v2/3.jpg)
 
@@ -192,12 +191,12 @@ $event->save();
 Google assigns a unique id to every single event. You can get this id by getting events using the `get` method and getting the `id` property on a `Spatie\GoogleCalendar\Event`-object:
 ```php
 // get the id of the first upcoming event in the calendar.
-$calendarId = Event::get()->first()->id;
+$eventId = Event::get()->first()->id;
 ```
 
 You can use this id to fetch a single event from Google:
 ```php
-Event::find($calendarId);
+Event::find($eventId);
 ```
 
 ### Updating an event

@@ -53,19 +53,22 @@ class Google_Service_Dataflow extends Google_Service
   public $projects_locations_jobs_debug;
   public $projects_locations_jobs_messages;
   public $projects_locations_jobs_workItems;
+  public $projects_locations_sql;
   public $projects_locations_templates;
   public $projects_templates;
   
   /**
    * Constructs the internal representation of the Dataflow service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://dataflow.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://dataflow.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1b3';
     $this->serviceName = 'dataflow';
 
@@ -104,6 +107,14 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'location' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -113,14 +124,6 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'integer',
                 ),
                 'view' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'location' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -184,11 +187,11 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'startTime' => array(
+                'location' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'location' => array(
+                'startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -682,6 +685,35 @@ class Google_Service_Dataflow extends Google_Service
           )
         )
     );
+    $this->projects_locations_sql = new Google_Service_Dataflow_Resource_ProjectsLocationsSql(
+        $this,
+        $this->serviceName,
+        'sql',
+        array(
+          'methods' => array(
+            'validate' => array(
+              'path' => 'v1b3/projects/{projectId}/locations/{location}/sql:validate',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'location' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'query' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->projects_locations_templates = new Google_Service_Dataflow_Resource_ProjectsLocationsTemplates(
         $this,
         $this->serviceName,
@@ -740,11 +772,19 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'dynamicTemplate.stagingLocation' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'validateOnly' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
                 'gcsPath' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dynamicTemplate.gcsPath' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -778,15 +818,15 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'location' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'gcsPath' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'location' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -800,6 +840,10 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'dynamicTemplate.stagingLocation' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'validateOnly' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -809,6 +853,10 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                 ),
                 'location' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dynamicTemplate.gcsPath' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

@@ -18,34 +18,38 @@ use Twilio\Version;
 
 /**
  * PLEASE NOTE that this class contains preview products that are subject to change. Use them with caution. If you currently do not have developer preview access, please contact help@twilio.com.
- * 
- * @property string accountSid
- * @property \DateTime dateCreated
- * @property \DateTime dateUpdated
- * @property string friendlyName
- * @property string latestModelBuildSid
- * @property array links
- * @property boolean logQueries
- * @property string sid
- * @property string uniqueName
- * @property string url
- * @property string responseUrl
- * @property string callbackUrl
- * @property string callbackEvents
+ *
+ * @property string $accountSid
+ * @property \DateTime $dateCreated
+ * @property \DateTime $dateUpdated
+ * @property string $friendlyName
+ * @property string $latestModelBuildSid
+ * @property array $links
+ * @property bool $logQueries
+ * @property string $sid
+ * @property string $uniqueName
+ * @property string $url
+ * @property string $callbackUrl
+ * @property string $callbackEvents
  */
 class AssistantInstance extends InstanceResource {
     protected $_fieldTypes = null;
-    protected $_intents = null;
+    protected $_tasks = null;
     protected $_modelBuilds = null;
     protected $_queries = null;
+    protected $_assistantFallbackActions = null;
+    protected $_assistantInitiationActions = null;
+    protected $_dialogues = null;
+    protected $_styleSheet = null;
 
     /**
      * Initialize the AssistantInstance
-     * 
+     *
      * @param \Twilio\Version $version Version that contains the resource
      * @param mixed[] $payload The response payload
-     * @param string $sid The sid
-     * @return \Twilio\Rest\Preview\Understand\AssistantInstance 
+     * @param string $sid A 34 character string that uniquely identifies this
+     *                    resource.
+     * @return \Twilio\Rest\Preview\Understand\AssistantInstance
      */
     public function __construct(Version $version, array $payload, $sid = null) {
         parent::__construct($version);
@@ -62,7 +66,6 @@ class AssistantInstance extends InstanceResource {
             'sid' => Values::array_get($payload, 'sid'),
             'uniqueName' => Values::array_get($payload, 'unique_name'),
             'url' => Values::array_get($payload, 'url'),
-            'responseUrl' => Values::array_get($payload, 'response_url'),
             'callbackUrl' => Values::array_get($payload, 'callback_url'),
             'callbackEvents' => Values::array_get($payload, 'callback_events'),
         );
@@ -73,7 +76,7 @@ class AssistantInstance extends InstanceResource {
     /**
      * Generate an instance context for the instance, the context is capable of
      * performing various actions.  All instance actions are proxied to the context
-     * 
+     *
      * @return \Twilio\Rest\Preview\Understand\AssistantContext Context for this
      *                                                          AssistantInstance
      */
@@ -87,7 +90,7 @@ class AssistantInstance extends InstanceResource {
 
     /**
      * Fetch a AssistantInstance
-     * 
+     *
      * @return AssistantInstance Fetched AssistantInstance
      * @throws TwilioException When an HTTP error occurs.
      */
@@ -97,7 +100,7 @@ class AssistantInstance extends InstanceResource {
 
     /**
      * Update the AssistantInstance
-     * 
+     *
      * @param array|Options $options Optional Arguments
      * @return AssistantInstance Updated AssistantInstance
      * @throws TwilioException When an HTTP error occurs.
@@ -108,7 +111,7 @@ class AssistantInstance extends InstanceResource {
 
     /**
      * Deletes the AssistantInstance
-     * 
+     *
      * @return boolean True if delete succeeds, false otherwise
      * @throws TwilioException When an HTTP error occurs.
      */
@@ -118,26 +121,26 @@ class AssistantInstance extends InstanceResource {
 
     /**
      * Access the fieldTypes
-     * 
-     * @return \Twilio\Rest\Preview\Understand\Assistant\FieldTypeList 
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\FieldTypeList
      */
     protected function getFieldTypes() {
         return $this->proxy()->fieldTypes;
     }
 
     /**
-     * Access the intents
-     * 
-     * @return \Twilio\Rest\Preview\Understand\Assistant\IntentList 
+     * Access the tasks
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\TaskList
      */
-    protected function getIntents() {
-        return $this->proxy()->intents;
+    protected function getTasks() {
+        return $this->proxy()->tasks;
     }
 
     /**
      * Access the modelBuilds
-     * 
-     * @return \Twilio\Rest\Preview\Understand\Assistant\ModelBuildList 
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\ModelBuildList
      */
     protected function getModelBuilds() {
         return $this->proxy()->modelBuilds;
@@ -145,16 +148,52 @@ class AssistantInstance extends InstanceResource {
 
     /**
      * Access the queries
-     * 
-     * @return \Twilio\Rest\Preview\Understand\Assistant\QueryList 
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\QueryList
      */
     protected function getQueries() {
         return $this->proxy()->queries;
     }
 
     /**
+     * Access the assistantFallbackActions
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\AssistantFallbackActionsList
+     */
+    protected function getAssistantFallbackActions() {
+        return $this->proxy()->assistantFallbackActions;
+    }
+
+    /**
+     * Access the assistantInitiationActions
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\AssistantInitiationActionsList
+     */
+    protected function getAssistantInitiationActions() {
+        return $this->proxy()->assistantInitiationActions;
+    }
+
+    /**
+     * Access the dialogues
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\DialogueList
+     */
+    protected function getDialogues() {
+        return $this->proxy()->dialogues;
+    }
+
+    /**
+     * Access the styleSheet
+     *
+     * @return \Twilio\Rest\Preview\Understand\Assistant\StyleSheetList
+     */
+    protected function getStyleSheet() {
+        return $this->proxy()->styleSheet;
+    }
+
+    /**
      * Magic getter to access properties
-     * 
+     *
      * @param string $name Property to access
      * @return mixed The requested property
      * @throws TwilioException For unknown properties
@@ -174,7 +213,7 @@ class AssistantInstance extends InstanceResource {
 
     /**
      * Provide a friendly representation
-     * 
+     *
      * @return string Machine friendly representation
      */
     public function __toString() {

@@ -5,8 +5,8 @@ namespace RachidLaasri\LaravelInstaller\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Session;
 use RachidLaasri\LaravelInstaller\Helpers\EnvironmentManager;
+use RachidLaasri\LaravelInstaller\Events\EnvironmentSaved;
 use Validator;
 use Illuminate\Validation\Rule;
 
@@ -42,17 +42,9 @@ class EnvironmentController extends Controller
      */
     public function environmentWizard()
     {
-        if(Session::get('purchase_verified'))
-        {
+        $envConfig = $this->EnvironmentManager->getEnvContent();
 
-            $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::ALL);
-            $envConfig = $this->EnvironmentManager->getEnvContent();
-            return view('vendor.installer.environment-wizard', compact('envConfig', 'timezones'));
-        }
-        else
-        {
-            return redirect()->route('LaravelInstaller::welcome');
-        }
+        return view('vendor.installer.environment-wizard', compact('envConfig'));
     }
 
     /**
@@ -78,6 +70,8 @@ class EnvironmentController extends Controller
     {
         $message = $this->EnvironmentManager->saveFileClassic($input);
 
+        event(new EnvironmentSaved($input));
+
         return $redirect->route('LaravelInstaller::environmentClassic')
                         ->with(['message' => $message]);
     }
@@ -100,28 +94,14 @@ class EnvironmentController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::ALL);
-            return view('vendor.installer.environment-wizard', compact('errors', 'envConfig', 'timezones'));
+            return view('vendor.installer.environment-wizard', compact('errors', 'envConfig'));
         }
 
+        $results = $this->EnvironmentManager->saveFileWizard($request);
 
-        try {
-            $conn = new \PDO("mysql:host=$request->database_hostname;dbname=$request->database_name", $request->database_username, $request->database_password);
-            // set the PDO error mode to exception
-            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        event(new EnvironmentSaved($request));
 
-            $results = $this->EnvironmentManager->saveFileWizard($request);
-
-            return $redirect->route('LaravelInstaller::database')
-                ->with(['results' => $results]);
-
-        }
-        catch(\PDOException $e)
-        {
-            Session::flash('db_connection_failed', __('installer_messages.environment.wizard.db_connection_failed'));
-            return redirect()->route('LaravelInstaller::environmentWizard');
-        }
-
-
+        return $redirect->route('LaravelInstaller::database')
+                        ->with(['results' => $results]);
     }
 }
