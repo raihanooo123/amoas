@@ -26,57 +26,69 @@ class CreateVerificationsTable extends Migration
             $table->tinyInteger('living_duration_unit')->nullable();
             $table->date('last_trip')->nullable();
             $table->unsignedInteger('service_id');
-            $table->unsignedInteger('province_id');
-            $table->unsignedInteger('district_id');
-            $table->unsignedInteger('village_id');
-            $table->string('curent_city', 191)->index()->nullable();
-            $table->string('curent_state', 191)->index()->nullable();
-            $table->string('curent_country', 191)->index()->nullable();
+            $table->unsignedInteger('original_village');
+            $table->unsignedInteger('original_district');
+            $table->unsignedInteger('original_province');
+            $table->string('current_city', 191)->index()->nullable();
+            $table->string('zip_code', 191)->index()->nullable();
+            $table->string('current_country', 191)->index()->nullable();
             $table->smallInteger('height')->nullable();
-            $table->string('eyes_color')->nullable();
-            $table->string('skin_color')->nullable();
-            $table->string('hair_color')->nullable();
-            $table->string('other_info')->nullable();
-            $table->string('delagate_name')->nullable();
-            $table->string('delagate_contact')->nullable();
+            $table->string('eyes')->nullable();
+            $table->string('skin')->nullable();
+            $table->string('hair')->nullable();
+            $table->string('other')->nullable();
             $table->string('d_name', 191)->index();
+            $table->string('d_last_name', 191)->index();
             $table->string('d_father_name', 191)->index();
-            $table->string('d_grand_father_name', 191)->index();
-            $table->string('d_sibling_id')->nullable();
-            $table->string('d_tazkira_issue_date')->nullable();
-            $table->string('d_page_no')->nullable();
-            $table->string('d_record_no')->nullable();
-            $table->string('d_version_no')->nullable();
+            $table->string('d_contact', 191)->index();
+
+            $table->string('sibling_name', 191)->index();
+            $table->string('sibling_last_name', 191)->index();
+            $table->string('sibling_father_name', 191)->index();
+            $table->string('sibling_grand_father_name')->nullable();
+            $table->unsignedInteger('sibling_id')->nullable();
+            $table->integer('page_no')->nullable();
+            $table->integer('version_no')->nullable();
+            $table->integer('note_no')->nullable();
+            $table->integer('year')->nullable();
+            $table->integer('month')->nullable();
+            $table->integer('day')->nullable();
             $table->timestamps();
         });
 
         Schema::create('services', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 191)->index();
-            $table->string('label_en')->nuallable();
+            $table->string('label_en')->nullable();
             $table->string('label_dr');
 
         });
 
-        Schema::create('provices', function (Blueprint $table) {
+        Schema::create('provinces', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 191)->index();
-            $table->string('label_en')->nuallable();
+            $table->string('label_en')->nullable();
             $table->string('label_dr');
         });
 
         Schema::create('district', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 191)->index();
-            $table->string('label_en')->nuallable();
+            $table->string('label_en')->nullable();
             $table->string('label_dr');
         });
 
         Schema::create('village', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 191)->index();
-            $table->string('label_en')->nuallable();
+            $table->string('label_en')->nullable();
             $table->string('label_dr');
+        });
+
+        Schema::create('countries', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code', 191)->index();
+            $table->string('name', 191)->index();
         });
 
         Schema::create('contacts', function (Blueprint $table) {

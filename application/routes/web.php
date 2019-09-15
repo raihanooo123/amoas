@@ -119,5 +119,6 @@ Route::group(['middleware'=>'authenticated'], function() {
 
 
 Route::group(['prefix'=>'verification'], function(){
-    Route::get('/tazkira', 'Verification\IDCardContoller@fillForm')->name('verfiy.tazkira');
+    Route::get('/tazkira', 'Verification\TazkiraController@fillForm')->name('verfiy.tazkira');
+    Route::post('/tazkira', 'Verification\TazkiraController@store')->name('verfiy.tazkira.store');
 });
