@@ -16,6 +16,7 @@
     <!-- INDEX URL -->
     <meta name="index" content="{{ route('index') }}">
 
+    @yield('pure-style')
     <!-- Title -->
     <title>{{ $title }} | {{ config('settings.business_name', 'Bookify') }}</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">

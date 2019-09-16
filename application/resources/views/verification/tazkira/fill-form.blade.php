@@ -1,5 +1,9 @@
 @extends('layouts.app', ['title' => __('app.step_two_page_title')])
 
+@section('pure-style')
+<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2/select2-bootstrap.min.css') }}">
+@endsection
 @section('styles')
 
 <style>
@@ -207,7 +211,7 @@
                                 <br>
                                 <div class="form-group col-md-12">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Available Services</label>
-                                    <select class="form-control {{ $errors->has('service_id') ? 'is-invalid' : '' }}" name="service_id">
+                                    <select class="form-control simple-select2 {{ $errors->has('service_id') ? 'is-invalid' : '' }}" name="service_id">
                                         @foreach (\App\Models\Verification\Service::all() as $service)
                                         <option value="{{$service->id}}" {{ $service->id == old('service_id') ? 'selected' : null }}> 
                                             {{$service->label_en}} ({{$service->name}})
@@ -248,24 +252,35 @@
                                 <br>
                                 <div class="form-group col-md-6 col-lg-4">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Original Village</label>
-                                    <input name="original_village" value="{{ old('original_village') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('original_village') ? 'is-invalid' : '' }}">
+                                    <select class="form-control {{ $errors->has('original_village') ? 'is-invalid' : '' }}" id="village" name="original_village">
+                                    </select>
+                                    {{-- <input name="original_village" value="{{ old('original_village') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('original_village') ? 'is-invalid' : '' }}"> --}}
                                     <p class="form-text text-danger d-none" id="address_error_holder">
                                         {{ __('app.address_error') }}
                                     </p>
                                 </div>
                                 <div class="form-group col-md-6 col-lg-4">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Original District</label>
-                                    <input name="original_district" value="{{ old('original_district') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('original_district') ? 'is-invalid' : '' }}">
+                                    <select class="form-control {{ $errors->has('original_district') ? 'is-invalid' : '' }}" id="district" name="original_district">
+                                    </select>
+                                    {{-- <input name="original_district" value="{{ old('original_district') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('original_district') ? 'is-invalid' : '' }}"> --}}
                                     <p class="form-text text-danger d-none" id="address_error_holder">
                                         {{ __('app.address_error') }}
                                     </p>
                                 </div>
                                 <div class="form-group col-md-6 col-lg-4">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Original Province</label>
-                                    <input name="original_province" value="{{ old('original_province') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('original_province') ? 'is-invalid' : '' }}">
+                                    <select class="form-control simple-select2 {{ $errors->has('original_province') ? 'is-invalid' : '' }}" name="original_province">
+                                        @foreach (\DB::table('provinces')->get() as $province)
+                                        <option value="{{$province->id}}" {{ $province->id == old('original_province') ? 'selected' : null }}> 
+                                            {{ ucfirst($province->label_en) }} ({{$province->label_dr}})
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    {{-- <input name="original_province" value="{{ old('original_province') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('original_province') ? 'is-invalid' : '' }}"> --}}
                                     <p class="form-text text-danger d-none" id="address_error_holder">
                                         {{ __('app.address_error') }}
                                     </p>
@@ -288,8 +303,15 @@
                                 </div>
                                 <div class="form-group col-md-6 col-lg-4">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Current Country</label>
-                                    <input name="current_country" value="{{ old('current_country') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('current_country') ? 'is-invalid' : '' }}">
+                                    <select class="form-control simple-select2 {{ $errors->has('current_country') ? 'is-invalid' : '' }}" name="current_country">
+                                        @foreach (\DB::table('countries')->get() as $country)
+                                        <option value="{{$country->id}}" {{ $country->id == old('current_country') ? 'selected' : null }}> 
+                                            {{ ucfirst($country->name_en) }} ({{$country->name_dr}})
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    {{-- <input name="current_country" value="{{ old('current_country') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('current_country') ? 'is-invalid' : '' }}"> --}}
                                     <p class="form-text text-danger d-none" id="address_error_holder">
                                         {{ __('app.address_error') }}
                                     </p>
@@ -440,7 +462,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Sibling relation with applicant</label>
-                                    <select class="form-control {{ $errors->has('sibling_id') ? 'is-invalid' : '' }}" name="sibling_id">
+                                    <select class="form-control simple-select2 {{ $errors->has('sibling_id') ? 'is-invalid' : '' }}" name="sibling_id">
                                         @foreach (\App\Models\Verification\Sibling::all() as $sibling)
                                         <option value="{{$sibling->id}}" {{ $sibling->id == old('sibling_id') ? 'selected' : null }}> 
                                             {{$sibling->code}} ({{$sibling->label_en}})
@@ -527,7 +549,73 @@
 @endsection
 
 @section('scripts')
+
+<script src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+
 <script>
+
+    $(function() {
+        $('.simple-select2').select2({
+            'theme': 'bootstrap'
+        });
+        
+        
+        $('#village').select2({
+            placeholder: 'village here...',
+            'theme': 'bootstrap',
+            minimumInputLength: 2,
+            tags: true,
+            ajax: {
+                url: "{!! route('ajaxRequest', ['t'=>'village','f'=>['id','label_dr', 'label_en'],'s'=>['name', 'label_dr', 'label_en']]) !!}",
+                dataType: 'json',
+                type: "get",
+                quietMillis: 5,
+                data: function (term) {
+                    return term;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.label_en + ' (' + item.label_dr + ')',
+                                slug: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                }
+            }
+        });
+
+        $('#district').select2({
+            placeholder: 'district here...',
+            'theme': 'bootstrap',
+            minimumInputLength: 2,
+            tags: true,
+            ajax: {
+                url: "{!! route('ajaxRequest', ['t'=>'districts','f'=>['id','label_dr', 'label_en'],'s'=>['name', 'label_dr', 'label_en']]) !!}",
+                dataType: 'json',
+                type: "get",
+                quietMillis: 5,
+                data: function (term) {
+                    return term;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.label_en + ' (' + item.label_dr + ')',
+                                slug: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                }
+            }
+        });
+
+    });
+
     function validate(param, nextTab, e) {
         e.preventDefault();
 

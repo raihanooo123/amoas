@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //set default string length to 191 characters
 
-        Schema::defaultStringLength(191);
+        // Schema::defaultStringLength(191);
 
         //check if settings table is existing
 

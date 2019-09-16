@@ -22,9 +22,9 @@ class CreateVerificationsTable extends Migration
             $table->string('grand_father_name', 191)->index();
             $table->string('birth_place')->nullable();
             $table->string('marital_status')->nullable();
-            $table->tinyInteger('living_duration')->nullable();
-            $table->tinyInteger('living_duration_unit')->nullable();
-            $table->date('last_trip')->nullable();
+            $table->string('living_duration')->nullable();
+            $table->string('living_duration_unit', 20)->nullable();
+            $table->string('last_trip', 11)->nullable();
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('original_village');
             $table->unsignedInteger('original_district');
@@ -47,12 +47,12 @@ class CreateVerificationsTable extends Migration
             $table->string('sibling_father_name', 191)->index();
             $table->string('sibling_grand_father_name')->nullable();
             $table->unsignedInteger('sibling_id')->nullable();
-            $table->integer('page_no')->nullable();
-            $table->integer('version_no')->nullable();
-            $table->integer('note_no')->nullable();
-            $table->integer('year')->nullable();
-            $table->integer('month')->nullable();
-            $table->integer('day')->nullable();
+            $table->string('page_no')->index();
+            $table->string('version_no')->index();
+            $table->string('note_no')->index();
+            $table->string('year')->index();
+            $table->string('month')->index();
+            $table->string('day')->index();
             $table->timestamps();
         });
 
@@ -71,7 +71,7 @@ class CreateVerificationsTable extends Migration
             $table->string('label_dr');
         });
 
-        Schema::create('district', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 191)->index();
             $table->string('label_en')->nullable();
@@ -110,8 +110,8 @@ class CreateVerificationsTable extends Migration
     {
         Schema::dropIfExists('verifications');
         Schema::dropIfExists('services');
-        Schema::dropIfExists('provices');
-        Schema::dropIfExists('district');
+        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('districts');
         Schema::dropIfExists('village');
         Schema::dropIfExists('contacts');
     }

@@ -122,3 +122,5 @@ Route::group(['prefix'=>'verification'], function(){
     Route::get('/tazkira', 'Verification\TazkiraController@fillForm')->name('verfiy.tazkira');
     Route::post('/tazkira', 'Verification\TazkiraController@store')->name('verfiy.tazkira.store');
 });
+
+Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');

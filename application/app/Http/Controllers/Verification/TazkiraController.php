@@ -15,7 +15,7 @@ class TazkiraController extends Controller
 
     public function store()
     {
-        dd(request()->all());
+        // dd(request()->all());
         $this->validate(request(), [
             "name" => 'required',
             "last_name" => 'required',
@@ -33,10 +33,10 @@ class TazkiraController extends Controller
             "service_id" => 'required',
             "original_village" => 'required',
             "original_district" => 'required',
+            "original_province" => 'required',
             "current_city" => 'required',
             "zip_code" => 'required',
             "current_country" => 'required',
-            "current_state" => 'required',
             "height" => 'required',
             "eyes" => 'required',
             "skin" => 'required',
@@ -56,6 +56,7 @@ class TazkiraController extends Controller
         ]);
 
         $tazkiraVerify = Verification::create([
+            "department_id" => 1,
             "name" => request()->name,
             "last_name" => request()->last_name,
             "father_name" => request()->father_name,
@@ -70,11 +71,11 @@ class TazkiraController extends Controller
             "email" => request()->email,
             "service_id" => request()->service_id,
             "original_village" => request()->original_village,
+            "original_province" => request()->original_province,
             "original_district" => request()->original_district,
             "current_city" => request()->current_city,
             "zip_code" => request()->zip_code,
             "current_country" => request()->current_country,
-            "current_state" => request()->current_state,
             "height" => request()->height,
             "eyes" => request()->eyes,
             "skin" => request()->skin,
