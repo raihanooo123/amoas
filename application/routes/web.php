@@ -26,6 +26,9 @@ Auth::routes(['verify' => true]);
 // ** DASHBOARD ROUTE ** //
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/test', function(){
+    dd(\App::getLocale());
+});
 
 
 // ** AJAX REQUESTS ** //
@@ -72,6 +75,13 @@ Route::group(['middleware'=>'customer'], function(){
     Route::post('/cancel-request', 'CancelRequestController@store')->name('cancelRequest');
     Route::get('/update-booking/{id}', 'UserBookingController@update')->name('updateBooking');
     Route::patch('/booking/{id}', 'UserBookingController@update_booking')->name('postUpdateBooking');
+
+    Route::group(['prefix'=>'tazkira'], function(){
+
+        Route::get('verification/print/{verification}', 'Verification\TazkiraController@print')->name('verification.print');
+        Route::resource('verification', 'Verification\TazkiraController');
+
+    });
 
 });
 
@@ -124,3 +134,10 @@ Route::group(['prefix'=>'verification'], function(){
 });
 
 Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');
+
+Route::group(['middleware' => ['web']], function() {
+    Route::get('img/{drive}/{folder}/{filename}', function ($drive, $folder, $filename) {
+        // return storage_path() . "/{$drive}/{$folder}/" . $filename;
+        return \Image::make(storage_path() . "/{$drive}/{$folder}/" . $filename)->response();
+    });
+});

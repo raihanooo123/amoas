@@ -150,6 +150,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
         RachidLaasri\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -214,6 +215,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
         'GoogleCalendar' => Spatie\GoogleCalendar\GoogleCalendarFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

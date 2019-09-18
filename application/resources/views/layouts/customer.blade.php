@@ -159,11 +159,19 @@
                     </a>
                 </li>
 
-                <li class="{{ Request::is('customer/invoices') || Request::is('customer/invoice/*') ? 'active' : '' }}">
-                    <a href="{{ route('customerInvoices') }}" class="waves-effect waves-button">
-                        <span class="menu-icon icon-list"></span>
-                        <p>{{ __('backend.invoices') }}</p>
+                <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active' : '' }}">
+
+                    <a class="waves-effect waves-button">
+                        <span class="menu-icon icon-docs"></span>
+                        <p>{{ __('backend.tazkira') }}</p>
+                        <span class="arrow"></span>
                     </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li class="{{ Request::is('verification') || Request::is('verification/*/edit') ? 'active' : '' }}">
+                            <a href="{{ route('verification.index') }}">{{ __('backend.verification') }}</a>
+                        </li>
+                        {{-- <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li> --}}
+                    </ul>
                 </li>
 
                 <li class="{{ Request::is('customer/profile') ? 'active' : '' }}">

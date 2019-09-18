@@ -88,7 +88,8 @@ class CreateVerificationsTable extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 191)->index();
-            $table->string('name', 191)->index();
+            $table->string('name_en', 191)->index();
+            $table->string('name_dr', 191)->index();
         });
 
         Schema::create('contacts', function (Blueprint $table) {

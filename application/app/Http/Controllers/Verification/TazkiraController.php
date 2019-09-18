@@ -5,9 +5,35 @@ namespace App\Http\Controllers\Verification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Verification\Verification;
+use Illuminate\Http\File;
 
 class TazkiraController extends Controller
 {
+
+    public function index()
+    {
+        // get the limits for pagination
+        $limit = request()->has('limit') && request()->input('limit') <= 200 ? request()->input('limit') : 50;
+
+        $verifications = Verification::with(['country', 'sibling', 'service'])
+            ->latest()
+            ->paginate($limit);
+
+        // dd($verifications);
+        return view('tazkira.verification.index', compact('verifications'));
+    }
+    
+    public function show(Verification $verification)
+    {
+
+        $verification->load(['country', 'sibling', 'service', 'province', 'district', 'village', 'image']);
+
+        // $image = base64_encode(\Storage::disk('verification')->get($verification->image->path));
+        // $image_data = 'data:'.mime_content_type(\Storage::disk('verification')->get($verification->image->path)) . ';base64,' . base64_encode(\Storage::disk('verification')->get($verification->image->path));
+        // dd(\Storage::disk('verification')->get($verification->image->path));
+        return view('tazkira.verification.show', compact('verification'));
+    }
+
     public function fillForm()
     {
         return view('verification.tazkira.fill-form');
@@ -55,6 +81,8 @@ class TazkiraController extends Controller
             "day" => 'required',
         ]);
 
+        // dd(request()->photo->getClientOriginalName());
+
         $tazkiraVerify = Verification::create([
             "department_id" => 1,
             "name" => request()->name,
@@ -70,9 +98,9 @@ class TazkiraController extends Controller
             "contact_no" => request()->contact_no,
             "email" => request()->email,
             "service_id" => request()->service_id,
-            "original_village" => request()->original_village,
+            "original_village" => $this->setAttr(request()->original_village, 'App\Village'),
             "original_province" => request()->original_province,
-            "original_district" => request()->original_district,
+            "original_district" => $this->setAttr(request()->original_district, 'App\District'),
             "current_city" => request()->current_city,
             "zip_code" => request()->zip_code,
             "current_country" => request()->current_country,
@@ -98,5 +126,32 @@ class TazkiraController extends Controller
             "day" => request()->day,
         ]);
 
+        if (request()->hasFile('photo')) {
+
+            $extension = request()->photo->getClientOriginalExtension();
+
+            $name = str_replace(' ', '_', $tazkiraVerify->name) . '-' . str_replace(' ', '_', $tazkiraVerify->last_name) . '-' . str_replace(' ', '_', $tazkiraVerify->father_name) . '-' . time();
+
+            $fullPath = \Storage::disk('verification')->putFile($name, new File(request()->photo));
+
+            $tazkiraVerify->image()->create([
+                'label' => request()->photo->getClientOriginalName(),
+                'path' => $fullPath,
+                'mime_type' => $extension,
+            ]);
+        }
+    }
+
+    private function setAttr($attr, $model)
+    {
+        if (is_numeric($attr)) return $attr;
+
+        $instance = new $model;
+        $instance->name = $attr;
+        $instance->label_en = $attr;
+        $instance->label_dr = $attr;
+        $instance->save();
+
+        return $instance->id;
     }
 }

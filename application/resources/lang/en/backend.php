@@ -191,6 +191,8 @@ return [
     'language' => 'Language',
     'es' => 'Spanish',
     'en' => 'English',
+    'dr' => 'Dari',
+    'ps' => 'Pashto',
     'fr' => 'French',
     'de' => 'German',
     'de-ch' => 'Swiss',
@@ -288,4 +290,9 @@ return [
     'right' => 'right',
     'clock_format' => 'Clock Format',
     'package_duration_as_slot_length' => 'Package Duration as Slot Length',
+
+    //Verifications
+    'verification' => 'Verifications',
+    'tazkira' => 'Tazkira',
+
 ];

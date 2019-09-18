@@ -1,7 +1,9 @@
 /node_modules
 /storage/app/google-calendar/*.json
+/application/storage/*
 /public/hot
 /public/storage
+/images/*
 /storage/*.key
 /.idea
 /.vscode

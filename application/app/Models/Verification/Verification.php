@@ -46,4 +46,44 @@ class Verification extends Model
         'month',
         'day'
     ];
+
+    public function province()
+    {
+        return $this->belongsTo('App\Province', 'original_province');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo('App\District', 'original_district');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo('App\Village', 'original_village');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo('App\Department', 'department_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo('App\Country', 'current_country');
+    }
+
+    public function image()
+    {
+        return $this->morphOne('App\Attachment', 'attachable');
+    }
+
+    public function sibling()
+    {
+        return $this->belongsTo('App\Models\Verification\Sibling', 'sibling_id');
+    }
+
+    public function service()
+    {
+        return $this->belongsTo('App\Models\Verification\Service', 'service_id');
+    }
 }
