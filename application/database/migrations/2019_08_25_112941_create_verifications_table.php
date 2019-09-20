@@ -25,7 +25,10 @@ class CreateVerificationsTable extends Migration
             $table->string('living_duration')->nullable();
             $table->string('living_duration_unit', 20)->nullable();
             $table->string('last_trip', 11)->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('email')->nullable();
             $table->unsignedInteger('service_id');
+            $table->string('new_absence_tazkira_case')->nullable();
             $table->unsignedInteger('original_village');
             $table->unsignedInteger('original_district');
             $table->unsignedInteger('original_province');
@@ -39,7 +42,7 @@ class CreateVerificationsTable extends Migration
             $table->string('other')->nullable();
             $table->string('d_name', 191)->index();
             $table->string('d_last_name', 191)->index();
-            $table->string('d_father_name', 191)->index();
+            $table->string('d_father_name', 191)->nullable();
             $table->string('d_contact', 191)->index();
 
             $table->string('sibling_name', 191)->index();

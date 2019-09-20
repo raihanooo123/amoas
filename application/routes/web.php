@@ -78,7 +78,8 @@ Route::group(['middleware'=>'customer'], function(){
 
     Route::group(['prefix'=>'tazkira'], function(){
 
-        Route::get('verification/print/{verification}', 'Verification\TazkiraController@print')->name('verification.print');
+        Route::get('verification/{verification}/print/excel', 'Verification\TazkiraController@printExcel')->name('verification.print.excel');
+        Route::get('verification/{verification}/print/pdf', 'Verification\TazkiraController@printPdf')->name('verification.print.pdf');
         Route::resource('verification', 'Verification\TazkiraController');
 
     });
@@ -137,7 +138,7 @@ Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');
 
 Route::group(['middleware' => ['web']], function() {
     Route::get('img/{drive}/{folder}/{filename}', function ($drive, $folder, $filename) {
-        // return storage_path() . "/{$drive}/{$folder}/" . $filename;
-        return \Image::make(storage_path() . "/{$drive}/{$folder}/" . $filename)->response();
+        // return storage_path() . "\\app\\{$drive}\\{$folder}\\" . $filename;
+        return \Image::make(storage_path() . "\\app\\{$drive}\\{$folder}\\" . $filename)->response();
     });
 });

@@ -17,13 +17,23 @@
     <div class="row">
         <div class="col-md-12">
             @include('alerts.bookings')
-            <a class="btn btn-primary btn-lg btn-add" href="{{ route('verification.create') }}"><i
-                    class="fa fa-plus"></i> {{__('tazkira.add')}} </a>
-            <a class="btn btn-default btn-lg btn-add" href="{{ route('verification.edit', $verification->id) }}"><i
-                    class="fa fa-edit"></i> {{__('tazkira.edit')}} </a>
 
-            <a class="btn btn-default btn-lg btn-add" href="{{ route('verification.print', $verification->id) }}"><i
-                    class="fa fa-print"></i> {{__('tazkira.print')}} </a>
+            <a class="btn btn-primary btn-lg btn-add" href="{{ route('verification.create') }}"><i class="fa fa-plus"></i> {{__('tazkira.add')}} </a>
+            <a class="btn btn-default btn-lg btn-add" href="{{ route('verification.edit', $verification->id) }}"><i class="fa fa-edit"></i> {{__('tazkira.edit')}} </a>
+            <!-- <a class="btn btn-default btn-lg btn-add" href="{{-- route('verification.print', $verification->id) --}}"><i class="fa fa-print"></i> {{__('tazkira.print')}} </a> -->
+            <span class="dropdown">
+                <a class="btn btn-default btn-lg btn-add dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-print"></i> {{__('tazkira.print')}}
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="dropdown-item" href="#">
+                        <a class="btn btn-default btn-lg" href="{{ route('verification.print.excel', $verification->id) }}"><i class="fa fa-file-excel-o"></i> {{__('tazkira.print')}} {{__('tazkira.excel')}} </a>
+                    </li>
+                    <li class="dropdown-item" href="#">
+                        <a class="btn btn-default btn-lg" href="{{ route('verification.print.pdf', $verification->id) }}"><i class="fa fa-file-pdf-o"></i> {{__('tazkira.print')}} {{__('tazkira.pdf')}} </a>
+                    </li>
+                </ul>
+            </span>
 
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
@@ -41,7 +51,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <img src="{{$verification->image ? asset('img/verification/' . $verification->image->path) :
-                                    asset('images/profile-placeholder.png') }}" class="img-circle avatar avatar-margin">
+                                    asset('images/profile-placeholder.png') }}" class="img-fluid img-thumbnail">
                         </div>
                         <div class="col-md-3">
                             <label for="">{{ __('tazkira.name')}}</label>
@@ -64,8 +74,20 @@
                             <p><strong>{{ __('tazkira.' . $verification->marital_status)}}</strong></p>
                         </div>
                         <div class="col-md-3">
+                            <label for="">{{ __('tazkira.occupation')}}</label>
+                            <p><strong>{{$verification->occupation}}</strong></p>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="">{{ __('tazkira.contact_no')}}</label>
+                            <p><strong>{{$verification->contact_no}}</strong></p>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="">{{ __('tazkira.email')}}</label>
+                            <p><strong>{{$verification->email}}</strong></p>
+                        </div>
+                        <div class="col-md-3">
                             <label for="">{{ __('tazkira.living_duration')}}</label>
-                        <p><strong>{{$verification->living_duration}} {{ __('tazkira.' . $verification->living_duration_unit)}}</strong></p>
+                            <p><strong>{{$verification->living_duration}} {{ __('tazkira.' . $verification->living_duration_unit)}}</strong></p>
                         </div>
                         <div class="col-md-3">
                             <label for="">{{ __('tazkira.last_trip')}}</label>

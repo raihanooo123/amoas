@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Verification\Verification;
 use Illuminate\Http\File;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class TazkiraController extends Controller
 {
@@ -22,7 +24,7 @@ class TazkiraController extends Controller
         // dd($verifications);
         return view('tazkira.verification.index', compact('verifications'));
     }
-    
+
     public function show(Verification $verification)
     {
 
@@ -98,6 +100,7 @@ class TazkiraController extends Controller
             "contact_no" => request()->contact_no,
             "email" => request()->email,
             "service_id" => request()->service_id,
+            "new_absence_tazkira_case" => request()->new_absence_tazkira_case,
             "original_village" => $this->setAttr(request()->original_village, 'App\Village'),
             "original_province" => request()->original_province,
             "original_district" => $this->setAttr(request()->original_district, 'App\District'),
@@ -153,5 +156,88 @@ class TazkiraController extends Controller
         $instance->save();
 
         return $instance->id;
+    }
+
+    public function printExcel(Verification $verification)
+    {
+
+        $spreadsheet = $this->excelWriter($verification);
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer->save('temp/verification_form.xlsx');
+        return response()->download('temp/verification_form.xlsx');
+    }
+
+    public function printPdf(Verification $verification)
+    {
+
+        $spreadsheet = $this->excelWriter($verification);
+
+        $xmlWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Tcpdf');
+        $xmlWriter->save('temp/verification_form.pdf');
+        return response()->download('temp/verification_form.pdf');
+    }
+
+    private function excelWriter(Verification $verification)
+    {
+
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('templates/verification_form_template.xlsx');
+        $sheet = $spreadsheet->getActiveSheet();
+        // dd($spreadsheet);
+        $sheet->setCellValue('D5', $verification->name . ' ' . $verification->last_name);
+        $sheet->setCellValue('D6', $verification->father_name);
+        $sheet->setCellValue('D7', $verification->grand_father_name);
+        $sheet->setCellValue('D8', $verification->birth_place);
+        $sheet->setCellValue('D9', __('tazkira.' . $verification->marital_status));
+        $sheet->setCellValue('D10', $verification->occupation);
+        $sheet->setCellValue('D11', $verification->living_duration . ' ' .  __('tazkira.' . $verification->living_duration_unit));
+
+        $sheet->setCellValue('D12', $verification->last_trip);
+        $sheet->setCellValue('D13', $verification->contact_no);
+        $sheet->setCellValue('D14', $verification->email);
+        $sheet->setCellValue('D15', app()->isLocale('dr') || app()->isLocale('ps') ? $verification->service->label_dr : $verification->service->label_en);
+        $sheet->setCellValue('D16', $verification->new_absence_tazkira_case);
+
+        // Addresses
+        $sheet->setCellValue('I5', app()->isLocale('dr') || app()->isLocale('ps') ? $verification->village->label_dr : $verification->village->label_en);
+        $sheet->setCellValue('J5', app()->isLocale('dr') || app()->isLocale('ps') ? $verification->district->label_dr : $verification->district->label_en);
+        $sheet->setCellValue('K5', app()->isLocale('dr') || app()->isLocale('ps') ? $verification->province->label_dr : $verification->province->label_en);
+        $sheet->setCellValue('I6', $verification->current_city);
+        $sheet->setCellValue('J6', $verification->zip_code);
+        $sheet->setCellValue('K6', app()->isLocale('dr') || app()->isLocale('ps') ? $verification->country->name_dr : $verification->country->name_en);
+        $sheet->setCellValue('I9', $verification->height);
+        $sheet->setCellValue('I10', $verification->eyes);
+        $sheet->setCellValue('I11', $verification->skin);
+        $sheet->setCellValue('I12', $verification->hair);
+        $sheet->setCellValue('I13', $verification->other);
+        $sheet->setCellValue('J14', $verification->d_name . ' ' . $verification->d_last_name);
+        $sheet->setCellValue('K14', $verification->d_contact);
+
+        $sheet->setCellValue('D18', $verification->sibling_name . ' ' . $verification->sibling_last_name);
+        // $sheet->setCellValue('D5', );
+
+        $sheet->setCellValue('I18', $verification->sibling_father_name);
+        $sheet->setCellValue('D19', $verification->sibling_grand_father_name);
+        $sheet->setCellValue('I19', app()->isLocale('dr') || app()->isLocale('ps') ? $verification->sibling->label_dr : $verification->sibling->label_en);
+        $sheet->setCellValue('D20', $verification->page_no);
+        $sheet->setCellValue('E20', $verification->version_no);
+        $sheet->setCellValue('F20', $verification->note_no);
+        $sheet->setCellValue('I20', $verification->year);
+        $sheet->setCellValue('J20', $verification->month);
+        $sheet->setCellValue('K20', $verification->day);
+
+        // insert image
+        // $sheeti = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        // $sheeti->setName('name');
+        // $sheeti->setDescription('description');
+        // $sheeti->setPath('img.png');
+        // $sheeti->setHeight(90);
+        // $sheeti->setCoordinates("J9");
+        // $sheeti->setOffsetX(20);
+        // $sheeti->setOffsetY(5);
+        // $sheeti->setWorksheet($sheet);
+
+        return $spreadsheet;
+
     }
 }

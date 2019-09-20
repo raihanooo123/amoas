@@ -16,6 +16,7 @@
         "phpoffice/phpspreadsheet": "^1.9",
         "rachidlaasri/laravel-installer": "^4.0",
         "spatie/laravel-google-calendar": "^2.2",
+        "tecnickcom/tcpdf": "^6.2",
         "twilio/sdk": "^5.21"
     },
     "require-dev": {
