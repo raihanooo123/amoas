@@ -159,7 +159,7 @@
                     </a>
                 </li>
 
-                <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active' : '' }}">
+                <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active open' : '' }}">
 
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-docs"></span>
@@ -167,7 +167,7 @@
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu" style="display: none;">
-                        <li class="{{ Request::is('verification') || Request::is('verification/*/edit') ? 'active' : '' }}">
+                        <li class="{{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*/edit') ? 'active' : '' }}">
                             <a href="{{ route('verification.index') }}">{{ __('backend.verification') }}</a>
                         </li>
                         {{-- <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li> --}}

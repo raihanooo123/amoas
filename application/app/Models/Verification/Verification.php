@@ -48,7 +48,8 @@ class Verification extends Model
         'note_no',
         'year',
         'month',
-        'day'
+        'day',
+        'registrar_id'
     ];
 
     public function province()
@@ -84,6 +85,11 @@ class Verification extends Model
     public function sibling()
     {
         return $this->belongsTo('App\Models\Verification\Sibling', 'sibling_id');
+    }
+
+    public function registrar()
+    {
+        return $this->belongsTo('App\User', 'registrar_id');
     }
 
     public function service()

@@ -65,5 +65,7 @@ return [
     'occupation' => 'شغل',
     'contact_no' => 'شماره تماس',
     'email' => 'ایمیل',
+    'word' => 'ورد',
+    'update' => 'ذخیره',
 
 ];

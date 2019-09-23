@@ -30,8 +30,11 @@
                         <a class="btn btn-default btn-lg" href="{{ route('verification.print.excel', $verification->id) }}"><i class="fa fa-file-excel-o"></i> {{__('tazkira.print')}} {{__('tazkira.excel')}} </a>
                     </li>
                     <li class="dropdown-item" href="#">
-                        <a class="btn btn-default btn-lg" href="{{ route('verification.print.pdf', $verification->id) }}"><i class="fa fa-file-pdf-o"></i> {{__('tazkira.print')}} {{__('tazkira.pdf')}} </a>
+                        <a class="btn btn-default btn-lg" href="{{ route('verification.print.word', $verification->id) }}"><i class="fa fa-file-word-o"></i> {{__('tazkira.print')}} {{__('tazkira.word')}} </a>
                     </li>
+                    {{-- <li class="dropdown-item" href="#">
+                        <a class="btn btn-default btn-lg" href="{{ route('verification.print.pdf', $verification->id) }}"><i class="fa fa-file-pdf-o"></i> {{__('tazkira.print')}} {{__('tazkira.pdf')}} </a>
+                    </li> --}}
                 </ul>
             </span>
 
