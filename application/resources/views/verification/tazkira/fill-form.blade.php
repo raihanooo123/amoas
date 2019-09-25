@@ -43,6 +43,7 @@
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
+                    <h3 class="text-center">Identity Verification Form</h3>
                     @if (count($errors) > 0)
                     <h4>Invalid information. please fill the following form correctly.</h4>
                         <div class="error">

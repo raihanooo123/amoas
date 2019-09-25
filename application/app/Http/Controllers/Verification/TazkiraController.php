@@ -15,10 +15,17 @@ class TazkiraController extends Controller
         // get the limits for pagination
         $limit = request()->has('limit') && request()->input('limit') <= 200 ? request()->input('limit') : 50;
 
-        $verifications = Verification::with(['country', 'sibling', 'service'])
-            ->where('registrar_id', auth()->id())
-            ->latest()
-            ->paginate($limit);
+        $verifications = null;
+        if(auth()->user()->isAdmin())
+            $verifications = Verification::with(['country', 'sibling', 'service'])
+                ->latest()
+                ->paginate($limit);
+        else {
+            $verifications = Verification::with(['country', 'sibling', 'service'])
+                ->where('registrar_id', auth()->id())
+                ->latest()
+                ->paginate($limit);
+        }
 
         // dd($verifications);
         return view('tazkira.verification.index', compact('verifications'));
@@ -26,12 +33,7 @@ class TazkiraController extends Controller
 
     public function show(Verification $verification)
     {
-
         $verification->load(['country', 'sibling', 'service', 'province', 'district', 'village', 'image']);
-
-        // $image = base64_encode(\Storage::disk('verification')->get($verification->image->path));
-        // $image_data = 'data:'.mime_content_type(\Storage::disk('verification')->get($verification->image->path)) . ';base64,' . base64_encode(\Storage::disk('verification')->get($verification->image->path));
-        // dd(\Storage::disk('verification')->get($verification->image->path));
         return view('tazkira.verification.show', compact('verification'));
     }
 
@@ -86,9 +88,7 @@ class TazkiraController extends Controller
             "month" => 'required',
             "day" => 'required',
         ]);
-
-        // dd(request()->photo->getClientOriginalName());
-
+        
         $tazkiraVerify = Verification::create([
             "department_id" => 1,
             "name" => request()->name,

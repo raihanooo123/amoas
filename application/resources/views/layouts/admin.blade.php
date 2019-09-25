@@ -202,6 +202,22 @@
                         <li class="{{ Request::is('packages/create') ? 'active' : '' }}"><a href="{{ route('packages.create') }}">{{ __('backend.add_new_package') }}</a></li>
                     </ul>
                 </li>
+
+                <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active open' : '' }}">
+
+                    <a class="waves-effect waves-button">
+                        <span class="menu-icon icon-docs"></span>
+                        <p>{{ __('backend.tazkira') }}</p>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li class="{{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*/edit') ? 'active' : '' }}">
+                            <a href="{{ route('verification.index') }}">{{ __('backend.verification') }}</a>
+                        </li>
+                        {{-- <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li> --}}
+                    </ul>
+                </li>
+
                 <li class="droplink {{ Request::is('addons') || Request::is('addons/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-badge"></span>

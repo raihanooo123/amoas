@@ -76,14 +76,14 @@ Route::group(['middleware'=>'customer'], function(){
     Route::get('/update-booking/{id}', 'UserBookingController@update')->name('updateBooking');
     Route::patch('/booking/{id}', 'UserBookingController@update_booking')->name('postUpdateBooking');
 
-    Route::group(['prefix'=>'tazkira'], function(){
+});
 
-        Route::get('verification/{verification}/print/excel', 'Verification\TazkiraController@printExcel')->name('verification.print.excel');
-        Route::get('verification/{verification}/print/pdf', 'Verification\TazkiraController@printPdf')->name('verification.print.pdf');
-        Route::get('verification/{verification}/print/word', 'Verification\TazkiraController@printWord')->name('verification.print.word');
-        Route::resource('verification', 'Verification\TazkiraController');
+Route::group(['prefix'=>'tazkira'], function(){
 
-    });
+    Route::get('verification/{verification}/print/excel', 'Verification\TazkiraController@printExcel')->name('verification.print.excel');
+    Route::get('verification/{verification}/print/pdf', 'Verification\TazkiraController@printPdf')->name('verification.print.pdf');
+    Route::get('verification/{verification}/print/word', 'Verification\TazkiraController@printWord')->name('verification.print.word');
+    Route::resource('verification', 'Verification\TazkiraController');
 
 });
 
@@ -133,6 +133,11 @@ Route::group(['middleware'=>'authenticated'], function() {
 Route::group(['prefix'=>'verification'], function(){
     Route::get('/tazkira', 'Verification\TazkiraController@fillForm')->name('verfiy.tazkira');
     Route::post('/tazkira', 'Verification\TazkiraController@store')->name('verfiy.tazkira.store');
+});
+
+Route::group(['prefix'=>'visa'], function(){
+    Route::get('/visaform', 'Visa\VisaFormController@fillForm')->name('visa-form.fill');
+    Route::post('/visaform', 'Verification\TazkiraController@store')->name('visa-form.fill.store');
 });
 
 Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');
