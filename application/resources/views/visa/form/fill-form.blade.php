@@ -210,7 +210,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Other Nationality</label>
+                                    <label for="">Other Nationality</label>
                                     <input name="other_nationality" required value="{{ old('other_nationality') }}"
                                         type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('other_nationality') ? 'is-invalid' : '' }}">
@@ -304,6 +304,19 @@
                             <legend>Visa Details</legend>
                             <br>
                             <div class="row">
+                                <div class="form-group col-md-12">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Select the Embassy or Consulate want to apply.</label>
+                                    <select
+                                        class="form-control simple-select2 {{ $errors->has('department_id') ? 'is-invalid' : '' }}"
+                                        name="department_id">
+                                        @foreach (\App\Department::all() as $department)
+                                        <option value="{{$department->id}}"
+                                            {{ $department->id == old('department_id') ? 'selected' : null }}>
+                                            {{ ucfirst($department->name_en) }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Visa Type</label>
                                     <select
@@ -319,8 +332,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Purpose of Journey</label>
-                                    <select class="form-control {{ $errors->has('purpose') ? 'is-invalid' : '' }}"
-                                        id="village" name="purpose">
+                                    <select multiple class="form-control {{ $errors->has('purpose') ? 'is-invalid' : '' }}"
+                                        id="village" name="purpose[]">
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -388,46 +401,54 @@
 
                         <div class="tab-pane fade" id="v-pills-delegate" role="tabpanel"
                             aria-labelledby="v-pills-delegate-tab">
-                            <legend>Applicant delegate in Afghanistan.</legend>
+                            <legend>Applicant's Passport Details.</legend>
                             <br>
                             <div class="row">
-                                <div class="form-group col-md-4">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Delegate Name</label>
-                                    <input name="d_name" value="{{ old('d_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('d_name') ? 'is-invalid' : '' }}">
-                                    <p class="form-text text-danger d-none" id="address_error_holder">
-                                        {{ __('app.address_error') }}
-                                    </p>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Type</label>
+                                    <input name="passport_type" value="{{ old('passport_type') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_type') ? 'is-invalid' : '' }}">
+                                    
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Delegate Last Name</label>
-                                    <input name="d_last_name" required value="{{ old('d_last_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('d_last_name') ? 'is-invalid' : '' }}">
-                                    <p class="form-text text-danger d-none" id="address_error_holder">
-                                        {{ __('app.address_error') }}
-                                    </p>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Number</label>
+                                    <input name="passport_no" required value="{{ old('passport_no') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_no') ? 'is-invalid' : '' }}">
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label for="">Delegate Father Name</label>
-                                    <input name="d_father_name" required value="{{ old('d_father_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg">
-                                    <p class="form-text text-danger d-none" id="address_error_holder">
-                                        {{ __('app.address_error') }}
-                                    </p>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Place of Issue</label>
+                                    <input name="issue_place" required value="{{ old('issue_place') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_place') ? 'is-invalid' : '' }}">
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Delegate Contact No.
-                                        1</label>
-                                    <input name="d_contact" required value="{{ old('d_contact') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('d_contact') ? 'is-invalid' : '' }}">
-                                    <p class="form-text text-danger d-none" id="address_error_holder">
-                                        {{ __('app.address_error') }}
-                                    </p>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Issue Date</label>
+                                    <input name="issue_date" required value="{{ old('issue_date') }}" type="date"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_date') ? 'is-invalid' : '' }}">
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Expiry Date</label>
+                                    <input name="expire_date" required value="{{ old('expire_date') }}" type="date"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('expire_date') ? 'is-invalid' : '' }}">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Photo <small>please upload a passport size photo.</small></label>
+                                    <input type="file" name="photo" class="form-control form-control-file">
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                                        <label class="custom-control-label" for="customControlAutosizing">
+                                            I Declare that the information provided on this application is true and correct. 
+                                        </label>
+                                    </div>
+                                </div>
+
 
                                 <div class="form-group offset-md-10 col-md-2">
                                     <button class="btn btn-primary btn-block"
-                                        onclick="validate('v-pills-delegate', 'v-pills-sibling-information-tab', event)">
+                                        onclick="validate('v-pills-delegate', '', event)">
                                         <i class="fa fa-arrow-right"></i> NEXT
                                     </button>
                                 </div>
@@ -481,10 +502,10 @@
 
 
         $('#village').select2({
-            placeholder: 'village here...',
             'theme': 'bootstrap',
             minimumInputLength: 2,
             tags: true,
+            multiple: true,
             ajax: {
                 url: "{!! route('ajaxRequest', ['t'=>'village','f'=>['id','label_dr', 'label_en'],'s'=>['name', 'label_dr', 'label_en']]) !!}",
                 dataType: 'json',
