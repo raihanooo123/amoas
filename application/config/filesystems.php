@@ -67,6 +67,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/verification'),
         ],
+        'visa' => [
+            'driver' => 'local',
+            'root' => storage_path('app/visa'),
+        ],
 
     ],
 

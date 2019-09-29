@@ -1,0 +1,109 @@
+@extends('layouts.app', ['title' => __('app.step_two_page_title')])
+
+@section('content')
+
+<div class="jumbotron promo">
+    <div class="container">
+        <h1 class="text-center promo-heading">{{ __('app.step_two_page_title') }}</h1>
+        <p class="promo-desc text-center">{{ __('app.step_two_subtitle') }}</p>
+    </div>
+</div>
+
+    <div class="container">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">A.M.O.A.S. Check Visa Status</h3>
+                    <hr>
+                    @if (count($errors) > 0)
+                    <h4>Invalid information. please fill the following form correctly.</h4>
+                    <div class="error">
+                        <ol>
+                            @foreach ($errors->all() as $error)
+                            <li class="text-danger">{{ $error }}</li>
+                            @endforeach
+                        </ol>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="form-group col-md-6 ">
+                            <form action="{{route('do-check-status')}}" id="searchInput" method="post">
+                                    {{ csrf_field() }}
+                                <i class="fa fa-asterisk text-danger"></i> <label for="">Serial Number <small>please
+                                        enter your online visa form serial number.</small></label>
+                                <input name="serial_no" placeholder="Serial number here ..."
+                                    value="" type="text" class="form-control form-control-lg">
+                            </form>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="">&nbsp;</label>
+                            <button class="btn btn-default btn-lg btn-light"><i class="fa fa-search " onclick="$('#searchInput').submit()"></i>
+                                Search</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Applied Mission</th>
+                                    <th>Status</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>19929-EOSLO-0001</th>
+                                    <td>Embassy of the Islamic Republic of Afghanistan Washington DC</td>
+                                    <td>On Process</td>
+                                    <td>@mdo</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div id="slots_holder"></div>
+
+            <div class="row col-md-12">
+                <div class="alert alert-danger col-md-12 d-none" id="slot_error" style="margin-bottom: 50px;">
+                    {{ __('app.time_slot_error') }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer d-none d-sm-none d-md-block d-lg-block d-xl-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="text-copyrights">
+                        {{ __('auth.copyrights') }}. &copy; {{ date('Y') }}. {{ __('auth.rights_reserved') }}
+                        {{ config('settings.business_name', 'Bookify') }}.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+@endsection
+
+@section('scripts')
+
+<script>
+
+</script>
+@endsection

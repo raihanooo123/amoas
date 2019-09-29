@@ -44,6 +44,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="text-center">Identity Verification Form</h3>
+                    <hr>
                     @if (count($errors) > 0)
                     <h4>Invalid information. please fill the following form correctly.</h4>
                         <div class="error">
@@ -56,7 +57,7 @@
                     @endif
                 </div>
             </div>
-            <br><br>
+            <br>
             <div class="row">
                 <div class="col-md-4">
                     <!-- Tab panes -->

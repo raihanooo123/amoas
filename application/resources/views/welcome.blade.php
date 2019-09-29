@@ -131,6 +131,8 @@
                     <br>
                     <a href="{{route('visa-form.fill')}}">Online visa form</a>
                     <br>
+                    <a href="{{route('check-status')}}">Check your visa status.</a>
+                    <br>
                     <div class="row"><div class="col-md-12"><h5>{{ __('app.booking_category') }}</h5></div></div>
                     <br>
                     <div class="row">

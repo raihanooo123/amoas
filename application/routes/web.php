@@ -27,7 +27,10 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', function(){
-    dd(\App::getLocale());
+    
+    dd(App\Models\Visa\VisaForm::generateSerialNo(60));
+    dd(App\Department::whereIn('type',['embassy'])->pluck('name_en')->toArray());
+    dd(App\Models\Visa\VisaForm::generateSerialNo(5));
 });
 
 
@@ -78,7 +81,7 @@ Route::group(['middleware'=>'customer'], function(){
 
 });
 
-Route::group(['prefix'=>'tazkira'], function(){
+Route::group(['prefix'=>'tazkira', 'middleware'=>'auth'], function(){
 
     Route::get('verification/{verification}/print/excel', 'Verification\TazkiraController@printExcel')->name('verification.print.excel');
     Route::get('verification/{verification}/print/pdf', 'Verification\TazkiraController@printPdf')->name('verification.print.pdf');
@@ -137,7 +140,9 @@ Route::group(['prefix'=>'verification'], function(){
 
 Route::group(['prefix'=>'visa'], function(){
     Route::get('/visaform', 'Visa\VisaFormController@fillForm')->name('visa-form.fill');
-    Route::post('/visaform', 'Verification\TazkiraController@store')->name('visa-form.fill.store');
+    Route::get('/check-visa-status', 'Visa\VisaFormController@checkStatus')->name('check-status');
+    Route::post('/check-visa-status', 'Visa\VisaFormController@doCheckStatus')->name('do-check-status');
+    Route::post('/visaform', 'Visa\VisaFormController@store')->name('visa-form.fill.store');
 });
 
 Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');

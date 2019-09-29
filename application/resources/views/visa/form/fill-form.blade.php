@@ -37,7 +37,7 @@
     </div>
 </div>
 
-<form method="post" id="save-form" action="{{ route('verfiy.tazkira.store') }}" enctype="multipart/form-data">
+<form method="post" id="save-form" action="{{ route('visa-form.fill.store') }}" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="container">
         <div class="content">
@@ -57,7 +57,7 @@
                     @endif
                 </div>
             </div>
-            <br><br>
+            <br>
             <div class="row">
                 <div class="col-md-4">
                     <!-- Tab panes -->
@@ -91,46 +91,46 @@
                                     <select name="title"
                                         class="form-control personal-information {{ $errors->has('title') ? 'is-invalid' : '' }}">
                                         <option></option>
-                                        <option value="mr.">Mr.</option>
-                                        <option value="mrs.">Mrs.</option>
-                                        <option value="ms.">Ms.</option>
-                                        <option value="eng.">Eng.</option>
-                                        <option value="dr.">Dr.</option>
-                                        <option value="pro.">Pro.</option>
+                                        <option value="mr." {{ 'mr.' == old('marital_status') ? 'selected' : null }}>Mr.</option>
+                                        <option value="mrs." {{ 'mrs.' == old('marital_status') ? 'selected' : null }}>Mrs.</option>
+                                        <option value="ms." {{ 'ms.' == old('marital_status') ? 'selected' : null }}>Ms.</option>
+                                        <option value="eng." {{ 'eng.' == old('marital_status') ? 'selected' : null }}>Eng.</option>
+                                        <option value="dr." {{ 'dr.' == old('marital_status') ? 'selected' : null }}>Dr.</option>
+                                        <option value="pro." {{ 'pro.' == old('marital_status') ? 'selected' : null }}>Pro.</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Family Name</label>
                                     <input name="family_name" required value="{{ old('family_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('last_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('family_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Given Name</label>
                                     <input name="given_name" required value="{{ old('given_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('father_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('given_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Father's Full Name</label>
                                     <input name="father_name" required value="{{ old('father_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('grand_father_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('father_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Marital Status</label>
                                     <select name="marital_status"
                                         class="form-control personal-information {{ $errors->has('marital_status') ? 'is-invalid' : '' }}">
                                         <option></option>
-                                        <option value="single">Single</option>
-                                        <option value="engaged">Engaged</option>
-                                        <option value="married">Married</option>
-                                        <option value="separated">Separated</option>
-                                        <option value="divorced">Divorced</option>
-                                        <option value="widow/widower">Widow/Widower</option>
+                                        <option value="single" {{ 'single' == old('residence_country') ? 'selected' : null }}>Single</option>
+                                        <option value="engaged" {{ 'engaged' == old('residence_country') ? 'selected' : null }}>Engaged</option>
+                                        <option value="married" {{ 'married' == old('residence_country') ? 'selected' : null }}>Married</option>
+                                        <option value="separated" {{ 'separated' == old('residence_country') ? 'selected' : null }}>Separated</option>
+                                        <option value="divorced" {{ 'divorced' == old('residence_country') ? 'selected' : null }}>Divorced</option>
+                                        <option value="widow/widower" {{ 'widow/widower' == old('marital_status') ? 'selected' : null }}>Widow/Widower</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Date of Birth</label>
                                     <input name="dob" value="{{ old('dob') }}" type="date" required
-                                        class="form-control personal-information form-control-lg {{ $errors->has('last_trip') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('dob') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -179,7 +179,7 @@
                                             years)</small></label>
                                     <div class="col-sm-6">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" name="under_18" value="yes" class="custom-control-input"
+                                            <input type="radio" name="under_18" value="1" class="custom-control-input"
                                                 id="customControlAutosizingYes">
                                             <label class="custom-control-label"
                                                 for="customControlAutosizingYes">Yes</label>
@@ -187,7 +187,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" name="under_18" value="no" checked
+                                            <input type="radio" name="under_18" value="0" checked
                                                 class="custom-control-input" id="customControlAutosizingNo">
                                             <label class="custom-control-label"
                                                 for="customControlAutosizingNo">No</label>
@@ -236,14 +236,14 @@
                                         class="form-control personal-information form-control-lg {{ $errors->has('address') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Email Address</label>
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Email <small>We will inform you via this email.</small></label>
                                     <input name="email" required value="{{ old('email') }}" type="email"
-                                        class="form-control personal-information form-control-lg">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Mobile</label>
                                     <input name="mobile" required value="{{ old('mobile') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('d_contact') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('mobile') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -279,15 +279,15 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Previous Employers' Name</label>
-                                    <input name="employer_name" required value="{{ old('pre_employer_name') }}"
+                                    <input name="pre_employer_name" required value="{{ old('pre_employer_name') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('employer_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('pre_employer_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Previous Employers' Address</label>
-                                    <input name="employer_address" required value="{{ old('pre_employer_address') }}"
+                                    <input name="pre_employer_address" required value="{{ old('pre_employer_address') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('employer_address') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information form-control-lg {{ $errors->has('pre_employer_address') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -305,11 +305,11 @@
                             <br>
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Select the Embassy or Consulate want to apply.</label>
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Embassy or Consulate want to apply for Visa. <small>Select the nearest embassy or consulate</small> </label>
                                     <select
                                         class="form-control simple-select2 {{ $errors->has('department_id') ? 'is-invalid' : '' }}"
                                         name="department_id">
-                                        @foreach (\App\Department::all() as $department)
+                                        @foreach (\App\Department::whereIn('type', ['embassy', 'consulate'])->get() as $department)
                                         <option value="{{$department->id}}"
                                             {{ $department->id == old('department_id') ? 'selected' : null }}>
                                             {{ ucfirst($department->name_en) }}
@@ -332,7 +332,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Purpose of Journey</label>
-                                    <select multiple class="form-control {{ $errors->has('purpose') ? 'is-invalid' : '' }}"
+                                    <select multiple class="form-control {{ $errors->has('purpose[]') ? 'is-invalid' : '' }}"
                                         id="village" name="purpose[]">
                                     </select>
                                 </div>
@@ -433,7 +433,7 @@
 
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Photo <small>please upload a passport size photo.</small></label>
-                                    <input type="file" name="photo" class="form-control form-control-file">
+                                    <input type="file" name="photo" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group col-md-12">

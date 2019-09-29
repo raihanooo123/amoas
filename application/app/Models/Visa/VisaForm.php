@@ -9,6 +9,7 @@ class VisaForm extends Model
     protected $table = 'visa_form';
     protected $fillable = [
         'department_id',
+        'serial_no',
         'title',
         'family_name',
         'given_name',
@@ -68,5 +69,18 @@ class VisaForm extends Model
     public function registrar()
     {
         return $this->belongsTo('App\User', 'registrar_id');
+    }
+
+    public static function generateSerialNo($departmentId)
+    {
+        // get count of today's record
+        $counts = self::count();
+
+        $department = \App\Department::find($departmentId) ? \App\Department::find($departmentId)->code : 'AFG' ;
+
+        $serialNo = date('ynj') . '-' . $department . '-' . sprintf('%04d', ++$counts);
+
+        return $serialNo;
+        // return sprintf('%04d', 2565426);
     }
 }
