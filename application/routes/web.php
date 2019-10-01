@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use mikehaertl\pdftk\Pdf;
 
 // ** INIT BOOKING ** //
 
@@ -27,6 +27,32 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', function(){
+
+    
+    // $pdf = new FPDM('templates/visa_template.pdf');
+    // $pdf->Load([
+    //     'serial_no'=>'working fine',
+    //     'Family_Name'=>'working fine',
+    // ], false); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
+    // $pdf->Merge();
+    // $pdf->Output();
+
+    $pdf = new Pdf('templates/visa_template.pdf',[
+        'command' => '"C:\\Program Files (x86)\\PDFtk Server\\bin\\pdftk.exe"',
+        // 'useExec' => true
+    ]);
+    $pdf->fillForm([
+        'serial_no'=>'working fine',
+        'Family_Name'=>'working fine',
+    ]);
+        // dd($pdf);
+        // Check for errors
+    if (!$pdf->saveAs('my.pdf')) {
+        $error = $pdf->getError();
+        dd($error);
+    }
+
+
     
     dd(App\Models\Visa\VisaForm::generateSerialNo(60));
     dd(App\Department::whereIn('type',['embassy'])->pluck('name_en')->toArray());

@@ -112,12 +112,17 @@ class VisaFormController extends Controller
 
     public function checkStatus()
     {
-        return view('visa.form.check-visa');
+        $visa = null;
+        $message = null;
+        return view('visa.form.check-visa', compact('visa', 'message'));
     }
 
     public function doCheckStatus()
     {
         $visa = VisaForm::with('department:id,name_en')->where('serial_no', request()->serial_no)->first();
-        return view('visa.form.check-visa', compact('visa'));
+
+        $message = $visa ? null : 'The serial number you are looking for was not found.';
+
+        return view('visa.form.check-visa', compact('visa', 'message'));
     }
 }
