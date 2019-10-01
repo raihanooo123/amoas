@@ -26,8 +26,11 @@
                     </div>
                     <button type="submit" class="btn btn-success btn-block">{{ __('auth.login_btn') }}</button>
                     <br>
-                    <p class="text-center m-t-xs text-sm">{{ __('auth.forgot_password_title') }}</p>
-                    <a href="{{ route('password.request') }}" class="btn btn-default btn-block m-t-md">{{ __('auth.forgot_password_btn') }}</a>
+                    <p class="text-center m-t-xs text-sm">
+                        <a href="{{ route('password.request') }}">{{ __('auth.forgot_password_title') }} </a>
+                        <br>
+                        <a href="{{ route('register') }}">{{ __('auth.create_account') }}</a>
+                    </p>
                 </form>
                 <p class="text-center m-t-xs text-sm">
                     {{ __('auth.copyrights') }}. &copy; {{ date('Y') }}. {{ __('auth.rights_reserved') }} {{ config('settings.business_name', 'Bookify') }}.

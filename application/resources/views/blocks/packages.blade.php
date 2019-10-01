@@ -50,13 +50,12 @@
 
                                 </strong>
                             </h4>
-                            <div class="text-center package_description">{!! $package->description !!}</div>
                             <div class="package_btn">
                                 <a class="btn btn-primary btn-lg btn-block btn_package_select" data-package-id="{{ $package->id }}">{{ __('app.booking_package_btn_select') }}</a>
                             </div>
                             <br>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
 

@@ -51,6 +51,13 @@ class UserBookingController extends Controller
     }
 
 
+
+    public function ajaxPackageInfo(Request $request)
+    {
+        echo Package::find($request->id)->description;
+    }
+
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

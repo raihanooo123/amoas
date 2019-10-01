@@ -5,40 +5,6 @@ $.ajaxSetup({
 });
 
 $(document).ready(function(){
-
-    alert('hi');
-    //remove first_name error
-    
-    $("input[id=first_name]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#first_name_error_holder').addClass('d-none');
-    });
-
-    //remove last_name error
-
-    $("input[id=last_name]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#last_name_error_holder').addClass('d-none');
-    });
-
-    //remove phone_number error
-
-    $("input[id=phone_number]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#phone_number_error_holder').addClass('d-none');
-    });
-
-    //remove email error
-
-    $("input[id=email]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#email_error_holder').addClass('d-none');
-    });
-
     //get packages on click of div.category_box
 
     $("div").on("click", "div.category_box", function(){

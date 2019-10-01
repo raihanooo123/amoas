@@ -24,5 +24,6 @@ return [
     'page_title' => 'Login',
     'email_placeholder' => 'Email',
     'password_placeholder' => 'Password',
+    'create_account' => 'Create Account',
 
 ];
