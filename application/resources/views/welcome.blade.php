@@ -25,106 +25,12 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="progress mx-lg-5">
+                        <div class="progress mx-lg-12">
                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                         </div>
                         <br><br>
-                        <h5>{{ __('app.personal_details') }}</h5>
-                        <br>
-                        @if($errors->has('email'))
-                            <div class="alert alert-danger">
-                                {{ __('app.existing_email_error') }}
-                            </div>
-                        @endif
-                        @if($errors->has('phone_number'))
-                            <div class="alert alert-danger">
-                                {{ __('app.existing_phone_error') }}
-                            </div>
-                        @endif
                     </div>
                 </div>
-
-                @if(!Auth::user())
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" autocomplete="off" class="form-control form-control-lg"
-                                       name="first_name" id="first_name" placeholder="{{ __('app.first_name') }}">
-                                <p id="first_name_error_holder" class="form-text text-danger d-none">
-                                    {{ __('app.first_name_error') }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" autocomplete="off" class="form-control form-control-lg"
-                                       name="last_name" id="last_name" placeholder="{{ __('app.last_name') }}">
-                                <p id="last_name_error_holder" class="form-text text-danger d-none">
-                                    {{ __('app.last_name_error') }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="number" autocomplete="off" class="form-control form-control-lg"
-                                       name="phone_number" id="phone_number" placeholder="{{ __('app.phone_number') }}">
-                                <p id="phone_number_error_holder" class="form-text text-danger d-none">
-                                    {{ __('app.phone_error') }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="email" autocomplete="off" class="form-control form-control-lg"
-                                       name="email" id="email" placeholder="{{ __('app.email') }}">
-                                <p id="email_error_holder" class="text-danger d-none">
-                                    {{ __('app.email_error') }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                @else
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" value="{{ Auth::user()->first_name }}" readonly disabled=""
-                                       autocomplete="off" class="form-control form-control-lg"
-                                       name="first_name" id="first_name" placeholder="{{ __('app.first_name') }}">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" autocomplete="off" value="{{ Auth::user()->last_name }}"
-                                       readonly disabled="" class="form-control form-control-lg"
-                                       name="last_name" id="last_name" placeholder="{{ __('app.last_name') }}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="number" autocomplete="off" value="{{ Auth::user()->phone_number }}"
-                                       readonly disabled="" class="form-control form-control-lg"
-                                       name="phone_number" id="phone_number" placeholder="{{ __('app.phone_number') }}">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="email" autocomplete="off" value="{{ Auth::user()->email }}"
-                                       readonly disabled="" class="form-control form-control-lg"
-                                       name="email" id="email" placeholder="{{ __('app.email') }}">
-                            </div>
-                        </div>
-                    </div>
-
-                @endif
 
                 <div id="categories_holder">
                     <a href="{{route('verfiy.tazkira')}}">Verification of Tazkira</a>
@@ -168,6 +74,19 @@
 
                 <div class="row">
                     <div class="col-md-12">
+                        <div id="package_info_loader" class="d-none"><p style="text-align: center;"><img src="{{ asset('images/loader.gif') }}" width="52" height="52"></p></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 d-none" id="package_desc_container">
+                        <h5>Package information and requirements</h5>
+                        <div id="package_desc"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="alert alert-danger d-none" id="package_error">{{ __('app.no_package_selected_error') }}</div>
                         <br>
                     </div>
@@ -185,23 +104,35 @@
                         </span>
                     </div>
                     <div class="col-md-6 text-right">
+                        @if(Auth::user())
                         <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
-                        <i class="far fa-clock"></i> &nbsp; {{ __('app.welcome_post_btn') }}
+                            <i class="far fa-clock"></i> &nbsp; {{ __('app.welcome_post_btn') }}
                         </button>
+                        @else
+                        <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                            <i class="fa fa-sign-in-alt"></i> &nbsp; Login/Register
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
         </footer>
-
+ 
         {{--FOOTER FOR PHONES--}}
 
         <footer class="footer d-block d-sm-block d-md-none d-lg-none d-xl-none">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
+                        @if(Auth::user())
                         <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
                             <i class="far fa-clock"></i> &nbsp; {{ __('app.welcome_post_btn') }}
                         </button>
+                        @else
+                        <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                            <i class="fa fa-sign-in-alt"></i> &nbsp; Login/Register
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -218,6 +149,19 @@
             $('.btn_package_select').text('{{ __("app.booking_package_btn_select") }}').removeClass('btn-danger').addClass('btn-primary');
             $(this).text('{{ __("app.booking_package_btn_selected") }}').removeClass('btn-primary').addClass('btn-danger');
         });
+
+        $('body').on('click', 'a.btn_package_select', function() {
+            var package_id = $(this).attr('data-package-id');
+            $('#package_info_loader').removeClass('d-none');
+            
+            $.get("{{ URL('/ajax_package_info') }}", {id:package_id}, function(data){
+                $('#package_desc_container').removeClass('d-none');
+                $('#package_desc').html(data);
+                
+                $('#package_info_loader').addClass('d-none');
+            });
+        });
+        
     </script>
 
 @endsection

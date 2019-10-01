@@ -18,6 +18,7 @@ use mikehaertl\pdftk\Pdf;
 // ** INIT BOOKING ** //
 
 Route::get('/','UserBookingController@loadBooking')->name('index');
+Route::get('/ajax_package_info','UserBookingController@ajaxPackageInfo');
 
 // ** AUTHORIZATION ROUTE ** //
 
