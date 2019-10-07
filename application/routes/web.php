@@ -37,6 +37,7 @@ Route::get('/test', function(){
     // ], false); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
     // $pdf->Merge();
     // $pdf->Output();
+    dd(app()->getLocale());
 
     $pdf = new Pdf('templates/visa_template.pdf',[
         'command' => '"C:\\Program Files (x86)\\PDFtk Server\\bin\\pdftk.exe"',
@@ -89,6 +90,10 @@ Route::group(['middleware'=>'admin'], function(){
 
     Route::get('/update-database', 'DatabaseUpdateController@update');
     Route::get('/unpaid-invoices', 'OfflinePaymentController@index')->name('unpaidInvoices');
+
+    Route::group(['prefix'=>'visa'], function(){
+        Route::resource('/visa-form', 'Visa\VisaFormController');
+    });
 
 });
 

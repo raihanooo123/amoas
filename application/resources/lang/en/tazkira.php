@@ -21,6 +21,16 @@ return [
     'address' => 'Address',
     'sibling' => 'Sibling',
     'sibling_name' => 'Sibling name',
+    'add' => 'Add New Form',
+    'edit' => 'Edit Form',
+    'print' => 'Print ',
+    'excel' => 'Excel ',
+    'pdf' => 'PDF',
+    'occupation' => 'Occupation',
+    'contact_no' => 'شماره تماس',
+    'email' => 'ایمیل',
+    'word' => 'Word',
+    'update' => 'Update',
 
 
 ];

@@ -9,11 +9,52 @@ use Illuminate\Http\File;
 
 class VisaFormController extends Controller
 {
+     
+    public function index()
+    {
+        // get the limits for pagination
+        $limit = request()->has('limit') && request()->input('limit') <= 200 ? request()->input('limit') : 50;
+
+        $visaForms = VisaForm::with(['department', 'country','type', 'registrar'])
+            ->latest()
+            ->paginate($limit);
+        // dd($visaForms);
+        return view('visa.index', compact('visaForms'));
+    }
+
+    public function show(VisaForm $visa_form)
+    {
+        $visa_form->load(['department', 'country', 'type', 'image', 'registrar']);
+        
+
+        $off_days = \DB::table('booking_times')
+            ->where('is_off_day', '=', '1')
+            ->get();
+
+        $dayNumber = array();
+
+        foreach ($off_days as $off_day)
+        {
+            if($off_day->id != 7)
+            {
+                $dayNumber[] = $off_day->id;
+            }
+            else
+            {
+                $dayNumber[] = $off_day->id - 7;
+            }
+        }
+
+        $disable_days_string = implode(",", $dayNumber);
+
+
+        return view('visa.show', compact('visa_form', 'disable_days_string'));
+    }
+
     public function fillForm()
     {
         return view('visa.form.fill-form');
     }
-
 
     public function store()
     {

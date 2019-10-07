@@ -51,6 +51,10 @@ class VisaForm extends Model
         'registrar_id',
     ];
 
+    protected $casts = [
+        'under_18' => 'boolean',
+    ];
+
     public function department()
     {
         return $this->belongsTo('App\Department', 'department_id');
@@ -58,7 +62,17 @@ class VisaForm extends Model
 
     public function country()
     {
-        return $this->belongsTo('App\Country', 'current_country');
+        return $this->belongsTo('App\Country', 'residence_country');
+    }
+
+    public function birthCountry()
+    {
+        return $this->belongsTo('App\Country', 'birth_country');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo('App\Models\Visa\VisaType', 'visa_type');
     }
 
     public function image()

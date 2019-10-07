@@ -218,6 +218,13 @@
                     </ul>
                 </li>
 
+                <li class="{{ Request::is('visa/visa-form') || Request::is('visa/visa-form/*') ? 'active' : '' }}">
+                    <a href="{{ route('visa-form.index') }}" class="waves-effect waves-button">
+                        <span class="menu-icon icon-book-open"></span>
+                        <p>{{ __('backend.visa') }}</p>
+                    </a>
+                </li>
+
                 <li class="droplink {{ Request::is('addons') || Request::is('addons/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-badge"></span>
