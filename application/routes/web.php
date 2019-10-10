@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use mikehaertl\pdftk\Pdf;
+// use FPDM;
 
 // ** INIT BOOKING ** //
 
@@ -30,13 +31,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', function(){
 
     
-    // $pdf = new FPDM('templates/visa_template.pdf');
-    // $pdf->Load([
-    //     'serial_no'=>'working fine',
-    //     'Family_Name'=>'working fine',
-    // ], false); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
-    // $pdf->Merge();
-    // $pdf->Output();
+    $pdf = new \FPDM('templates/visa_template_fix.pdf');
+    $pdf->Load([
+        'serial_no'=>'working fine',
+        'Family_Name'=>'working fine',
+    ], false); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
+    $pdf->Merge();
+    $pdf->Output('', 'temp/visa_template.pdf');
+    
     dd(app()->getLocale());
 
     $pdf = new Pdf('templates/visa_template.pdf',[

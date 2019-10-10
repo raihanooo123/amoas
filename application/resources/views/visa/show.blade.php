@@ -64,7 +64,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <img src="{{$visa_form->image ? asset('img/verification/' . $visa_form->image->path) :
+                            <img src="{{$visa_form->image ? asset('img/visa/' . $visa_form->image->path) :
                                     asset('images/profile-placeholder.png') }}" class="img-fluid img-thumbnail">
                         </div>
                         <div class="col-md-3">
