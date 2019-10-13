@@ -18,7 +18,7 @@
         <div class="col-md-12">
             @include('alerts.bookings')
 
-            <a class="btn btn-primary btn-lg btn-add" href="{{ route('verification.create') }}"><i
+            <a class="btn btn-primary btn-lg btn-add" href="{{ route('visa-form.fill') }}"><i
                     class="fa fa-plus"></i> {{__('tazkira.add')}} </a>
             <a class="btn btn-default btn-lg btn-add" href="{{ route('verification.edit', $visa_form->id) }}"><i
                     class="fa fa-edit"></i> {{__('tazkira.edit')}} </a>
@@ -235,8 +235,6 @@
     </div>
 </div>
 
-
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -308,18 +306,13 @@
 
 @endsection
 
-
 @section('scripts')
-
-
-    <script src="{{ asset('plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <script>
         var nowDate = new Date();
         var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
         $('#event_date').datepicker({
-            orientation: "auto right",
+            orientation: "auto",
             autoclose: true,
             startDate: today,
             format: 'dd-mm-yyyy',
@@ -327,6 +320,5 @@
             language: "{{ App::getLocale() }}"
         });
     </script>
-
 
 @endsection

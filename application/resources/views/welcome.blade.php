@@ -129,7 +129,7 @@
                             <i class="far fa-clock"></i> &nbsp; {{ __('app.welcome_post_btn') }}
                         </button>
                         @else
-                        <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                        <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto login-btn">
                             <i class="fa fa-sign-in-alt"></i> &nbsp; Login/Register
                         </a>
                         @endif

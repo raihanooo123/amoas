@@ -58,7 +58,7 @@ class VisaFormController extends Controller
 
     public function store()
     {
-        // dd(request()->all());
+        
         $this->validate(request(), [
             'department_id' => 'required',
             'title' => 'required',
