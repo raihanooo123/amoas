@@ -37,8 +37,8 @@
                     <br><br>
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.provide_address') }}</h5>
                     <div class="form-group">
-                        <input id="autocomplete" placeholder="{{ __('app.address_placeholder') }}" onFocus="geolocate()"
-                            name="address" type="text" class="form-control form-control-lg" autocomplete="off">
+                        <input id="autocomplete" placeholder="{{ __('app.provide_address') }}  {{ __('app.here') }}" 
+                        name="email" type="email" class="form-control form-control-lg" value="{{old('email')}}">
                         <small>{{ __('app.email_description') }}</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
@@ -48,8 +48,7 @@
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.postal') }} / {{ __('app.zip') }}</h5>
                     <div class="form-group">
                         <input id="autocomplete" placeholder="{{ __('app.postal') }} / {{ __('app.zip') }} {{ __('app.here') }}"
-                            onFocus="geolocate()" name="address" type="text" class="form-control form-control-lg"
-                            autocomplete="off">
+                            name="postal" type="text" class="form-control form-control-lg" value="{{old('postal')}}">
                         <small>&nbsp;</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
@@ -59,8 +58,7 @@
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.phone') }}</h5>
                     <div class="form-group">
                         <input id="autocomplete" placeholder="{{ __('app.phone') }} {{ __('app.here') }}"
-                            onFocus="geolocate()" name="address" type="text" class="form-control form-control-lg"
-                            autocomplete="off">
+                            name="phone" type="text" class="form-control form-control-lg" value="{{old('phone')}}">
                         <small>&nbsp;</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
@@ -75,7 +73,7 @@
                         {{-- <small>{{ __('app.email_description') }}</small> --}}
                         <div class="form-group">
                             <input id="autocomplete" placeholder="{{ __('app.full_name') }} {{ __('app.here') }}"
-                                onFocus="geolocate()" name="address" type="text" class="form-control form-control-lg">
+                                name="full_name" type="text" class="form-control form-control-lg" value="{{old('full_name')}}">
                             <small>&nbsp;</small>
                             <p class="form-text text-danger d-none" id="address_error_holder">
                                 {{ __('app.address_error') }}
@@ -85,8 +83,7 @@
                         <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.id_card') }}</h5>
                         <div class="form-group">
                             <input id="autocomplete" placeholder="{{ __('app.id_card') }} {{ __('app.here') }}"
-                                onFocus="geolocate()" name="address" type="text" class="form-control form-control-lg"
-                                autocomplete="off">
+                                name="idcard" type="text" class="form-control form-control-lg" value="{{old('idcard')}}">
                             <small>{{ __('app.id_card_description') }}</small>
                             <p class="form-text text-danger d-none" id="address_error_holder">
                                 {{ __('app.address_error') }}
@@ -96,8 +93,7 @@
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.participant') }}</h5>
                     <div class="form-group">
                         <input id="autocomplete" placeholder="{{ __('app.participant') }} {{ __('app.here') }}"
-                            onFocus="geolocate()" name="address" type="text" class="form-control form-control-lg"
-                            autocomplete="off">
+                            name="participant" type="number" class="form-control form-control-lg" value="{{old('participant')}}">
                         <small>{{ __('app.participant_desc') }}</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
@@ -111,8 +107,7 @@
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.address') }}</h5>
                     <div class="form-group">
                         <input id="autocomplete" placeholder="{{ __('app.address') }} {{ __('app.here') }}"
-                            onFocus="geolocate()" name="address" type="text" class="form-control form-control-lg"
-                            autocomplete="off">
+                            name="address" type="text" class="form-control form-control-lg" value="{{old('address')}}">
                         <small>{{ __('app.address_desc') }}</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
@@ -125,7 +120,7 @@
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.select_date') }}</h5>
                     <div class="form-group">
                         <input type="text" class="form-control form-control-lg" name="event_date" id="event_date"
-                            placeholder="{{ __('app.date_placeholder') }}" autocomplete="off">
+                            placeholder="{{ __('app.date_placeholder') }}" value="{{old('email')}}">
                         <p class="form-text text-danger d-none" id="date_error_holder">
                             {{ __('app.date_error') }}
                         </p>
@@ -195,21 +190,6 @@
 
 
 <script src="{{ asset('plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-@if(App::getLocale()=="es")
-<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
-@elseif(App::getLocale()=="fr")
-<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.fr.min.js') }}"></script>
-@elseif(App::getLocale()=="de")
-<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.de.min.js') }}"></script>
-@elseif(App::getLocale()=="da")
-<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.da.min.js') }}"></script>
-@elseif(App::getLocale()=="it")
-<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.it.min.js') }}"></script>
-@elseif(App::getLocale()=="pt")
-<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.pt.min.js') }}"></script>
-@endif
-
-
 
 <script>
     var nowDate = new Date();

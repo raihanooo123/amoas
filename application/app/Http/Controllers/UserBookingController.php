@@ -28,7 +28,6 @@ class UserBookingController extends Controller
     |
     */
 
-
     /**
      * get user bookings and load user bookings view
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -437,8 +436,8 @@ class UserBookingController extends Controller
      */
     public function postStep1(Request $request)
     {
-        $input = $request->all();
-        $request->session()->put('package_id', $input['package_id']);
+        
+        $request->session()->put('package_id', $request->package_id);
         return redirect()->route('loadStep2');
     }
 
@@ -482,12 +481,19 @@ class UserBookingController extends Controller
     public function postStep2(Request $request)
     {
         $input = $request->all();
-
+        // dd($input);
         //store form input into session and load next step
+        $request->session()->put('email', $input['email']);
+        $request->session()->put('postal', $input['postal']);
+        $request->session()->put('phone', $input['phone']);
+        $request->session()->put('full_name', $input['full_name']);
+        $request->session()->put('idcard', $input['idcard']);
+        $request->session()->put('participant', $input['participant']);
         $request->session()->put('address', $input['address']);
-        $request->session()->put('event_date', $input['event_date']);
-        $request->session()->put('instructions', $input['instructions']);
-        $request->session()->put('booking_slot', $input['booking_slot']);
+
+        // $request->session()->put('event_date', $input['event_date']);
+        // $request->session()->put('instructions', $input['instructions']);
+        // $request->session()->put('booking_slot', $input['booking_slot']);
 
         return redirect('/select-extra-services');
     }

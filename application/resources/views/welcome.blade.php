@@ -14,12 +14,6 @@
     <form method="post" id="booking_step_1" action="{{ Auth::user() ? route('postStep1') : route('register') }}">
 
         {{csrf_field()}}
-
-        @if(!Auth::user())
-            <input type="hidden" name="password" value="{{ $random_pass_string }}">
-            <input type="hidden" name="password_confirmation" value="{{ $random_pass_string }}">
-        @endif
-
         <div class="container">
             <div class="content">
 
