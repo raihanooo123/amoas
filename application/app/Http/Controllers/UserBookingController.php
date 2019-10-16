@@ -49,13 +49,10 @@ class UserBookingController extends Controller
         return view('welcome', compact('random_pass_string', 'categories'));
     }
 
-
-
     public function ajaxPackageInfo(Request $request)
     {
         echo Package::find($request->id)->description;
     }
-
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -232,7 +229,6 @@ class UserBookingController extends Controller
 
     }
 
-
     public function getUpdateSlots()
     {
         $event_date = \request('event_date');
@@ -388,7 +384,6 @@ class UserBookingController extends Controller
 
     }
 
-
     public function update_booking(Request $request, $id)
     {
         $booking = Booking::find($id);
@@ -446,30 +441,7 @@ class UserBookingController extends Controller
      */
     public function loadStep2()
     {
-        //generating a string for off days
-
-        $off_days = DB::table('booking_times')
-            ->where('is_off_day', '=', '1')
-            ->get();
-
-
-
-        $daynum = array();
-
-        foreach ($off_days as $off_day)
-        {
-            if($off_day->id != 7)
-            {
-                $daynum[] = $off_day->id;
-            }
-            else
-            {
-                $daynum[] = $off_day->id - 7;
-            }
-        }
-
-        $disable_days_string = implode(",", $daynum);
-
+        
         //load step 2
         return view('select-booking-time', compact('disable_days_string'));
     }
@@ -480,6 +452,16 @@ class UserBookingController extends Controller
      */
     public function postStep2(Request $request)
     {
+        // $this->validate(request(), [
+        //     'email' => 'email|required',
+        //     'postal' => 'required',
+        //     'phone' => 'required',
+        //     'full_name' => 'required',
+        //     'participant' => '',
+        //     'idcard' => 'required',
+        //     'address' => 'required',
+        // ]);
+
         $input = $request->all();
         // dd($input);
         //store form input into session and load next step
@@ -504,6 +486,7 @@ class UserBookingController extends Controller
      */
     public function postStep3(Request $request)
     {
+        
         return redirect('/finalize-booking');
     }
 
@@ -516,11 +499,30 @@ class UserBookingController extends Controller
         $package = Package::find($package_id);
         $category_id = $package->category_id;
 
-        //select all addons of category
-        $addons = Category::find($category_id)->addons()->get();
-        $session_addons = DB::table('session_addons')->where('session_email','=',Auth::user()->email)->get();
+        //generating a string for off days
 
-        return view('select-extra-services', compact('addons', 'session_addons'));
+        $off_days = DB::table('booking_times')
+            ->where('is_off_day', '=', '1')
+            ->get();
+
+        $daynum = array();
+
+        foreach ($off_days as $off_day)
+        {
+            if($off_day->id != 7)
+            {
+                $daynum[] = $off_day->id;
+            }
+            else
+            {
+                $daynum[] = $off_day->id - 7;
+            }
+        }
+
+        $disable_days_string = implode(",", $daynum);
+
+
+        return view('select-extra-services', compact('disable_days_string', 'package'));
     }
 
     /**
@@ -624,7 +626,6 @@ class UserBookingController extends Controller
 
     }
 
-
     /**
      *
      * check if addon is added in list of booking services
@@ -641,7 +642,6 @@ class UserBookingController extends Controller
             return 1;
         }
     }
-
 
     /**
      *
@@ -689,5 +689,4 @@ class UserBookingController extends Controller
             return view('errors.404');
         }
     }
-
 }

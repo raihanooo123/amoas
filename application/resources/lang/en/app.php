@@ -111,4 +111,11 @@ return [
     'participant_desc' => 'Number of people participating with applicant.',
     'address' => 'Address',
     'address_desc' => 'Please enter your address precisely. We will send packages like Passport or Tazkira.',
+    
+    // 16-10-2019
+    'validation_t_message' => 'Invalid information. please fill the following input correctly.',
+    'participantInfo' => 'You have selected :participant participants with you, please enter information of each one.',
+    'relationType' => 'Relation',
+    'select_service' => 'Selected Service',
+    'required' => 'Required',
 ];
