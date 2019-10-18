@@ -4,10 +4,10 @@ $.ajaxSetup({
     }
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
     //get packages on click of div.category_box
 
-    $("div").on("click", "div.category_box", function(){
+    $("div").on("click", "div.category_box", function () {
         var category_id = $(this).attr('data-category-id');
         $('.type_title').removeClass('active');
         $(this).find('.type_title').addClass('active');
@@ -17,20 +17,22 @@ $(document).ready(function(){
         $.ajax({
             type: 'POST',
             url: URL_CONCAT + '/get_packages',
-            data: {parent:category_id},
-            beforeSend: function() {
+            data: {
+                parent: category_id
+            },
+            beforeSend: function () {
                 $('#packages_loader').removeClass('d-none');
                 $('#packages_holder').html('&nbsp;');
             },
-            success: function(response) {
+            success: function (response) {
                 $('#packages_holder').fadeIn().html(response);
                 $(".owl-carousel").owlCarousel({
-                    margin:20,
-                    dots:false,
-                    nav:true,
+                    margin: 20,
+                    dots: false,
+                    nav: true,
                     navText: [
-                        '<img src="'+ URL_CONCAT + '/images/left.png">',
-                        '<img src="'+ URL_CONCAT + '/images/right.png">'
+                        '<img src="' + URL_CONCAT + '/images/left.png">',
+                        '<img src="' + URL_CONCAT + '/images/right.png">'
                     ],
                     responsiveClass: true,
                     responsive: {
@@ -54,36 +56,30 @@ $(document).ready(function(){
 
     //append form with selected package_id
 
-    $('body').on('click', 'a.btn_package_select', function() {
+    $('body').on('click', 'a.btn_package_select', function () {
         var package_id = $(this).attr('data-package-id');
         $('#package_error').addClass('d-none');
 
         $('#package_id').remove();
-        $('#booking_step_1').append('<input type="hidden" name="package_id" id="package_id" value="'+package_id+'">');
+        $('#booking_step_1').append('<input type="hidden" name="package_id" id="package_id" value="' + package_id + '">');
     });
 
     //handle form submission of step 1
-    $('#booking_step_1').submit(function(e){
+    $('#booking_step_1').submit(function (e) {
 
         var check = true;
-        var package_id  = $('input[name=package_id]').val();
+        var package_id = $('input[name=package_id]').val();
 
-        alert(package_id);
-        if(package_id === undefined)
-        {
+        // alert(package_id);
+        if (package_id === undefined) {
+            
             $('#package_error').removeClass('d-none');
-            $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
-            check = false;
-        }
-
-        if(check === false)
-        {
+            $("html, body").animate({
+                scrollTop: $(document).height() - $(window).height()
+            });
             return false;
         }
-        else if(check === true)
-        {
-            e.submit();
-        }
+        this.submit();
     });
 
     //remove address field error
@@ -111,11 +107,13 @@ $(document).ready(function(){
         $.ajax({
             type: 'POST',
             url: URL_CONCAT + '/get_timing_slots',
-            data: {event_date:selected_date},
-            beforeSend: function() {
+            data: {
+                event_date: selected_date
+            },
+            beforeSend: function () {
                 $('#slots_loader').removeClass('d-none');
             },
-            success: function(response) {
+            success: function (response) {
                 $('#slots_holder').html(response);
 
             },
@@ -127,17 +125,17 @@ $(document).ready(function(){
 
     //append selected slot to booking_step_2 form
 
-    $('#slots_holder').on('click', 'a.btn-slot', function() {
+    $('#slots_holder').on('click', 'a.btn-slot', function () {
         var slot_time = $(this).attr('data-slot-time');
         $('#slots_holder').find('.btn-slot').removeClass('slot-picked');
         $('#booking_slot').remove();
-        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="'+slot_time+'">');
+        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' + slot_time + '">');
         $(this).addClass('slot-picked');
     });
 
     //handle form submission of step 2
 
-    $('#booking_step_2').submit(function(e){
+    $('#booking_step_2').submit(function (e) {
 
         var check = true;
         var address;
@@ -148,28 +146,25 @@ $(document).ready(function(){
         booking_slot = $('input[name=booking_slot]').val();
 
 
-        if(event_date === "")
-        {
+        if (event_date === "") {
             $('#event_date').addClass('is-invalid');
             $('#date_error_holder').removeClass('d-none');
-            $("html, body").animate({ scrollTop: 2000 }, "slow");
+            $("html, body").animate({
+                scrollTop: 2000
+            }, "slow");
             check = false;
         }
 
-        if(check === false)
-        {
+        if (check === false) {
             return false;
-        }
-        else if(check === true)
-        {
-            if(booking_slot === undefined)
-            {
+        } else if (check === true) {
+            if (booking_slot === undefined) {
                 $('#slot_error').removeClass('d-none');
-                $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+                $("html, body").animate({
+                    scrollTop: $(document).height() - $(window).height()
+                });
                 return false;
-            }
-            else
-            {
+            } else {
                 e.submit();
             }
         }
@@ -181,12 +176,12 @@ $(document).ready(function(){
     var URL_CONCAT = $('meta[name="index"]').attr('content');
 
     $("#addons_carousel").owlCarousel({
-        margin:20,
-        dots:false,
-        nav:true,
+        margin: 20,
+        dots: false,
+        nav: true,
         navText: [
-            '<img src="'+ URL_CONCAT +'/images/left.png">',
-            '<img src="'+ URL_CONCAT +'/images/right.png">'
+            '<img src="' + URL_CONCAT + '/images/left.png">',
+            '<img src="' + URL_CONCAT + '/images/right.png">'
         ],
         responsiveClass: true,
         responsive: {
@@ -202,29 +197,32 @@ $(document).ready(function(){
         }
     });
 
-    $('.addon_buttons').on('click', 'a.btn-addon', function() {
+    $('.addon_buttons').on('click', 'a.btn-addon', function () {
         var addon_id = $(this).attr('data-addon-id');
         var method = $(this).attr('data-method');
 
-        if(method === "add")
-        {
+        if (method === "add") {
             $.ajax({
                 type: 'POST',
                 url: URL_CONCAT + '/session_addons',
-                data: {addon_id:addon_id, session_email:$('input[name=session_email]').val()},
-                success: function() {
-                    $('#' + addon_id).attr('data-method','remove');
+                data: {
+                    addon_id: addon_id,
+                    session_email: $('input[name=session_email]').val()
+                },
+                success: function () {
+                    $('#' + addon_id).attr('data-method', 'remove');
                 }
             });
-        }
-        else if(method === "remove")
-        {
+        } else if (method === "remove") {
             $.ajax({
                 type: 'POST',
                 url: URL_CONCAT + '/remove_session_addon',
-                data: {addon_id:addon_id, session_email:$('input[name=session_email]').val()},
-                success: function() {
-                    $('#' + addon_id).attr('data-method','add');
+                data: {
+                    addon_id: addon_id,
+                    session_email: $('input[name=session_email]').val()
+                },
+                success: function () {
+                    $('#' + addon_id).attr('data-method', 'add');
                 }
             });
         }

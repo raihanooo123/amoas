@@ -431,7 +431,6 @@ class UserBookingController extends Controller
      */
     public function postStep1(Request $request)
     {
-        
         $request->session()->put('package_id', $request->package_id);
         return redirect()->route('loadStep2');
     }
@@ -441,7 +440,6 @@ class UserBookingController extends Controller
      */
     public function loadStep2()
     {
-        
         //load step 2
         return view('select-booking-time', compact('disable_days_string'));
     }
@@ -452,18 +450,18 @@ class UserBookingController extends Controller
      */
     public function postStep2(Request $request)
     {
-        // $this->validate(request(), [
-        //     'email' => 'email|required',
-        //     'postal' => 'required',
-        //     'phone' => 'required',
-        //     'full_name' => 'required',
-        //     'participant' => '',
-        //     'idcard' => 'required',
-        //     'address' => 'required',
-        // ]);
+        $this->validate(request(), [
+            'email' => 'email|required',
+            'postal' => 'required',
+            'phone' => 'required',
+            'full_name' => 'required',
+            'participant' => '',
+            'idcard' => 'required',
+            'address' => 'required',
+        ]);
 
         $input = $request->all();
-        // dd($input);
+        
         //store form input into session and load next step
         $request->session()->put('email', $input['email']);
         $request->session()->put('postal', $input['postal']);
@@ -472,10 +470,6 @@ class UserBookingController extends Controller
         $request->session()->put('idcard', $input['idcard']);
         $request->session()->put('participant', $input['participant']);
         $request->session()->put('address', $input['address']);
-
-        // $request->session()->put('event_date', $input['event_date']);
-        // $request->session()->put('instructions', $input['instructions']);
-        // $request->session()->put('booking_slot', $input['booking_slot']);
 
         return redirect('/select-extra-services');
     }
@@ -486,7 +480,47 @@ class UserBookingController extends Controller
      */
     public function postStep3(Request $request)
     {
+        $this->validate($request, [
+            'event_date' => 'date|required',
+            'booking_slot' => 'required',
+            "participant.*.name"  => "required",
+            "participant.*.id_card"  => "required",
+            "participant.*.relation"  => "required",
+        ]);
+
+        $request->session()->put('event_date', $request->event_date);
+        $request->session()->put('booking_slot', $request->booking_slot);
+        $request->session()->put('participantInfo', $request->participant);
+
+        \DB::beginTransaction();
+        $booking = Booking::create([
+            'user_id' => auth()->id(),
+            'package_id' => session('package_id'),
+            'department_id' => session('department_id', 0),
+            'serial_no' => Booking::genSerialNo(),
+            'booking_date' => $request->event_date,
+            'booking_time' => $request->booking_slot,
+        ]);
         
+        $info = $booking->info()->create([
+            'full_name' => session('full_name'),
+            'email' => session('email'),
+            'phone' => session('phone'),
+            'id_card' => session('idcard'),
+            'postal' => session('postal'),
+            'address' => session('address'),
+        ]);
+        
+        if($request->has('participant'))
+            foreach($request->participant as $participant)
+                $info->participants()->create([
+                    'full_name' => $participant['name'],
+                    'id_card' => $participant['id_card'],
+                    'relation' => $participant['relation'],
+                ]);
+
+        \DB::commit();
+
         return redirect('/finalize-booking');
     }
 

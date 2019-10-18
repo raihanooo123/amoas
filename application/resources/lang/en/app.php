@@ -118,4 +118,6 @@ return [
     'relationType' => 'Relation',
     'select_service' => 'Selected Service',
     'required' => 'Required',
+    'no_participant' => 'No participant with you.',
+    'print' => 'Print',
 ];

@@ -8,7 +8,7 @@ class Booking extends Model
 {
 
     protected $fillable = [
-        'user_id', 'package_id', 'booking_address', 'booking_instructions', 'booking_date',
+        'user_id', 'package_id', 'department_id', 'serial_no', 'booking_date',
         'booking_time', 'google_calendar_event_id' , 'status',
     ];
 
@@ -22,6 +22,10 @@ class Booking extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function info()
+    {
+        return $this->hasOne('App\Models\Booking\BookingInfo','booking_id');
+    }
 
     public function package()
     {
@@ -36,5 +40,10 @@ class Booking extends Model
     public function cancel_request()
     {
         return $this->hasOne('App\CancelRequest');
+    }
+
+    public static function genSerialNo()
+    {
+        return 'lasjdlf';
     }
 }

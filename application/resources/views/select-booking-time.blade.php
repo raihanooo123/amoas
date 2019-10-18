@@ -42,7 +42,7 @@
                     <br><br>
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.provide_address') }}</h5>
                     <div class="form-group">
-                        <input id="autocomplete" placeholder="{{ __('app.provide_address') }}  {{ __('app.here') }}" name="email" type="email" class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{old('email')}}">
+                        <input id="autocomplete" placeholder="{{ __('app.provide_address') }}  {{ __('app.here') }}" name="email" type="email" class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{old('email', auth()->user()->email)}}">
                         <small>{{ __('app.email_description') }}</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
@@ -74,7 +74,7 @@
                         <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.full_name') }}</h5>
                         {{-- <small>{{ __('app.email_description') }}</small> --}}
                         <div class="form-group">
-                            <input id="autocomplete" placeholder="{{ __('app.full_name') }} {{ __('app.here') }}" name="full_name" type="text" class="form-control form-control-lg {{ $errors->has('full_name') ? 'is-invalid' : '' }} " value="{{old('full_name')}}">
+                            <input id="autocomplete" placeholder="{{ __('app.full_name') }} {{ __('app.here') }}" name="full_name" type="text" class="form-control form-control-lg {{ $errors->has('full_name') ? 'is-invalid' : '' }} " value="{{old('full_name', auth()->user()->first_name .' ' . auth()->user()->last_name)}}">
                             <small>&nbsp;</small>
                             <p class="form-text text-danger d-none" id="address_error_holder">
                                 {{ __('app.address_error') }}

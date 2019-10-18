@@ -16,12 +16,12 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('department_id')->default(0);
+            $table->string('serial_no',191)->index();
             $table->integer('user_id')->unsigned()->index();
             $table->integer('package_id')->unsigned()->index();
-            $table->string('booking_address');
-            $table->string('booking_instructions')->nullable();
-            $table->string('booking_date');
-            $table->string('booking_time');
+            $table->date('booking_date');
+            $table->string('booking_time',50)->index();
             $table->string('google_calendar_event_id')->nullable();
             $table->string('status')->default('Processing');
             $table->timestamps();
@@ -29,8 +29,6 @@ class CreateBookingsTable extends Migration
             $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade');
         });
 
-        // Here's the magic
-        DB::statement('ALTER TABLE bookings AUTO_INCREMENT = 3564;');
     }
 
     /**

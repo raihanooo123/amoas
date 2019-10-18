@@ -21,6 +21,11 @@ class CreateBookingTimesTable extends Migration
             $table->boolean('is_off_day')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('holydays', function (Blueprint $table) {
+            $table->increments('id');
+            $table->date('date')->unique();
+        });
     }
 
     /**
@@ -31,5 +36,6 @@ class CreateBookingTimesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('booking_times');
+        Schema::dropIfExists('holydays');
     }
 }

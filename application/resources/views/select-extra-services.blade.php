@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<form method="post" id="booking_step_3" action="{{ route('postStep3') }}">
+<form method="post" id="booking_step_2" action="{{ route('postStep3') }}">
     <input type="hidden" name="session_email" value="{{ Auth::user()->email }}">
     {{ csrf_field() }}
     <div class="container">
@@ -34,6 +34,21 @@
 
             <br>
             <br>
+
+            @if (count($errors) > 0)
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{{ __('app.validation_t_message') }}</h4>
+                    <div class="error">
+                        <ol>
+                            @foreach ($errors->all() as $error)
+                            <li class="text-danger">{{ $error }}</li>
+                            @endforeach
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <div class="row">
                 @if(session()->has('participant'))
@@ -109,9 +124,9 @@
                     </span>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a href="{{ route('loadFinalStep') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
-                        {{ __('app.step_three_button') }}
-                    </a>
+                    <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                        {!! __('pagination.next') !!}
+                    </button>
                     <!-- <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
                             {{ __('app.step_three_button') }}
                     </button> -->
@@ -126,9 +141,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <a href="{{ route('loadFinalStep') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
-                        {{ __('app.step_three_button') }}
-                    </a>
+                    <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                        {!! __('pagination.next') !!}
+                    </button>
                 </div>
             </div>
         </div>
@@ -149,7 +164,8 @@
         orientation: "auto right",
         autoclose: true,
         startDate: today,
-        format: 'dd-mm-yyyy',
+        format: 'yyyy-mm-dd',
+        // format: 'dd-mm-yyyy',
         daysOfWeekDisabled: "{{ $disable_days_string }}",
         language: "{{ App::getLocale() }}"
     });
