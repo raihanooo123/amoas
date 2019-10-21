@@ -1,5 +1,9 @@
 @extends('layouts.app', ['title' => __('app.step_two_page_title')])
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2/select2-bootstrap.min.css') }}">
+@endsection
 
 @section('content')
 
@@ -113,6 +117,23 @@
                     </div>
                 </div>
 
+                <div class="col-md-12">
+                    <br>
+                    <h5><i class="fa fa-asterisk text-danger"></i> {{ __('backend.department') }}</h5>
+                    <div class="form-group">
+                        <select
+                            class="form-control simple-select2 form-control-lg {{ $errors->has('department_id') ? 'is-invalid' : '' }}"
+                            name="department_id">
+                            @foreach (\App\Department::whereIn('type', ['embassy', 'consulate'])->get() as $department)
+                            <option value="{{$department->id}}" {{ $department->id == 96 ? 'selected' : '' }}
+                                {{ $department->id == old('department_id') ? 'selected' : null }}>
+                                {{ ucfirst($department->name_en) }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
             <br>
@@ -157,6 +178,16 @@
 @endsection
 
 @section('scripts')
+
+<script src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+
+<script>
+    $(function () {
+        $('.simple-select2').select2({
+                'theme': 'bootstrap'
+            });
+    });
+</script>
 
 @if(config('settings.google_maps_api_key') != NULL)
 <script src="{{ asset('js/map.js') }}"></script>

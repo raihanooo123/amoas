@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Spatie\GoogleCalendar\Event;
+use Dompdf\Dompdf;
+
+use TCPDF;
+use TCPDF_FONTS;
 
 class UserBookingController extends Controller
 {
@@ -440,6 +444,7 @@ class UserBookingController extends Controller
      */
     public function loadStep2()
     {
+        if(!session()->has('package_id')) return redirect('/');
         //load step 2
         return view('select-booking-time', compact('disable_days_string'));
     }
@@ -458,6 +463,7 @@ class UserBookingController extends Controller
             'participant' => '',
             'idcard' => 'required',
             'address' => 'required',
+            'department_id' => 'required',
         ]);
 
         $input = $request->all();
@@ -470,6 +476,7 @@ class UserBookingController extends Controller
         $request->session()->put('idcard', $input['idcard']);
         $request->session()->put('participant', $input['participant']);
         $request->session()->put('address', $input['address']);
+        $request->session()->put('department_id', $input['department_id']);
 
         return redirect('/select-extra-services');
     }
@@ -496,8 +503,8 @@ class UserBookingController extends Controller
         $booking = Booking::create([
             'user_id' => auth()->id(),
             'package_id' => session('package_id'),
-            'department_id' => session('department_id', 0),
-            'serial_no' => Booking::genSerialNo(),
+            'department_id' => session('department_id'),
+            'serial_no' => Booking::genSerialNo(session('department_id')),
             'booking_date' => $request->event_date,
             'booking_time' => $request->booking_slot,
         ]);
@@ -521,6 +528,8 @@ class UserBookingController extends Controller
 
         \DB::commit();
 
+        $request->session()->put('bookingId', $booking->id);
+
         return redirect('/finalize-booking');
     }
 
@@ -529,6 +538,8 @@ class UserBookingController extends Controller
      */
     public function loadStep3()
     {
+        if(!session()->has('package_id')) return redirect('/');
+
         $package_id = Session::get('package_id');
         $package = Package::find($package_id);
         $category_id = $package->category_id;
@@ -564,9 +575,10 @@ class UserBookingController extends Controller
      */
     public function loadFinalStep()
     {
-        $event_address = str_replace(' ', '+', Session::get('address'));
+        if(!session()->has('package_id') || !session()->has('bookingId')) return redirect('/');
         $category = Package::find(Session::get('package_id'))->category->title;
         $package = Package::find(Session::get('package_id'));
+        $booking = Booking::with('department','package','info','info.participants')->find(session('bookingId'));
         $session_addons = DB::table('session_addons')->where('session_email','=',Auth::user()->email)->get();
 
         //calculate total
@@ -586,9 +598,14 @@ class UserBookingController extends Controller
             $total_with_gst = round($total_with_gst,2);
         }
 
+        $userId = auth()->id();
+
+        request()->session()->flush();
+
+        auth()->loginUsingId($userId);
 
         return view('finalize-booking', compact('event_address', 'category',
-            'package', 'session_addons', 'total', 'total_with_gst', 'gst_amount'));
+            'package', 'session_addons', 'total', 'total_with_gst', 'gst_amount', 'booking'));
     }
 
     /**
@@ -643,6 +660,9 @@ class UserBookingController extends Controller
         {
             $allow_to_cancel = false;
         }
+
+        // load other details
+        $booking->load('info', 'info.participants');
 
         return view('customer.bookings.view' , compact('booking','allow_to_update', 'allow_to_cancel'));
     }
@@ -722,5 +742,30 @@ class UserBookingController extends Controller
         {
             return view('errors.404');
         }
+    }
+
+    public function print($id)
+    {
+        $booking = Booking::with('department','package')->find($id);
+        
+        return view('print-booking-success', compact('booking'));
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(file_get_contents('templates/BookingSuccessTemplate.html'));
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
+
+        // create new PDF document
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // add a page
+        $pdf->AddPage();
     }
 }

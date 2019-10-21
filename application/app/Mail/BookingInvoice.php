@@ -30,7 +30,7 @@ class BookingInvoice extends Mailable
      */
     public function build()
     {
-        $this->subject(__('emails.new_invoice_title').' #'. $this->booking->id);
+        $this->subject(__('emails.new_invoice_title'));
         return $this->view('vendor.emails.invoice');
     }
 }

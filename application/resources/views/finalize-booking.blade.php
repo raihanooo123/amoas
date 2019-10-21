@@ -32,17 +32,23 @@
             @if(Session::has('paypal_error'))
             <div class="alert alert-danger col-md-12">{{session('paypal_error')}}</div>
             @endif
+            {{-- @if(Session::has('paypal_error')) --}}
+            <div class="col-12">
+                <br>
+                <div class="alert alert-success col-md-12"><h5>{{__('app.booking_success_msg')}}</h5></div>
+            </div>
+            {{-- @endif --}}
 
             <div class="col-md-4">
-                <br><br>
+                <br>
                 <h3>{{ __('app.booking_summary') }}</h3>
                 <br>
                 <h5>{{ session('full_name') }}</h5>
-                <h6><i class="fas fa-envelope fa-lg text-primary"></i>&nbsp;&nbsp;{{ session('email') }}</h6>
-                <h6><i class="fas fa-phone fa-lg text-primary"></i>&nbsp;&nbsp;{{ session('phone') }}</h6>
-                <h6><i class="fas fa-map-marker fa-lg text-primary"></i>&nbsp;&nbsp;{{ session('address') }}</h6>
-                <h6><i class="fas fa-calendar fa-lg text-primary"></i>&nbsp;&nbsp;{{ Session::get('event_date') }}
-                    {{ Session::get('booking_slot') }}</h6>
+                <h6><i class="fas fa-envelope fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->email }}</h6>
+                <h6><i class="fas fa-phone fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->phone }}</h6>
+                <h6><i class="fas fa-map-marker fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->address }}</h6>
+                <h6><i class="fas fa-calendar fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->booking_date }}
+                    {{ $booking->booking_time }}</h6>
                 <br>
                 <h4>{{ __('app.booking_details') }}</h4>
                 <h5>{{ $category }} - {{ $package->title }} - <span class="text-danger">
@@ -70,11 +76,10 @@
             <div class="col-md-8">
 
                 <br>
-                <br>
                 <h3>&nbsp;</h3>
                 <br>
+                @if($booking->info->participants->count()> 0)
                 <h6>{{ __('app.participant') }} </h6>
-                @if(session()->has('participantInfo'))
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -86,7 +91,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(session('participantInfo') as $participant)
+                            @foreach($booking->info->participants as $participant)
                             <tr>
                                 <td>{{ $participant['name'] }}</td>
                                 <td>{{ $participant['id_card'] }}</td>
@@ -102,14 +107,14 @@
                     </table>
                 </div>
                 @else
-                <p>{{ __('') }}</p>
+                <p>{{ __('app.no_participant') }}</p>
                 @endif
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-4">
-                <a href="" class="btn btn-primary">
+                <a href="{{route('print', [$booking->id])}}" class="btn btn-primary">
                     <i class="fa fa-print"></i> {{ __('app.print') }}
                 </a>
             </div>

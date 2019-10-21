@@ -57,6 +57,7 @@ return [
     'cancelled' => 'Cancelled',
     'booking_details' => 'Booking Details',
     'customer_details' => 'Customer Details',
+    'r_user_details' => 'Registered User Details',
     'address' => 'Address',
     'instructions' => 'Instructions',
     'extra_services' => 'Extra Services',
@@ -344,5 +345,6 @@ return [
     'reserve_time' => 'Accept & Reserve Time',
     'reject' => 'Reject',
     'acceptModal' => 'Accept the form & Reserve a time for interview.',
+    'booking_applicant_details' => 'Booking Applicant Details',
 
 ];

@@ -19,8 +19,8 @@ class CreatePackagesTable extends Migration
             $table->text('description')->nullable();
             $table->float('price');
             $table->integer('category_id')->unsigned()->index();
-            $table->smallInteger('daily_acceptence');
-            $table->smallInteger('emergency_acceptence');
+            $table->smallInteger('daily_acceptance');
+            $table->smallInteger('emergency_acceptance');
             $table->integer('photo_id');
             $table->integer('duration');
             $table->timestamps();

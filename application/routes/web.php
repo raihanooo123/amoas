@@ -30,7 +30,7 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', function(){
 
-    
+    dd(\App\Booking::genSerialNo(96));
     $pdf = new \FPDM('templates/visa_template_fix.pdf');
     $pdf->Load([
         'serial_no'=>'working fine',
@@ -63,9 +63,7 @@ Route::get('/test', function(){
     dd(App\Models\Visa\VisaForm::generateSerialNo(5));
 });
 
-
 // ** AJAX REQUESTS ** //
-
 Route::post('/get_packages', 'UserBookingController@getPackages')->name('packages');
 Route::post('/get_timing_slots', 'UserBookingController@getTimingSlots')->name('slots');
 Route::post('/get_update_slots', 'UserBookingController@getUpdateSlots')->name('updateSlots');
@@ -150,14 +148,15 @@ Route::group(['middleware'=>'authenticated'], function() {
 
     Route::get('/thank-you', 'UserBookingController@thankYou')->name('thankYou');
     Route::get('/payment-failed', 'UserBookingController@paymentFailed')->name('paymentFailed');
-
+    
     // ** AUXILIARY ROUTES  ** //
-
+    
     Route::resource('/session_addons','SessionAddonsController');
     Route::get('/account-disabled', function (){
         return view('errors.accountDisabled');
     });
-
+    
+    Route::get('/print-ticket/{bookingId}', 'UserBookingController@print')->name('print');
     // ** PASSWORD CHANGE ROUTES ** //
 
     Route::get('/password/update', 'UserPasswordController@index')->name('changePassword');

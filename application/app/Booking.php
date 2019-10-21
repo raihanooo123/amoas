@@ -22,6 +22,11 @@ class Booking extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function department()
+    {
+        return $this->belongsTo('App\Department', 'department_id');
+    }
+
     public function info()
     {
         return $this->hasOne('App\Models\Booking\BookingInfo','booking_id');
@@ -42,8 +47,14 @@ class Booking extends Model
         return $this->hasOne('App\CancelRequest');
     }
 
-    public static function genSerialNo()
+    public static function genSerialNo($departmentId)
     {
-        return 'lasjdlf';
+        $counts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
+
+        $department = \App\Department::find($departmentId) ? \App\Department::find($departmentId)->code : 'AFG' ;
+
+        $serialNo = $department . '-' . date('ynj') . '-'. sprintf('%03d', ++$counts);
+
+        return $serialNo;
     }
 }
