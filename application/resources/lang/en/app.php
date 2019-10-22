@@ -121,4 +121,6 @@ return [
     'no_participant' => 'No participant with you.',
     'print' => 'Print',
     'booking_success_msg' => 'Reservation successfully done. Please print the following booking summary',
+    'print_now' => 'Print now',
+    'print_pdf' => 'Print PDF',
 ];

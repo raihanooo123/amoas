@@ -6,7 +6,7 @@
   <meta name="x-apple-disable-message-reformatting"> 
   <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
   <meta content="telephone=no" name="format-detection"> 
-  <title>New email template 2019-10-20</title> 
+  <title>Print ticket</title> 
   <!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}
@@ -85,7 +85,7 @@ a[x-apple-data-detectors] {
                   <td width="560" align="center" valign="top" style="padding:0;Margin:0;"> 
                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;"> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="center" style="padding:0;Margin:0;"><img class="adapt-img" src="https://efkrrg.stripocdn.email/content/guids/411fe2d2-25ff-46c6-a799-62785563ee0d/images/25411571568389197.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="124"></td> 
+                      <td align="center" style="padding:0;Margin:0;"><img class="adapt-img" src="{{$afgLogo}}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" height="124"></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
                       <td align="center" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:20px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:30px;color:#DAA520;"><strong>Islamic Republic of Afghanistan</strong></p></td> 
@@ -104,7 +104,7 @@ a[x-apple-data-detectors] {
                   <td width="540" align="center" valign="top" style="padding:0;Margin:0;"> 
                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left bottom;"> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="center" style="padding:0;Margin:0;"><h1 style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#212121;">You have successfully reserved a set on <span style="background-color:#FFA07A;">12/03/2019 12:00 PM</span></h1><h1 style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#000000;"><span style="background-color:#FFFFFF;">at our mission in Afghanistan consulate at&nbsp;Bonn.</span></h1></td> 
+                      <td align="center" style="padding:0;Margin:0;"><h1 style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#212121;">You have successfully reserved a set on &#13;&#10;<span style="background-color:#FFA07A;">{{$booking->booking_date . ' ' . $booking->booking_time}}</span></h1><h1 style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#000000;"><span style="background-color:#FFFFFF;">at our mission in {{$booking->department->name_en}}</span></h1></td> 
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -117,7 +117,7 @@ a[x-apple-data-detectors] {
                   <td width="540" align="center" valign="top" style="padding:0;Margin:0;"> 
                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left bottom;"> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="left" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">Dear Mohamad Asif Gulistani,</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">You have successfully booked a time at Afghanistan Consulate on Bonn please earlier from time that mentioned above. The following QR code is neccessary while entering to our mission.</p></td> 
+                      <td align="left" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">Dear {{$booking->info->full_name}},</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">You have successfully booked a time at {{$booking->department->name_en}} please earlier from time that mentioned above. The following QR code is neccessary while entering to our mission.</p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
                       <td align="center" style="padding:20px;Margin:0;"> 
@@ -128,7 +128,7 @@ a[x-apple-data-detectors] {
                        </table></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="center" style="padding:0;Margin:0;"><img class="adapt-img" src="https://efkrrg.stripocdn.email/content/guids/CABINET_f81d87440a703e6b2c8d447f1de903f3/images/61771571570780164.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="91"></td> 
+                      <td align="center" style="padding:0;Margin:0;"><img class="adapt-img" src="{{$qrCode}}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="91"></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
                       <td align="center" style="padding:20px;Margin:0;"> 
@@ -139,14 +139,12 @@ a[x-apple-data-detectors] {
                        </table></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="left" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">You have requested the Passport Service, you must provide the following document before the booking time.</p></td> 
+                      <td align="left" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">You have requested the {{$booking->package->title}}, you must provide the following document before the booking time.</p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
                       <td align="left" style="padding:0;Margin:0;"> 
-                       <ul> 
-                        <li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;color:#131313;">You original Tazkira</li> 
-                        <li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;color:#131313;">Passport size photo (4x45)</li> 
-                       </ul></td> 
+                       {!! $booking->package->description !!}
+                       </td> 
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -171,5 +169,10 @@ a[x-apple-data-detectors] {
      </tr> 
    </table> 
   </div>  
+  <script type="text/javascript">
+  <!--
+  window.print();
+  //-->
+  </script>
  </body>
 </html>

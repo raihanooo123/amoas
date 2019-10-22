@@ -86,7 +86,7 @@
                     <br>
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.select_date') }}</h5>
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" name="event_date" id="event_date" placeholder="{{ __('app.date_placeholder') }}" value="{{old('email')}}">
+                        <input type="text" class="form-control form-control-lg" onkeydown="return false" name="event_date" id="event_date" placeholder="{{ __('app.date_placeholder') }}" value="{{old('email')}}">
                         <p class="form-text text-danger d-none" id="date_error_holder">
                             {{ __('app.date_error') }}
                         </p>
@@ -164,6 +164,7 @@
         orientation: "auto right",
         autoclose: true,
         startDate: today,
+        datesDisabled: JSON.parse('{!! $holydays !!}'),
         format: 'yyyy-mm-dd',
         // format: 'dd-mm-yyyy',
         daysOfWeekDisabled: "{{ $disable_days_string }}",

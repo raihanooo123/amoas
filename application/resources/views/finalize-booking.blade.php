@@ -114,8 +114,16 @@
 
         <div class="row">
             <div class="col-md-4">
+                <!-- <a href="javascript: w=window.open('http://yoursite.com/LinkToThePDF.pdf'); w.print(); w.close(); ">​​​​​​​​​​​​​​​​​print pdf</a> -->
+
+                <!-- <a href="javascript: w=window.open('{{route('print', [$booking->id])}}'); w.print(); w.close();" class="btn btn-primary">
+                    <i class="fa fa-print"></i> {{ __('app.print_now') }}
+                </a> -->
+                <a href="{{route('print', [$booking->id])}}" onclick="open(this.href).print(); return false" class="btn btn-primary">
+                    <i class="fa fa-print"></i> {{ __('app.print_now') }}
+                </a>
                 <a href="{{route('print', [$booking->id])}}" class="btn btn-primary">
-                    <i class="fa fa-print"></i> {{ __('app.print') }}
+                    <i class="fa fa-print"></i> {{ __('app.print_pdf') }}
                 </a>
             </div>
             <div class="col-md-8">

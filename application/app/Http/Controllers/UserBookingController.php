@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Spatie\GoogleCalendar\Event;
-use Dompdf\Dompdf;
-
-use TCPDF;
-use TCPDF_FONTS;
+use Endroid\QrCode\QrCode;
 
 class UserBookingController extends Controller
 {
@@ -540,8 +537,7 @@ class UserBookingController extends Controller
     {
         if(!session()->has('package_id')) return redirect('/');
 
-        $package_id = Session::get('package_id');
-        $package = Package::find($package_id);
+        $package = Package::find(Session::get('package_id'));
         $category_id = $package->category_id;
 
         //generating a string for off days
@@ -549,7 +545,6 @@ class UserBookingController extends Controller
         $off_days = DB::table('booking_times')
             ->where('is_off_day', '=', '1')
             ->get();
-
         $daynum = array();
 
         foreach ($off_days as $off_day)
@@ -566,8 +561,25 @@ class UserBookingController extends Controller
 
         $disable_days_string = implode(",", $daynum);
 
+        $holydays = DB::table('holydays')
+            ->whereDate('date', '>=', date('Y-m-d'))
+            ->get()
+            ->pluck('date')
+            ->toJson();
 
-        return view('select-extra-services', compact('disable_days_string', 'package'));
+        $participants = 1;
+
+        if(session()->has('participant')) $participants += session('participant');
+
+        //shoud work on it
+        $bookedDates = Booking::where('package_id', Session::get('package_id'))
+            ->whereDate('booking_date', '>=', date('Y-m-d'))
+            ->where(DB::raw('bookings.booking'));
+
+        // dd($holydays);
+        $daynum = array();
+
+        return view('select-extra-services', compact('disable_days_string', 'package', 'holydays'));
     }
 
     /**
@@ -746,26 +758,23 @@ class UserBookingController extends Controller
 
     public function print($id)
     {
+
         $booking = Booking::with('department','package')->find($id);
-        
-        return view('print-booking-success', compact('booking'));
-        // instantiate and use the dompdf class
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml(file_get_contents('templates/BookingSuccessTemplate.html'));
 
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4');
+        $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
+        $qrCode = (string) $this->writeQrCode($booking->serial_no);
+        return view('print-booking-success', compact('booking', 'afgLogo', 'qrCode'));
+    }
 
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream();
-
-        // create new PDF document
-        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-        // add a page
-        $pdf->AddPage();
+    public function writeQrCode($text)
+    {
+        $qrCode = new QrCode($text);
+        $qrCode->setWriterByName('png');
+        $qrCode->setMargin(10);
+        $qrCode->setEncoding('UTF-8');
+        $qrCode->setSize(200);
+        // Save it to a file
+        $qrCode->writeFile('temp/qrcode.png');
+        return \Image::make('temp/qrcode.png')->encode('data-url');
     }
 }
