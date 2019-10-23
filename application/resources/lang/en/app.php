@@ -123,4 +123,5 @@ return [
     'booking_success_msg' => 'Reservation successfully done. Please print the following booking summary, if you are not able to print it now we will send you the booking ticket to you email.',
     'print_now' => 'Print now',
     'print_pdf' => 'Print PDF',
+    'no_paticipant_including_you' => 'Available date for :paticipant paticipant/s including applicant.',
 ];

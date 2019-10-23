@@ -70,6 +70,7 @@ class UserBookingController extends Controller
      */
     public function getTimingSlots()
     {
+        return $this->getNewTimingSlots();
         //get selected event date
         $event_date = \request('event_date');
 
@@ -100,9 +101,9 @@ class UserBookingController extends Controller
             //use regular slot duration
             $slot_duration = config('settings.slot_duration') * 60;
         }
-
+        
         //decide how many slots will be generated
-        if(strtotime($hour_start)>strtotime($hour_end))
+        if(strtotime($hour_start) > strtotime($hour_end))
         {
             $hours = round((strtotime($hour_start) - strtotime($hour_end))/$slot_duration, 1);
             
@@ -115,7 +116,7 @@ class UserBookingController extends Controller
         {
             $hours = 24;
         }
-
+        
         //get all bookings to block some already booked slots
         $bookings = Booking::all()->where('status', '!=',__('backend.cancelled'));
 
@@ -226,10 +227,58 @@ class UserBookingController extends Controller
             }
 
         }
-        // dd($slot_duration); 
+        dd($hours); 
 
         return view('blocks.slots', compact('list_slot', 'hours'));
 
+    }
+
+    public function getNewTimingSlots()
+    {
+        //get selected event date
+        $event_date = request('event_date');
+
+        //get selected package_id
+        $package =  Package::find(Session::get('package_id'));
+
+        //get day name to select slot timings
+        $timestamp_for_event = strtotime($event_date);
+        $today_number = date('N', $timestamp_for_event);
+        $booking_time = BookingTime::findOrFail($today_number);
+
+
+        //decide starting and ending hours for selected date
+        $hour_start = $booking_time->opening_time;
+        $hour_end = $booking_time->closing_time;
+        $startSeconds = strtotime($hour_start);
+        $endSeconds = strtotime($hour_end);
+
+        //get the booking count
+
+        $bookedByHours = Booking::select('booking_time', \DB::raw('count(*) as total'))
+            ->where('package_id', $package->id)
+            ->whereDate('booking_date', $event_date)
+            ->groupBy('booking_time')
+            // ->having('total', '>=', $participants)
+            // ->having('booking_time', '=', $event_date)
+            ->get()
+            ->pluck('total','booking_time')
+            ->toArray();
+
+        $hours = array();
+        while($startSeconds < $endSeconds){
+            
+            $time = date('g:i A', $startSeconds);
+
+            $hours[] = $time;
+
+            $startSeconds += 60*60;
+            
+        }
+
+        $eachSlotAvailablity = round($package->daily_acceptance/count($hours),1);
+
+        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity'));
     }
 
     public function getUpdateSlots()
@@ -575,12 +624,12 @@ class UserBookingController extends Controller
 
         //should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))->where('package_id', $package->id)
-        ->groupBy('booking_date')
-        ->having('total', '>=', $participants)
-        ->having('booking_date', '>=', date('Y-m-d'))
-        ->get()
-        ->pluck('booking_date')
-        ->toArray();
+            ->groupBy('booking_date')
+            ->having('total', '>=', $participants)
+            ->having('booking_date', '>=', date('Y-m-d'))
+            ->get()
+            ->pluck('booking_date')
+            ->toArray();
 
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
