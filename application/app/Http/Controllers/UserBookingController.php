@@ -105,6 +105,7 @@ class UserBookingController extends Controller
         if(strtotime($hour_start)>strtotime($hour_end))
         {
             $hours = round((strtotime($hour_start) - strtotime($hour_end))/$slot_duration, 1);
+            
         }
         else if(strtotime($hour_end)>strtotime($hour_start))
         {
@@ -225,6 +226,7 @@ class UserBookingController extends Controller
             }
 
         }
+        // dd($slot_duration); 
 
         return view('blocks.slots', compact('list_slot', 'hours'));
 
@@ -565,21 +567,26 @@ class UserBookingController extends Controller
             ->whereDate('date', '>=', date('Y-m-d'))
             ->get()
             ->pluck('date')
-            ->toJson();
+            ->toArray();
 
-        $participants = 1;
+        $participants = --$package->daily_acceptance;
+        if(session()->has('participant')) $participants -= session('participant');
+        // dd($participants);
 
-        if(session()->has('participant')) $participants += session('participant');
+        //should work on it
+        $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))->where('package_id', $package->id)
+        ->groupBy('booking_date')
+        ->having('total', '>=', $participants)
+        ->having('booking_date', '>=', date('Y-m-d'))
+        ->get()
+        ->pluck('booking_date')
+        ->toArray();
 
-        //shoud work on it
-        $bookedDates = Booking::where('package_id', Session::get('package_id'))
-            ->whereDate('booking_date', '>=', date('Y-m-d'))
-            ->where(DB::raw('bookings.booking'));
+        $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
-        // dd($holydays);
         $daynum = array();
 
-        return view('select-extra-services', compact('disable_days_string', 'package', 'holydays'));
+        return view('select-extra-services', compact('disable_days_string', 'package', 'disabledDates'));
     }
 
     /**
@@ -610,11 +617,11 @@ class UserBookingController extends Controller
             $total_with_gst = round($total_with_gst,2);
         }
 
-        $userId = auth()->id();
+        // $userId = auth()->id();
 
-        request()->session()->flush();
+        // request()->session()->flush();
 
-        auth()->loginUsingId($userId);
+        // auth()->loginUsingId($userId);
 
         return view('finalize-booking', compact('event_address', 'category',
             'package', 'session_addons', 'total', 'total_with_gst', 'gst_amount', 'booking'));
@@ -776,5 +783,16 @@ class UserBookingController extends Controller
         // Save it to a file
         $qrCode->writeFile('temp/qrcode.png');
         return \Image::make('temp/qrcode.png')->encode('data-url');
+    }
+
+    public function printPdf($id)
+    {
+        $booking = Booking::with('department','package')->find($id);
+
+        $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
+        $qrCode = (string) $this->writeQrCode($booking->serial_no);
+        
+        $pdf = \PDF::loadView('print-booking-success', compact('data', 'booking', 'afgLogo', 'qrCode'))->setPaper('A4');
+        return $pdf->download('invoice.pdf');
     }
 }

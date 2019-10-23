@@ -164,7 +164,7 @@
         orientation: "auto right",
         autoclose: true,
         startDate: today,
-        datesDisabled: JSON.parse('{!! $holydays !!}'),
+        datesDisabled: JSON.parse('{!! $disabledDates !!}'),
         format: 'yyyy-mm-dd',
         // format: 'dd-mm-yyyy',
         daysOfWeekDisabled: "{{ $disable_days_string }}",

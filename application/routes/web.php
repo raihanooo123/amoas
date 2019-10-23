@@ -29,8 +29,19 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', function(){
+    $validator = new \EmailValidator\Validator();
+    dd($validator->isValid('not.exist@mfa.af'));
+    \DB::enableQueryLog(); // Enable query log
+    $bookings = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))->where('package_id', 1)
+        ->groupBy('booking_date')
+        ->having('total', '>=', 1)
+        ->having('booking_date', '>=', date('Y-m-d'))
+        ->get()
+        ->pluck('booking_date')
+        ->toArray();
 
-    dd(\App\Booking::genSerialNo(96));
+    // dd(\DB::getQueryLog()); // Show results of log
+    dd($bookings);
     $pdf = new \FPDM('templates/visa_template_fix.pdf');
     $pdf->Load([
         'serial_no'=>'working fine',
@@ -156,7 +167,8 @@ Route::group(['middleware'=>'authenticated'], function() {
         return view('errors.accountDisabled');
     });
     
-    Route::get('/print-ticket/{bookingId}', 'UserBookingController@print')->name('print');
+    Route::get('/print-ticket/{bookingId}/pdf', 'UserBookingController@printPdf')->name('printPdf');
+    Route::get('/print-ticket/{bookingId}', 'UserBookingController@print')->name('printNow');
     // ** PASSWORD CHANGE ROUTES ** //
 
     Route::get('/password/update', 'UserPasswordController@index')->name('changePassword');

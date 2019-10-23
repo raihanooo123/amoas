@@ -38,6 +38,7 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        \Mail::to('asif.gulistani@gmail.com')->send(new \App\Mail\BookingInvoice(Booking::first()));
+        $booking = Booking::latest()->first();
+        \Mail::to('a.gulistani@mfa.af')->send(new \App\Mail\NewTimeBooked($booking));
     }
 }
