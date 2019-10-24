@@ -12,7 +12,7 @@
                 <a class="btn btn-outline-dark btn-lg btn-block btn-slot" data-slot-time="{{ $hour }}">
                     {{ $hour }} 
                     <span class="badge badge-info" style="position: relative;top: -20px;right: -38px;">
-                    <small>available {{$availiblity}} slots</span></small>
+                    <small>{{ __('app.available_slots', ['available' => $availiblity]) }}</span></small>
                 </a>
             </div>
         @else
@@ -20,7 +20,7 @@
                 <a class="btn btn-outline-dark btn-lg btn-block btn-slot disabled">
                 {{ $hour }}
                 <span class="badge badge-warning" style="position: relative;top: -20px;right: -38px;">
-                    <small>already booked</span></small>
+                <small>{{ __('app.already_booked') }}</span></small>
                 </a>
             </div>
         @endif

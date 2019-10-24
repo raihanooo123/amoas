@@ -24,7 +24,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 
 $factory->define(App\Booking::class, function (Faker $faker) {
     return [
-        'department_id' => 1,
+        'department_id' => 96,
         'serial_no' => 'CBONN-1234421-2134',
         'user_id' => 1565,
         'package_id' => 1,
@@ -41,7 +41,7 @@ $factory->define(App\Models\Booking\BookingInfo::class, function (Faker $faker) 
         'full_name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->phoneNumber,
-        'id_card' => 'ajsldkjfa',
+        'id_card' => 'fds-43-fd-34',
         'postal' => $faker->postcode,
         'address' => $faker->address,
     ];
