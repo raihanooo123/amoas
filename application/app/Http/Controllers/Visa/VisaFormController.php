@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Visa\VisaForm;
 use Illuminate\Http\File;
+use FPDM;
 
 class VisaFormController extends Controller
 {
@@ -156,6 +157,49 @@ class VisaFormController extends Controller
         $visa = null;
         $message = null;
         return view('visa.form.check-visa', compact('visa', 'message'));
+    }
+
+    public function visaComplete(VisaForm $visa_form)
+    {
+        $visa_form->load(['department:id,name_en']);
+        return view('visa.form.visa-completion', compact('visa_form'));
+    }
+
+    public function print(VisaForm $visa_form)
+    {
+        $visa_form->load(['department', 'country', 'type', 'image', 'birthCountry']);
+
+        $pdf = new \FPDM('templates/visa_fixed.pdf');
+        $pdf->Load([
+            'serial_no'=> $visa_form->serial_no,
+            'Title'=> ucfirst($visa_form->title),
+            'Family_Name'=> $visa_form->family_name,
+            'Given_Names'=> $visa_form->given_name,
+            'Father_Name'=> $visa_form->father_name,
+            'DoB'=> $visa_form->dob,
+            'Country_of_birth'=> $visa_form->birthCountry->name_en,
+            'marital_status'=> ucfirst($visa_form->marital_status),
+            'Country_of_Residence'=> $visa_form->country->name_en,
+            'Other_Nationalities'=> $visa_form->other_nationality,
+            'Current_Address'=> $visa_form->address,
+            'Email'=> $visa_form->email,
+            'Mobile'=> $visa_form->mobile,
+            'Current_Occupation'=> $visa_form->occupation,
+            'Employers_Name'=> $visa_form->employer_name,
+            'Employeers_Address'=> $visa_form->employer_address,
+            'Previous_Employeers_Name'=> $visa_form->pre_employer_name,
+            'Previous_Employeers_Address'=> $visa_form->pre_employer_address,
+            'Visa_Type'=> $visa_form->type->label_en,
+            'purpose'=> $visa_form->purpose,
+            'Entry_Date'=> $visa_form->entry_date,
+            'Intended Duration of Stay'=> $visa_form->intend_duration,
+            'Point of Entry'=> $visa_form->entry_point,
+            'Number_of_Children'=> $visa_form->children_no,
+            'Places in Afghanistan intended to visit'=> $visa_form->visit_places,
+            'Complete Address in Afghanistan'=> $visa_form->af_address,
+        ], true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
+        $pdf->Merge();
+        $pdf->Output('', 'temp/visa_fixed.pdf');
     }
 
     public function doCheckStatus()

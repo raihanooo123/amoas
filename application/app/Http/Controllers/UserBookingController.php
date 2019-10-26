@@ -484,6 +484,18 @@ class UserBookingController extends Controller
     public function postStep1(Request $request)
     {
         $request->session()->put('package_id', $request->package_id);
+        $package = Package::findOrFail(Session::get('package_id'));
+
+        if($package){
+            
+            $visa = preg_match('/visa/i', $package->title, $output_array);
+            // dd($visa);
+            if($visa)
+                return redirect()->route('visa-form.fill');
+
+        }
+            
+
         return redirect()->route('loadStep2');
     }
 

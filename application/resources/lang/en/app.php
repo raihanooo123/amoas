@@ -46,8 +46,8 @@ return [
     'no_package_error' => 'No packages found for your booking type. Please check back later.',
     'no_package_selected_error' => 'Please select a package to proceed.',
     'welcome_post_btn' => 'Select Booking Time',
-    'step_two_page_title' => 'Wellcome to MFA AMOAS',
-    'step_two_subtitle' => 'Afghanistan\'s missions online appointment system',
+    'step_two_page_title' => 'Welcome to MFA AMOAS',
+    'step_two_subtitle' => 'Afghanistan\'s Missions Online Appointment System',
     'provide_address' => 'Email Address',
     'email_description' => 'We will send a code to this email, It is necessary on Missions\' entrance.',
     'address_placeholder' => 'Enter Your Address',
@@ -126,4 +126,12 @@ return [
     'no_paticipant_including_you' => 'Available date for :paticipant participant/s including applicant.',
     'available_slots' => 'available :available slots',
     'already_booked' => 'already booked',
+    'visa-completion' => [
+        'thank_you_title' => 'Visa Form Completed',
+        'thank_you_subtitle' => 'A confirmation email and invoice is sent to your email address.',
+        'thank_you_heading' => 'You have successfully completed Afghanistan Online Visa Form.',
+        'thank_you_paragraph' => 'This form registered to <strong>:name</strong> with serial number of <strong>:serial</strong> in <strong>:mission</strong>. You can check the Visa Form status <strong><a href=":href">here</a></strong> although we will send you an email to <strong>:email</strong> containing Visa Form status, Visa Application Form and appointment date.',
+        'new_booking_link' => 'New Booking',
+        'download_form' => 'Print Form',
+    ]
 ];
