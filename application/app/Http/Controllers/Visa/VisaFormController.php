@@ -149,7 +149,7 @@ class VisaFormController extends Controller
             ]);
         }
 
-        return redirect(route('verification.index'));
+        return redirect(route('visa.complete', [$visaForm->id]));
     }
 
     public function checkStatus()
@@ -176,10 +176,11 @@ class VisaFormController extends Controller
             'Family_Name'=> $visa_form->family_name,
             'Given_Names'=> $visa_form->given_name,
             'Father_Name'=> $visa_form->father_name,
-            'DoB'=> $visa_form->dob,
+            'DoB'=> date('m/d/y', strtotime($visa_form->dob)),
             'Country_of_birth'=> $visa_form->birthCountry->name_en,
             'marital_status'=> ucfirst($visa_form->marital_status),
             'Country_of_Residence'=> $visa_form->country->name_en,
+            'Nationality'=> $visa_form->nationality,
             'Other_Nationalities'=> $visa_form->other_nationality,
             'Current_Address'=> $visa_form->address,
             'Email'=> $visa_form->email,
@@ -191,15 +192,29 @@ class VisaFormController extends Controller
             'Previous_Employeers_Address'=> $visa_form->pre_employer_address,
             'Visa_Type'=> $visa_form->type->label_en,
             'purpose'=> $visa_form->purpose,
-            'Entry_Date'=> $visa_form->entry_date,
+            'Entry_Date'=> date('m/d/y', strtotime($visa_form->entry_date)),
             'Intended Duration of Stay'=> $visa_form->intend_duration,
             'Point of Entry'=> $visa_form->entry_point,
             'Number_of_Children'=> $visa_form->children_no,
             'Places in Afghanistan intended to visit'=> $visa_form->visit_places,
             'Complete Address in Afghanistan'=> $visa_form->af_address,
+            'Place_visit_afghanistan'=> $visa_form->visit_places,
+            'Visa_Applied_Before'=> $visa_form->visited_before,
+            'Crime_Details'=> $visa_form->criminal_record,
+            'Passport_Type'=> $visa_form->type->label_en,
+            'Passport_Number'=> $visa_form->passport_no,
+            'Place_of_Issue'=> $visa_form->issue_place,
+            'Issue_date_af_date'=> date('m/d/y', strtotime($visa_form->issue_date)),
+            'Expiry_date_af_date'=> date('m/d/y', strtotime($visa_form->expire_date)),
+            // 'Male'=> $visa_form->gender == 'male' ? 'On' : 'No',
+            // 'Female'=> $visa_form->gender == 'female' ? 'Yes' : 'No',
+            'gender'=> ucfirst($visa_form->gender),
+            'under_18'=> $visa_form->gender == '1' ? 'Yes' : 'No',
         ], true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
+        // $pdf->Image('logo.png');
         $pdf->Merge();
-        $pdf->Output('', 'temp/visa_fixed.pdf');
+        $pdf->Output();
+        // $pdf->Output('', 'temp/visa_fixed.pdf');
     }
 
     public function doCheckStatus()

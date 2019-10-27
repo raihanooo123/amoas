@@ -188,7 +188,7 @@ Route::group(['prefix'=>'visa'], function(){
     Route::get('/check-visa-status', 'Visa\VisaFormController@checkStatus')->name('check-status');
     Route::post('/check-visa-status', 'Visa\VisaFormController@doCheckStatus')->name('do-check-status');
     Route::post('/visaform', 'Visa\VisaFormController@store')->name('visa-form.fill.store');
-    Route::get('/visaform/print/{visa_form}', 'Visa\VisaFormController@print')->name('visa.print');
+    Route::get('/print/{visa_form}', 'Visa\VisaFormController@print')->name('visa.print');
     Route::get('/visa-completion/{visa_form}', 'Visa\VisaFormController@visaComplete')->name('visa.complete');
 });
 
