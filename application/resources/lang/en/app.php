@@ -133,5 +133,6 @@ return [
         'thank_you_paragraph' => 'This form registered to <strong>:name</strong> with serial number of <strong>:serial</strong> in <strong>:mission</strong>. You can check the Visa Form status <strong><a href=":href">here</a></strong> although we will send you an email to <strong>:email</strong> containing Visa Form status, Visa Application Form and appointment date.',
         'new_booking_link' => 'New Booking',
         'download_form' => 'Print Form',
-    ]
+    ],
+    'check_visa_status' => 'Check Visa status',
 ];

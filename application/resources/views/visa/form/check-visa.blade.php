@@ -79,7 +79,7 @@
                                 <td>{{$visa->department->name_en}}</td>
                                 <td>{{$visa->status}}</td>
                                 <td>
-                                    <a href="#">Print</a>
+                                    <a href="{{ route('visa.print', [$visa->id]) }}">Print</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -1,5 +1,6 @@
 @extends('layouts.admin', ['title' => __('backend.bookings')])
 
+
 @section('content')
 
 <div class="page-title">
@@ -18,39 +19,17 @@
         <div class="col-md-12">
             @include('alerts.bookings')
 
-            <a class="btn btn-primary btn-lg btn-add" href="{{ route('visa-form.fill') }}"><i
-                    class="fa fa-plus"></i> {{__('tazkira.add')}} </a>
-            <a class="btn btn-default btn-lg btn-add" href="{{ route('verification.edit', $visa_form->id) }}"><i
-                    class="fa fa-edit"></i> {{__('tazkira.edit')}} </a>
-            <!-- <a class="btn btn-default btn-lg btn-add" href="{{-- route('verification.print', $visa_form->id) --}}"><i class="fa fa-print"></i> {{__('tazkira.print')}} </a> -->
-            <span class="dropdown">
-                <a class="btn btn-default btn-lg btn-add dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <i class="fa fa-print"></i> {{__('tazkira.print')}}
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li class="dropdown-item" href="#">
-                        <a class="btn btn-default btn-lg"
-                            href="{{ route('verification.print.excel', $visa_form->id) }}"><i
-                                class="fa fa-file-excel-o"></i> {{__('tazkira.print')}} {{__('tazkira.excel')}} </a>
-                    </li>
-                    <li class="dropdown-item" href="#">
-                        <a class="btn btn-default btn-lg"
-                            href="{{ route('verification.print.word', $visa_form->id) }}"><i
-                                class="fa fa-file-word-o"></i> {{__('tazkira.print')}} {{__('tazkira.word')}} </a>
-                    </li>
-                    <li class="dropdown-item" href="#">
-                        <a class="btn btn-default btn-lg"
-                            href="{{ route('verification.print.pdf', $visa_form->id) }}"><i
-                                class="fa fa-file-pdf-o"></i> {{__('tazkira.print')}} {{__('tazkira.pdf')}} </a>
-                    </li>
-                </ul>
+            <a class="btn btn-primary btn-lg btn-add" href="{{ route('visa-form.fill') }}"><i class="fa fa-plus"></i>
+                {{__('tazkira.add')}} </a>
+            <!-- <a class="btn btn-default btn-lg btn-add" href="{{ route('verification.edit', $visa_form->id) }}"><i
+                    class="fa fa-edit"></i> {{__('tazkira.edit')}} </a> -->
+            <a class="btn btn-default btn-lg btn-add" href="{{ route('visa.print', $visa_form->id) }}"><i
+                    class="fa fa-print"></i> {{__('tazkira.print')}}</a>
 
-                <button class="btn btn-lg btn-add btn-info" data-toggle="modal" data-target="#myModal"><i
-                        class="fa fa-check"></i> {{__('backend.reserve_time')}} </button>
-                <a class="btn btn-lg btn-add btn-default" href="{{ route('verification.edit', $visa_form->id) }}"><i
-                        class="fa fa-close"></i> {{__('backend.reject')}} </a>
-            </span>
+            <button class="btn btn-lg btn-add btn-info" data-toggle="modal" data-target="#myModal"><i
+                    class="fa fa-check"></i> {{__('backend.reserve_time')}} </button>
+            <a class="btn btn-lg btn-add btn-default" href="{{ route('verification.edit', $visa_form->id) }}"><i
+                    class="fa fa-close"></i> {{__('backend.reject')}} </a>
 
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
@@ -308,17 +287,104 @@
 
 @section('scripts')
 
-    <script>
-        var nowDate = new Date();
-        var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-        $('#event_date').datepicker({
-            orientation: "auto",
-            autoclose: true,
-            startDate: today,
-            format: 'dd-mm-yyyy',
-            daysOfWeekDisabled: "{{ $disable_days_string }}",
-            language: "{{ App::getLocale() }}"
+<script>
+    var nowDate = new Date();
+    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+    $('#event_date').datepicker({
+        orientation: "auto right",
+        autoclose: true,
+        startDate: today,
+        // datesDisabled: JSON.parse(''),
+        format: 'yyyy-mm-dd',
+        // format: 'dd-mm-yyyy',
+        daysOfWeekDisabled: "{{ $disable_days_string }}",
+        language: "{{ App::getLocale() }}"
+    });
+
+    
+    //remove date error
+    $('#event_date').click(function () {
+        $(this).removeClass('is-invalid').addClass('is-valid');
+        $('#date_error_holder').addClass('d-none');
+    });
+
+    //populate timing slots
+
+    $('input[id="event_date"]').change(function () {
+        //populate timing slots
+        var selected_date;
+        selected_date = $(this).val();
+
+        var URL_CONCAT = $('meta[name="index"]').attr('content');
+
+        //prepare to send ajax request
+        $.ajax({
+            type: 'POST',
+            url:'{{route("slots")}}',
+            data: {
+                event_date: selected_date,
+                _token: '<?php echo csrf_token(); ?>'
+            },
+            beforeSend: function () {
+                $('#slots_loader').removeClass('d-none');
+            },
+            success: function (response) {
+                $('#slots_holder').html(response);
+
+            },
+            complete: function () {
+                $('#slots_loader').addClass('d-none');
+            }
         });
-    </script>
+    });
+
+    //append selected slot to booking_step_2 form
+
+    $('#slots_holder').on('click', 'a.btn-slot', function () {
+        var slot_time = $(this).attr('data-slot-time');
+        $('#slots_holder').find('.btn-slot').removeClass('slot-picked');
+        $('#booking_slot').remove();
+        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' + slot_time + '">');
+        $(this).addClass('slot-picked');
+    });
+
+    //handle form submission of step 2
+
+    $('#booking_step_2').submit(function (e) {
+
+        var check = true;
+        var address;
+        address = $('input[name=address]').val();
+        var event_date;
+        event_date = $('input[name=event_date]').val();
+        var booking_slot;
+        booking_slot = $('input[name=booking_slot]').val();
+
+
+        if (event_date === "") {
+            $('#event_date').addClass('is-invalid');
+            $('#date_error_holder').removeClass('d-none');
+            $("html, body").animate({
+                scrollTop: 2000
+            }, "slow");
+            check = false;
+        }
+
+        if (check === false) {
+            return false;
+        } else if (check === true) {
+            if (booking_slot === undefined) {
+                $('#slot_error').removeClass('d-none');
+                $("html, body").animate({
+                    scrollTop: $(document).height() - $(window).height()
+                });
+                return false;
+            } else {
+                e.submit();
+            }
+        }
+    });
+
+</script>
 
 @endsection
