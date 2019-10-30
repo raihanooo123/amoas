@@ -97,4 +97,10 @@ class VisaForm extends Model
         return $serialNo;
         // return sprintf('%04d', 2565426);
     }
+
+    public static function getPackageId()
+    {
+        $package = \App\Package::select(['id', 'title'])->whereRaw("lower(title) REGEXP 'visa|ویزا'")->first();
+        return $package->id;
+    }
 }

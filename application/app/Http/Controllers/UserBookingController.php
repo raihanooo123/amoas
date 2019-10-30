@@ -239,7 +239,7 @@ class UserBookingController extends Controller
         $event_date = request('event_date');
 
         //get selected package_id
-        $package =  Package::find(Session::get('package_id'));
+        $package =  Package::find(Session::get('package_id', request('package_id')));
 
         //get day name to select slot timings
         $timestamp_for_event = strtotime($event_date);

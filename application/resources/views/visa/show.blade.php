@@ -323,7 +323,8 @@
             url:'{{route("slots")}}',
             data: {
                 event_date: selected_date,
-                _token: '<?php echo csrf_token(); ?>'
+                package_id: {{ \App\Models\Visa\VisaForm::getPackageId() }},
+                _token: '<?php echo csrf_token(); ?>',
             },
             beforeSend: function () {
                 $('#slots_loader').removeClass('d-none');
