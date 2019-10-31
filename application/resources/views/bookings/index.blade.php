@@ -1,5 +1,10 @@
 @extends('layouts.admin', ['title' => __('backend.bookings')])
 
+@section('styles')
+<link href="{{ asset('plugins/datatables/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+
+@endsection
+
 @section('content')
 
     <div class="page-title">
@@ -72,5 +77,41 @@
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('scripts')
+
+<script src="{{ asset('plugins/datatables/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/js/buttons.print.min.js') }}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#xtreme-table').dataTable( {
+            order: [[ 0, "desc" ]],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                'pdf'
+            ]
+        });
+
+        // new $.fn.dataTable.Buttons( table, {
+        //     buttons: [
+        //         'copy', 'excel', 'pdf'
+        //     ]
+        // });
+
+        // table.buttons( 0, null ).container().prependTo(
+        //     table.table().container()
+        // );
+
+    });
+</script>
 
 @endsection

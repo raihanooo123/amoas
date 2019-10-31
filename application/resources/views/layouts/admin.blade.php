@@ -284,30 +284,6 @@
 <script src="{{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('plugins/summernote-master/summernote.min.js') }}"></script>
 <script src="{{ asset('js/pages/form-elements.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#xtreme-table').dataTable( {
-            "order": [[ 0, "desc" ]],
-            "language": {
-                @if(app()->getLocale() == "en")
-                    "url": "{{ asset('plugins/datatables/lang/en.json') }}"
-                @elseif(app()->getLocale() == "es")
-                    "url": "{{ asset('plugins/datatables/lang/es.json') }}"
-                @elseif(app()->getLocale() == "fr")
-                    "url": "{{ asset('plugins/datatables/lang/fr.json') }}"
-                @elseif(app()->getLocale() == "de")
-                    "url": "{{ asset('plugins/datatables/lang/de.json') }}"
-                @elseif(app()->getLocale() == "da")
-                    "url": "{{ asset('plugins/datatables/lang/da.json') }}"
-                @elseif(app()->getLocale() == "it")
-                    "url": "{{ asset('plugins/datatables/lang/it.json') }}"
-                @elseif(app()->getLocale() == "pt")
-                    "url": "{{ asset('plugins/datatables/lang/pt.json') }}"
-                @endif
-            }
-        });
-    });
-</script>
 @yield('scripts')
 </body>
 </html>
