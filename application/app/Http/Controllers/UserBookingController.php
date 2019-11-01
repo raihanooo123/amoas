@@ -255,6 +255,8 @@ class UserBookingController extends Controller
 
         //get the booking count
 
+        // $participants = session()->has('participant') ? session('participant') + 1 : 1;
+        
         $bookedByHours = Booking::select('booking_time', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
             ->whereDate('booking_date', $event_date)
@@ -276,7 +278,7 @@ class UserBookingController extends Controller
             
         }
 
-        $eachSlotAvailablity = round($package->daily_acceptance/count($hours),1);
+        $eachSlotAvailablity = round($package->daily_acceptance/count($hours), 0, PHP_ROUND_HALF_DOWN);
 
         return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity'));
     }
@@ -567,6 +569,7 @@ class UserBookingController extends Controller
             'serial_no' => Booking::genSerialNo(session('department_id')),
             'booking_date' => $request->event_date,
             'booking_time' => $request->booking_slot,
+            'status' => 'Proccessing',
         ]);
         
         $info = $booking->info()->create([

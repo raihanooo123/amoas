@@ -1,5 +1,63 @@
 @extends('layouts.admin', ['title' => __('backend.bookings')])
 
+@section('styles')
+
+<style>
+    a:not([href]):not([tabindex]),
+    a:not([href]):not([tabindex]):focus,
+    a:not([href]):not([tabindex]):hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .btn:not(:disabled):not(.disabled) {
+        cursor: pointer;
+    }
+
+    .btn-outline-dark:hover {
+        background-color: #4e5e6a !important;
+    }
+
+    #cc_loader,
+    .btn-outline-dark:hover {
+        color: #fff !important;
+    }
+
+    .btn-outline-dark:hover {
+        color: #fff;
+        background-color: #343a40;
+        border-color: #343a40;
+    }
+
+    .btn:focus,
+    .btn:hover {
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    .btn-outline-dark {
+        border-color: #4e5e6a !important;
+    }
+
+    .btn-primary .btn-danger,
+    .slot-picked {
+        color: #fff !important;
+    }
+
+    .slot-picked {
+        background-color: #4e5e6a !important;
+    }
+
+    .btn-slot {
+        margin-bottom: 10px;
+    }
+</style>
+
+@endsection
 
 @section('content')
 
@@ -17,7 +75,7 @@
 <div id="main-wrapper">
     <div class="row">
         <div class="col-md-12">
-            @include('alerts.bookings')
+            @include('alerts.alert')
 
             <a class="btn btn-primary btn-lg btn-add" href="{{ route('visa-form.fill') }}"><i class="fa fa-plus"></i>
                 {{__('tazkira.add')}} </a>
@@ -26,11 +84,12 @@
             <a class="btn btn-default btn-lg btn-add" href="{{ route('visa.print', $visa_form->id) }}"><i
                     class="fa fa-print"></i> {{__('tazkira.print')}}</a>
 
+            @if(!preg_match('/approved|approve|rejected|reject/i', $visa_form->status ))
             <button class="btn btn-lg btn-add btn-info" data-toggle="modal" data-target="#myModal"><i
                     class="fa fa-check"></i> {{__('backend.reserve_time')}} </button>
-            <a class="btn btn-lg btn-add btn-default" href="{{ route('verification.edit', $visa_form->id) }}"><i
-                    class="fa fa-close"></i> {{__('backend.reject')}} </a>
-
+            <button class="btn btn-lg btn-add btn-default" data-toggle="modal" data-target="#rejectModal"><i
+                    class="fa fa-close"></i> {{__('backend.reject')}} </button>
+            @endif
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                 </div>
@@ -216,7 +275,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -224,10 +283,11 @@
                 <h4 class="modal-title" id="myModalLabel">{{__('backend.acceptModal')}}</h4>
             </div>
 
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <form method="post" id="booking_step_2" action="{{ route('postStep2') }}">
+            <form method="post" id="booking_step_2" action="{{ route('visa.approve', [$visa_form->id]) }}">
+                <div class="modal-body">
+                    <div class="container-fluid">
                         {{ csrf_field() }}
+                        <input type="hidden" name="package_id" value="{{ $packageId }}">
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>{{ __('app.select_date') }}</h5>
@@ -235,7 +295,8 @@
                                     <input type="text" class="form-control form-control-lg" name="event_date"
                                         id="event_date" placeholder="{{ __('app.date_placeholder') }}"
                                         autocomplete="off">
-                                    <p class="form-text text-danger d-none" id="date_error_holder">
+                                    <p class="form-text text-danger d-none" style="display: none"
+                                        id="date_error_holder">
                                         {{ __('app.date_error') }}
                                     </p>
                                 </div>
@@ -243,7 +304,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div id="slots_loader" class="d-none">
+                                <div id="slots_loader" style="display: none">
                                     <p style="text-align: center;"><img src="{{ asset('images/loader.gif') }}"
                                             width="52" height="52"></p>
                                 </div>
@@ -251,12 +312,14 @@
                         </div>
 
                         <div class="row">
-                            <div id="slots_holder"></div>
+                            <div class="col-md-12">
+                                <div id="slots_holder"></div>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12" style="display: none">
                                 <div class="alert alert-danger col-md-12 d-none" id="slot_error"
-                                    style="margin-bottom: 50px;">
+                                    style="margin-bottom: 50px;display: none;">
                                     {{ __('app.time_slot_error') }}
                                 </div>
                             </div>
@@ -272,13 +335,81 @@
                             </div>
                         </div>
 
-                    </form>
+                    </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">{{__('backend.reserve_time')}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@lang('backend.rejectReason')</h4>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">{{__('backend.reserve_time')}}</button>
-            </div>
+
+            <form method="post" action="{{ route('visa.reject', [$visa_form->id]) }}">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="package_id" value="{{ $packageId }}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" name='expiration' class="custom-control-input"
+                                            value="Passport expiration date can't be less than 6 months, please renew your Passport."
+                                             id="1">
+                                        <label class="custom-control-label" for="1">
+                                            Passport expiration date can't be less than 6 months, please renew your Passport.  
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" 
+                                            name='incorrect'
+                                            value="Incorrect input data in your form, please fill the form again."
+                                            class="custom-control-input" id="2">
+                                        <label class="custom-control-label" for="2">
+                                            Incorrect input data in your form, please fill the form again. 
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" 
+                                            name='image'
+                                            value="Your image is not in a correct format or high quality, please fill the form again."
+                                            class="custom-control-input" id="3">
+                                        <label class="custom-control-label" for="3">
+                                            Your image is not in a correct format or high quality, please fill the form again. 
+                                        </label>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5>{{ __('backend.otherReason') }}</h5>
+                                    <textarea class="form-control" name="other_reason" rows="7"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">{{__('backend.reject')}}</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -301,7 +432,7 @@
         language: "{{ App::getLocale() }}"
     });
 
-    
+
     //remove date error
     $('#event_date').click(function () {
         $(this).removeClass('is-invalid').addClass('is-valid');
@@ -320,21 +451,23 @@
         //prepare to send ajax request
         $.ajax({
             type: 'POST',
-            url:'{{route("slots")}}',
+            url: '{{route("slots")}}',
             data: {
                 event_date: selected_date,
-                package_id: {{ \App\Models\Visa\VisaForm::getPackageId() }},
+                package_id: '{{ $packageId }}',
                 _token: '<?php echo csrf_token(); ?>',
             },
             beforeSend: function () {
-                $('#slots_loader').removeClass('d-none');
+                // $('#slots_loader').removeClass('d-none');
+                $('#slots_loader').css("display", "block");
             },
             success: function (response) {
                 $('#slots_holder').html(response);
 
             },
             complete: function () {
-                $('#slots_loader').addClass('d-none');
+                // $('#slots_loader').addClass('d-none');
+                $('#slots_loader').css("display", "none");
             }
         });
     });
@@ -345,7 +478,8 @@
         var slot_time = $(this).attr('data-slot-time');
         $('#slots_holder').find('.btn-slot').removeClass('slot-picked');
         $('#booking_slot').remove();
-        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' + slot_time + '">');
+        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' +
+            slot_time + '">');
         $(this).addClass('slot-picked');
     });
 
@@ -385,7 +519,6 @@
             }
         }
     });
-
 </script>
 
 @endsection

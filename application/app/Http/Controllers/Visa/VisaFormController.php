@@ -48,8 +48,9 @@ class VisaFormController extends Controller
 
         $disable_days_string = implode(",", $dayNumber);
 
+        $packageId = \App\Models\Visa\VisaForm::getPackageId();
 
-        return view('visa.show', compact('visa_form', 'disable_days_string'));
+        return view('visa.show', compact('visa_form', 'disable_days_string', 'packageId'));
     }
 
     public function fillForm()
@@ -224,5 +225,43 @@ class VisaFormController extends Controller
         $message = $visa ? null : 'The serial number you are looking for was not found.';
 
         return view('visa.form.check-visa', compact('visa', 'message'));
+    }
+
+    public function approve(VisaForm $visa_form)
+    {
+        // return request()->all();
+        $this->validate(request(), [
+            'event_date' => 'date|required',
+            'booking_slot' => 'required',
+        ]);
+        \DB::beginTransaction();
+            $booking = \App\Booking::create([
+                'user_id' => auth()->id(),
+                'package_id' => request('package_id'),
+                'department_id' => $visa_form->department_id,
+                'serial_no' => \App\Booking::genSerialNo($visa_form->department_id),
+                'booking_date' => request()->event_date,
+                'booking_time' => request()->booking_slot,
+                'status' => 'Proccessing',
+            ]);
+
+            $visa_form->status = __('backend.approvedInterviewOn'). $booking->booking_date . ' ' . $booking->booking_time;
+            $visa_form->save();
+        \DB::commit();
+
+        return back()->with([
+            'alert' => __('backend.action.performed'),
+        ]);
+    }
+
+    public function reject(VisaForm $visa_form)
+    {
+        $visa_form->status = __('backend.rejectByReason');
+        $visa_form->save();
+
+        return back()->with([
+            'alert' => __('backend.action.performed'),
+            'class' => 'alert-danger'
+        ]);
     }
 }

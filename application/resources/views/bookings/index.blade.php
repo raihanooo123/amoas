@@ -19,12 +19,11 @@
 
     <div id="main-wrapper">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" >
                 @include('alerts.bookings')
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
-                        <div class="col-md-12">
-                            <h4 class="panel-title">{{ __('backend.bookings') }}</h4>
+                        <div class="col-md-8" id="options">
                         </div>
                     </div>
                     <div class="panel-body">
@@ -87,9 +86,15 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#xtreme-table').dataTable( {
+        var table = $('#xtreme-table').DataTable( {
             order: [[ 0, "desc" ]],
-            dom: 'Bfrtip',
+            // dom: 'Bfrtip',
+            // buttons: [
+            //     {
+            //         extend: 'print',
+            //         messageTop: 'This print was produced using the Print button for DataTables'
+            //     }
+            // ]
             buttons: [
                 {
                     extend: 'print',
@@ -97,9 +102,11 @@
                         columns: ':visible'
                     }
                 },
-                'pdf'
             ]
         });
+
+    table.buttons().container()
+        .appendTo( $('#options') );
 
         // new $.fn.dataTable.Buttons( table, {
         //     buttons: [

@@ -101,8 +101,11 @@ Route::group(['middleware'=>'admin'], function(){
 
     Route::get('/update-database', 'DatabaseUpdateController@update');
     Route::get('/unpaid-invoices', 'OfflinePaymentController@index')->name('unpaidInvoices');
-
+    
     Route::group(['prefix'=>'visa'], function(){
+        
+        Route::post('/approve/{visa_form}', 'Visa\VisaFormController@approve')->name('visa.approve');
+        Route::post('/reject/{visa_form}', 'Visa\VisaFormController@reject')->name('visa.reject');
         Route::resource('/visa-form', 'Visa\VisaFormController');
     });
 
