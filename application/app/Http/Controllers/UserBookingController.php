@@ -832,9 +832,10 @@ class UserBookingController extends Controller
 
         $booking = Booking::with('department','package')->find($id);
 
-        $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
-        $qrCode = (string) $this->writeQrCode($booking->serial_no);
-        return view('print-booking-success', compact('booking', 'afgLogo', 'qrCode'));
+        // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
+        // $qrCode = (string) $this->writeQrCode($booking->serial_no);
+        // return view('print-booking-success-new', compact('booking', 'afgLogo', 'qrCode'));
+        return view('print-booking-success-new', compact('booking'));
     }
 
     public function writeQrCode($text)
@@ -853,10 +854,10 @@ class UserBookingController extends Controller
     {
         $booking = Booking::with('department','package')->find($id);
 
-        $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
-        $qrCode = (string) $this->writeQrCode($booking->serial_no);
+        // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
+        // $qrCode = (string) $this->writeQrCode($booking->serial_no);
         
-        $pdf = \PDF::loadView('print-booking-success', compact('data', 'booking', 'afgLogo', 'qrCode'))->setPaper('A4');
-        return $pdf->download('invoice.pdf');
+        $pdf = \PDF::loadView('print-booking-success-new', compact('data', 'booking', 'afgLogo', 'qrCode'))->setPaper('A4');
+        return $pdf->download('booking_result.pdf');
     }
 }
