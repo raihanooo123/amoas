@@ -569,7 +569,8 @@ class UserBookingController extends Controller
             'serial_no' => Booking::genSerialNo(session('department_id')),
             'booking_date' => $request->event_date,
             'booking_time' => $request->booking_slot,
-            'status' => 'Proccessing',
+            'email' => session('email'),
+            'status' => 'Processing',
         ]);
         
         $info = $booking->info()->create([
@@ -857,7 +858,7 @@ class UserBookingController extends Controller
         // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
         // $qrCode = (string) $this->writeQrCode($booking->serial_no);
         
-        $pdf = \PDF::loadView('print-booking-success-new', compact('data', 'booking', 'afgLogo', 'qrCode'))->setPaper('A4');
+        $pdf = \PDF::loadView('print-booking-success', compact('data', 'booking', 'afgLogo', 'qrCode'))->setPaper('A4');
         return $pdf->download('booking_result.pdf');
     }
 }

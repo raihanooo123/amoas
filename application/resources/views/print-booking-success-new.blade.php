@@ -71,7 +71,7 @@
         <div class="col-md-12 offset-0 text-center shadow-lg rounder e-logo"><i class="fa fa-envelope-open pt-3"
             style="font-size: 50px; color:white;"></i></div>
         <div class="col-md-12 text-left small bg-white pb-3 pt-4">
-          <h4>Dear {{$booking->info->full_name}},
+          <h4>Dear {{ $name ?? isset($booking->info->full_name) ? $booking->info->full_name : null ?? $booking->user->first_name .' '. $booking->user->last_name}},
           </h4>
           <p style="font-size:15px">You have successfully booked a time at {{$booking->department->name_en}}, please
             be present earlier from the time that mentioned above.The following <u>Serial Number</u> is necessary while entering to our
