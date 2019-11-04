@@ -88,7 +88,7 @@
                                 <br>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Title</label>
-                                    <select name="title"
+                                    <select name="title" required
                                         class="form-control personal-information {{ $errors->has('title') ? 'is-invalid' : '' }}">
                                         <option></option>
                                         <option value="mr." {{ 'mr.' == old('marital_status') ? 'selected' : null }}>Mr.</option>
@@ -116,7 +116,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Marital Status</label>
-                                    <select name="marital_status"
+                                    <select name="marital_status" required
                                         class="form-control personal-information {{ $errors->has('marital_status') ? 'is-invalid' : '' }}">
                                         <option></option>
                                         <option value="single" {{ 'single' == old('residence_country') ? 'selected' : null }}>Single</option>
@@ -135,7 +135,7 @@
 
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Current Country</label>
-                                    <select
+                                    <select required
                                         class="form-control simple-select2 {{ $errors->has('residence_country') ? 'is-invalid' : '' }}"
                                         name="residence_country">
                                         @foreach (\DB::table('countries')->get() as $country)
@@ -197,7 +197,7 @@
 
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Country of Birth</label>
-                                    <select
+                                    <select required
                                         class="form-control simple-select2 {{ $errors->has('birth_country') ? 'is-invalid' : '' }}"
                                         name="birth_country">
                                         @foreach (\DB::table('countries')->get() as $country)
@@ -211,7 +211,7 @@
 
                                 <div class="form-group col-md-6">
                                     <label for="">Other Nationality</label>
-                                    <input name="other_nationality" required value="{{ old('other_nationality') }}"
+                                    <input name="other_nationality" value="{{ old('other_nationality') }}"
                                         type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('other_nationality') ? 'is-invalid' : '' }}">
                                 </div>
@@ -233,17 +233,17 @@
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Current Address</label>
                                     <input name="address" required value="{{ old('address') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('address') ? 'is-invalid' : '' }}">
+                                        class="form-control form-control-lg {{ $errors->has('address') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Email <small>We will inform you via this email.</small></label>
                                     <input name="email" required value="{{ old('email') }}" type="email"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}">
+                                        class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Mobile</label>
                                     <input name="mobile" required value="{{ old('mobile') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('mobile') ? 'is-invalid' : '' }}">
+                                        class="form-control form-control-lg {{ $errors->has('mobile') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -268,24 +268,24 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Employers' Name</label>
-                                    <input name="employer_name" required value="{{ old('employer_name') }}" type="text"
+                                    <input name="employer_name" value="{{ old('employer_name') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('employer_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Employers' Address</label>
-                                    <input name="employer_address" required value="{{ old('employer_address') }}"
+                                    <input name="employer_address" value="{{ old('employer_address') }}"
                                         type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('employer_address') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Previous Employers' Name</label>
-                                    <input name="pre_employer_name" required value="{{ old('pre_employer_name') }}"
+                                    <input name="pre_employer_name" value="{{ old('pre_employer_name') }}"
                                         type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('pre_employer_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Previous Employers' Address</label>
-                                    <input name="pre_employer_address" required value="{{ old('pre_employer_address') }}"
+                                    <input name="pre_employer_address" value="{{ old('pre_employer_address') }}"
                                         type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('pre_employer_address') ? 'is-invalid' : '' }}">
                                 </div>
@@ -332,7 +332,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Purpose of Journey</label>
-                                    <select multiple class="form-control {{ $errors->has('purpose[]') ? 'is-invalid' : '' }}"
+                                    <select multiple required class="form-control {{ $errors->has('purpose[]') ? 'is-invalid' : '' }}"
                                         id="village" name="purpose[]">
                                     </select>
                                 </div>
@@ -374,20 +374,20 @@
                                 <div class="form-group col-md-12">
                                     <label for="">Have you ever visited Afghanistan Before? <small>If Yes please provide
                                             details.</small> <small>If No leave it blank.</small></label>
-                                    <input name="visited_before" required value="{{ old('visited_before') }}"
+                                    <input name="visited_before" value="{{ old('visited_before') }}"
                                         type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('visited_before') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="">Have you applied for an Afghanistan Visa Before? <small>If Yes please
                                             provide details.</small> <small>If No leave it blank.</small></label>
-                                    <input name="applied_visa" required value="{{ old('applied_visa') }}" type="text"
+                                    <input name="applied_visa" value="{{ old('applied_visa') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="">Do you have a criminal record? <small>If Yes please provide
                                             details.</small> <small>If No leave it blank.</small></label>
-                                    <input name="applied_visa" required value="{{ old('applied_visa') }}" type="text"
+                                    <input name="applied_visa" value="{{ old('applied_visa') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group offset-md-10 col-md-2">
@@ -406,7 +406,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Type</label>
-                                    <input name="passport_type" value="{{ old('passport_type') }}" type="text"
+                                    <input name="passport_type" required value="{{ old('passport_type') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('passport_type') ? 'is-invalid' : '' }}">
                                     
                                 </div>
@@ -433,12 +433,12 @@
 
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Photo <small>please upload a passport size photo.</small></label>
-                                    <input type="file" name="photo" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
+                                    <input type="file" required name="photo" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                                        <input type="checkbox" required class="custom-control-input" id="customControlAutosizing">
                                         <label class="custom-control-label" for="customControlAutosizing">
                                             I Declare that the information provided on this application is true and correct. 
                                         </label>
@@ -449,7 +449,7 @@
                                 <div class="form-group offset-md-10 col-md-2">
                                     <button class="btn btn-primary btn-block"
                                         onclick="validate('v-pills-delegate', '', event)">
-                                        <i class="fa fa-arrow-right"></i> NEXT
+                                        <i class="fa fa-arrow-right"></i> SUBMIT
                                     </button>
                                 </div>
                             </div>
@@ -560,9 +560,10 @@
     function validate(param, nextTab, e) {
         e.preventDefault();
 
+        if(!validateSection(param)) return false;
         if (nextTab === undefined || nextTab == null || nextTab.length <= 0) $('#save-form').submit();
+        
         $('#' + param + '-tab').removeClass("active show");
-        // if(!validateSection(param)) return false;
         var next = $('#' + nextTab);
         next.addClass("active show");
         next.removeClass("disabled");
@@ -574,14 +575,90 @@
 
     function validateSection(param) {
         console.log(param);
-        var sectionForms = $('#' + param + ' input');
-        for (i = 0; i < sectionForms.length; i++) {
-
-            console.log($(sectionForms[i]));
-        }
+        // var sectionForms = $('#' + param + ' input, select');
+        var sectionForms = $('#' + param).find("select, textarea, input");
         console.log(sectionForms);
-        // console.log(sectionForms.valid());
-        return sectionForms.valid();
+        var results = []
+        for (var i = 0; i < sectionForms.length; i++) {
+            console.log(i + ' -> ' + doValidation($(sectionForms[i])));
+            results.push(doValidation($(sectionForms[i])));
+        }
+
+        return !results.includes(false);
     }
+
+    function doValidation(el){
+
+        var type = el.attr('type');
+        if(type == 'text')
+            return validateRequired(el);
+        // if(type == 'radio')
+        //     return el;
+        if(type == 'checkbox')
+            return validateCheckbox(el);
+        if(type == 'file')
+            return validateFile(el);
+        if(type == 'date')
+            return validateRequired(el);
+        if(type == 'number')
+            return validateRequired(el);
+        if(type == 'email')
+            return validateRequired(el);
+        
+        if(el.is('select'))
+            return validateRequired(el);
+
+        return true;
+        
+    }
+
+    function validateRequired(el){
+        var required = el.attr("required");
+        if (required != null) {
+            
+            if($.trim(el.val()) <= 0){
+                el.addClass('is-invalid');
+                el.removeClass('is-valid');
+                return false;
+            }
+            el.removeClass('is-invalid');
+            el.addClass('is-valid');
+            return true;
+        }
+        return true;
+    }
+
+    function validateCheckbox(el){
+        var required = el.attr("required");
+        if (required != null) {
+            
+            if(!el.is(':checked')){
+                el.addClass('is-invalid');
+                el.removeClass('is-valid');
+                return false;
+            }
+            el.removeClass('is-invalid');
+            el.addClass('is-valid');
+            return true;
+        }
+        return true;
+    }
+
+    function validateFile(el){
+        var required = el.attr("required");
+        if (required != null) {
+            
+            if(el.get(0).files.length === 0){
+                el.addClass('is-invalid');
+                el.removeClass('is-valid');
+                return false;
+            }
+            el.removeClass('is-invalid');
+            el.addClass('is-valid');
+            return true;
+        }
+        return true;
+    }
+
 </script>
 @endsection
