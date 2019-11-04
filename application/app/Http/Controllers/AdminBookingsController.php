@@ -17,6 +17,7 @@ use PayPal\Rest\ApiContext;
 use Spatie\GoogleCalendar\Event;
 use PayPal\Api\Amount;
 use PayPal\Api\Sale;
+use Yajra\Datatables\Datatables;
 
 class AdminBookingsController extends Controller
 {
@@ -394,5 +395,23 @@ class AdminBookingsController extends Controller
         }
 
         return redirect()->route('bookings.index');
+    }
+
+    
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dataTable()
+    {
+        $bookings = Booking::with(['package:id,title', 'info'])->latest();
+        return Datatables::of($bookings)
+            ->addColumn('action', function($booking){
+                $action = '<a href="' . route('bookings.show', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+                // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
+                return $action;
+            })
+            ->make(true);
     }
 }

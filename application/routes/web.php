@@ -29,6 +29,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', function(){
+    preg_match('/approved|approve|rejected|reject/i', 'Approved, Interview REJECET was set on', $matches);
+    dd($matches);
     $validator = new \EmailValidator\Validator();
     dd($validator->isValid('not.exist@mfa.af'));
     \DB::enableQueryLog(); // Enable query log
@@ -85,12 +87,16 @@ Route::post('/remove_session_addon', 'UserBookingController@removeFromList');
 
 Route::group(['middleware'=>'admin'], function(){
 
+    Route::get('/users/d-table', 'AdminUsersController@dataTable')->name('users.data');
     Route::resource('/users','AdminUsersController');
+
     Route::resource('/categories', 'AdminCategoriesController');
     Route::resource('/packages', 'AdminPackagesController');
     Route::resource('/addons', 'AdminAddonsController');
     Route::resource('/settings', 'AdminSettingsController');
     Route::resource('/booking-times', 'AdminBookingTimesController');
+
+    Route::get('/bookings/d-table', 'AdminBookingsController@dataTable')->name('bookings.data');
     Route::resource('/bookings', 'AdminBookingsController');
     Route::resource('/invoice', 'AdminInvoicesController');
     Route::resource('/cancel-requests', 'CancelRequestController');

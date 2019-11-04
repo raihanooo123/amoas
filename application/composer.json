@@ -24,6 +24,7 @@
         "spatie/laravel-google-calendar": "^2.2",
         "tmw/fpdm": "^2.9",
         "twilio/sdk": "^5.21"
+        "yajra/laravel-datatables-oracle": "^9.7",
         "zytzagoo/smtp-validate-email": "^1.0"
     },
     "require-dev": {

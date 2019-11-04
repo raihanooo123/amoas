@@ -247,12 +247,21 @@ class VisaFormController extends Controller
                 'status' => 'Processing',
             ]);
 
+            $booking->info()->create([
+                'full_name' =>  $visa_form->given_name. ' ' .$visa_form->family_name ,
+                'email' => $visa_form->email,
+                'phone' => $visa_form->mobile,
+                'id_card' => $visa_form->passport_no,
+                'postal' => 'N/A',
+                'address' => 'N/A',
+            ]);
+
             $visa_form->status = __('backend.approvedInterviewOn'). $booking->booking_date . ' ' . $booking->booking_time;
             $visa_form->save();
         \DB::commit();
 
-        $booking->load(['user', 'info', 'package', 'department']);
-        \App\Jobs\FinalizeNewBooking::dispatch($booking, ucwords($visa_form->title) . ' ' . $visa_form->family_name . ' ' . $visa_form->given_name);
+        // $booking->load(['user', 'info', 'package', 'department']);
+        // \App\Jobs\FinalizeNewBooking::dispatch($booking, ucwords($visa_form->title) . ' ' . $visa_form->family_name . ' ' . $visa_form->given_name);
 
         return back()->with([
             'alert' => __('backend.action.performed'),

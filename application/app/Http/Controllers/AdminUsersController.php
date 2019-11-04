@@ -8,7 +8,7 @@ use App\Role;
 use App\User;
 use App\Photo;
 use Illuminate\Support\Facades\Session;
-
+use Yajra\Datatables\Datatables;
 
 class AdminUsersController extends Controller
 {
@@ -177,5 +177,29 @@ class AdminUsersController extends Controller
         Session::flash('user_deleted', __('backend.user_deleted'));
         return redirect('/users');
 
+    }
+
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dataTable()
+    {
+        $user = User::with('role:id,name')->latest();
+        return Datatables::of($user)
+            ->addColumn('action', function($user){
+                $action = '<a href="' . route('users.show', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+                $action .= '<a href="' . route('users.edit', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
+                return $action;
+            })
+            // ->parameters([
+            //     'buttons' => ['export'],
+            // ])
+            // ->escapeColumns(['id'])
+            // ->addColumn('roles', function ($user) {
+            //     return $user->first_name.' '.$user->last_name;
+            // })
+            ->make(true);
     }
 }

@@ -32,29 +32,19 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>{{ __('backend.category') }}</th>
-                                    <th>{{ __('backend.package') }}</th>
+                                    <th>{{ __('backend.serial_no') }}</th>
                                     <th>{{ __('backend.date') }}</th>
                                     <th>{{ __('backend.time') }}</th>
+                                    <th>{{ __('backend.package') }}</th>
+                                    <th>{{ __('backend.applicant') }}</th>
+                                    <th>{{ __('backend.id_card') }}</th>
+                                    <th>{{ __('backend.type') }}</th>
                                     <th>{{ __('backend.status') }}</th>
-                                    <th>{{ __('backend.created') }}</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>#</th>
-                                    <th>{{ __('backend.category') }}</th>
-                                    <th>{{ __('backend.package') }}</th>
-                                    <th>{{ __('backend.date') }}</th>
-                                    <th>{{ __('backend.time') }}</th>
-                                    <th>{{ __('backend.status') }}</th>
-                                    <th>{{ __('backend.created') }}</th>
-                                    <th>{{ __('backend.actions') }}</th>
-                                </tr>
-                                </tfoot>
                                 <tbody>
-                                @foreach($bookings as $booking)
+                                {{--@foreach($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->id }}</td>
                                         <td>{{ $booking->package->category->title }}</td>
@@ -67,7 +57,7 @@
                                             <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-primary btn-sm">{{ __('backend.details') }}</a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach--}}
                                 </tbody>
                             </table>
                         </div>
@@ -86,15 +76,10 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('#xtreme-table').DataTable( {
-            order: [[ 0, "desc" ]],
+        var table = $('#xtreme-table').DataTable({
+            processing: true,
+            serverSide: true,
             // dom: 'Bfrtip',
-            // buttons: [
-            //     {
-            //         extend: 'print',
-            //         messageTop: 'This print was produced using the Print button for DataTables'
-            //     }
-            // ]
             buttons: [
                 {
                     extend: 'print',
@@ -102,6 +87,50 @@
                         columns: ':visible'
                     }
                 },
+            ],
+            ajax: "{!! route('bookings.data') !!}",
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'serial_no',
+                    name: 'serial_no'
+                },
+                {
+                    data: 'booking_date',
+                    name: 'booking_date'
+                },
+                {
+                    data: 'booking_time',
+                    name: 'booking_time'
+                },
+                {
+                    data: 'package.title',
+                    name: 'package.title'
+                },
+                {
+                    data: 'info.full_name',
+                    name: 'info.full_name'
+                },
+                {
+                    data: 'info.id_card',
+                    name: 'info.id_card'
+                },
+                {
+                    data: 'booking_type',
+                    name: 'booking_type'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false, 
+                    searchable: false
+                }
             ]
         });
 

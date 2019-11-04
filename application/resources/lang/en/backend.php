@@ -356,4 +356,7 @@ return [
     'rejectReason' => 'Reason/s for rejection <small>selected reason/s wil send to applicant</small>',
     'otherReason' => 'Other reason that not listed above.',
     'rejectByReason' => 'Application has been rejected.',
+    'applicant' => 'Applicant',
+    'id_card' => 'ID Card',
+    'Type' => 'Type',
 ];
