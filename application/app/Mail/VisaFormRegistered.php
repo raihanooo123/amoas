@@ -6,24 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Endroid\QrCode\QrCode;
 
-class NewTimeBooked extends Mailable
+class VisaFormRegistered extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $booking;
-    public $name;
-    
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($booking, $name = null)
+    public function __construct()
     {
-        $this->booking = $booking;
-        $this->name = $name;
+        //
     }
 
     /**
@@ -33,7 +28,6 @@ class NewTimeBooked extends Mailable
      */
     public function build()
     {
-        $this->subject('You have successfully reserved a set on ' . $this->booking->department->name_en);
-        return $this->view('print-booking-success');
+        return $this->view('view.name');
     }
 }

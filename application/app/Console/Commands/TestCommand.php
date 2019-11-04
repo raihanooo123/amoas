@@ -38,25 +38,14 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        // $booking = Booking::latest()->first();
+        // $booking = \App\Booking::find(101);
+        // $booking->load(['user', 'info', 'package', 'department']);
 
-        // echo 'after logo';
-        // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
-        // $qrCode = new QrCode($this->booking->serial_no);
-        // $qrCode->setWriterByName('png');
-        // $qrCode->setMargin(10);
-        // $qrCode->setEncoding('UTF-8');
-        // $qrCode->setSize(200);
+        // \App\Jobs\FinalizeNewBooking::dispatch($booking);
 
-        // // Save it to a file
-        // $qrCode->writeFile('temp/qrcode.png');
-        // $qrCode = (string) \Image::make('temp/qrcode.png')->encode('data-url');
-        // echo 'after qr data-url';
-        $booking = \App\Booking::find(108);
-        $booking->load(['user', 'info', 'package', 'department']);
+        $visaForm = \App\Models\Visa\VisaForm::find(1);
+        $visaForm->load(['department']);
 
-        \App\Jobs\FinalizeNewBooking::dispatch($booking);
-
-        // \Mail::to('a.gulistani@mfa.af')->send(new \App\Mail\NewTimeBooked(\App\Booking::find(106)));
+        \App\Jobs\FinalizeVisaFormRegistration::dispatch($visaForm);
     }
 }

@@ -11,14 +11,17 @@ class VisaRegisterationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $visaForm;
+    public $name;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($visaForm, $name = null)
     {
-        //
+        $this->visaForm = $visaForm;
+        $this->name = $name;
     }
 
     /**
@@ -28,6 +31,8 @@ class VisaRegisterationMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('view.name');
+        $this->subject('You have successfully submitted Visa Application Form at ' . $this->visaForm->department->name_en);
+        return $this->view('emails.new-visa-form-submitted-email', compact('visaForm', 'name'));
+        
     }
 }

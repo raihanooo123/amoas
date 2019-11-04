@@ -150,6 +150,9 @@ class VisaFormController extends Controller
             ]);
         }
 
+        $visaForm->load(['department']);
+        \App\Jobs\FinalizeVisaFormRegistration::dispatch($visaForm);
+
         return redirect(route('visa.complete', [$visaForm->id]));
     }
 
@@ -260,8 +263,8 @@ class VisaFormController extends Controller
             $visa_form->save();
         \DB::commit();
 
-        // $booking->load(['user', 'info', 'package', 'department']);
-        // \App\Jobs\FinalizeNewBooking::dispatch($booking, ucwords($visa_form->title) . ' ' . $visa_form->family_name . ' ' . $visa_form->given_name);
+        $booking->load(['user', 'info', 'package', 'department']);
+        \App\Jobs\FinalizeNewBooking::dispatch($booking);
 
         return back()->with([
             'alert' => __('backend.action.performed'),

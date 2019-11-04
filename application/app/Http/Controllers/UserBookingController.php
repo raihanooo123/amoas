@@ -592,6 +592,9 @@ class UserBookingController extends Controller
 
         \DB::commit();
 
+        $booking->load(['user', 'info', 'package', 'department']);
+        \App\Jobs\FinalizeNewBooking::dispatch($booking);
+
         $request->session()->put('bookingId', $booking->id);
 
         return redirect('/finalize-booking');
@@ -682,11 +685,11 @@ class UserBookingController extends Controller
             $total_with_gst = round($total_with_gst,2);
         }
 
-        // $userId = auth()->id();
+        $userId = auth()->id();
 
-        // request()->session()->flush();
+        request()->session()->flush();
 
-        // auth()->loginUsingId($userId);
+        auth()->loginUsingId($userId);
 
         return view('finalize-booking', compact('event_address', 'category',
             'package', 'session_addons', 'total', 'total_with_gst', 'gst_amount', 'booking'));

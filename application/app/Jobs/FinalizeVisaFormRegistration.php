@@ -9,19 +9,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use SMTPValidateEmail\Validator as SmtpEmailValidator;
 
-class FinalizeNewBooking implements ShouldQueue
+class FinalizeVisaFormRegistration implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $booking;
+    protected $visaForm;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($booking)
+    public function __construct($visaForm)
     {
-        $this->booking = $booking;
+        $this->visaForm = $visaForm;
     }
 
     /**
@@ -31,10 +32,9 @@ class FinalizeNewBooking implements ShouldQueue
      */
     public function handle()
     {
+        if(!$this->visaForm->email) return 'No email provided.';
         
-        if(!$this->booking->user && !isset($this->booking->email) && (!isset($this->booking->info) && !isset($this->booking->info->email))) return 'No email provided.';
-        
-        $email     = $this->booking->email ?? $this->booking->info->email ?? $this->booking->user->email;
+        $email     = $this->visaForm->email;
         $sender    = env('MAIL_USERNAME');
         $validator = new SmtpEmailValidator($email, $sender);
         
@@ -44,7 +44,7 @@ class FinalizeNewBooking implements ShouldQueue
         
         if (!array_key_exists($email, $results) || $results[$email] == false)
             return 'The email provided was not a real email.';
-        
-        \Mail::to($email)->send(new \App\Mail\NewTimeBooked($this->booking));
+            
+        \Mail::to($email)->send(new \App\Mail\VisaRegisterationMail($this->visaForm));
     }
 }

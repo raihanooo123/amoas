@@ -150,7 +150,7 @@
                     }
                 },
             ],
-            ajax: "{!! route('bookings.data') !!}",
+            ajax: "{!! route('users.data') !!}",
             columns: [{
                     data: 'id',
                     name: 'id'
