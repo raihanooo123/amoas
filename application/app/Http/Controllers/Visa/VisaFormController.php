@@ -83,7 +83,7 @@ class VisaFormController extends Controller
             'entry_date' => 'required',
             'intend_duration' => 'required',
             'entry_point' => 'required',
-            'children_no' => 'required',
+            // 'children_no' => 'required',
             'visit_places' => 'required',
             'af_address' => 'required',
             'passport_type' => 'required',

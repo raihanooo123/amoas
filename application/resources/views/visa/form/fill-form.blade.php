@@ -69,13 +69,13 @@
                             href="#v-pills-services" role="tab" aria-controls="v-pills-services"
                             aria-selected="false">Contact Details</a>
                         <a class="nav-link disabled" id="v-pills-address-tab" data-toggle="pill" href="#v-pills-address"
-                            role="tab" aria-controls="v-pills-address" aria-selected="false">Employment Details</a>
-                        <a class="nav-link disabled" id="v-pills-detailed-information-tab" data-toggle="pill"
-                            href="#v-pills-detailed-information" role="tab" aria-controls="v-pills-detailed-information"
-                            aria-selected="false">Visa Details</a>
+                        role="tab" aria-controls="v-pills-address" aria-selected="false">Employment Details</a>
                         <a class="nav-link disabled" id="v-pills-delegate-tab" data-toggle="pill"
                             href="#v-pills-delegate" role="tab" aria-controls="v-pills-delegate"
                             aria-selected="false">Passport Details</a>
+                        <a class="nav-link disabled" id="v-pills-detailed-information-tab" data-toggle="pill"
+                            href="#v-pills-detailed-information" role="tab" aria-controls="v-pills-detailed-information"
+                            aria-selected="false">Visa Details</a>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -91,12 +91,12 @@
                                     <select name="title" required
                                         class="form-control personal-information {{ $errors->has('title') ? 'is-invalid' : '' }}">
                                         <option></option>
-                                        <option value="mr." {{ 'mr.' == old('marital_status') ? 'selected' : null }}>Mr.</option>
-                                        <option value="mrs." {{ 'mrs.' == old('marital_status') ? 'selected' : null }}>Mrs.</option>
-                                        <option value="ms." {{ 'ms.' == old('marital_status') ? 'selected' : null }}>Ms.</option>
-                                        <option value="eng." {{ 'eng.' == old('marital_status') ? 'selected' : null }}>Eng.</option>
-                                        <option value="dr." {{ 'dr.' == old('marital_status') ? 'selected' : null }}>Dr.</option>
-                                        <option value="pro." {{ 'pro.' == old('marital_status') ? 'selected' : null }}>Pro.</option>
+                                        <option value="mr." {{ 'mr.' == old('title') ? 'selected' : null }}>Mr.</option>
+                                        <option value="mrs." {{ 'mrs.' == old('title') ? 'selected' : null }}>Mrs.</option>
+                                        <option value="ms." {{ 'ms.' == old('title') ? 'selected' : null }}>Ms.</option>
+                                        <option value="eng." {{ 'eng.' == old('title') ? 'selected' : null }}>Eng.</option>
+                                        <option value="dr." {{ 'dr.' == old('title') ? 'selected' : null }}>Dr.</option>
+                                        <option value="pro." {{ 'pro.' == old('title') ? 'selected' : null }}>Pro.</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -119,11 +119,11 @@
                                     <select name="marital_status" required
                                         class="form-control personal-information {{ $errors->has('marital_status') ? 'is-invalid' : '' }}">
                                         <option></option>
-                                        <option value="single" {{ 'single' == old('residence_country') ? 'selected' : null }}>Single</option>
-                                        <option value="engaged" {{ 'engaged' == old('residence_country') ? 'selected' : null }}>Engaged</option>
-                                        <option value="married" {{ 'married' == old('residence_country') ? 'selected' : null }}>Married</option>
-                                        <option value="separated" {{ 'separated' == old('residence_country') ? 'selected' : null }}>Separated</option>
-                                        <option value="divorced" {{ 'divorced' == old('residence_country') ? 'selected' : null }}>Divorced</option>
+                                        <option value="single" {{ 'single' == old('marital_status') ? 'selected' : null }}>Single</option>
+                                        <option value="engaged" {{ 'engaged' == old('marital_status') ? 'selected' : null }}>Engaged</option>
+                                        <option value="married" {{ 'married' == old('marital_status') ? 'selected' : null }}>Married</option>
+                                        <option value="separated" {{ 'separated' == old('marital_status') ? 'selected' : null }}>Separated</option>
+                                        <option value="divorced" {{ 'divorced' == old('marital_status') ? 'selected' : null }}>Divorced</option>
                                         <option value="widow/widower" {{ 'widow/widower' == old('marital_status') ? 'selected' : null }}>Widow/Widower</option>
                                     </select>
                                 </div>
@@ -292,7 +292,53 @@
 
                                 <div class="form-group offset-md-10 col-md-2">
                                     <button class="btn btn-primary btn-block"
-                                        onclick="validate('v-pills-address', 'v-pills-detailed-information-tab', event)">
+                                        onclick="validate('v-pills-address', 'v-pills-delegate-tab', event)">
+                                        <i class="fa fa-arrow-right"></i> NEXT
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="v-pills-delegate" role="tabpanel"
+                            aria-labelledby="v-pills-delegate-tab">
+                            <legend>Applicant's Passport Details.</legend>
+                            <br>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Type</label>
+                                    <input name="passport_type" required value="{{ old('passport_type') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_type') ? 'is-invalid' : '' }}">
+                                    
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Number</label>
+                                    <input name="passport_no" required value="{{ old('passport_no') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_no') ? 'is-invalid' : '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Place of Issue</label>
+                                    <input name="issue_place" required value="{{ old('issue_place') }}" type="text"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_place') ? 'is-invalid' : '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Issue Date</label>
+                                    <input name="issue_date" required value="{{ old('issue_date') }}" type="date"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_date') ? 'is-invalid' : '' }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Expiry Date</label>
+                                    <input name="expire_date" required value="{{ old('expire_date') }}" type="date"
+                                        class="form-control personal-information form-control-lg {{ $errors->has('expire_date') ? 'is-invalid' : '' }}">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Photo <small>please upload a passport size photo.</small></label>
+                                    <input type="file" required name="photo" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
+                                </div>
+
+                                <div class="form-group offset-md-10 col-md-2">
+                                    <button class="btn btn-primary btn-block"
+                                        onclick="validate('v-pills-delegate', 'v-pills-detailed-information-tab', event)">
                                         <i class="fa fa-arrow-right"></i> NEXT
                                     </button>
                                 </div>
@@ -354,9 +400,9 @@
                                         class="form-control personal-information form-control-lg {{ $errors->has('entry_point') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Number of Children
+                                    <label for="">Number of Children
                                         Accompanied</label>
-                                    <input name="children_no" required value="{{ old('children_no') }}" type="number"
+                                    <input name="children_no" value="{{ old('children_no') }}" type="number"
                                         class="form-control personal-information form-control-lg {{ $errors->has('children_no') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
@@ -390,52 +436,6 @@
                                     <input name="applied_visa" value="{{ old('applied_visa') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
                                 </div>
-                                <div class="form-group offset-md-10 col-md-2">
-                                    <button class="btn btn-primary btn-block"
-                                        onclick="validate('v-pills-detailed-information', 'v-pills-delegate-tab', event)">
-                                        <i class="fa fa-arrow-right"></i> NEXT
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="v-pills-delegate" role="tabpanel"
-                            aria-labelledby="v-pills-delegate-tab">
-                            <legend>Applicant's Passport Details.</legend>
-                            <br>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Type</label>
-                                    <input name="passport_type" required value="{{ old('passport_type') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_type') ? 'is-invalid' : '' }}">
-                                    
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Number</label>
-                                    <input name="passport_no" required value="{{ old('passport_no') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_no') ? 'is-invalid' : '' }}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Place of Issue</label>
-                                    <input name="issue_place" required value="{{ old('issue_place') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_place') ? 'is-invalid' : '' }}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Issue Date</label>
-                                    <input name="issue_date" required value="{{ old('issue_date') }}" type="date"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_date') ? 'is-invalid' : '' }}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Expiry Date</label>
-                                    <input name="expire_date" required value="{{ old('expire_date') }}" type="date"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('expire_date') ? 'is-invalid' : '' }}">
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Photo <small>please upload a passport size photo.</small></label>
-                                    <input type="file" required name="photo" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
-                                </div>
-
                                 <div class="form-group col-md-12">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" required class="custom-control-input" id="customControlAutosizing">
@@ -444,16 +444,15 @@
                                         </label>
                                     </div>
                                 </div>
-
-
-                                <div class="form-group offset-md-10 col-md-2">
+                                <div class="form-group offset-md-9 col-md-3">
                                     <button class="btn btn-primary btn-block"
-                                        onclick="validate('v-pills-delegate', '', event)">
+                                        onclick="validate('v-pills-detailed-information', '', event)">
                                         <i class="fa fa-arrow-right"></i> SUBMIT
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -487,6 +486,18 @@
     {{--FOOTER FOR PHONES--}}
 
 </form>
+
+<!-- Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('images/loader.gif')}}" alt="" srcset="">
+                <h2>Loading, please wait...</h2>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -561,7 +572,10 @@
         e.preventDefault();
 
         if(!validateSection(param)) return false;
-        if (nextTab === undefined || nextTab == null || nextTab.length <= 0) $('#save-form').submit();
+        if (nextTab === undefined || nextTab == null || nextTab.length <= 0){
+            $('#save-form').submit();
+            $('#loadingModal').modal('show')
+        } 
         
         $('#' + param + '-tab').removeClass("active show");
         var next = $('#' + nextTab);

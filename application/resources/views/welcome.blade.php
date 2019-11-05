@@ -26,15 +26,30 @@
                     </div>
                 </div>
 
+                <div class="row" id="guideline">
+                    <div class="col-md-8">
+                        <h5>How to reserve a set on our mission?</h5>
+                        <ol>
+                            <li> <strong>Part 1:</strong> Select the services which you want to be done by us.</li>
+                            <li>Select the package within the selected service. 
+                                The detailed inforamtion of each package will show with package selection, please read once and click on 
+                                <button class="btn btn-sm" onclick="return false;">
+                                    <i class="far fa-clock"></i> &nbsp; Select Booking Time
+                                </button> button at bottom of the page.</li>
+
+                            <li> <strong>Part 2:</strong> On the next part, please enter you information properly and click on 
+                                <button class="btn btn-sm" onclick="return false;">
+                                        Next »
+                                </button>
+                                    button, although some package may have different procedure for booking.</li>
+                            
+                            <li> <strong>Part 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
+                            <li> <strong>Part 4:</strong> This is final step. You have successfully booked a time and print the slip, it is neccessary while entering to our mission.</li>
+                        </ol>
+                    </div>
+                </div>
+                <br>
                 <div id="categories_holder">
-                    <a href="{{route('verfiy.tazkira')}}">Verification of Tazkira</a>
-                    <br>
-                    <a href="{{route('visa-form.fill')}}">Online visa form</a>
-                    <br>
-                    <a href="{{route('check-status')}}">Check your visa status.</a>
-                    <br>
-                    <div class="row"><div class="col-md-12"><h5>{{ __('app.booking_category') }}</h5></div></div>
-                    <br>
                     <div class="row">
                         @if(count($categories))
                             @foreach($categories as $category)

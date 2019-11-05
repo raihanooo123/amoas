@@ -32,13 +32,13 @@
 
                     <div class="d-sm-none d-none d-md-block d-lg-block">
                         <!-- <a href="{{ route('check-status') }}" class="btn btn-dark btn-lg"><i class="fa fa-visa"></i>&nbsp;&nbsp;{{ __('app.check_visa_status') }}</a> -->
-                        <a href="/" class="btn btn-primary btn-lg"><i class="far fa-plus-square"></i>&nbsp;&nbsp;{{ __('app.new_booking_link') }}</a>
+                        <a href="{{url('/')}}" class="btn btn-primary btn-lg"><i class="far fa-plus-square"></i>&nbsp;&nbsp;{{ __('app.new_booking_link') }}</a>
                         <a href="{{ route('visa.print', [$visa_form->id]) }}" class="btn btn-dark btn-lg"><i class="fa fa-print"></i>&nbsp;&nbsp;{{ __('app.visa-completion.download_form') }}</a>
                     </div>
 
                     <div class="d-sm-block d-block d-md-none d-lg-none">
                         <!-- <a href="{{ route('check-status') }}" class="btn btn-dark btn-lg btn-block"><i class="fa fa-visa"></i>&nbsp;&nbsp;{{ __('app.check_visa_status') }}</a> -->
-                        <a href="/" class="btn btn-primary btn-lg btn-block"><i class="far fa-plus-square"></i>&nbsp;&nbsp;{{ __('app.new_booking_link') }}</a>
+                        <a href="{{url('/')}}" class="btn btn-primary btn-lg btn-block"><i class="far fa-plus-square"></i>&nbsp;&nbsp;{{ __('app.new_booking_link') }}</a>
                         <a href="{{ route('visa.print', [$visa_form->id]) }}" class="btn btn-dark btn-lg btn-block"><i class="fa fa-print"></i>&nbsp;&nbsp;{{ __('app.visa-completion.download_form') }}</a>
                     </div>
 
