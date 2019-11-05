@@ -47,6 +47,19 @@
                             <li> <strong>Part 4:</strong> This is final step. You have successfully booked a time and print the slip, it is neccessary while entering to our mission.</li>
                         </ol>
                     </div>
+                    <div class="col-md-4">
+                        <h5>Quick access links</h5>
+                        <ul>
+                            <li>Check your Visa status <a href="{{route('check-status')}}">here.</a>
+                                <br>
+                                Although we will sent you the approval or rejection of the Online Visa Application Form to your email.
+                            </li>
+                            <li>Create an account <a href="{{route('register')}}">here.</a>
+                                <br>
+                                Before going further, you must have a verified account. 
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <br>
                 <div id="categories_holder">
