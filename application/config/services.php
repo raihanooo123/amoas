@@ -35,4 +35,10 @@ return [
         'secret' => config('settings.stripe_sandbox_enabled') ? config('settings.stripe_test_key_sk') : config('stripe_live_key_sk'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_OAUTH_ID'), //google API
+        'client_secret' => env('GOOGLE_OAUTH_SECRET'), //google Secret
+        'redirect' => env('APP_URL') . 'login/google/callback',
+     ],
+
 ];

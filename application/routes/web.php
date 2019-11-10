@@ -25,6 +25,11 @@ Route::get('/ajax_package_info','UserBookingController@ajaxPackageInfo');
 
 //Auth::routes();
 Auth::routes(['verify' => true]);
+
+Route::get('/login/{social}','Auth\LoginController@redirectToProvider')
+    ->where('social','twitter|facebook|linkedin|google|github|bitbucket');
+Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallback')
+    ->where('social','twitter|facebook|linkedin|google|github|bitbucket');
 // ** DASHBOARD ROUTE ** //
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -16,7 +16,7 @@ class LoginController extends Controller
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
-    */
+     */
 
     use AuthenticatesUsers;
 
@@ -36,4 +36,33 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function redirectToProvider($provider)
+    {
+        // return $provider;
+        return \Socialite::driver($provider)->redirect();
+    }
+
+    public function handleProviderCallback($social)
+    {
+        $userSocial = \Socialite::driver($social)->user();
+        $user = \App\User::where(['email' => $userSocial->getEmail()])->first();
+        if ($user) {
+            Auth::login($user);
+            return redirect('/home');
+        } else {
+            $newUser = \App\User::create([
+                'first_name' => $userSocial->getName(),
+                'last_name' => '_',
+                'email' => $userSocial->getEmail(),
+                'role_id' => 2, //Customer || Applicant
+                'email_verified_at' => date('Y-m-d H:i:s'),
+            ]);
+            
+            auth()->login($newUser, true);
+
+            return redirect()->to('/');
+        }
+    }
+
 }
