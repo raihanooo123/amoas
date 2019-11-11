@@ -13,21 +13,21 @@
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
 
-                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('auth.email_placeholder') }}" value="{{ $email or old('email') }}">
+                    <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('auth.email_placeholder') }}" value="{{ $email }}">
                         @if($errors->has('email'))
                             <p class="text-danger">{{ $errors->first('email') }}</p>
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                    <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                         <input type="password" class="form-control" id="password" name="password" placeholder="{{ __('passwords.new_password_placeholder') }}">
                         @if($errors->has('password'))
                             <p class="text-danger">{{ $errors->first('password') }}</p>
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                    <div class="form-group {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                         <input id="password-confirm" type="password" class="form-control" placeholder="{{ __('passwords.repeat_placeholder') }}" name="password_confirmation">
                         @if($errors->has('password_confirmation'))
                             <p class="text-danger">{{ $errors->first('password_confirmation') }}</p>
