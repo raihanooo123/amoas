@@ -436,14 +436,30 @@
                                                                                         style="padding:0;Margin:0;">
                                                                                         <p
                                                                                             style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                                            <strong>Hello! </strong></p>
+                                                                                            <strong>
+                                                                                            {{-- Greeting --}}
+                                                                                            @if (! empty($greeting))
+                                                                                                {{ $greeting }}
+                                                                                            @else
+                                                                                            @if ($level === 'error')
+                                                                                                @lang('Whoops!')
+                                                                                            @else
+                                                                                                @lang('Hello!')
+                                                                                            @endif
+                                                                                            @endif
+                                                                                            </strong>
+                                                                                        </p>
                                                                                         <p
                                                                                             style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                                            Please click the button
-                                                                                            below to verify your email
-                                                                                            address.</p>
+                                                                                            {{-- Intro Lines --}}
+                                                                                            @foreach ($introLines as $line)
+                                                                                            {{ $line }}
+
+                                                                                            @endforeach
+                                                                                            </p>
                                                                                     </td>
                                                                                 </tr>
+                                                                                @isset($actionText)
                                                                                 <tr style="border-collapse:collapse;">
                                                                                     <td align="center"
                                                                                         style="padding:10px;Margin:0;">
@@ -453,19 +469,24 @@
                                                                                                 href="{{ $actionUrl }}"
                                                                                                 class="es-button es-button-1"
                                                                                                 target="_blank"
-                                                                                                style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;color:#FFFFFF;border-style:solid;border-color:#CC932B;border-width:10px 20px 10px 20px;display:inline-block;background:#CC932B;border-radius:3px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;">Verify
-                                                                                                Email Address</a></span>
+                                                                                                style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;color:#FFFFFF;border-style:solid;border-color:#CC932B;border-width:10px 20px 10px 20px;display:inline-block;background:#CC932B;border-radius:3px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;">
+                                                                                                {{ $actionText }}
+                                                                                                </a></span>
                                                                                     </td>
                                                                                 </tr>
+                                                                                @endisset
                                                                                 <tr style="border-collapse:collapse;">
                                                                                     <td align="left"
                                                                                         style="padding:0;Margin:0;">
                                                                                         <p
                                                                                             style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                                            If you did not create an
-                                                                                            account, no further action
-                                                                                            is required and ignore this
-                                                                                            email.</p>
+                                                                                            
+                                                                                                {{-- Outro Lines --}}
+                                                                                                @foreach ($outroLines as $line)
+                                                                                                {{ $line }}
+
+                                                                                                @endforeach
+                                                                                            </p>
                                                                                         <p
                                                                                             style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                                             <br></p>

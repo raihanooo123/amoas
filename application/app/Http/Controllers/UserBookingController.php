@@ -570,7 +570,7 @@ class UserBookingController extends Controller
             'booking_date' => $request->event_date,
             'booking_time' => $request->booking_slot,
             'email' => session('email'),
-            'status' => 'Processing',
+            'status' => 'Waiting',
         ]);
         
         $info = $booking->info()->create([

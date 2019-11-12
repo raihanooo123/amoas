@@ -19,7 +19,7 @@
 
                 <form class="m-t-md" method="post" action="{{ route('password.email') }}">
                     @csrf
-                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                    <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
                         <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('auth.email_placeholder') }}" value="{{ old('email') }}">
                         @if($errors->has('email'))
                             <p class="text-danger">{{ $errors->first('email') }}</p>

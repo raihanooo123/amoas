@@ -100,12 +100,12 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Family Name</label>
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Family Name <small>shown in passport</small></label>
                                     <input name="family_name" required value="{{ old('family_name') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('family_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Given Name</label>
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Given Name <small>shown in passport</small></label>
                                     <input name="given_name" required value="{{ old('given_name') }}" type="text"
                                         class="form-control personal-information form-control-lg {{ $errors->has('given_name') ? 'is-invalid' : '' }}">
                                 </div>

@@ -39,6 +39,7 @@
                             </div>
 
                             <input type="hidden" name="booking_id" id="booking_id" value="{{ $booking->id }}">
+                            <input type="hidden" name="package_id" value="{{ $booking->package->id }}">
 
                             <div class="form-group">
                                 <label><strong>{{ __('app.select_date') }}</strong></label>
@@ -117,14 +118,16 @@
             //populate timing slots
             var selected_date;
             var booking_id;
+            var package_id;
             selected_date = $(this).val();
             booking_id = $('input[id="booking_id"]').val();
+            package_id = $('input[name="package_id"]').val();
 
             //prepare to send ajax request
             $.ajax({
                 type: 'POST',
-                url: '{{ route('index') }}/get_update_slots',
-                data: {event_date:selected_date , booking:booking_id},
+                url: '{{ route('slots') }}',
+                data: {event_date:selected_date , booking:booking_id, package_id:package_id},
                 beforeSend: function() {
                     $('#slots_loader').removeClass('hidden');
                 },
