@@ -124,7 +124,7 @@ Route::group(['middleware'=>'admin'], function(){
 
 // ** USER ROLE CUSTOMER ROUTES ** //
 
-Route::group(['middleware'=>'customer'], function(){
+Route::group(['middleware'=>['customer', 'verified']], function(){
 
     Route::get('/customer/bookings', 'UserBookingController@index')->name('customerBookings');
     Route::get('/customer/booking/{id}', 'UserBookingController@show')->name('showBooking');
@@ -149,7 +149,7 @@ Route::group(['prefix'=>'tazkira', 'middleware'=>'auth'], function(){
 
 // ** COMMON ROUTES FOR AUTHENTICATED USERS ** //
 
-Route::group(['middleware'=>'authenticated'], function() {
+Route::group(['middleware'=>['authenticated', 'verified']], function() {
 
     // ** BOOKING FORM ROUTES ** //
 

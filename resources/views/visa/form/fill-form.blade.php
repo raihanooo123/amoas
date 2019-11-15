@@ -100,19 +100,19 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Family Name <small>shown in passport</small></label>
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Family Name <small>shown as in passport</small></label>
                                     <input name="family_name" required value="{{ old('family_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('family_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('family_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Given Name <small>shown in passport</small></label>
+                                    <i class="fa fa-asterisk text-danger"></i> <label for="">Given Name <small>shown as in passport</small></label>
                                     <input name="given_name" required value="{{ old('given_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('given_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('given_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Father's Full Name</label>
                                     <input name="father_name" required value="{{ old('father_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('father_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('father_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Marital Status</label>
@@ -130,7 +130,7 @@
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Date of Birth</label>
                                     <input name="dob" value="{{ old('dob') }}" type="date" required
-                                        class="form-control personal-information form-control-lg {{ $errors->has('dob') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('dob') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -170,7 +170,7 @@
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Nationality</label>
                                     <input name="nationality" required value="{{ old('nationality') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('nationality') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('nationality') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group row col-6">
@@ -213,7 +213,7 @@
                                     <label for="">Other Nationality</label>
                                     <input name="other_nationality" value="{{ old('other_nationality') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('other_nationality') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('other_nationality') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -233,17 +233,17 @@
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Current Address</label>
                                     <input name="address" required value="{{ old('address') }}" type="text"
-                                        class="form-control form-control-lg {{ $errors->has('address') ? 'is-invalid' : '' }}">
+                                        class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Email <small>We will inform you via this email.</small></label>
                                     <input name="email" required value="{{ old('email') }}" type="email"
-                                        class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}">
+                                        class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Mobile</label>
                                     <input name="mobile" required value="{{ old('mobile') }}" type="text"
-                                        class="form-control form-control-lg {{ $errors->has('mobile') ? 'is-invalid' : '' }}">
+                                        class="form-control {{ $errors->has('mobile') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -263,31 +263,31 @@
 
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Current Occupation</label>
-                                    <input name="occupation" required value="{{ old('occupation') }}" type="text" class="form-control personal-information form-control-lg
+                                    <input name="occupation" required value="{{ old('occupation') }}" type="text" class="form-control personal-information
                                 {{ $errors->has('occupation') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Employers' Name</label>
                                     <input name="employer_name" value="{{ old('employer_name') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('employer_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('employer_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Employers' Address</label>
                                     <input name="employer_address" value="{{ old('employer_address') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('employer_address') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('employer_address') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Previous Employers' Name</label>
                                     <input name="pre_employer_name" value="{{ old('pre_employer_name') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('pre_employer_name') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('pre_employer_name') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Previous Employers' Address</label>
                                     <input name="pre_employer_address" value="{{ old('pre_employer_address') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('pre_employer_address') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('pre_employer_address') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -307,28 +307,28 @@
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Type</label>
                                     <input name="passport_type" required value="{{ old('passport_type') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_type') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('passport_type') ? 'is-invalid' : '' }}">
                                     
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Passport Number</label>
                                     <input name="passport_no" required value="{{ old('passport_no') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('passport_no') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('passport_no') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Place of Issue</label>
                                     <input name="issue_place" required value="{{ old('issue_place') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_place') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('issue_place') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Issue Date</label>
                                     <input name="issue_date" required value="{{ old('issue_date') }}" type="date"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('issue_date') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('issue_date') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Expiry Date</label>
                                     <input name="expire_date" required value="{{ old('expire_date') }}" type="date"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('expire_date') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('expire_date') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -385,56 +385,56 @@
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Entry Date</label>
                                     <input name="entry_date" required value="{{ old('entry_date') }}" type="date"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('entry_date') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('entry_date') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Intended Duration of Stay
                                         <small>(days)</small></label>
                                     <input name="intend_duration" required value="{{ old('intend_duration') }}"
                                         type="number"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('intend_duration') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('intend_duration') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Point of Entry</label>
                                     <input name="entry_point" required value="{{ old('entry_point') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('entry_point') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('entry_point') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="">Number of Children
                                         Accompanied</label>
                                     <input name="children_no" value="{{ old('children_no') }}" type="number"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('children_no') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('children_no') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Places in Afghanistan
                                         Intended to Visit</label>
                                     <input name="visit_places" required value="{{ old('visit_places') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('visit_places') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('visit_places') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">Complete Address in
                                         Afghanistan</label>
                                     <input name="af_address" required value="{{ old('af_address') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('af_address') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('af_address') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="">Have you ever visited Afghanistan Before? <small>If Yes please provide
                                             details.</small> <small>If No leave it blank.</small></label>
                                     <input name="visited_before" value="{{ old('visited_before') }}"
                                         type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('visited_before') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('visited_before') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="">Have you applied for an Afghanistan Visa Before? <small>If Yes please
                                             provide details.</small> <small>If No leave it blank.</small></label>
                                     <input name="applied_visa" value="{{ old('applied_visa') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="">Do you have a criminal record? <small>If Yes please provide
                                             details.</small> <small>If No leave it blank.</small></label>
                                     <input name="applied_visa" value="{{ old('applied_visa') }}" type="text"
-                                        class="form-control personal-information form-control-lg {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
+                                        class="form-control personal-information {{ $errors->has('applied_visa') ? 'is-invalid' : '' }}">
                                 </div>
                                 <div class="form-group col-md-12">
                                     <div class="custom-control custom-checkbox">

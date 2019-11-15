@@ -24,9 +24,6 @@
     <link href="{{ asset('plugins/fontawesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('plugins/line-icons/simple-line-icons.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('plugins/waves/waves.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('plugins/datatables/css/jquery.datatables.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('plugins/datatables/css/jquery.datatables_themeroller.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('plugins/summernote-master/summernote.css') }}" rel="stylesheet" type="text/css"/>
 
 
     <!-- Theme Styles -->
@@ -159,21 +156,6 @@
                     </a>
                 </li>
 
-                <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active open' : '' }}">
-
-                    <a class="waves-effect waves-button">
-                        <span class="menu-icon icon-docs"></span>
-                        <p>{{ __('backend.tazkira') }}</p>
-                        <span class="arrow"></span>
-                    </a>
-                    <ul class="sub-menu" style="display: none;">
-                        <li class="{{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*/edit') ? 'active' : '' }}">
-                            <a href="{{ route('verification.index') }}">{{ __('backend.verification') }}</a>
-                        </li>
-                        {{-- <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li> --}}
-                    </ul>
-                </li>
-
                 <li class="{{ Request::is('customer/profile') ? 'active' : '' }}">
                     <a href="{{ route('customerProfile') }}" class="waves-effect waves-button">
                         <span class="menu-icon icon-user"></span>
@@ -221,9 +203,6 @@
 <script src="{{ asset('plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('plugins/waves/waves.min.js') }}"></script>
 <script src="{{ asset('js/backend.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables/js/jquery.datatables.min.js') }}"></script>
-<script src="{{ asset('plugins/summernote-master/summernote.min.js') }}"></script>
-<script src="{{ asset('js/pages/form-elements.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#xtreme-table').dataTable( {

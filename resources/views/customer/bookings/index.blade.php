@@ -33,7 +33,7 @@
                                     <th>{{ __('backend.date') }}</th>
                                     <th>{{ __('backend.time') }}</th>
                                     <th>{{ __('backend.status') }}</th>
-                                    <th>{{ __('backend.booked') }}</th>
+                                    <th>{{ __('backend.created') }}</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </thead>
@@ -45,7 +45,7 @@
                                     <th>{{ __('backend.date') }}</th>
                                     <th>{{ __('backend.time') }}</th>
                                     <th>{{ __('backend.status') }}</th>
-                                    <th>{{ __('backend.booked') }}</th>
+                                    <th>{{ __('backend.created') }}</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </tfoot>

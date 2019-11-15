@@ -79,13 +79,14 @@
         var table = $('#xtreme-table').DataTable({
             processing: true,
             serverSide: true,
-            // dom: 'Bfrtip',
+            dom: 'Bfrtip',
             buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
+                'pageLength',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible'
+                    },
                 },
             ],
             ajax: "{!! route('bookings.data') !!}",
@@ -133,9 +134,9 @@
                 }
             ]
         });
-
-    table.buttons().container()
-        .appendTo( $('#options') );
+        
+    // table.buttons().container()
+    //     .appendTo( $('#options') );
 
         // new $.fn.dataTable.Buttons( table, {
         //     buttons: [

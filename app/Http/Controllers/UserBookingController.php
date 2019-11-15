@@ -35,7 +35,7 @@ class UserBookingController extends Controller
      */
     public function index()
     {
-        $bookings = Auth::user()->bookings()->orderBy('created_at', 'ASC')->get();
+        $bookings = Auth::user()->bookings()->latest()->get();
         return view('customer.bookings.index', compact('bookings'));
     }
 

@@ -29,6 +29,14 @@
                         <div class="panel-body">
                             <div id="account_details_view">
                                 <div class="row table-row">
+                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.serial_no') }}:</strong></div>
+                                    <div class="col-md-6">{{ $booking->serial_no }}</div>
+                                </div>
+                                <div class="row table-row">
+                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.department') }}:</strong></div>
+                                    <div class="col-md-6">{{ $booking->department->name_en }}</div>
+                                </div>
+                                <div class="row table-row">
                                     <div class="col-md-6 bold-font"><strong>{{ __('backend.category') }}:</strong></div>
                                     <div class="col-md-6">{{ $booking->package->category->title }}</div>
                                 </div>
@@ -37,20 +45,12 @@
                                     <div class="col-md-6">{{ $booking->package->title }}</div>
                                 </div>
                                 <div class="row table-row">
-                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.instructions') }}:</strong></div>
-                                    <div class="col-md-6">{{ $booking->booking_instructions ? $booking->booking_instructions : __('backend.not_provided') }}</div>
+                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.registrar_id') }}:</strong></div>
+                                    <div class="col-md-6">{{ $booking->user->email }}</div>
                                 </div>
                                 <div class="row table-row">
-                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.extra_services') }}:</strong></div>
-                                    <div class="col-md-6">
-                                        @if(count($booking->addons))
-                                            @foreach($booking->addons as $addon)
-                                                {{ $addon->title }}<br>
-                                            @endforeach
-                                        @else
-                                            {{ __('backend.none') }}
-                                        @endif
-                                    </div>
+                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.Type') }}:</strong></div>
+                                    <div class="col-md-6">{{ $booking->booking_type }}</div>
                                 </div>
                             </div>
                         </div>
@@ -73,42 +73,13 @@
                                     <div class="col-md-6 bold-font"><strong>{{ __('backend.status') }}:</strong></div>
                                     <div class="col-md-6">{{ $booking->status }}</div>
                                 </div>
-                                <div class="row table-row">
-                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.invoice_no') }}</strong></div>
-                                    <div class="col-md-6">{{ $booking->invoice->id }}</div>
-                                </div>
-                                <div class="row table-row">
-                                    <div class="col-md-6 bold-font"><strong>{{ __('backend.payment_details') }}:</strong></div>
-                                    <div class="col-md-6">{{ $booking->invoice->is_paid ? __('backend.paid') : __('emails.to_be_paid') }}
-
-                                        @if(config('settings.currency_symbol_position')== __('backend.right'))
-
-                                            {!! number_format( (float) $booking->invoice->amount,
-                                                config('settings.decimal_points'),
-                                                config('settings.decimal_separator') ,
-                                                config('settings.thousand_separator') ). '&nbsp;' .
-                                                config('settings.currency_symbol') !!}
-
-                                        @else
-
-                                            {!! config('settings.currency_symbol').
-                                                number_format( (float) $booking->invoice->amount,
-                                                config('settings.decimal_points'),
-                                                config('settings.decimal_separator') ,
-                                                config('settings.thousand_separator') ) !!}
-
-                                        @endif
-
-                                        via {{ $booking->invoice->payment_method }}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12 hidden-xs hidden-sm">
-                    @if($booking->status != __('backend.cancelled') and count($booking->cancel_request)==0)
+                    @if($booking->status != __('backend.cancelled'))
                         @if(config('settings.allow_to_cancel'))
                             <button class="btn btn-lg btn-danger {{ !$allow_to_cancel ? 'disabled' : '' }}" data-toggle="modal" data-target="#request_cancellation"><i class="fa fa-times-circle fa-lg"></i> &nbsp; {{ __('backend.request_to_cancel') }}</button>
                         @endif
@@ -121,7 +92,7 @@
                 </div>
 
                 <div class="col-md-12 hidden-md hidden-lg">
-                    @if($booking->status != __('backend.cancelled') and count($booking->cancel_request)==0)
+                    @if($booking->status != __('backend.cancelled'))
                         @if(config('settings.allow_to_cancel'))
                             <button class="btn btn-lg btn-danger btn-block {{ !$allow_to_cancel ? 'disabled' : '' }}" data-toggle="modal" data-target="#request_cancellation"><i class="fa fa-times-circle fa-lg"></i> &nbsp; {{ __('backend.request_to_cancel') }}</button>
                         @endif

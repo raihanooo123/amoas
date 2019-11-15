@@ -59,7 +59,8 @@
                         {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{{ route('home') }}"><i class="fa fa-user text-primary"></i> &nbsp; {{ __('app.my_account_link') }}</a>
+                        <a class="dropdown-item" href="{{ route('home') }}"><i class="fa fa-home text-primary"></i> &nbsp; {{ __('backend.dashboard1') }}</a>
+                        <a class="dropdown-item" href="{{ route('customerProfile') }}"><i class="fa fa-user text-primary"></i> &nbsp; {{ __('app.my_account_link') }}</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="
                                 event.preventDefault();
                                 document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt text-danger"></i> &nbsp; {{ __('app.logout_link') }}</a>

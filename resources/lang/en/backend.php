@@ -16,6 +16,7 @@ return [
 
     'home' => 'Home',
     'dashboard' => 'Home',
+    'dashboard1' => 'Dashboard',
     'my_profile' => 'My Profile',
     'change_password' => 'Change Password',
     'logout' => 'Log Out',

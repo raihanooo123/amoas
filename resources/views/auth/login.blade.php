@@ -1,4 +1,4 @@
-@extends('layouts.login', ['title' => __('auth.page_title')])
+@extends('layouts.login', ['title' => 'AMOAS'])
 
 @section('content')
 
@@ -15,8 +15,8 @@
                 <!-- <div class="col-md-6"> -->
                     <a href="{{ url('login/facebook') }}" class="btn btn-block btn-social-icon btn-facebook"><i
                             class="fa fa-facebook"></i> Login Via Facebook</a>
-                    <a href="{{ url('login/twitter') }}" class="btn btn-block btn-social-icon btn-twitter"><i
-                            class="fa fa-facebook-f"></i> Login Via Twitter</a>
+                    <a href="#" class="btn btn-block btn-social-icon btn-twitter"><i
+                            class="fa fa-facebook-f"></i> Login Via Twitter (soon...)</a>
                     <a href="{{ url('login/google') }}" class="btn btn-block btn-social-icon btn-google"><i
                             class="fa fa-google-plus"></i> Login Via Google</a>
                 <!-- </div> -->
