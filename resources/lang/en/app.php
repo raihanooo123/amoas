@@ -19,7 +19,7 @@ return [
     'paypal' => 'PayPal',
     'my_account_link' => 'My Account',
     'logout_link' => 'Logout',
-    'welcome_title' => 'Welcome to MFA AMOAS',
+    'welcome_title' => 'Welcome to AMOAS',
     'welcome_page_title' => 'Home',
     'welcome_subtitle' => "Afghanistan's missions online appointment system",
     'personal_details' => 'Your Personal Details',

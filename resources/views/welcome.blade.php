@@ -5,6 +5,12 @@
     <div class="jumbotron promo">
         <div class="container">
             <h1 class="text-center promo-heading">{{ __('app.welcome_title') }}</h1>
+            @if(session()->has('department'))
+                @php
+                    $department = session('department');
+                @endphp
+                <h3 class="text-center promo-heading">{{ $department->name_en }}</h3>
+            @endif
             <p class="promo-desc text-center">
                 {{ __('app.welcome_subtitle') }}
             </p>
@@ -30,21 +36,21 @@
                     <div class="col-md-8">
                         <h5>How to reserve a set on our mission?</h5>
                         <ol>
-                            <li> <strong>Part 1:</strong> Select the services which you want to be done by us.</li>
+                            <li> <strong>Step 1:</strong> Select the services which you want to be done by us.</li>
                             <li>Select the package within the selected service. 
                                 The detailed inforamtion of each package will show with package selection, please read once and click on 
                                 <button class="btn btn-sm" onclick="return false;">
                                     <i class="far fa-clock"></i> &nbsp; Select Booking Time
                                 </button> button at bottom of the page.</li>
 
-                            <li> <strong>Part 2:</strong> On the next part, please enter you information properly and click on 
+                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on 
                                 <button class="btn btn-sm" onclick="return false;">
                                         Next »
                                 </button>
                                     button, although some package may have different procedure for booking.</li>
                             
-                            <li> <strong>Part 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
-                            <li> <strong>Part 4:</strong> This is final step. You have successfully booked a time and print the slip, it is neccessary while entering to our mission.</li>
+                            <li> <strong>Step 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
+                            <li> <strong>Step 4:</strong> This is final step. You have successfully booked a time and print the slip, it is neccessary while entering to our mission.</li>
                         </ol>
                     </div>
                     <div class="col-md-4">

@@ -693,10 +693,13 @@ class UserBookingController extends Controller
         }
 
         $userId = auth()->id();
+        $department = session()->get('department');
 
         request()->session()->flush();
 
         auth()->loginUsingId($userId);
+
+        if($department) request()->session()->put('department', $department);
 
         return view('finalize-booking', compact('event_address', 'category',
             'package', 'session_addons', 'total', 'total_with_gst', 'gst_amount', 'booking'));

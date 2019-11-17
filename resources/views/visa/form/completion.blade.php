@@ -30,10 +30,17 @@
 
 @section('content')
 
+
 <div class="jumbotron promo">
     <div class="container">
-        <h1 class="text-center promo-heading">{{ __('app.step_two_page_title') }}</h1>
-        <p class="promo-desc text-center">{{ __('app.step_two_subtitle') }}</p>
+        <h1 class="text-center promo-heading">{{ __('app.welcome_title') }}</h1>
+        @if(session()->has('department'))
+            @php
+                $department = session('department');
+            @endphp
+            <h3 class="text-center promo-heading">{{ $department->name_en }}</h3>
+        @endif
+        <p class="promo-desc text-center">{{ __('app.welcome_subtitle') }}</p>
     </div>
 </div>
 
