@@ -45,6 +45,13 @@ class UserBookingController extends Controller
      */
     public function loadBooking()
     {
+        // dd(request()->all());
+        if(request()->has('mission')){
+            $department = \App\Department::where('code', strtoupper(request()->mission))->where('status', 1)->first();
+            if($department)
+                request()->session()->put('department',$department);
+        }
+            
         $random_pass_string = str_random(10);
         $categories = Category::all();
         return view('welcome', compact('random_pass_string', 'categories'));

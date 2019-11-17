@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use mikehaertl\pdftk\Pdf;
+// use mikehaertl\pdftk\Pdf;
 // use FPDM;
 
 // ** INIT BOOKING ** //
@@ -27,59 +27,12 @@ Route::get('/ajax_package_info','UserBookingController@ajaxPackageInfo');
 Auth::routes(['verify' => true]);
 
 Route::get('/login/{social}','Auth\LoginController@redirectToProvider')
-    ->where('social','twitter|facebook|linkedin|google|github|bitbucket');
+    ->where('social','twitter|facebook|google');
 Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallback')
-    ->where('social','twitter|facebook|linkedin|google|github|bitbucket');
+    ->where('social','twitter|facebook|google');
 // ** DASHBOARD ROUTE ** //
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test', function(){
-    preg_match('/approved|approve|rejected|reject/i', 'Approved, Interview REJECET was set on', $matches);
-    dd($matches);
-    $validator = new \EmailValidator\Validator();
-    dd($validator->isValid('not.exist@mfa.af'));
-    \DB::enableQueryLog(); // Enable query log
-    $bookings = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))->where('package_id', 1)
-        ->groupBy('booking_date')
-        ->having('total', '>=', 1)
-        ->having('booking_date', '>=', date('Y-m-d'))
-        ->get()
-        ->pluck('booking_date')
-        ->toArray();
-
-    // dd(\DB::getQueryLog()); // Show results of log
-    dd($bookings);
-    $pdf = new \FPDM('templates/visa_template_fix.pdf');
-    $pdf->Load([
-        'serial_no'=>'working fine',
-        'Family_Name'=>'working fine',
-    ], false); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
-    $pdf->Merge();
-    $pdf->Output('', 'temp/visa_template.pdf');
-    
-    dd(app()->getLocale());
-
-    $pdf = new Pdf('templates/visa_template.pdf',[
-        'command' => '"C:\\Program Files (x86)\\PDFtk Server\\bin\\pdftk.exe"',
-        // 'useExec' => true
-    ]);
-    $pdf->fillForm([
-        'serial_no'=>'working fine',
-        'Family_Name'=>'working fine',
-    ]);
-        // dd($pdf);
-        // Check for errors
-    if (!$pdf->saveAs('my.pdf')) {
-        $error = $pdf->getError();
-        dd($error);
-    }
-
-
-    
-    dd(App\Models\Visa\VisaForm::generateSerialNo(60));
-    dd(App\Department::whereIn('type',['embassy'])->pluck('name_en')->toArray());
-    dd(App\Models\Visa\VisaForm::generateSerialNo(5));
-});
 
 // ** AJAX REQUESTS ** //
 Route::post('/get_packages', 'UserBookingController@getPackages')->name('packages');
