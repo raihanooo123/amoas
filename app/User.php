@@ -16,7 +16,16 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'phone_number', 'email', 'password', 'role_id', 'is_active', 'photo_id',
+        'first_name', 
+        'last_name', 
+        'phone_number', 
+        'email', 
+        'password', 
+        'role_id', 
+        'is_active', 
+        'photo_id', 
+        'department_id',
+        'email_verified_at',
     ];
 
     /**
@@ -25,7 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 
+        'remember_token',
     ];
 
     public function role()
@@ -48,6 +58,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Invoice');
     }
 
+    public function department()
+    {
+        if(!$this->department_id)
+            throw new \App\Exceptions\CustomException('User does not assigned to a department.');
+        return $this->belongsTo('App\Department');
+    }
+
     public function isAdmin()
     {
         if($this->role->id == 1)
@@ -64,5 +81,12 @@ class User extends Authenticatable implements MustVerifyEmail
             return true;
         }
         return false;
+    }
+
+    public function isSuperAdmin()
+    {
+        preg_match('/super-admin|super_admin|super admin|super administrator/i', $this->role->name, $matches);
+
+        return $matches ? true : false;
     }
 }

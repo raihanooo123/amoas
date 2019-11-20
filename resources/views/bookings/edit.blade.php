@@ -103,7 +103,8 @@
             autoclose: true,
             orientation : 'bottom left',
             startDate: today,
-            format: 'dd-mm-yyyy',
+            // format: 'dd-mm-yyyy',
+            format: 'yyyy-mm-dd',
             daysOfWeekDisabled: "{{ $disable_days_string }}",
             language: "{{ App::getLocale() }}"
         });

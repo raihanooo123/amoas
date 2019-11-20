@@ -30,6 +30,9 @@
                         class="fa fa-clock-o fa-lg"></i> &nbsp; {{ __('backend.change_booking_time') }}</a>
             @endif
 
+            <br>
+            <br>
+
         </div>
         <div class="col-md-6">
             <div class="panel panel-white">

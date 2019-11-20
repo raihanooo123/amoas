@@ -829,11 +829,28 @@ class UserBookingController extends Controller
 
         $disable_days_string = implode(",", $daynum);
 
+        $package = $booking->package;
+        $holydays = DB::table('holydays')
+            ->whereDate('date', '>=', date('Y-m-d'))
+            ->get()
+            ->pluck('date')
+            ->toArray();
+        //should work on it
+        $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
+            ->where('package_id', $booking->package->id)
+            ->groupBy('booking_date')
+            ->having('total', '>=', --$package->daily_acceptance)
+            ->having('booking_date', '>=', date('Y-m-d'))
+            ->get()
+            ->pluck('booking_date')
+            ->toArray();
+
+        $disabledDates = json_encode(array_merge($holydays, $bookedDates));
+
         if($booking->user->id == Auth::user()->id
-            && $booking->status != __('backend.cancelled')
-            && count($cancel_request)==0)
+            && $booking->status != 'cancelled')
         {
-            return view('customer.bookings.update', compact('booking', 'disable_days_string'));
+            return view('customer.bookings.update', compact('booking', 'disable_days_string', 'disabledDates'));
         }
         else
         {

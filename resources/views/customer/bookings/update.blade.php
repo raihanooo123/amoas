@@ -14,7 +14,7 @@
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
-                <li><a href="{{ route('customerBookings') }}">{{ __('backend.bookings') }}</a></li>
+                <li><a href="{{ route('bookings.index') }}">{{ __('backend.bookings') }}</a></li>
                 <li class="active">{{ __('backend.update_booking') }}</li>
             </ol>
         </div>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="panel-body">
                         <br>
-                        <form method="post" id="update_booking_time" action="{{ route('postUpdateBooking', $booking->id) }}">
+                        <form method="post" id="update_booking_time" action="{{ route('updateBookingTime', $booking->id) }}">
 
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
@@ -39,6 +39,7 @@
                             </div>
 
                             <input type="hidden" name="booking_id" id="booking_id" value="{{ $booking->id }}">
+                            <input type="hidden" name="package_id" value="{{ $booking->package->id }}">
 
                             <div class="form-group">
                                 <label><strong>{{ __('app.select_date') }}</strong></label>
@@ -76,23 +77,7 @@
 
 @section('scripts')
 
-
     <script src="{{ asset('plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    @if(App::getLocale()=="es")
-        <script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
-    @elseif(App::getLocale()=="fr")
-        <script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.fr.min.js') }}"></script>
-    @elseif(App::getLocale()=="de")
-        <script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.de.min.js') }}"></script>
-    @elseif(App::getLocale()=="da")
-        <script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.da.min.js') }}"></script>
-    @elseif(App::getLocale()=="it")
-        <script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.it.min.js') }}"></script>
-    @elseif(App::getLocale()=="pt")
-        <script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.pt.min.js') }}"></script>
-    @endif
-
-
 
     <script>
         var nowDate = new Date();
@@ -102,7 +87,9 @@
             autoclose: true,
             orientation : 'bottom left',
             startDate: today,
-            format: 'dd-mm-yyyy',
+            datesDisabled: JSON.parse('{!! $disabledDates !!}'),
+            // format: 'dd-mm-yyyy',
+            format: 'yyyy-mm-dd',
             daysOfWeekDisabled: "{{ $disable_days_string }}",
             language: "{{ App::getLocale() }}"
         });
@@ -117,14 +104,16 @@
             //populate timing slots
             var selected_date;
             var booking_id;
+            var package_id;
             selected_date = $(this).val();
             booking_id = $('input[id="booking_id"]').val();
+            package_id = $('input[name="package_id"]').val();
 
             //prepare to send ajax request
             $.ajax({
                 type: 'POST',
-                url: '{{ route('index') }}/get_update_slots',
-                data: {event_date:selected_date , booking:booking_id},
+                url: '{{ route('slots') }}',
+                data: {event_date:selected_date , booking:booking_id, package_id:package_id},
                 beforeSend: function() {
                     $('#slots_loader').removeClass('hidden');
                 },
@@ -179,7 +168,5 @@
         });
 
     </script>
-
-
 
 @endsection

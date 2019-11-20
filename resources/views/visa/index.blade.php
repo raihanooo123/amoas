@@ -3,12 +3,11 @@
 @section('content')
 
     <div class="page-title">
-        <h3>{{ __('backend.tazkira') }}</h3>
+        <h3>{{ __('backend.visa') }}</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
-                <li class="active">{{ __('backend.tazkira') }}</li>
-                <li><a href="{{ route('verification.index') }}">{{ __('backend.verification') }}</a></li>
+                <li class="active">{{ __('backend.visa') }}</li>
             </ol>
         </div>
     </div>
@@ -18,11 +17,6 @@
             <div class="col-md-12">
                 @include('alerts.bookings')
                 <div class="panel panel-white">
-                    <div class="panel-heading clearfix">
-                        <div class="col-md-12">
-                            <h4 class="panel-title">{{ __('backend.verification') }}</h4>
-                        </div>
-                    </div>
                     @php
                         if(app()->isLocale('dr') || app()->isLocale('ps')){
                             setlocale(LC_TIME, 'fa_IR');

@@ -135,4 +135,5 @@ return [
         'download_form' => 'Print Form',
     ],
     'check_visa_status' => 'Check Visa status',
+    'department' => 'Department (Mission)',
 ];

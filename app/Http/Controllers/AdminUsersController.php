@@ -8,6 +8,7 @@ use App\Role;
 use App\User;
 use App\Photo;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Auth\Events\Registered;
 use Yajra\Datatables\Datatables;
 
 class AdminUsersController extends Controller
@@ -71,7 +72,12 @@ class AdminUsersController extends Controller
 
         //encrypt password and persist data into users table
         $input['password'] = bcrypt($request->password);
-        User::create($input);
+        $user = User::create($input);
+
+        if($request->get('verify') != 'on')
+            $user->update(['email_verified_at' => date('Y-m-d H:i:s')]);
+        else
+            event(new Registered($user));
 
         //set session message
         Session::flash('user_created', __('backend.user_created'));

@@ -13,7 +13,7 @@
     </div>
     <div id="main-wrapper">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -35,72 +35,6 @@
                         </div>
                         <div class="info-box-icon">
                             <i class="icon-calendar" style="color:red;"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter">
-
-                                @if(config('settings.currency_symbol_position')== __('backend.right'))
-
-                                    {!! number_format( (float) $total_paid,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ). '&nbsp;' .
-                                        config('settings.currency_symbol') !!}
-
-                                @else
-
-                                    {!! config('settings.currency_symbol').
-                                        number_format( (float) $total_paid,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ) !!}
-
-                                @endif
-
-                            </p>
-                            <span class="info-box-title">{{ __('backend.invoices_paid') }}</span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="icon-graph"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter">
-
-                                @if(config('settings.currency_symbol_position')== __('backend.right'))
-
-                                    {!! number_format( (float) $total_refunded,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ). '&nbsp;' .
-                                        config('settings.currency_symbol') !!}
-
-                                @else
-
-                                    {!! config('settings.currency_symbol').
-                                        number_format( (float) $total_refunded,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ) !!}
-
-                                @endif
-
-                            </p>
-                            <span class="info-box-title">{{ __('backend.invoices_refunded') }}</span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="icon-bar-chart" style="color:red;"></i>
                         </div>
                     </div>
                 </div>

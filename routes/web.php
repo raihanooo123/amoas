@@ -43,7 +43,7 @@ Route::post('/remove_session_addon', 'UserBookingController@removeFromList');
 
 // ** USER ROLE ADMIN ROUTES ** //
 
-Route::group(['middleware'=>'admin'], function(){
+Route::group(['middleware'=>['admin', 'verified']], function(){
 
     Route::get('/users/d-table', 'AdminUsersController@dataTable')->name('users.data');
     Route::resource('/users','AdminUsersController');

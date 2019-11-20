@@ -360,4 +360,5 @@ return [
     'applicant' => 'Applicant',
     'id_card' => 'ID Card',
     'Type' => 'Type',
+    'cancellation_reason' => 'Reason for cancelling booking',
 ];

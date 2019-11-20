@@ -27,7 +27,7 @@
 
                             {{csrf_field()}}
 
-                            <div class="col-md-6 form-group{{$errors->has('first_name') ? ' has-error' : ''}}">
+                            <div class="col-md-6 form-group {{$errors->has('first_name') ? ' has-error' : ''}}">
                                 <label class="control-label" for="first_name">{{ __('backend.first_name') }}</label>
                                 <input type="text" class="form-control" name="first_name" value="{{old('first_name')}}">
                                 @if ($errors->has('first_name'))
@@ -37,7 +37,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6 form-group{{$errors->has('last_name') ? ' has-error' : ''}}">
+                            <div class="col-md-6 form-group {{$errors->has('last_name') ? ' has-error' : ''}}">
                                 <label class="control-label" for="last_name">{{ __('backend.last_name') }}</label>
                                 <input type="text" class="form-control" name="last_name" value="{{old('last_name')}}">
                                 @if ($errors->has('last_name'))
@@ -47,19 +47,16 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6 form-group{{$errors->has('phone_number') ? ' has-error' : ''}}">
-                                <label class="control-label" for="phone_number">{{ __('backend.phone_number') }}</label>
-                                <input type="text" class="form-control" name="phone_number" value="{{old('phone_number')}}">
-                                @if ($errors->has('phone_number'))
-                                    <span class="help-block">
-                                        <strong class="text-danger">{{ $errors->first('phone_number') }}</strong>
+                            <div class="col-md-12 form-group {{$errors->has('email') ? ' has-error' : ''}}">
+                                <label class="control-label" for="email">{{ __('backend.email') }} <small>will use as login email.</small></label>
+                                
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" name="verify" aria-label="..."> Should verify email
                                     </span>
-                                @endif
-                            </div>
+                                    <input type="email" class="form-control" name="email" value="{{old('email')}}">
+                                </div><!-- /input-group -->
 
-                            <div class="col-md-6 form-group{{$errors->has('email') ? ' has-error' : ''}}">
-                                <label class="control-label" for="email">{{ __('backend.email') }}</label>
-                                <input type="email" class="form-control" name="email" value="{{old('email')}}">
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('email') }}</strong>
@@ -67,7 +64,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-12 form-group{{$errors->has('is_active') ? ' has-error' : ''}}">
+                            <div class="col-md-12 form-group {{$errors->has('is_active') ? ' has-error' : ''}}">
                                 <label class="control-label" for="is_active">{{ __('backend.status') }}</label>
                                 <select class="form-control" name="is_active">
                                     <option value="1">{{ __('backend.active') }}</option>
@@ -75,7 +72,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-12 form-group{{$errors->has('role_id') ? ' has-error' : ''}}">
+                            <div class="col-md-12 form-group {{$errors->has('role_id') ? ' has-error' : ''}}">
                                 <label class="control-label" for="role_id">{{ __('backend.role') }}</label>
                                 <select class="form-control" name="role_id">
                                     <option value="0">{{ __('backend.select_one') }}</option>
@@ -94,7 +91,26 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-12 form-group{{$errors->has('password') ? ' has-error' : ''}}">
+                            <div class="col-md-12 form-group {{$errors->has('department_id') ? ' has-error' : ''}}">
+                                <label class="control-label" for="department_id">{{ __('app.department') }}</label>
+                                <select class="form-control" name="department_id">
+                                    <option>{{ __('backend.select_one') }}</option>
+                                    @foreach(\App\Department::where('status', 1)->get() as $department)
+                                        @if(old('department_id') == $department->id)
+                                            <option value="{{$department->id}}" selected>{{$department->name_en}}</option>
+                                        @else
+                                            <option value="{{$department->id}}">{{$department->name_en}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('department_id'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('department_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-12 form-group {{$errors->has('password') ? ' has-error' : ''}}">
                                 <label class="control-label" for="password">{{ __('backend.password') }}</label>
                                 <input type="password" class="form-control" name="password">
                                 @if ($errors->has('password'))
@@ -104,7 +120,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-12 form-group{{$errors->has('photo_id') ? ' has-error' : ''}}">
+                            <div class="col-md-12 form-group {{$errors->has('photo_id') ? ' has-error' : ''}}">
                                 <label for="photo_id" class="control-label">{{ __('backend.select_profile_image') }}</label>
                                 <input type="file" id="photo_id" name="photo_id">
                                 @if ($errors->has('photo_id'))
@@ -114,7 +130,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-12 form-group text-right">
+                            <div class="col-md-12 form-group  text-right">
                                 <button type="submit" class="btn btn-primary btn-lg">{{ __('backend.create_user') }}</button>
                             </div>
                         </form>

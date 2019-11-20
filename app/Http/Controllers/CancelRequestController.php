@@ -49,17 +49,8 @@ class CancelRequestController extends Controller
         Session::flash('cancel_request_received', __('backend.cancel_request_received'));
 
         $booking = Booking::find($input['booking_id']);
-        $admin = Role::find(1)->users()->get();
-
-        try {
-            Mail::to($request->user())->send(new CancellationReceived($booking));
-            foreach($admin as $recipient)
-            {
-                Mail::to($recipient)->send(new AdminCancellationNotification($booking , $recipient));
-            }
-        } catch(\Exception $ex) {
-            //do nothing
-        }
+        
+        $booking->update(['status'=>'cancelled']);
 
         return redirect()->route('showBooking', $input['booking_id']);
     }
