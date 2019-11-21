@@ -60,8 +60,8 @@ class AdminBookingsController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::all();
-        return view('bookings.index', compact('bookings'));
+        // $bookings = Booking::all();
+        return view('bookings.index');
     }
 
     /**

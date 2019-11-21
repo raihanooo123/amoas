@@ -26,7 +26,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">{{ count($customers) }}</p>
+                            <p class="counter">{{ $customers }}</p>
                             <span class="info-box-title">{{ __('backend.total_customers') }}</span>
                         </div>
                         <div class="info-box-icon">
@@ -39,7 +39,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">{{ count($bookings) }}</p>
+                            <p class="counter">{{ $bookings }}</p>
                             <span class="info-box-title">{{ __('backend.total_bookings') }}</span>
                         </div>
                         <div class="info-box-icon">
@@ -67,24 +67,6 @@
                         <div class="info-box-stats">
                             <p class="counter">
 
-                                @if(config('settings.currency_symbol_position')== __('backend.right'))
-
-                                    {!! number_format( (float) $total_earning,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ). '&nbsp;' .
-                                        config('settings.currency_symbol') !!}
-
-                                @else
-
-                                    {!! config('settings.currency_symbol').
-                                        number_format( (float) $total_earning,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ) !!}
-
-                                @endif
-
                             </p>
                             <span class="info-box-title">{{ __('backend.total_earning') }}</span>
                         </div>
@@ -99,24 +81,6 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter">
-
-                                @if(config('settings.currency_symbol_position')== __('backend.right'))
-
-                                    {!! number_format( (float) $total_refunded,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ). '&nbsp;' .
-                                        config('settings.currency_symbol') !!}
-
-                                @else
-
-                                    {!! config('settings.currency_symbol').
-                                        number_format( (float) $total_refunded,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ) !!}
-
-                                @endif
 
                             </p>
                             <span class="info-box-title">{{ __('backend.invoices_refunded') }}</span>
@@ -133,24 +97,6 @@
                         <div class="info-box-stats">
                             <p class="counter">
 
-                                @if(config('settings.currency_symbol_position')==__('backend.right'))
-
-                                    {!! number_format( (float) $total_unpaid,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ). '&nbsp;' .
-                                        config('settings.currency_symbol') !!}
-
-                                @else
-
-                                    {!! config('settings.currency_symbol').
-                                        number_format( (float) $total_unpaid,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator') ,
-                                        config('settings.thousand_separator') ) !!}
-
-                                @endif
-
                             </p>
                             <span class="info-box-title">{{ __('backend.unpaid_invoices') }}</span>
                         </div>
@@ -163,7 +109,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <h4 class="panel-title">{{ __('backend.weekly_booking_stats') }}</h4>
@@ -171,20 +117,6 @@
                     <div class="panel-body">
                         @if($stats_booking!="[]")
                             <div id="bookings_chart"></div>
-                        @else
-                            <div class="alert alert-warning">{{ __('backend.no_data_found') }}</div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-white">
-                    <div class="panel-heading clearfix">
-                        <h4 class="panel-title">{{ __('backend.weekly_earning_stats') }}</h4>
-                    </div>
-                    <div class="panel-body">
-                        @if($stats_booking!="[]")
-                            <div id="earning_chart"></div>
                         @else
                             <div class="alert alert-warning">{{ __('backend.no_data_found') }}</div>
                         @endif
@@ -216,19 +148,6 @@
                     xLabelAngle: 35,
                     hideHover: 'auto',
                     barColors: ['{{ config('settings.primary_color') ? config('settings.primary_color') : '#007bff' }}'],
-                    resize: true
-                });
-
-                Morris.Bar({
-                    element: 'earning_chart',
-                    data: <?php echo $stats_invoices; ?>,
-                    xkey: 'date',
-                    ykeys: ['value'],
-                    labels: ['{{ __('backend.amount') }} {{ __('backend.in') }} {!! config('settings.currency_symbol') !!}'],
-                    barRatio: 0.4,
-                    xLabelAngle: 35,
-                    hideHover: 'auto',
-                    barColors: ['{{ config('settings.secondary_color') ? config('settings.secondary_color') : '#4E5E6A' }}'],
                     resize: true
                 });
 

@@ -15,7 +15,7 @@ class Admin
     {
         if(Auth::user())
         {
-            if(Auth::user()->isAdmin())
+            if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
             {
                 if(Auth::user()->is_active)
                 {

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\DepartmentScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
@@ -11,6 +12,18 @@ class Booking extends Model
         'user_id', 'package_id', 'department_id', 'serial_no', 'booking_date',
         'booking_time', 'google_calendar_event_id' , 'email','booking_type','status',
     ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new DepartmentScope);
+    }
 
     public function invoice()
     {

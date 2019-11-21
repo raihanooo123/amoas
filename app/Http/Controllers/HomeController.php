@@ -41,38 +41,14 @@ class HomeController extends Controller
     public function index()
     {
         //if Auth user role is admin
-        if(Auth::user()->isAdmin())
+        if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
         {
             //find all customers
             $role = Role::find(2);
-            $customers = $role->users->all();
+            $customers = $role->users->count();
 
             //find all bookings
-            $bookings = Booking::all();
-
-            //find successful invoices and calculate total
-            $successful_invoices = DB::table('invoices')->where('is_refunded','=', 0)->where('is_paid', '=', 1)->get();
-            $unpaid_invoices = DB::table('invoices')->where('is_refunded','=', 0)->where('is_paid', '=', 0)->get();
-
-            $total_earning = 0;
-            foreach ($successful_invoices as $successful_invoice)
-            {
-                $total_earning = $total_earning + $successful_invoice->amount;
-            }
-
-            $total_unpaid = 0;
-            foreach ($unpaid_invoices as $unpaid_invoice)
-            {
-                $total_unpaid = $unpaid_invoice->amount + $total_unpaid;
-            }
-
-            //find refunded invoices and calculate total
-            $refunded_invoices = DB::table('invoices')->where('is_refunded','=', 1)->get();
-            $total_refunded = 0;
-            foreach ($refunded_invoices as $refunded_invoice)
-            {
-                $total_refunded = $total_refunded + $refunded_invoice->amount;
-            }
+            $bookings = Booking::count();
 
             //get all cancel requests
             $cancel_requests = DB::table('cancel_requests')->where('status','=', __('backend.pending'))->get();
@@ -82,23 +58,14 @@ class HomeController extends Controller
             $days = Input::get('days', 7);
             $range = Carbon::now()->subDays($days);
 
-
-
+            // dd($range->format('Y-m-d'));
             //get data for bookings graph
-            $stats_booking = Booking::where('created_at', '>=', $range)
-                ->where('status', '!=', __('backend.cancelled'))
+            $stats_booking = Booking::where('booking_date', '>=', $range->format('Y-m-d'))
+                ->where('status', '!=', 'cancelled')
                 ->groupBy('date')
                 ->orderBy('date', 'ASC')
                 ->get([DB::raw('Date(created_at) as date'),
                     DB::raw('COUNT(*) as value')]);
-
-            //get data for earnings graph
-            $stats_invoices = Invoice::where('created_at', '>=', $range)
-                ->where('is_refunded','=',0)
-                ->groupBy('date')
-                ->orderBy('date', 'ASC')
-                ->get([DB::raw('Date(created_at) as date'),
-                    DB::raw('SUM(amount) as value')]);
 
             //get data for cancelled bookings
             $bookings_cancelled = DB::table('bookings')->where('status','=', __('backend.cancelled'))->get();

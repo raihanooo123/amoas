@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Visa\VisaForm;
 use Illuminate\Http\File;
 use FPDM;
+use Yajra\Datatables\Datatables;
 
 class VisaFormController extends Controller
 {
@@ -223,7 +224,7 @@ class VisaFormController extends Controller
 
     public function doCheckStatus()
     {
-        $visa = VisaForm::with('department:id,name_en')->where('serial_no', request()->serial_no)->first();
+        $visa = VisaForm::withoutGlobalScope(\App\Scopes\DepartmentScope::class)->with('department:id,name_en')->where('serial_no', request()->serial_no)->first();
 
         $message = $visa ? null : 'The serial number you are looking for was not found.';
 
@@ -280,5 +281,20 @@ class VisaFormController extends Controller
             'alert' => __('backend.action.performed'),
             'class' => 'alert-danger'
         ]);
+    }
+
+    public function dataTable()
+    {
+        $visaForms = VisaForm::with(['department', 'country','type', 'registrar'])->latest();
+        return Datatables::of($visaForms)
+            ->addColumn('name', function($visaForm){
+                $name = ucwords($visaForm->title . ' ' . $visaForm->given_name . ' ' . $visaForm->family_name) ;
+                return $name;
+            })
+            ->addColumn('action', function($visaForms){
+                $action = '<a href="' . route('visa-form.show', $visaForms->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+                return $action;
+            })
+            ->make(true);
     }
 }

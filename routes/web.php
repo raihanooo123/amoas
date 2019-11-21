@@ -70,6 +70,7 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
         
         Route::post('/approve/{visa_form}', 'Visa\VisaFormController@approve')->name('visa.approve');
         Route::post('/reject/{visa_form}', 'Visa\VisaFormController@reject')->name('visa.reject');
+        Route::get('/visa-form/d-table', 'Visa\VisaFormController@dataTable')->name('visa-form.data');
         Route::resource('/visa-form', 'Visa\VisaFormController');
     });
 

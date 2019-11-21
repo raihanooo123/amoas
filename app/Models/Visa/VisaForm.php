@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Visa;
+use App\Scopes\DepartmentScope;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -54,6 +55,17 @@ class VisaForm extends Model
     protected $casts = [
         'under_18' => 'boolean',
     ];
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new DepartmentScope);
+    }
 
     public function department()
     {
