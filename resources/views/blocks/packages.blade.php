@@ -11,7 +11,12 @@
                     <div class="responsive-image"><img class="responsive-image" alt="{{ $package->title }}" src="{{ asset($package->photo->file) }}"></div>
                     <div class="package_title">
                         <div class="text-container">
-                            <h3 class="text-center package_title_large">{{ $package->title }}</h3>
+                            @php
+                                $titleArr = explode("-", $package->title);
+                                $title = '<h3 class="text-center package_title_large">' . $titleArr[0] . '</h3>';
+                                $title .= array_key_exists(1, $titleArr) ? '<h3 class="text-center package_title_large" style="padding-top:0px">' . $titleArr[1] . '</h3>' : '<h3 class="text-center package_title_large">&nbsp;</h3>';
+                            @endphp
+                            {!! $title !!}
                             <h4 class="text-center package_price">
                                 @if(config('settings.currency_symbol_position')== __('backend.right'))
 

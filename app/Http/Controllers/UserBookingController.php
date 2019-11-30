@@ -251,6 +251,7 @@ class UserBookingController extends Controller
         //get day name to select slot timings
         $timestamp_for_event = strtotime($event_date);
         $today_number = date('N', $timestamp_for_event);
+        // return $today_number;
         $booking_time = BookingTime::findOrFail($today_number);
 
 
@@ -515,7 +516,7 @@ class UserBookingController extends Controller
     {
         if(!session()->has('package_id')) return redirect('/');
         //load step 2
-        return view('select-booking-time', compact('disable_days_string'));
+        return view('select-booking-time');
     }
 
     /**
@@ -701,8 +702,8 @@ class UserBookingController extends Controller
 
         if($department) request()->session()->put('department', $department);
 
-        return view('finalize-booking', compact('event_address', 'category',
-            'package', 'session_addons', 'total', 'total_with_gst', 'gst_amount', 'booking'));
+        return view('finalize-booking', compact('category',
+            'package', 'session_addons', 'total', 'booking'));
     }
 
     /**
@@ -888,7 +889,7 @@ class UserBookingController extends Controller
         // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
         // $qrCode = (string) $this->writeQrCode($booking->serial_no);
         
-        $pdf = \PDF::loadView('print-booking-success', compact('data', 'booking', 'afgLogo', 'qrCode'))->setPaper('A4');
+        $pdf = \PDF::loadView('print-booking-success', compact('booking'))->setPaper('A4');
         return $pdf->download('booking_result.pdf');
     }
 }

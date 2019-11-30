@@ -70,8 +70,8 @@ class HomeController extends Controller
             //get data for cancelled bookings
             $bookings_cancelled = DB::table('bookings')->where('status','=', __('backend.cancelled'))->get();
 
-            return view('dashboard.admin', compact('customers', 'bookings', 'total_earning',
-                  'stats_booking', 'stats_invoices', 'bookings_cancelled', 'total_refunded', 'cancel_requests', 'total_unpaid'));
+            return view('dashboard.admin', compact('customers', 'bookings',
+                  'stats_booking', 'bookings_cancelled', 'cancel_requests'));
         }
 
         //if Auth user role is customer
