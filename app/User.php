@@ -67,6 +67,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin()
     {
+        if(!$this->role) return false;
+
         if($this->role->id == 1)
         {
             return true;
@@ -76,6 +78,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isCustomer()
     {
+        if(!$this->role) return true;
+
         if($this->role->id == 2)
         {
             return true;
@@ -85,6 +89,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isSuperAdmin()
     {
+        if(!$this->role) return false;
+        
         preg_match('/super-admin|super_admin|super admin|super administrator/i', $this->role->name, $matches);
 
         return $matches ? true : false;
