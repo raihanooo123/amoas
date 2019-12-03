@@ -266,6 +266,7 @@ class VisaFormController extends Controller
 
         $booking->load(['user', 'info', 'package', 'department']);
         \App\Jobs\FinalizeNewBooking::dispatch($booking);
+        \App\Jobs\VisaApplicationApproved::dispatch($visa_form);
 
         return back()->with([
             'alert' => __('backend.action.performed'),
@@ -276,6 +277,8 @@ class VisaFormController extends Controller
     {
         $visa_form->status = __('backend.rejectByReason');
         $visa_form->save();
+
+        \App\Jobs\VisaApplicationRejected::dispatch($visa_form);
 
         return back()->with([
             'alert' => __('backend.action.performed'),
