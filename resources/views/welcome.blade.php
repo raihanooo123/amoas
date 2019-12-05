@@ -69,6 +69,8 @@
                 </div>
                 <br>
                 <div id="categories_holder">
+                    <h5>Select Your Category of Services</h5>
+                    <br>
                     <div class="row">
                         @if(count($categories))
                             @foreach($categories as $category)
@@ -168,25 +170,59 @@
 
     </form>
 
+<!-- Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('images/loader.gif')}}" alt="loading..." srcset="">
+                <h2>Loading, please wait...</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')
 
     <script>
-        $('body').on('click', 'a.btn_package_select', function() {
+        
+        //append form with selected package_id
+
+        $('body').on('click', 'a.btn_package_select', function () {
+            console.log('first step');
+            var package_id = $(this).attr('data-package-id');
+            $('#package_error').addClass('d-none');
+
+            $('#package_id').remove();
+            $('#booking_step_1').append('<input type="hidden" name="package_id" id="package_id" value="' + package_id + '">');
+        // });
+        // $('body').on('click', 'a.btn_package_select', function() {
+            console.log('second step');
+            $('#loadingModal').modal('show');
             $('.btn_package_select').text('{{ __("app.booking_package_btn_select") }}').removeClass('btn-danger').addClass('btn-primary');
             $(this).text('{{ __("app.booking_package_btn_selected") }}').removeClass('btn-primary').addClass('btn-danger');
-        });
+        // });
 
-        $('body').on('click', 'a.btn_package_select', function() {
+        // $('body').on('click', 'a.btn_package_select', function() {
+            console.log('third step');
             var package_id = $(this).attr('data-package-id');
             $('#package_info_loader').removeClass('d-none');
             
             $.get("{{ URL('/ajax_package_info') }}", {id:package_id}, function(data){
+                
+                console.log('fourth step');
+                $('#loadingModal').modal('hide');
                 $('#package_desc_container').removeClass('d-none');
                 $('#package_desc').html(data);
-                
+
                 $('#package_info_loader').addClass('d-none');
+
+                $('html,body').animate({
+                    scrollTop: $('#package_desc').offset().top
+                }, 'slow');
+                console.log('end in ajax');
             });
         });
         

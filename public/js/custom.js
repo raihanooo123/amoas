@@ -8,6 +8,7 @@ $(document).ready(function () {
     //get packages on click of div.category_box
 
     $("div").on("click", "div.category_box", function () {
+        $('#loadingModal').modal('show');
         var category_id = $(this).attr('data-category-id');
         $('.type_title').removeClass('active');
         $(this).find('.type_title').addClass('active');
@@ -49,19 +50,14 @@ $(document).ready(function () {
                 });
             },
             complete: function () {
-                $('#packages_loader').addClass('d-none');
+                var packageHolder = $('#packages_loader');
+                packageHolder.addClass('d-none');
+                $('#loadingModal').modal('hide');
+                $('html,body').animate({
+                    scrollTop: $('#packages_holder').offset().top
+                }, 'slow');
             }
         });
-    });
-
-    //append form with selected package_id
-
-    $('body').on('click', 'a.btn_package_select', function () {
-        var package_id = $(this).attr('data-package-id');
-        $('#package_error').addClass('d-none');
-
-        $('#package_id').remove();
-        $('#booking_step_1').append('<input type="hidden" name="package_id" id="package_id" value="' + package_id + '">');
     });
 
     //handle form submission of step 1
