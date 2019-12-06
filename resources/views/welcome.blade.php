@@ -9,7 +9,7 @@
                 @php
                     $department = session('department');
                 @endphp
-                <h3 class="text-center promo-heading">{{ $department->name_en }}</h3>
+                <h3 class="text-center promo-heading">{{ Lang::has('app.' . $department->name_en, app()->getLocale()) ? __('app.' . $department->name_en) : $department->name_en }}</h3>
             @endif
             <p class="promo-desc text-center">
                 {{ __('app.welcome_subtitle') }}
@@ -34,42 +34,21 @@
 
                 <div class="row" id="guideline">
                     <div class="col-md-8">
-                        <h5>How to reserve a set on our mission?</h5>
-                        <ol>
-                            <li> <strong>Step 1:</strong> Select the services which you want to be done by us.</li>
-                            <li>Select the package within the selected service. 
-                                The detailed inforamtion of each package will show with package selection, please read once and click on 
-                                <button class="btn btn-sm" onclick="return false;">
-                                    <i class="far fa-clock"></i> &nbsp; Select Booking Time
-                                </button> button at bottom of the page.</li>
-
-                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on 
-                                <button class="btn btn-sm" onclick="return false;">
-                                        Next »
-                                </button>
-                                    button, although some package may have different procedure for booking.</li>
-                            
-                            <li> <strong>Step 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
-                            <li> <strong>Step 4:</strong> This is final step. You have successfully booked a time and print the slip, it is neccessary while entering to our mission.</li>
-                        </ol>
+                        <h5>@lang('app.howToReserve')</h5>
+                        @lang('app.guidelineStep')
                     </div>
                     <div class="col-md-4">
-                        <h5>Quick access links</h5>
+                        <h5>@lang('app.quickLinks')</h5>
                         <ul>
-                            <li>Check your Visa status <a href="{{route('check-status')}}">here.</a>
-                                <br>
-                                Although we will sent you the approval or rejection of the Online Visa Application Form to your email.
-                            </li>
-                            <li>Create an account <a href="{{route('register')}}">here.</a>
-                                <br>
-                                Before going further, you must have a verified account. 
-                            </li>
+                            @lang('app.quickLinksCheckVisa', ['href'=> route('check-status')])
+                            @lang('app.quickLinksCreateAccount', ['href'=> route('register')])
+                            
                         </ul>
                     </div>
                 </div>
                 <br>
                 <div id="categories_holder">
-                    <h5>Select Your Category of Services</h5>
+                    <h5>@lang('app.selectCategoryOfService')</h5>
                     <br>
                     <div class="row">
                         @if(count($categories))
@@ -79,7 +58,7 @@
                                         <div class="responsive-image"><img class="responsive-image" alt="{{ $category->title }}" src="{{ asset($category->photo->file) }}"></div>
                                         <div class="type_title">
                                             <div class="text-container">
-                                                <p class="text_type">{{ $category->title }}</p>
+                                                <p class="text_type">{{ Lang::has('app.' . $category->title, app()->getLocale()) ? __('app.' . $category->title) : $category->title }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +89,7 @@
 
                 <div class="row">
                     <div class="col-md-12 d-none" id="package_desc_container">
-                        <h5>Package information and requirements</h5>
+                        <h5>@lang('app.requirementsForPackage')</h5>
                         <div id="package_desc"></div>
                     </div>
                 </div>
@@ -140,7 +119,7 @@
                         </button>
                         @else
                         <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
-                            <i class="fa fa-sign-in-alt"></i> &nbsp; Login/Register
+                            <i class="fa fa-sign-in-alt"></i> &nbsp; @lang('app.loginOrRegister')
                         </a>
                         @endif
                     </div>
@@ -160,7 +139,7 @@
                         </button>
                         @else
                         <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto login-btn">
-                            <i class="fa fa-sign-in-alt"></i> &nbsp; Login/Register
+                            <i class="fa fa-sign-in-alt"></i> &nbsp; @lang('app.loginOrRegister')
                         </a>
                         @endif
                     </div>
@@ -176,7 +155,7 @@
         <div class="modal-content">
             <div class="modal-body text-center">
                 <img src="{{asset('images/loader.gif')}}" alt="loading..." srcset="">
-                <h2>Loading, please wait...</h2>
+                <h2>@lang('app.loadingPlzWait')</h2>
             </div>
         </div>
     </div>

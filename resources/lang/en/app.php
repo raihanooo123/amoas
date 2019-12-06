@@ -136,4 +136,40 @@ return [
     ],
     'check_visa_status' => 'Check Visa status',
     'department' => 'Department (Mission)',
+    'Embassy of Afghanistan in Bonn' => 'Some germena transulation of file.',
+    'howToReserve' => 'How to reserve a set on our mission?',
+    'guidelineStep' => '<ol>
+                        <li> <strong>Step 1:</strong> Select the services which you want to be done by us.</li>
+                            <li>Select the package within the selected service. 
+                                The detailed information of each package will show with package selection, please read once and click on 
+                                <button class="btn btn-sm" onclick="return false;">
+                                    <i class="far fa-clock"></i> &nbsp; Select Booking Time
+                                </button> button at bottom of the page.</li>
+
+                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on 
+                                <button class="btn btn-sm" onclick="return false;">
+                                        Next »
+                                </button>
+                                    button, although some package may have different procedure for booking.</li>
+                            
+                            <li> <strong>Step 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
+                            <li> <strong>Step 4:</strong> This is final step. You have successfully booked a time and print the slip, it is necessary while entering to our mission.</li>
+                        </ol>',
+    'quickLinks' => 'Quick access links',
+    'quickLinksCheckVisa' => '<li>Check your Visa status <a href=":href">here.</a>
+                                    <br>
+                                    Although we will sent you the approval or rejection of the Online Visa Application Form to your email.
+                                </li>',
+    'quickLinksCreateAccount' => '<li>Create an account <a href=":href">here.</a>
+                                        <br>
+                                        Before going further, you must have a verified account. 
+                                    </li>',
+    'selectCategoryOfService' => 'Select Your Category of Services',
+    'All Services' => 'All Services',
+    'Legal Services' => 'Legal Services',
+    'Document Certification' => 'Document Certification',
+    'requirementsForPackage' => 'Package information and requirements',
+    'loginOrRegister' => 'Login/Register',
+    'loadingPlzWait' => 'Loading, please wait...',
+    'nearestMission' => 'Select our nearest mission to you',
 ];

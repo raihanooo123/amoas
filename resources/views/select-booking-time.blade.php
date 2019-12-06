@@ -125,7 +125,7 @@
 
                 <div class="col-md-12">
                     <br>
-                    <h5><i class="fa fa-asterisk text-danger"></i> {{ __('backend.department') }}</h5>
+                    <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.nearestMission') }}</h5>
                     <div class="form-group">
                         <select
                             class="form-control simple-select2 form-control-lg {{ $errors->has('department_id') ? 'is-invalid' : '' }}"
