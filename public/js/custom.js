@@ -8,7 +8,7 @@ $(document).ready(function () {
     //get packages on click of div.category_box
 
     $("div").on("click", "div.category_box", function () {
-        $('#loadingModal').modal('show');
+        
         var category_id = $(this).attr('data-category-id');
         $('.type_title').removeClass('active');
         $(this).find('.type_title').addClass('active');
@@ -24,6 +24,9 @@ $(document).ready(function () {
             beforeSend: function () {
                 $('#packages_loader').removeClass('d-none');
                 $('#packages_holder').html('&nbsp;');
+                $('html,body').animate({
+                    scrollTop: $('#packages_loader').offset().top
+                }, 'slow');
             },
             success: function (response) {
                 $('#packages_holder').fadeIn().html(response);
@@ -52,7 +55,7 @@ $(document).ready(function () {
             complete: function () {
                 var packageHolder = $('#packages_loader');
                 packageHolder.addClass('d-none');
-                $('#loadingModal').modal('hide');
+                
                 $('html,body').animate({
                     scrollTop: $('#packages_holder').offset().top
                 }, 'slow');
