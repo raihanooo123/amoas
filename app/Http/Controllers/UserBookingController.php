@@ -496,15 +496,12 @@ class UserBookingController extends Controller
         $request->session()->put('package_id', $request->package_id);
         $package = Package::findOrFail(Session::get('package_id'));
 
+        // Check if the online visa form is selected
         if($package){
-            
             $visa = preg_match('/visa/i', $package->title, $output_array);
-            // dd($visa);
             if($visa)
                 return redirect()->route('visa-form.fill');
-
         }
-            
 
         return redirect()->route('loadStep2');
     }
@@ -525,7 +522,7 @@ class UserBookingController extends Controller
      */
     public function postStep2(Request $request)
     {
-        $this->validate(request(), [
+        $validator = \Validator::make($request->all(), [
             'email' => 'email|required',
             'postal' => 'required',
             'phone' => 'required',
@@ -536,6 +533,34 @@ class UserBookingController extends Controller
             'department_id' => 'required',
         ]);
 
+        // search for specific pattern
+        // 4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+
+        $department;
+
+        $validator->sometimes('postal', ['regex:/4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+/'], function ($input) use ($request, $validator) {
+
+            $department = \App\Department::findOrFail($request->department_id) ?? session('department');
+
+            if ($department && $department->code == 'CBONN'){
+                $validator->errors()->add('postal', __('app.postalError', ['department'=> \Lang::has('app.' . $department->name_en, app()->getLocale()) ? __('app.' . $department->name_en) : $department->name_en]));
+                return true;
+            }
+            
+        });
+        
+        $validator->after(function($validator) use($request) {
+            
+            // if($container->owner_id != user_id())
+            // {
+            //     $validator->errors()->add('owner_id', 'Not owner of this resource');
+            // }
+        });
+        // dd($validator);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $input = $request->all();
         
         //store form input into session and load next step
