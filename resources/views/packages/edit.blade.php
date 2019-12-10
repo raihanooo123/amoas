@@ -95,6 +95,26 @@
                                 @endif
                             </div>
 
+                            <div class="col-md-6 form-group {{$errors->has('daily_acceptance') ? ' has-error' : ''}}">
+                                <label class="control-label" for="daily_acceptance">{{ __('backend.daily_acceptance') }}</label>
+                                <input type="number" class="form-control" name="daily_acceptance" value="{{ $package->daily_acceptance }}">
+                                @if ($errors->has('daily_acceptance'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('daily_acceptance') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6 form-group {{$errors->has('emergency_acceptance') ? ' has-error' : ''}}">
+                                <label class="control-label" for="emergency_acceptance">{{ __('backend.emergency_acceptance') }}</label>
+                                <input type="number" class="form-control" name="emergency_acceptance" value="{{ $package->emergency_acceptance }}">
+                                @if ($errors->has('emergency_acceptance'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('emergency_acceptance') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
                             <div class="col-md-12 form-group{{$errors->has('description') ? ' has-error' : ''}}">
                                 <label class="control-label" for="description">{{ __('backend.description') }}</label>
                                 <textarea name="description" class="summernote">{{ $package->description }}</textarea>

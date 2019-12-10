@@ -361,4 +361,6 @@ return [
     'id_card' => 'ID Card',
     'Type' => 'Type',
     'cancellation_reason' => 'Reason for cancelling booking',
+    'daily_acceptance' => 'Number of Daily Acceptance for Applicant',
+    'emergency_acceptance' => 'Number of Emergency Acceptance for Applicant',
 ];

@@ -56,7 +56,7 @@ class AdminPackagesController extends Controller
 
         //check if an image is selected
         if($image = $request->file('photo_id'))
-        {
+        {   
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
             $image->move('images',$image_name);

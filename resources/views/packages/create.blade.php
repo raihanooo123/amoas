@@ -27,7 +27,7 @@
 
                             {{csrf_field()}}
 
-                            <div class="col-md-6 form-group{{$errors->has('title') ? ' has-error' : ''}}">
+                            <div class="col-md-6 form-group {{$errors->has('title') ? ' has-error' : ''}}">
                                 <label class="control-label" for="title">{{ __('backend.title') }}</label>
                                 <input type="text" class="form-control" name="title" value="{{old('title')}}">
                                 @if ($errors->has('title'))
@@ -37,7 +37,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6 form-group{{$errors->has('price') ? ' has-error' : ''}}">
+                            <div class="col-md-6 form-group {{$errors->has('price') ? ' has-error' : ''}}">
                                 <label class="control-label" for="price">{{ __('backend.price') }}</label>
                                 <input type="text" class="form-control" name="price" value="{{old('price')}}">
                                 @if ($errors->has('price'))
@@ -47,7 +47,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6 form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+                            <div class="col-md-6 form-group {{ $errors->has('category_id') ? ' has-error' : '' }}">
                                 <label class="control-label" for="category_id">{{ __('backend.category') }}</label>
                                 <select class="form-control" name="category_id">
                                     <option value="0">{{ __('backend.select_one') }}</option>
@@ -62,7 +62,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6 form-group{{$errors->has('duration') ? ' has-error' : ''}}">
+                            <div class="col-md-6 form-group {{$errors->has('duration') ? ' has-error' : ''}}">
                                 <label class="control-label" for="duration">{{ __('backend.duration_in_minutes') }}</label>
                                 <select class="form-control" name="duration">
                                     @for($factor=1; $factor<=6; $factor++)
@@ -93,8 +93,28 @@
                                     </span>
                                 @endif
                             </div>
+                            
+                            <div class="col-md-6 form-group {{$errors->has('daily_acceptance') ? ' has-error' : ''}}">
+                                <label class="control-label" for="daily_acceptance">{{ __('backend.daily_acceptance') }}</label>
+                                <input type="number" class="form-control" name="daily_acceptance" value="{{old('daily_acceptance')}}">
+                                @if ($errors->has('daily_acceptance'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('daily_acceptance') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
 
-                            <div class="col-md-12 form-group{{$errors->has('description') ? ' has-error' : ''}}">
+                            <div class="col-md-6 form-group {{$errors->has('emergency_acceptance') ? ' has-error' : ''}}">
+                                <label class="control-label" for="emergency_acceptance">{{ __('backend.emergency_acceptance') }}</label>
+                                <input type="number" class="form-control" name="emergency_acceptance" value="{{old('emergency_acceptance')}}">
+                                @if ($errors->has('emergency_acceptance'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('emergency_acceptance') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-12 form-group {{$errors->has('description') ? ' has-error' : ''}}">
                                 <label class="control-label" for="description">{{ __('backend.description') }}</label>
                                 <p class="help-block text-info">{{ __('backend.package_description_info') }}</p>
                                 <textarea name="description" class="summernote">{{ old('description') }}</textarea>
@@ -105,7 +125,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-12 form-group{{$errors->has('photo_id') ? ' has-error' : ''}}">
+                            <div class="col-md-12 form-group {{$errors->has('photo_id') ? ' has-error' : ''}}">
                                 <label for="photo_id" class="control-label">{{ __('backend.select_image') }}</label>
                                 <input type="file" id="photo_id" name="photo_id">
                                 @if ($errors->has('photo_id'))
@@ -118,7 +138,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-md-12 form-group text-right">
+                            <div class="col-md-12 form-group  text-right">
                                 <button type="submit" class="btn btn-primary btn-lg">{{ __('backend.create_package') }}</button>
                             </div>
 
