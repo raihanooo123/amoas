@@ -172,4 +172,11 @@ return [
     'loginOrRegister' => 'Login/Register',
     'loadingPlzWait' => 'Loading, please wait...',
     'nearestMission' => 'Select our nearest mission to you',
+    'postalError' => 'Your region does not belongs to the selected mission, please choose nearest mission to you.',
+    'postalDesc' => 'If you don\'t know, put "000" instead. In some missions it\'s required.',
+    'language' => 'English', // put your language name exp: this is english translate so it is english
+    'dutch' => 'Dutch',
+    'english' => 'English',
+    'persian' => 'فارسی',
+    'pashto' => 'پشتو',
 ];

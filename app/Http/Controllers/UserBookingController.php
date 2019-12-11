@@ -531,31 +531,23 @@ class UserBookingController extends Controller
             'idcard' => 'required',
             'address' => 'required',
             'department_id' => 'required',
+        ],[
+            'postal.regex'=> __('app.postalError')
         ]);
 
         // search for specific pattern
         // 4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+
-        $department;
 
-        $validator->sometimes('postal', ['regex:/4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+/'], function ($input) use ($request, $validator) {
+        $validator->sometimes('postal', ['regex:/^(4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+)/'], function ($input) use ($request, $validator) {
 
             $department = \App\Department::findOrFail($request->department_id) ?? session('department');
 
-            if ($department && $department->code == 'CBONN'){
-                $validator->errors()->add('postal', __('app.postalError', ['department'=> \Lang::has('app.' . $department->name_en, app()->getLocale()) ? __('app.' . $department->name_en) : $department->name_en]));
+            if ($department && $department->code == 'CBONN')
+                // $validator->errors()->add('postal.regex', __('app.postalError', ['department'=> \Lang::has('app.' . $department->name_en, app()->getLocale()) ? __('app.' . $department->name_en) : $department->name_en]));
                 return true;
-            }
             
         });
         
-        $validator->after(function($validator) use($request) {
-            
-            // if($container->owner_id != user_id())
-            // {
-            //     $validator->errors()->add('owner_id', 'Not owner of this resource');
-            // }
-        });
-        // dd($validator);
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)

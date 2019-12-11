@@ -21,7 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','UserBookingController@loadBooking')->name('index');
 Route::get('/ajax_package_info','UserBookingController@ajaxPackageInfo');
 
-// ** AUTHORIZATION ROUTE ** //
+// Language Changes
+Route::get('/lang/{lang}', function ($lang) {
+
+    \Request::session()->put('lang', $lang);
+    return redirect()->back();
+})->name('lang');
+
 
 //Auth::routes();
 Auth::routes(['verify' => true]);

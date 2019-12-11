@@ -25,60 +25,85 @@
     @include('settings.customization')
     <style>
         .promo {
-            background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.7)),rgba(0,0,0,.7) url('{{ asset('images/promo.jpg') }}') no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .7)),
+            rgba(0, 0, 0, .7) url('{{ asset('images/promo.jpg') }}') no-repeat;
             background-size: cover;
             background-position: center;
         }
     </style>
 </head>
+
 <body style="background-color: #F2F2F2;">
 
-<nav class="navbar navbar-light navbar-expand-lg bg-primary top-nav">
-    <a class="navbar-brand" href="{{ route('index') }}" style="color:#FFFFFF;"><img src="{{ asset('images/logo-light.png') }}" height="40"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        @if(!Auth::user())
+    <nav class="navbar navbar-light navbar-expand-lg bg-primary top-nav">
+        <a class="navbar-brand" href="{{ route('index') }}" style="color:#FFFFFF;"><img
+                src="{{ asset('images/logo-light.png') }}" height="40"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}" style="color:#FFF;"><i class="fa fa-sign-in-alt"></i> &nbsp; {{ __('app.login_link') }}</a>
+                <li class="nav-item dropdown mr-3">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-language"></i> {{ __('app.language') }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{route('lang',['de'])}}">{{ __('app.dutch') }}</a>
+                        <a class="dropdown-item" href="{{route('lang',['en'])}}">{{ __('app.english') }}</a>
+                        {{-- <a class="dropdown-item" href="#">{{ __('app.persian') }}</a> --}}
+                        {{-- <a class="dropdown-item" href="#">{{ __('app.pashto') }}</a> --}}
+                    </div>
                 </li>
-            </ul>
 
-        @else
+                @if(!Auth::user())
+                {{-- <ul class="navbar-nav ml-auto"> --}}
 
-            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <img src="{{ Auth::user()->photo ? asset(Auth::user()->photo->file) : asset('images/profile-placeholder.png') }}" class="rounded-circle d-inline mx-2" width="40" height="40">
+                    <a class="nav-link" href="{{ route('login') }}" style="color:#FFF;"><i
+                            class="fa fa-sign-in-alt"></i> &nbsp; {{ __('app.login_link') }}</a>
+                </li>
+                {{-- </ul> --}}
+                @else
+                {{-- <ul class="navbar-nav ml-auto"> --}}
+                <li class="nav-item">
+                    <img src="{{ Auth::user()->photo ? asset(Auth::user()->photo->file) : asset('images/profile-placeholder.png') }}"
+                        class="rounded-circle d-inline mx-2" width="40" height="40">
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle mb-3 mb-md-0 mr-md-5" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#FFF;">
+                    <a class="nav-link dropdown-toggle mb-3 mb-md-0 mr-md-5" href="#" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#FFF;">
                         {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{{ route('home') }}"><i class="fa fa-home text-primary"></i> &nbsp; {{ __('backend.dashboard1') }}</a>
-                        <a class="dropdown-item" href="{{ route('customerProfile') }}"><i class="fa fa-user text-primary"></i> &nbsp; {{ __('app.my_account_link') }}</a>
+                        <a class="dropdown-item" href="{{ route('home') }}"><i class="fa fa-home text-primary"></i>
+                            &nbsp; {{ __('backend.dashboard1') }}</a>
+                        <a class="dropdown-item" href="{{ route('customerProfile') }}"><i
+                                class="fa fa-user text-primary"></i> &nbsp; {{ __('app.my_account_link') }}</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="
                                 event.preventDefault();
-                                document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt text-danger"></i> &nbsp; {{ __('app.logout_link') }}</a>
+                                document.getElementById('logout-form').submit();"><i
+                                class="fa fa-sign-out-alt text-danger"></i> &nbsp; {{ __('app.logout_link') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     </div>
                 </li>
+                {{-- </ul> --}}
+                @endif
             </ul>
-
-        @endif
-    </div>
-</nav>
-@yield('content')
-<script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('js/custom.js') }}"></script>
-@if(config('settings.freshchat_widget')!=NULL)
+        </div>
+    </nav>
+    @yield('content')
+    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+    @if(config('settings.freshchat_widget')!=NULL)
     <script src="https://wchat.freshchat.com/js/widget.js"></script>
     <script>
         window.fcWidget.init({
@@ -92,7 +117,8 @@
         window.fcWidget.user.setEmail("{{ Auth::user()->email }}");
         @endif
     </script>
-@endif
-@yield('scripts')
+    @endif
+    @yield('scripts')
 </body>
+
 </html>

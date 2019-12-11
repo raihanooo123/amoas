@@ -62,7 +62,7 @@
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.postal') }} / {{ __('app.zip') }}</h5>
                     <div class="form-group">
                         <input id="autocomplete" placeholder="{{ __('app.postal') }} {{ __('app.here') }}" name="postal" type="text" class="form-control form-control-lg {{ $errors->has('postal') ? 'is-invalid' : '' }}" value="{{old('postal')}}">
-                        <small>&nbsp;</small>
+                        <small>{{ __('app.postalDesc') }}</small>
                         <p class="form-text text-danger d-none" id="address_error_holder">
                             {{ __('app.address_error') }}
                         </p>
