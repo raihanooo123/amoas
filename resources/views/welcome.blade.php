@@ -115,7 +115,7 @@
                     <div class="col-md-6 text-right">
                         @if(Auth::user())
                         <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
-                            <i class="far fa-clock"></i> &nbsp; {{ __('app.welcome_post_btn') }}
+                            {!! __('pagination.next') !!}
                         </button>
                         @else
                         <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto">
@@ -135,7 +135,7 @@
                     <div class="col-md-12 text-center">
                         @if(Auth::user())
                         <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
-                            <i class="far fa-clock"></i> &nbsp; {{ __('app.welcome_post_btn') }}
+                            {!! __('pagination.next') !!}
                         </button>
                         @else
                         <a href="{{ route('login') }}" class="navbar-btn btn btn-primary btn-lg ml-auto login-btn">
@@ -177,8 +177,8 @@
             $('#package_id').remove();
             $('#booking_step_1').append('<input type="hidden" name="package_id" id="package_id" value="' + package_id + '">');
             
-            $('.btn_package_select').text('{{ __("app.booking_package_btn_select") }}').removeClass('btn-danger').addClass('btn-primary');
-            $(this).text('{{ __("app.booking_package_btn_selected") }}').removeClass('btn-primary').addClass('btn-danger');
+            $('.btn_package_select').text('{{ __("app.booking_package_btn_select") }}').removeClass('btn-secondary').addClass('btn-primary').css('color', 'white');
+            $(this).text('{{ __("app.booking_package_btn_selected") }}').removeClass('btn-primary').addClass('btn-secondary');
             
             var package_id = $(this).attr('data-package-id');
             $('#package_info_loader').removeClass('d-none');

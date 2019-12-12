@@ -113,65 +113,67 @@ return [
     'address_desc' => 'Bitte tragen Sie Ihre Vollständige Adresse ein. An diese senden wir Dokumente wie Ihren Pass oder Tazkira.',
 	
 	// 16-10-2019
-    'validation_t_message' => 'Invalid information. please fill the following input correctly.',
-    'participantInfo' => 'You have selected :participant participants with you, please enter information of each one.',
-    'relationType' => 'Relation',
-    'select_service' => 'Selected Service',
-    'required' => 'Required',
-    'no_participant' => 'No participant with you.',
-    'print' => 'Print',
-    'booking_success_msg' => 'Reservation successfully done. Please print the following booking summary, if you are not able to print it now we will send you the booking ticket to you email.',
-    'print_now' => 'Print now',
-    'print_pdf' => 'Print PDF',
-    'no_paticipant_including_you' => 'Available date for :paticipant participant/s including applicant.',
-    'available_slots' => 'available :available slots',
-    'already_booked' => 'already booked',
+    'validation_t_message' => 'Ungültige Informationen. Bitte füllen Sie die folgenden Felder korrekt aus.',
+    'participantInfo' => 'Sie haben :participant Teilnehmer ausgewählt, bitte folgende Informationen für alle Teilnehmer ausfüllen',
+    'relationType' => 'Beziehung',
+    'select_service' => 'Ausgewähltre Service',
+    'required' => 'Notwendig',
+    'no_participant' => 'Sie bringen keine weiteren Personen mit',
+    'print' => 'Ausdrucken',
+    'booking_success_msg' => 'Reservierung erfolgreich durchgeführt. Bitte drucken Sie die folgende Buchungsübersicht aus. Wenn Sie diese jetzt nicht ausdrucken können, senden wir Ihnen das Buchungsticket per E-Mail zu.',
+    'print_now' => 'Jetzt Ausdrucken',
+    'print_pdf' => 'PDF drucken',
+    'no_paticipant_including_you' => 'Verfügbare Termine für :paticipant Teilnehmer inklusive Antragsteller.',
+    'available_slots' => ':available Slots Verfügbar',
+    'already_booked' => 'bereits ausgebucht',
     'visa-completion' => [
-        'thank_you_title' => 'Visa Form Completed',
-        'thank_you_subtitle' => 'A confirmation email and invoice is sent to your email address.',
-        'thank_you_heading' => 'You have successfully completed Afghanistan Online Visa Form.',
-        'thank_you_paragraph' => 'This form registered to <strong>:name</strong> with serial number of <strong>:serial</strong> in <strong>:mission</strong>. You can check the Visa Form status <strong><a href=":href">here</a></strong> although we will send you an email to <strong>:email</strong> containing Visa Form status, Visa Application Form and appointment date.',
-        'new_booking_link' => 'New Booking',
-        'download_form' => 'Print Form',
+        'thank_you_title' => 'Visa Formular vollständig ausgefüllt',
+        'thank_you_subtitle' => 'Eine Bestätigungs-E-Mail und eine Rechnung werden an Ihre E-Mail-Adresse gesendet.',
+        'thank_you_heading' => 'Sie haben das Online Visum Formular für Afghanistan erfoglreich ausgefüllt.',
+        'thank_you_paragraph' => 'Dieser Antrag wurde für <strong>:name</strong> mit der Seriennummer <strong>:serial</strong> in <strong>:mission</strong> registriert. Sie können den Status des Visa Antrages <strong><a href=":href">hier</a></strong> überprüfen, wir senden Ihnen jedoch eine E-Mail an <strong>:email</strong> mit dem Visa Antragsformulare und dem Termindatum zu.',
+        'new_booking_link' => 'Neue Buchung',
+        'download_form' => 'Antrag Ausdrucken',
     ],
-    'check_visa_status' => 'Check Visa status',
-    'department' => 'Department (Mission)',
+    'check_visa_status' => 'Visa Status überprüfen',
+    'department' => 'Abteilung (Mission)',
     'Embassy of Afghanistan in Bonn' => 'Some germena transulation of file.',
-    'howToReserve' => 'How to reserve a set on our mission?',
+    'howToReserve' => 'Wie Reserviere ich einen Termin?',
     'guidelineStep' => '<ol>
-                        <li> <strong>Step 1:</strong> Select the services which you want to be done by us.</li>
-                            <li>Select the package within the selected service. 
-                                The detailed information of each package will show with package selection, please read once and click on 
+                        <li> <strong>Schritt 1:</strong> Wählen Sie den Service, den Sie buchen möchten.</li>
+                            <li>Wählen Sie ein Paket, das für diesen Service verfügbar ist. 
+                                Sie erhalten detailierte Informationen für jedes Paket, nachdem Sie diese ausgewählt haben, bitte lesen Sie diese sorgfältig durch. 
                                 <button class="btn btn-sm" onclick="return false;">
-                                    <i class="far fa-clock"></i> &nbsp; Select Booking Time
-                                </button> button at bottom of the page.</li>
+                                    <i class="far fa-clock"></i> &nbsp; Termin Buchen
+                                </button> Schaltfläche am Ende dieser Seite.</li>
 
-                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on 
+                            <li> <strong>Schritt 2:</strong> Geben Sie im nächsten Teil Ihre Daten korrekt ein und klicken Sie auf
                                 <button class="btn btn-sm" onclick="return false;">
-                                        Next »
+                                        Weiter »
                                 </button>
-                                    button, although some package may have different procedure for booking.</li>
+                                    Schaltfläche. Manche Pakete haben eine leicht veränderte Prozedur</li>
                             
-                            <li> <strong>Step 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
-                            <li> <strong>Step 4:</strong> This is final step. You have successfully booked a time and print the slip, it is necessary while entering to our mission.</li>
+                            <li> <strong>Schritt 3:</strong> Wählen Sie das Buchungsdatum und die Buchungszeit. Ausgeblendete Zeiten sind entweder Ausgebucht oder außerhabl der Arbeitszeiten</li>
+                            <li> <strong>Schritt 4:</strong> Dies ist der letzte Schritt. Sie haben erfolgreich einen Termin gebucht und die Bestätigung ausgedruckt. Dies ist erforderlich, um in usnerer Mission vorzusprechen.</li>
                         </ol>',
-    'quickLinks' => 'Quick access links',
-    'quickLinksCheckVisa' => '<li>Check your Visa status <a href=":href">here.</a>
+    'quickLinks' => 'Schnellzugriffslinks',
+    'quickLinksCheckVisa' => '<li>Überprüfen Sie Ihren Visastatus <a href=":href">hier.</a>
                                     <br>
-                                    Although we will sent you the approval or rejection of the Online Visa Application Form to your email.
+                                    Wir senden Ihnen jedoch die Annahme oder die Ablehnung des Online-Visumantrags per E-Mail zu.
                                 </li>',
-    'quickLinksCreateAccount' => '<li>Create an account <a href=":href">here.</a>
+    'quickLinksCreateAccount' => '<li>Ein Konto erstellen <a href=":href">hier.</a>
                                         <br>
-                                        Before going further, you must have a verified account. 
+                                        Bevor Sie fortfahren, müssen Sie über ein verifiziertes Konto verfügen. 
                                     </li>',
-    'selectCategoryOfService' => 'Select Your Category of Services',
-    'All Services' => 'All Services',
-    'Legal Services' => 'Legal Services',
-    'Document Certification' => 'Document Certification',
-    'requirementsForPackage' => 'Package information and requirements',
-    'loginOrRegister' => 'Login/Register',
-    'loadingPlzWait' => 'Loading, please wait...',
-    'nearestMission' => 'Select our nearest mission to you',
+    'selectCategoryOfService' => 'Wählen Sie Ihre Kategorie von Dienstleistungen',
+    'All Services' => 'Alle Dienstleistungen',
+    'Legal Services' => 'Rechtsberatung',
+    'Document Certification' => 'Beglaubigung von Dokumenten',
+    'requirementsForPackage' => 'Paketinformationen und Anforderungen',
+    'loginOrRegister' => 'Einloggen/Registrieren',
+    'loadingPlzWait' => 'Laden, bitte warten...',
+    'nearestMission' => 'Wählen Sie eine Mission in Ihrer Nähe',
+
+    // 11/12/2019
     'postalError' => 'Your region does not belongs to the selected mission, please choose nearest mission to you.',
     'postalDesc' => 'If you don\'t know, put "000" instead. In some missions it\'s required.',
     'language' => 'Dutch', // put your language name exp: this is english translate so it is english
