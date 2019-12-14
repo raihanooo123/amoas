@@ -339,7 +339,7 @@
 
                                 <div class="form-group col-md-6">
                                     <i class="fa fa-asterisk text-danger"></i> <label for="">@lang('app.visa-passportDetailPhoto')</label>
-                                    <input type="file" required name="photo" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
+                                    <input type="file" required name="photo" accept="image/*" class="form-control form-control-file {{ $errors->has('photo') ? 'is-invalid' : '' }}">
                                 </div>
 
                                 <div class="form-group offset-md-10 col-md-2">
@@ -694,14 +694,18 @@
     function validateRequiredSelect(el){
         var required = el.attr("required");
         if (required != null) {
+            var span = el.parent().find('.select2-selection');
             
             if($.trim(el.val()) <= 0){
+                console.log(el.parent());
                 // console.log(el);
-                console.log($(el).closest('.select2-selection'));
-                el.addClass('is-invalid');
+                span.css('border-color','red');
+                span.removeClass('is-valid');
                 el.removeClass('is-valid');
+                el.addClass('is-invalid');
                 return false;
             }
+            span.css('border-color','green');
             el.removeClass('is-invalid');
             el.addClass('is-valid');
             return true;

@@ -245,5 +245,9 @@ return [
     'visa-detailSign' => 'I Declare that the information provided on this application is true and correct.',
     'visa-detailSubmit' => 'SUBMIT',
     'torrist' => 'Torrist',
-    'Consulate General of the Islamic Republic of Afghanistan Bonn' => 'Consulate General of the Islamic Republic of Afghanistan Bonn'
+    'Consulate General of the Islamic Republic of Afghanistan Bonn' => 'Consulate General of the Islamic Republic of Afghanistan Bonn',
+    'checkOnlineStatus' => 'Check Online Visa Application Form Status',
+    'visaStatusSerial' => 'Serial Number <small>please enter your online visa form serial number.</small>',
+    'search' => 'Search',
+    'serialHere' => 'Serial number here ...',
 ];

@@ -30,7 +30,7 @@
                     <p class="text-muted"> @lang('app.visa-completion.thank_you_paragraph',[
                     'name'=> ucfirst($visa_form->title .' '. $visa_form->family_name .' '. $visa_form->given_name),
                     'serial' => $visa_form->serial_no,
-                    'mission' => $visa_form->department->name_en,
+                    'mission' => Lang::has('app.' . $visa_form->department->name_en, app()->getLocale()) ? __('app.' . $visa_form->department->name_en) : ucfirst($visa_form->department->name_en),
                     'href' => route('check-status'),
                     'email' => $visa_form->email,
                     ])</p>

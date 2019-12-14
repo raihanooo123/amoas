@@ -19,7 +19,7 @@
     <div class="content">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text-center">A.M.O.A.S. Check Visa Status</h3>
+                <h3 class="text-center">{{ __('app.checkOnlineStatus') }}</h3>
                 <hr>
                 @if (count($errors) > 0)
                 <h4>Invalid information. please fill the following form correctly.</h4>
@@ -41,16 +41,15 @@
                         {{ csrf_field() }}
                     <div class="col-md-6">
                         <div class="form-group">
-                                <i class="fa fa-asterisk text-danger"></i> <label for="">Serial Number <small>please
-                                        enter your online visa form serial number.</small></label>
-                                <input name="serial_no" placeholder="Serial number here ..." value="" type="text"
+                                <i class="fa fa-asterisk text-danger"></i> <label for="">@lang('app.visaStatusSerial')</label>
+                                <input name="serial_no" placeholder="@lang('app.serialHere')" value="" type="text"
                                     class="form-control form-control-lg">
                         </div>
                     </div>
                     <div class="col-md-2">
                             <div class="form-group">
                         <button class="btn btn-default btn-lg btn-light"><i class="fa fa-search"></i>
-                            Search</button>
+                            @lang('app.search')</button>
                             </div>
                     </div>
                 </form>
