@@ -136,7 +136,6 @@ return [
     ],
     'check_visa_status' => 'Visa Status überprüfen',
     'department' => 'Abteilung (Mission)',
-    'Embassy of Afghanistan in Bonn' => 'Some germena transulation of file.',
     'howToReserve' => 'Wie Reserviere ich einen Termin?',
     'guidelineStep' => '<ol>
                         <li> <strong>Schritt 1:</strong> Wählen Sie den Service, den Sie buchen möchten.</li>

@@ -120,7 +120,7 @@ class VisaFormController extends Controller
             'status' => 'On Process',
             'pre_employer_address' => request()->pre_employer_address,
             'visa_type' => request()->visa_type,
-            'purpose' => implode(', ', request()->purpose),
+            'purpose' => request()->purpose,
             'entry_date' => request()->entry_date,
             'intend_duration' => request()->intend_duration,
             'entry_point' => request()->entry_point,
