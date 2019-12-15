@@ -262,11 +262,10 @@ class UserBookingController extends Controller
         $endSeconds = strtotime($hour_end);
 
         //get the booking count
-
-        // $participants = session()->has('participant') ? session('participant') + 1 : 1;
         
         $bookedByHours = Booking::select('booking_time', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
+            ->where('booking_type', '!=', 'emergency')
             ->whereDate('booking_date', $event_date)
             ->groupBy('booking_time')
             // ->having('total', '>=', $participants)
@@ -275,6 +274,13 @@ class UserBookingController extends Controller
             ->pluck('total','booking_time')
             ->toArray();
 
+        $ungentBooking = 0;
+        if(auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()))
+            $ungentBooking = Booking::where('package_id', $package->id)
+                ->where('booking_type', '=', 'emergency')
+                ->whereDate('booking_date', $event_date)
+                ->count();
+        
         $hours = array();
         while($startSeconds < $endSeconds){
             
@@ -288,7 +294,7 @@ class UserBookingController extends Controller
 
         $eachSlotAvailablity = round($package->daily_acceptance/count($hours), 0, PHP_ROUND_HALF_DOWN);
 
-        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity'));
+        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity', 'ungentBooking'));
     }
 
     public function getUpdateSlots()
@@ -593,6 +599,7 @@ class UserBookingController extends Controller
             'department_id' => session('department_id'),
             'serial_no' => Booking::genSerialNo(session('department_id')),
             'booking_date' => $request->event_date,
+            'booking_type' => ucfirst($request->booking_type) ?? 'Ordinary',
             'booking_time' => $request->booking_slot,
             'email' => session('email'),
             'status' => 'Waiting',
@@ -667,7 +674,8 @@ class UserBookingController extends Controller
         // dd($participants);
 
         //should work on it
-        $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))->where('package_id', $package->id)
+        $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
+            ->where('package_id', $package->id)
             ->groupBy('booking_date')
             ->having('total', '>=', $participants)
             ->having('booking_date', '>=', date('Y-m-d'))

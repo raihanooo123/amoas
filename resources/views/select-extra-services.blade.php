@@ -106,6 +106,7 @@
                 </div>
             </div>
             <div id="slots_holder"></div>
+            <div id="emergency_holder"></div>
 
             <div class="row col-md-12">
                 <div class="alert alert-danger col-md-12 d-none" id="slot_error" style="margin-bottom: 50px;">
@@ -168,7 +169,7 @@
         orientation: "auto right",
         autoclose: true,
         startDate: today,
-        datesDisabled: JSON.parse('{!! $disabledDates !!}'),
+        datesDisabled: JSON.parse('{!! (auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())) ? "[]" : $disabledDates !!}'),
         format: 'yyyy-mm-dd',
         // format: 'dd-mm-yyyy',
         daysOfWeekDisabled: "{{ $disable_days_string }}",

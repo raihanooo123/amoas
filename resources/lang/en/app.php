@@ -250,4 +250,8 @@ return [
     'visaStatusSerial' => 'Serial Number <small>please enter your online visa form serial number.</small>',
     'search' => 'Search',
     'serialHere' => 'Serial number here ...',
+    'urgentBooking' => 'Urgent Booking',
+    'forAdminUsers' => '<strong>The holydays are enabled</strong>, This part is visible only for admin users.',
+    // 'bookedInUrgent' => 'urgent booked :urgentBooked',
+    'bookedInUrgent' => ':booking applicant/s has been registered as emergency on this date',
 ];

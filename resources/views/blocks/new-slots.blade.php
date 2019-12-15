@@ -1,4 +1,5 @@
-<br><br>
+<br>
+<br>
 <h5>{{ __('app.select_date_title') }}</h5>
 <p class="text-info">{{ __('app.select_date_info') }}</p>
 <br>
@@ -9,7 +10,7 @@
         @endphp
         @if($availiblity > 0)
             <div class="col-md-3">
-                <a class="btn btn-outline-dark btn-lg btn-block btn-slot" data-slot-time="{{ $hour }}">
+                <a class="btn btn-outline-dark btn-lg btn-block btn-slot {{ $availiblity >= (session("participant") + 1) ? '' : 'disabled' }}" data-slot-time="{{ $hour }}">
                     {{ $hour }} 
                     <span class="badge badge-info" style="position: relative;top: -20px;right: -38px;">
                     <small>{{ __('app.available_slots', ['available' => $availiblity]) }}</span></small>
@@ -26,4 +27,24 @@
         @endif
     @endforeach
 </div>
-<br><br>
+<br>
+<br>
+@if(auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()))
+    <h5>{{ __('app.urgentBooking') }}</h5>
+    <br>
+    <p>@lang('app.forAdminUsers')</p>
+    <p>{{ __('app.bookedInUrgent', ['booking' => $ungentBooking]) }}</p>
+    <div class="row">
+        @foreach($hours as $hour)
+            <div class="col-md-3">
+                <a class="btn btn-outline-dark btn-lg btn-block btn-slot" data-slot-time="{{ $hour }}" type="urgent">
+                    {{ $hour }} 
+                    {{-- <span class="badge " style="position: relative;top: -20px;right: -38px; background-color:#1f4897;color:white;">
+                    <small>{{ __('app.bookedInUrgent', ['urgentBooked' => 5]) }}</span></small> --}}
+                </a>
+            </div>
+        @endforeach
+    </div>
+    <br>
+    <br>
+@endif

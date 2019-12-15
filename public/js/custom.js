@@ -126,9 +126,15 @@ $(document).ready(function () {
 
     $('#slots_holder').on('click', 'a.btn-slot', function () {
         var slot_time = $(this).attr('data-slot-time');
+        var type = $(this).attr('type');
         $('#slots_holder').find('.btn-slot').removeClass('slot-picked');
         $('#booking_slot').remove();
         $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' + slot_time + '">');
+        if (type !== undefined && type ==='urgent'){
+            $('#emergency_holder').html('<input type="hidden" name="booking_type" value="emergency">');
+        } else{
+            $('#emergency_holder').html('<span></span>');
+        }
         $(this).addClass('slot-picked');
     });
 
