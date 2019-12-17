@@ -72,6 +72,8 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
     Route::get('/update-database', 'DatabaseUpdateController@update');
     Route::get('/unpaid-invoices', 'OfflinePaymentController@index')->name('unpaidInvoices');
     
+    Route::resource('/holidays', 'HolidaysController');
+
     Route::group(['prefix'=>'visa'], function(){
         
         Route::post('/approve/{visa_form}', 'Visa\VisaFormController@approve')->name('visa.approve');

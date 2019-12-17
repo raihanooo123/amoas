@@ -663,11 +663,18 @@ class UserBookingController extends Controller
 
         $disable_days_string = implode(",", $daynum);
 
-        $holydays = DB::table('holydays')
-            ->whereDate('date', '>=', date('Y-m-d'))
-            ->get()
-            ->pluck('date')
-            ->toArray();
+        // $holydays = DB::table('holydays')
+        //     ->whereDate('date', '>=', date('Y-m-d'))
+        //     ->get()
+        //     ->pluck('date')
+        //     ->toArray();
+
+        $dep_id = session('department_id');
+        $holydays = \App\Holidays::whereHas('departments', function ($query) use($dep_id) {
+            $query->where('id', $dep_id);
+        })->get()->pluck('date');
+
+        $holydays = array_merge(...$holydays);
 
         $participants = --$package->daily_acceptance;
         if(session()->has('participant')) $participants -= session('participant');
@@ -685,6 +692,7 @@ class UserBookingController extends Controller
 
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
+        // dd($disabledDates);
         $daynum = array();
 
         return view('select-extra-services', compact('disable_days_string', 'package', 'disabledDates'));
@@ -856,11 +864,13 @@ class UserBookingController extends Controller
         $disable_days_string = implode(",", $daynum);
 
         $package = $booking->package;
-        $holydays = DB::table('holydays')
-            ->whereDate('date', '>=', date('Y-m-d'))
-            ->get()
-            ->pluck('date')
-            ->toArray();
+
+        $dep_id = $booking->department->id;
+        $holydays = \App\Holidays::whereHas('departments', function ($query) use($dep_id) {
+            $query->where('id', $dep_id);
+        })->get()->pluck('date');
+
+        $holydays = array_merge(...$holydays);
         //should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $booking->package->id)

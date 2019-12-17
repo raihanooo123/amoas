@@ -17,20 +17,21 @@
     <div class="row">
         <div class="col-md-12">
             @include('alerts.bookings')
-
-            @if($booking->status != 'cancelled')
-            <a class="btn btn-info btn-lg" href="{{ route('updateBooking', $booking->id) }}"><i
-                    class="fa fa-clock-o fa-lg"></i> &nbsp; {{ __('backend.change_booking_time') }}</a>
-            @endif
-            <a href="{{route('printNow', [$booking->id])}}" onclick="open(this.href).print(); return false" class="btn btn-lg btn-default">
-                    <i class="fa fa-print fa-lg"></i> {{ __('app.print_now') }}
-            </a>
-            <a href="{{route('printPdf', [$booking->id])}}" class="btn btn-lg btn-default">
-                <i class="fa fa-print fa-lg"></i> {{ __('app.print_pdf') }}
-            </a>
-            @if($booking->status != 'cancelled')
-            <a class="btn btn-danger btn-lg" data-toggle="modal" data-target="#cancel"><i
-                    class="fa fa-times-circle fa-lg"></i> &nbsp; {{ __('backend.cancel_booking') }}</a>
+            @if($booking->booking_date >= date('Y-m-d'))
+                @if($booking->status != 'cancelled')
+                <a class="btn btn-info btn-lg" href="{{ route('updateBooking', $booking->id) }}"><i
+                        class="fa fa-clock-o fa-lg"></i> &nbsp; {{ __('backend.change_booking_time') }}</a>
+                @endif
+                <a href="{{route('printNow', [$booking->id])}}" onclick="open(this.href).print(); return false" class="btn btn-lg btn-default">
+                        <i class="fa fa-print fa-lg"></i> {{ __('app.print_now') }}
+                </a>
+                <a href="{{route('printPdf', [$booking->id])}}" class="btn btn-lg btn-default">
+                    <i class="fa fa-print fa-lg"></i> {{ __('app.print_pdf') }}
+                </a>
+                @if($booking->status != 'cancelled')
+                <a class="btn btn-danger btn-lg" data-toggle="modal" data-target="#cancel"><i
+                        class="fa fa-times-circle fa-lg"></i> &nbsp; {{ __('backend.cancel_booking') }}</a>
+                @endif
             @endif
             <br>
             <br>

@@ -363,4 +363,10 @@ return [
     'cancellation_reason' => 'Reason for cancelling booking',
     'daily_acceptance' => 'Number of Daily Acceptance for Applicant',
     'emergency_acceptance' => 'Number of Emergency Acceptance for Applicant',
+    'addHolidays' => 'Add New Holiday',
+    'month' => 'Month',
+    'year' => 'Year',
+    'repeated' => 'Is repeated in next years',
+    'holidays' => 'Holidays',
+
 ];

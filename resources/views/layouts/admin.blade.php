@@ -225,15 +225,15 @@
                     </a>
                 </li>
 
-                <li class="droplink {{ Request::is('addons') || Request::is('addons/*') ? 'active open' : '' }}">
+                <li class="droplink {{ Request::is('holidays') || Request::is('holidays/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
-                        <span class="menu-icon icon-badge"></span>
-                        <p>{{ __('backend.addons') }}</p>
+                        <span class="menu-icon icon-calendar"></span>
+                        <p>{{ __('backend.holidays') }}</p>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu" style="display: none;">
-                        <li class="{{ Request::is('addons') || Request::is('addons/*/edit') ? 'active' : '' }}"><a href="{{ route('addons.index') }}">{{ __('backend.all_addons') }}</a></li>
-                        <li class="{{ Request::is('addons/create') ? 'active' : '' }}"><a href="{{ route('addons.create') }}">{{ __('backend.add_new_addon') }}</a></li>
+                        {{-- <li class="{{ Request::is('holidays') || Request::is('holidays/*/edit') ? 'active' : '' }}"><a href="{{ route('holidays.index') }}">{{ __('backend.addHolidays') }}</a></li> --}}
+                        <li class="{{ Request::is('holidays/index') ? 'active' : '' }}"><a href="{{ route('holidays.index') }}">{{ __('backend.addHolidays') }}</a></li>
                     </ul>
                 </li>
                 <li class="droplink {{ Request::is('settings') || Request::is('booking-times') ? 'active open' : '' }}">
