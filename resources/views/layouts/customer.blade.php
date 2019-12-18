@@ -13,9 +13,9 @@
     <meta name="title" content="{{ $title }}" />
     <meta name="description" content="Customer Panel for {{ config('settings.business_name') }}." />
     <meta name="keywords" content="Booking, Calender, Make Booking, Laravel" />
-    <meta name="author" content="Xtreme Webs" />
+    <meta name="author" content="Mohammad Asif Gulistani" />
 
-    <link rel="icon" href="{{ asset('favicon.png') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
 
     <!-- Styles -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>

@@ -8,7 +8,7 @@
     <meta name="title" content="{{ $title }}" />
     <meta name="description" content="{{ config('settings.business_name') }} booking portal." />
     <meta name="keywords" content="Booking, Calender, Make Booking, Laravel" />
-    <meta name="author" content="Xtreme Webs" />
+    <meta name="author" content="Mohammad Asif Gulistani" />
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -20,7 +20,7 @@
     <!-- Title -->
     <title>{{ $title }} | {{ config('settings.business_name', 'Bookify') }}</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="icon" href="{{ asset('favicon.png') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
     @yield('styles')
     @include('settings.customization')
     <style>
