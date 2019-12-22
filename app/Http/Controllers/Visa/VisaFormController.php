@@ -56,6 +56,12 @@ class VisaFormController extends Controller
 
     public function fillForm()
     {
+        if(request()->has('mission')){
+            $department = \App\Department::where('code', strtoupper(request()->mission))->where('status', 1)->first();
+            if($department)
+                request()->session()->put('department',$department);
+        }
+        
         return view('visa.form.fill-form');
     }
 
