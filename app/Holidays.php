@@ -34,7 +34,7 @@ class Holidays extends Model
         $dates = [];
         if($this->repeated == 1) 
             for($i=0; $i<3; $i++){
-                $dateRaw = strtotime('2019-5-6');
+                $dateRaw = strtotime("{$this->year}-{$this->month}-{$this->day}");
                 $date = strtotime($i . ' years', $dateRaw);
                 $dates[] =  date('Y-m-d', $date);
             }
