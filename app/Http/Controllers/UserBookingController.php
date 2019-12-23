@@ -672,7 +672,9 @@ class UserBookingController extends Controller
         $dep_id = session('department_id');
         $holydays = \App\Holidays::whereHas('departments', function ($query) use($dep_id) {
             $query->where('id', $dep_id);
-        })->get()->pluck('date');
+        })->get()
+            ->pluck('date')
+            ->toArray();
 
         $holydays = array_merge(...$holydays);
 
