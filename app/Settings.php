@@ -52,4 +52,8 @@ class Settings extends Model
         'slots_with_package_duration',
     ];
 
+    public function settings(){
+        return $this->belongsToMany(Settings::class,'department_setting');
+    }
+    
 }
