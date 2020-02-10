@@ -1,14 +1,14 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'A.M.O.A.S Afghanistan\'s missions\' Online Appointment System',
-    'env' => 'local',
-    'debug' => true,
-    'url' => 'http://amoas.mfa.af/',
+    'name' => 'AMOAS Afghanistan missions Online Appointment System',
+    'env' => 'production',
+    'debug' => false,
+    'url' => 'https://bonn.mfa.af/amoas/',
     'timezone' => 'UTC',
-    'locale' => 'end',
+    'locale' => 'en',
     'fallback_locale' => 'en',
-    'key' => 'base64:+2zCaxoiPud+mTOP4UnLYPyxNRrSnVRAFUXmSgQGQM4=',
+    'key' => 'base64:wzus4OJEJzZJdSyxF8MAuuudIBDfEWMfrnSbzY941SU=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -179,7 +179,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\framework/cache/data',
+        'path' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -209,7 +209,7 @@
         'connection' => 'default',
       ),
     ),
-    'prefix' => 'amoas_afghanistans_missions_online_appointment_system_cache',
+    'prefix' => 'amoas_afghanistan_missions_online_appointment_system_cache',
   ),
   'database' => 
   array (
@@ -219,7 +219,7 @@
       'sqlite' => 
       array (
         'driver' => 'sqlite',
-        'database' => 'appointment',
+        'database' => 'bonnmfa_amoas',
         'prefix' => '',
       ),
       'mysql' => 
@@ -227,9 +227,9 @@
         'driver' => 'mysql',
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'appointment',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'bonnmfa_amoas',
+        'username' => 'amoas',
+        'password' => 'Xkj6t9%1',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -242,9 +242,9 @@
         'driver' => 'pgsql',
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'appointment',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'bonnmfa_amoas',
+        'username' => 'amoas',
+        'password' => 'Xkj6t9%1',
         'charset' => 'utf8',
         'prefix' => '',
         'schema' => 'public',
@@ -255,9 +255,9 @@
         'driver' => 'sqlsrv',
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'appointment',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'bonnmfa_amoas',
+        'username' => 'amoas',
+        'password' => 'Xkj6t9%1',
         'charset' => 'utf8',
         'prefix' => '',
       ),
@@ -284,13 +284,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\app',
+        'root' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\app/public',
-        'url' => 'http://amoas.mfa.af//storage',
+        'root' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/app/public',
+        'url' => 'https://bonn.mfa.af/amoas//storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -305,18 +305,18 @@
       'verification' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\app/verification',
+        'root' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/app/verification',
       ),
       'visa' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\app/visa',
+        'root' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/app/visa',
       ),
     ),
   ),
   'google-calendar' => 
   array (
-    'service_account_credentials_json' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\app/google-calendar/service-account-credentials.json',
+    'service_account_credentials_json' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/app/google-calendar/service-account-credentials.json',
     'calendar_id' => NULL,
   ),
   'hashing' => 
@@ -420,13 +420,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\logs/laravel.log',
+        'path' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\logs/laravel.log',
+        'path' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 7,
       ),
@@ -452,24 +452,33 @@
   ),
   'mail' => 
   array (
-    'driver' => 'smtp',
+    'driver' => 'sendmail',
     'host' => 'smtp.gmail.com',
     'port' => '587',
     'from' => 
     array (
-      'address' => 'amoas@mfa.af',
-      'name' => 'A.M.O.A.S Afghanistan\'s missions\' Online Appointment System',
+      'address' => 'noreply@amoas.mfa.af',
+      'name' => 'AMOAS Afghanistan missions Online Appointment System',
     ),
     'encryption' => 'tls',
-    'username' => 'amoas@mfa.af',
-    'password' => 'p)Q89G:a.vcs`n[C',
+    'username' => 'noreply@amoas.mfa.af',
+    'password' => '8]VoR{{U,Bk+',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\xampp_7.2\\htdocs\\appointment\\resources\\views/vendor/mail',
+        0 => '/var/www/vhosts/bonn.mfa.af/amoas/resources/views/vendor/mail',
+      ),
+    ),
+    'stream' => 
+    array (
+      'ssl' => 
+      array (
+        'allow_self_signed' => true,
+        'verify_peer' => false,
+        'verify_peer_name' => false,
       ),
     ),
   ),
@@ -487,7 +496,7 @@
         'driver' => 'database',
         'table' => 'jobs',
         'queue' => 'default',
-        'retry_after' => 90,
+        'retry_after' => 60,
       ),
       'beanstalkd' => 
       array (
@@ -547,13 +556,13 @@
     array (
       'client_id' => '797363960202-e7nkf3hnjcgn9u0ob29ni6h6aqji8uub.apps.googleusercontent.com',
       'client_secret' => '4euHvFY_lZ4L0QbeLhaB6mSM',
-      'redirect' => 'http://amoas.mfa.af/login/google/callback',
+      'redirect' => 'https://bonn.mfa.af/amoas/login/google/callback',
     ),
     'facebook' => 
     array (
       'client_id' => '798052390646835',
       'client_secret' => '9ab8e3498d694eaf74562420ac53c5d6',
-      'redirect' => 'http://amoas.mfa.af/login/facebook/callback',
+      'redirect' => 'https://bonn.mfa.af/amoas/login/facebook/callback',
     ),
   ),
   'session' => 
@@ -562,7 +571,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => true,
-    'files' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\framework/sessions',
+    'files' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -571,7 +580,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'amoas_afghanistans_missions_online_appointment_system_session',
+    'cookie' => 'amoas_afghanistan_missions_online_appointment_system_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => false,
@@ -582,9 +591,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp_7.2\\htdocs\\appointment\\resources\\views',
+      0 => '/var/www/vhosts/bonn.mfa.af/amoas/resources/views',
     ),
-    'compiled' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\framework\\views',
+    'compiled' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/framework/views',
   ),
   'image' => 
   array (
@@ -596,10 +605,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\fonts/',
-      'font_cache' => 'C:\\xampp_7.2\\htdocs\\appointment\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\A5D0A~1.GUL\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\xampp_7.2\\htdocs\\appointment',
+      'font_dir' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/fonts/',
+      'font_cache' => '/var/www/vhosts/bonn.mfa.af/amoas/storage/fonts/',
+      'temp_dir' => '/tmp',
+      'chroot' => '/var/www/vhosts/bonn.mfa.af/amoas',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -673,29 +682,29 @@
     'id' => 1,
     'google_maps_api_key' => NULL,
     'google_calendar_id' => NULL,
-    'sync_events_to_calendar' => 0,
+    'sync_events_to_calendar' => '0',
     'stripe_test_key_pk' => NULL,
     'stripe_test_key_sk' => NULL,
     'stripe_live_key_pk' => NULL,
     'stripe_live_key_sk' => NULL,
-    'stripe_enabled' => 0,
-    'stripe_sandbox_enabled' => 1,
+    'stripe_enabled' => '0',
+    'stripe_sandbox_enabled' => '1',
     'paypal_client_id' => NULL,
     'paypal_client_secret' => NULL,
-    'paypal_enabled' => 0,
-    'paypal_sandbox_enabled' => 1,
-    'days_limit_to_cancel' => 2,
-    'allow_to_cancel' => 0,
-    'days_limit_to_update' => 2,
-    'allow_to_update' => 0,
-    'slots_method' => 1,
+    'paypal_enabled' => '0',
+    'paypal_sandbox_enabled' => '1',
+    'days_limit_to_cancel' => '2',
+    'allow_to_cancel' => '0',
+    'days_limit_to_update' => '2',
+    'allow_to_update' => '0',
+    'slots_method' => '1',
     'enable_gst' => '0',
-    'gst_percentage' => 0.0,
-    'business_name' => 'Bun Appointment System',
-    'primary_color' => '#d99e09',
-    'secondary_color' => '#4e5e6a',
-    'default_currency' => 'USD',
-    'contact_email' => 'ahmadfaisal47@gmail.com',
+    'gst_percentage' => '0.00',
+    'business_name' => 'AMOAS',
+    'primary_color' => '#2b3b65',
+    'secondary_color' => '#2b3b65',
+    'default_currency' => 'EUR',
+    'contact_email' => 'a.gulistani@mfa.af',
     'contact_number' => '0774141663',
     'facebook_link' => NULL,
     'twitter_link' => NULL,
@@ -703,7 +712,7 @@
     'instagram_link' => NULL,
     'pinterest_link' => NULL,
     'freshchat_widget' => NULL,
-    'lang' => 'end',
+    'lang' => 'en',
     'created_at' => 
     Illuminate\Support\Carbon::__set_state(array(
        'localMonthsOverflow' => NULL,
@@ -717,7 +726,7 @@
        'localFormatFunction' => NULL,
        'localTranslator' => NULL,
        'dumpLocale' => NULL,
-       'date' => '2019-08-10 21:16:42.000000',
+       'date' => '2019-08-10 23:46:42.000000',
        'timezone_type' => 3,
        'timezone' => 'UTC',
     )),
@@ -734,19 +743,19 @@
        'localFormatFunction' => NULL,
        'localTranslator' => NULL,
        'dumpLocale' => NULL,
-       'date' => '2019-09-18 16:26:20.000000',
+       'date' => '2019-12-12 10:42:53.000000',
        'timezone_type' => 3,
        'timezone' => 'UTC',
     )),
-    'slot_duration' => 15,
-    'offline_payments' => 0,
+    'slot_duration' => '15',
+    'offline_payments' => '0',
     'currency_symbol_position' => 'left',
     'thousand_separator' => ',',
     'decimal_separator' => '.',
     'decimal_points' => '2',
-    'clock_format' => 12,
-    'slots_with_package_duration' => 0,
-    'currency_symbol' => '&dollar;',
+    'clock_format' => '12',
+    'slots_with_package_duration' => '0',
+    'currency_symbol' => '&euro;',
   ),
   'tinker' => 
   array (

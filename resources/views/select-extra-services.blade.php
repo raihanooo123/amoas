@@ -168,7 +168,7 @@
     $('#event_date').datepicker({
         orientation: "auto right",
         autoclose: true,
-        startDate: today,
+        startDate: '2020-03-01',
         datesDisabled: JSON.parse('{!! (auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())) ? "[]" : $disabledDates !!}'),
         format: 'yyyy-mm-dd',
         // format: 'dd-mm-yyyy',

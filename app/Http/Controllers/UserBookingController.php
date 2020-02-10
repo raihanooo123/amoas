@@ -503,11 +503,11 @@ class UserBookingController extends Controller
         $package = Package::findOrFail(Session::get('package_id'));
 
         // Check if the online visa form is selected
-        if($package){
-            $visa = preg_match('/visa/i', $package->title, $output_array);
-            if($visa)
-                return redirect()->route('visa-form.fill');
-        }
+        // if($package){
+        //    $visa = preg_match('/visa/i', $package->title, $output_array);
+        //    if($visa)
+        //        return redirect()->route('visa-form.fill');
+        // }
 
         return redirect()->route('loadStep2');
     }

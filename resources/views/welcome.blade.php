@@ -40,7 +40,7 @@
                     <div class="col-md-4">
                         <h5>@lang('app.quickLinks')</h5>
                         <ul>
-                            @lang('app.quickLinksCheckVisa', ['href'=> route('check-status')])
+                            {{-- @lang('app.quickLinksCheckVisa', ['href'=> route('check-status')]) --}}
                             @lang('app.quickLinksCreateAccount', ['href'=> route('register')])
                             
                         </ul>

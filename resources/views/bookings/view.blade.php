@@ -47,7 +47,7 @@
                         </div>
                         <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>{{ __('backend.department') }}:</strong></div>
-                            <div class="col-md-6">{{ 'working' }}</div>
+                            <div class="col-md-6">{{ $booking->department->name_en }}</div>
                         </div>
                         <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>{{ __('backend.category') }}:</strong></div>

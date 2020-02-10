@@ -14,4 +14,5 @@ npm-debug.log
 yarn-error.log
 /vendor/*
 .env
-/storage/*
+storage/*
+storage/fonts/*

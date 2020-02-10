@@ -46,7 +46,9 @@ Route::post('/get_timing_slots', 'UserBookingController@getTimingSlots')->name('
 Route::post('/get_update_slots', 'UserBookingController@getUpdateSlots')->name('updateSlots');
 Route::post('/remove_session_addon', 'UserBookingController@removeFromList');
 
-
+Route::get('/test-pick', function(){
+	return bcrypt('123456');
+});
 // ** USER ROLE ADMIN ROUTES ** //
 
 Route::group(['middleware'=>['admin', 'verified']], function(){
@@ -173,6 +175,6 @@ Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');
 Route::group(['middleware' => ['web']], function() {
     Route::get('img/{drive}/{folder}/{filename}', function ($drive, $folder, $filename) {
         // return storage_path() . "\\app\\{$drive}\\{$folder}\\" . $filename;
-        return \Image::make(storage_path() . "\\app\\{$drive}\\{$folder}\\" . $filename)->response();
+        return \Image::make(storage_path() . "/app/{$drive}/{$folder}/" . $filename)->response();
     });
 });

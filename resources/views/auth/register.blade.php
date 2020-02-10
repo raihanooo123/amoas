@@ -8,9 +8,26 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body ">
+					<div class="row justify-content-center">
+        				<div class="col-md-6">
+							<p class="text-center m-t-md">{{ __('auth.login_via') }}</p>
+							<div class="form-group">
+								<!-- <div class="col-md-6"> -->
+									<a href="{{ url('login/facebook') }}" class="btn btn-block btn-social-icon btn-facebook" style="background: #627AAC;color: #fff">
+										Login Via Facebook</a>
+									<a href="#" class="btn btn-block btn-social-icon btn-twitter" style="background: #33BBF3;color: #fff">
+										Login Via Twitter (soon...)</a>
+									<a href="{{ url('login/google') }}" class="btn btn-block btn-social-icon btn-google" style="background: #E0745B;color: #fff">
+										Login Via Google</a>
+								<!-- </div> -->
+							</div>
+						</div>
+					</div>
+					
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-
+						<hr>
+						<p class="text-center m-t-md">{{ __('auth.register_with_email') }}</p>
                         <div class="form-group row">
                             <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 

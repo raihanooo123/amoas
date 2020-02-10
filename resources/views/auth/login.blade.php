@@ -1,4 +1,4 @@
-@extends('layouts.login', ['title' => 'AMOAS'])
+@extends('layouts.login', ['title' => 'Login'])
 
 @section('content')
 
@@ -31,7 +31,8 @@
             @endif
 
             <form class="m-t-md" method="post" action="{{ route('login') }}">
-                @csrf
+                
+				{{ csrf_field() }}
                 <div class="form-group">
                     <input type="email" class="form-control" id="email" name="email"
                         placeholder="{{ __('auth.email_placeholder') }}" value="{{ old('email') }}" autofocus>
