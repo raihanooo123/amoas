@@ -16,6 +16,10 @@ class Package extends Model
         return $this->belongsTo('App\Category');
     }
 
+    public function departments(){
+        return $this->belongsToMany('App\Department','department_package')
+            ->withPivot('price','description','duration','daily_acceptance','emergency_acceptance');
+    }
 
     public function photo()
     {

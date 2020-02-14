@@ -24,6 +24,19 @@ class Department extends Model
         return $this->belongsTo(Department::class,'parent_id');
     }
 
+    public function settings(){
+        return $this->belongsToMany(Settings::class,'department_setting');
+    }
+
+    public function setting(){
+        return $this->setting()->first();
+    }
+
+    public function packages(){
+        return $this->belongsToMany(Package::class,'department_package')
+            ->withPivot('price','description','duration','daily_acceptance','emergency_acceptance');
+    }
+
     public function children(){
         return $this->hasMany(Department::class,'parent_id')->with('children');
     }
