@@ -33,7 +33,7 @@ class NewTimeBooked extends Mailable
      */
     public function build()
     {
-        $this->subject('You have successfully reserved a set on ' . $this->booking->department->name_en);
+        $this->subject('You have successfully reserved an appointment at ' . $this->booking->department->name_en);
         return $this->view('print-booking-success');
     }
 }

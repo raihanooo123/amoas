@@ -358,10 +358,10 @@
                               <tr style="border-collapse:collapse;">
                                 <td align="center" style="padding:0;Margin:0;">
                                   <h1
-                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#212121;">
-                                    You have successfully reserved a set on</h1>
+                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#212121;">
+                                    You have successfully reserved an appointment on</h1>
                                   <h1
-                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#FFFFFF;">
+                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#FFFFFF;">
                                     <span style="background-color:#CC932B;">{{$booking->booking_date . ' ' . $booking->booking_time}}</span></h1>
                                   <h1
                                     style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#000000;background-color:#FFFFFF;">
@@ -390,8 +390,7 @@
                                     <strong>Dear {{ $name ?? isset($booking->info->full_name) ? $booking->info->full_name : null ?? $booking->user->first_name .' '. $booking->user->last_name}}</strong>,</p>
                                   <p
                                     style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                    You have successfully booked a time at <u>{{$booking->department->name_en}}</u> please
-                                    earlier from time that mentioned above. The following Serial Number is neccessary
+                                    You have successfully booked an appointment at the <u>{{$booking->department->name_en}}</u> please be earlier from the time that mentioned above. The following Serial Number is neccessary
                                     while entering to our mission.</p>
                                 </td>
                               </tr>
@@ -433,7 +432,7 @@
                                   <p
                                     style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                     You have requested the <u>{{$booking->package->title}}</u>, you must provide the following
-                                    document before the booking time.</p>
+                                    document/s before the appointment date.</p>
                                 </td>
                               </tr>
                               <tr style="border-collapse:collapse;">
