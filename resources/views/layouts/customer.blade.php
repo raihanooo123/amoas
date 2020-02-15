@@ -127,7 +127,7 @@
                 <div class="sidebar-profile">
                     <a href="{{ route('customerProfile') }}">
                         <div class="sidebar-profile-details">
-                            <span>Welcome!<br>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br><small>{{ ucfirst(Auth::user()->role->name) }}</small></span>
+                            <span>Welcome!<br>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br><small>{{ ucfirst(Auth::user()->role->name) == 'Customer' ? 'Applicant' : ucwords(Auth::user()->role->name) }}</small></span>
                         </div>
                     </a>
                 </div>

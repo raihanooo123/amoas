@@ -7,11 +7,12 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class BookingCancelled extends Mailable
+class BookingDateChanged extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $booking;
+    public $oldBooking;
     public $user;
 
     /**
@@ -19,12 +20,12 @@ class BookingCancelled extends Mailable
      *
      * @return void
      */
-    public function __construct($booking, $user)
+    public function __construct($booking, $oldBooking, $user)
     {
         $this->booking = $booking;
+        $this->oldBooking = $oldBooking;
         $this->user = $user;
     }
-
     /**
      * Build the message.
      *
@@ -32,11 +33,7 @@ class BookingCancelled extends Mailable
      */
     public function build()
     {
-        $this->subject('Your appointment has been cancelled at ' . $this->booking->department->name_en);
-
-        if ($this->user == 'admin')
-            return $this->view('emails.booking-cancelled-by-admin');
-
-        return $this->view('emails.booking-cancelled');
+        $this->subject('Your appointment date has been changed in ' . $this->booking->department->name_en);
+        return $this->view('emails.booking-date-changed');
     }
 }

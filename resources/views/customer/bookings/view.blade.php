@@ -49,7 +49,7 @@
                         </div>
                         <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>{{ __('backend.department') }}:</strong></div>
-                            <div class="col-md-6">{{ 'working' }}</div>
+                            <div class="col-md-6">{{$booking->department->name_en}}</div>
                         </div>
                         <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>{{ __('backend.category') }}:</strong></div>
@@ -132,30 +132,33 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="panel panel-white">
-            <div class="panel-heading clearfix">
-                <h4 class="panel-title">{{ __('backend.r_user_details') }}</h4>
-            </div>
-            <div class="panel-body">
-                <div class="row table-row">
-                    <div class="col-md-6 bold-font"><strong>{{ __('backend.full_name') }}:</strong></div>
-                    <div class="col-md-6">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">{{ __('backend.r_user_details') }}</h4>
                 </div>
-                <div class="row table-row">
-                    <div class="col-md-6 bold-font"><strong>{{ __('backend.phone_number') }}:</strong></div>
-                    <div class="col-md-6"><a
-                            href="tel:{{ $booking->user->phone_number }}">{{ $booking->user->phone_number }}</a>
+                <div class="panel-body">
+                    <div class="row table-row">
+                        <div class="col-md-6 bold-font"><strong>{{ __('backend.full_name') }}:</strong></div>
+                        <div class="col-md-6">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</div>
                     </div>
-                </div>
-                <div class="row table-row">
-                    <div class="col-md-6 bold-font"><strong>{{ __('backend.email') }}:</strong></div>
-                    <div class="col-md-6"><a href="mailto:{{ $booking->user->email }}">{{ $booking->user->email }}</a>
+                    <div class="row table-row">
+                        <div class="col-md-6 bold-font"><strong>{{ __('backend.phone_number') }}:</strong></div>
+                        <div class="col-md-6"><a
+                                    href="tel:{{ $booking->user->phone_number }}">{{ $booking->user->phone_number }}</a>
+                        </div>
+                    </div>
+                    <div class="row table-row">
+                        <div class="col-md-6 bold-font"><strong>{{ __('backend.email') }}:</strong></div>
+                        <div class="col-md-6"><a href="mailto:{{ $booking->user->email }}">{{ $booking->user->email }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+    </div>
+    <div class="col-md-6">
         <div class="modal fade" id="status" data-backdrop="static" tabindex="-1" role="dialog"
             aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
             <div class="modal-dialog">

@@ -230,7 +230,7 @@ return [
     'cancel_booking' => 'Buchung stornieren',
     'change_booking_time' => 'Buchungszeit ändern',
     'issue_refund' => 'Zahlbetrag Rückerstatten?',
-    'cancel_booking_message' => 'Sind Sie sich sicher, dass Sie diese Buchung stornieren möchten? Rückerstattungen sind nicht umkehrbar.',
+    'cancel_booking_message' => 'Sind Sie sich sicher, dass Sie diese Buchung stornieren möchten? Merken! Diese Aktion ist nicht umkehrbar.',
     'invoice_refunded' => 'Rechnungsbetrag Rückerstattet',
     'paypal_error' => 'Etwas ist mit PayPal schief gelaufen.',
     'booking_cancelled_message' => 'Ausgewählte Buchung wurde erfolgreich storniert.',

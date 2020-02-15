@@ -29,7 +29,7 @@
                     </div>
                     <div class="panel-body">
                         <br>
-                        <form method="post" id="update_booking_time" action="{{ route('updateBookingTime', $booking->id) }}">
+                        <form method="post" id="update_booking_time" action="{{ route('postUpdateBooking', $booking->id) }}">
 
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}

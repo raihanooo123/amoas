@@ -313,19 +313,9 @@
                                     style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"
                                     height="124"></td>
                               </tr>
-                              <tr style="border-collapse:collapse;">
-                                <td align="center" class="es-m-txt-c" bgcolor="transparent" style="padding:0;Margin:0;">
-                                  <p
-                                    style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:20px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:30px;color:#CC932B;">
-                                    <strong>Islamic Republic of Afghanistan</strong></p>
-                                </td>
+                              <tr style="border-collapse:collapse;"><td align="center" class="es-m-txt-c" bgcolor="transparent" style="padding:0;Margin:0;"><h2 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#CC932B;"><strong>Islamic Republic of Afghanistan</strong></h2></td>
                               </tr>
-                              <tr style="border-collapse:collapse;">
-                                <td align="center" style="padding:0;Margin:0;">
-                                  <p
-                                    style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:17px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:26px;color:#CC932B;">
-                                    <strong>Ministry of Foreign Affairs</strong></p>
-                                </td>
+                              <tr style="border-collapse:collapse;"><td align="center" style="padding:0;Margin:0;"><h2 style="Margin:0;line-height:20px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:17px;font-style:normal;font-weight:bold;color:#CC932B;"><strong>Ministry of Foreign Affairs</strong></h2></td>
                               </tr>
                               <tr style="border-collapse:collapse;">
                                 <td align="center" style="padding:0;Margin:0;padding-bottom:5px;padding-top:10px;">
@@ -345,35 +335,56 @@
                       </table>
                     </td>
                   </tr>
+
                   <tr style="border-collapse:collapse;">
-                    <td align="left"
-                      style="Margin:0;padding-top:10px;padding-bottom:15px;padding-left:30px;padding-right:30px;border-radius:10px 10px 0px 0px;background-color:#FFFFFF;background-position:left bottom;"
-                      bgcolor="#ffffff">
-                      <table cellpadding="0" cellspacing="0" width="100%"
-                        style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                    <td align="left" style="Margin:0;padding-top:10px;padding-bottom:15px;padding-left:30px;padding-right:30px;border-radius:10px 10px 0px 0px;background-color:#FFFFFF;background-position:left bottom;" bgcolor="#ffffff">
+                      <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                         <tr style="border-collapse:collapse;">
                           <td width="540" align="center" valign="top" style="padding:0;Margin:0;">
-                            <table cellpadding="0" cellspacing="0" width="100%"
-                              style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left bottom;">
+                            <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left bottom;" role="presentation">
+                              <tr style="border-collapse:collapse;">
+                                <td align="center" style="padding:0;Margin:0;"><h2 style="Margin:0;line-height:25px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:21px;font-style:normal;font-weight:bold;color:#212121;"><strong>Welcome to AMOAS</strong></h2></td>
+                              </tr>
                               <tr style="border-collapse:collapse;">
                                 <td align="center" style="padding:0;Margin:0;">
-                                  <h1
-                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#212121;">
-                                    You have successfully reserved an appointment on</h1>
-                                  <h1
-                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#FFFFFF;">
-                                    <span style="background-color:#CC932B;">{{$booking->booking_date . ' ' . $booking->booking_time}}</span></h1>
-                                  <h1
-                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:22px;font-style:normal;font-weight:bold;color:#000000;background-color:#FFFFFF;">
-                                    at {{$booking->department->name_en}}.</h1>
-                                </td>
+                                  <h3 style="Margin:0;line-height:25px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:21px;font-style:normal;font-weight:normal;color:#212121;">You have successfully reserved an appointment on</h3>
+                                  <h3 style="Margin:0;line-height:25px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:21px;font-style:normal;font-weight:normal;color:#FFFFFF;background-color:#CC932B;">{{$booking->booking_date . ' ' . $booking->booking_time}}</h3>
+                                  <h3 style="Margin:0;line-height:25px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:21px;font-style:normal;font-weight:normal;color:#000000;background-color:#FFFFFF;">at {{$booking->department->name_en}}.</h3></td>
                               </tr>
-                            </table>
-                          </td>
+                            </table></td>
                         </tr>
-                      </table>
-                    </td>
+                      </table></td>
                   </tr>
+
+{{--                  <tr style="border-collapse:collapse;">--}}
+{{--                    <td align="left"--}}
+{{--                      style="Margin:0;padding-top:10px;padding-bottom:15px;padding-left:30px;padding-right:30px;border-radius:10px 10px 0px 0px;background-color:#FFFFFF;background-position:left bottom;"--}}
+{{--                      bgcolor="#ffffff">--}}
+{{--                      <table cellpadding="0" cellspacing="0" width="100%"--}}
+{{--                        style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">--}}
+{{--                        <tr style="border-collapse:collapse;">--}}
+{{--                          <td width="540" align="center" valign="top" style="padding:0;Margin:0;">--}}
+{{--                            <table cellpadding="0" cellspacing="0" width="100%"--}}
+{{--                              style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left bottom;">--}}
+{{--                              <tr style="border-collapse:collapse;">--}}
+{{--                                <td align="center" style="padding:0;Margin:0;">--}}
+{{--                                  <h1--}}
+{{--                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#212121;">--}}
+{{--                                    You have successfully reserved an appointment on</h1>--}}
+{{--                                  <h1--}}
+{{--                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#FFFFFF;">--}}
+{{--                                    <span style="background-color:#CC932B;">{{$booking->booking_date . ' ' . $booking->booking_time}}</span></h1>--}}
+{{--                                  <h1--}}
+{{--                                    style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#212121;">--}}
+{{--                                    at {{$booking->department->name_en}}.</h1>--}}
+{{--                                </td>--}}
+{{--                              </tr>--}}
+{{--                            </table>--}}
+{{--                          </td>--}}
+{{--                        </tr>--}}
+{{--                      </table>--}}
+{{--                    </td>--}}
+{{--                  </tr>--}}
                   <tr style="border-collapse:collapse;">
                     <td align="left"
                       style="Margin:0;padding-top:5px;padding-bottom:5px;padding-left:30px;padding-right:30px;border-radius:0px 0px 10px 10px;background-position:left bottom;background-color:#FFFFFF;">
@@ -409,11 +420,30 @@
                               </tr>
                               <tr style="border-collapse:collapse;">
                                 <td align="center" style="padding:0;Margin:0;">
-                                  <p
+                                  <h1
                                     style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:44px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:66px;color:#FFFFFF;">
-                                    <b><span style="background-color:#CC932B;">{{$booking->serial_no}}</span></b></p>
+                                    <b><span style="background-color:#CC932B;">{{$booking->serial_no}}</span></b></h1>
                                 </td>
                               </tr>
+{{--                              {{ dd($booking->info->participants()->count()) }}--}}
+                              @if($booking->info->participants()->count())
+                              <tr style="border-collapse:collapse;">
+                                <td align="center" style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:30px;padding-right:30px;">
+                                  <table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                                    <tbody><tr style="border-collapse:collapse;">
+                                      <td style="padding:0;Margin:0px 0px 0px 0px;border-bottom:1px solid #CCCCCC;background:none;height:1px;width:100%;margin:0px;"></td>
+                                    </tr>
+                                    </tbody></table></td>
+                              </tr>
+                              <tr style="border-collapse:collapse;">
+                                <td align="left" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">You have also booked&nbsp;appointment/s for your following relatives. <span style="color:#FFFFFF;background-color:#008080;">Participant/s are not allowed to&nbsp;enter in our mission without you</span>, so please be ontime all together.</p>
+                                  <ol>
+                                    @foreach($booking->info->participants as $relative)
+                                    <li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;color:#131313;"><u>{{ $relative->full_name }},</u> IDCard:&nbsp;<u>{{ $relative->id_card }}</u></li>
+                                    @endforeach
+                                  </ol></td>
+                              </tr>
+                              @endif
                               <tr style="border-collapse:collapse;">
                                 <td align="center"
                                   style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:30px;padding-right:30px;">

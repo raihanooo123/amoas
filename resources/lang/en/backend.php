@@ -235,7 +235,7 @@ return [
     'cancel_booking' => 'Cancel Booking',
     'change_booking_time' => 'Change Booking Time',
     'issue_refund' => 'Refund Paid Amount?',
-    'cancel_booking_message' => 'Are you sure you want to cancel this booking? Remember that refund action is not reversible.',
+    'cancel_booking_message' => 'Are you sure you want to cancel this booking? Remember! this action is irreversible.',
     'invoice_refunded' => 'Invoice Refunded',
     'paypal_error' => 'Something went wrong with PayPal.',
     'booking_cancelled_message' => 'Selected booking is successfully cancelled.',

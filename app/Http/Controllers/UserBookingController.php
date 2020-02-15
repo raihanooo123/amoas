@@ -266,6 +266,7 @@ class UserBookingController extends Controller
         $bookedByHours = Booking::select('booking_time', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
             ->where('booking_type', '!=', 'emergency')
+            ->where('status','!=' ,'Cancelled')
             ->whereDate('booking_date', $event_date)
             ->groupBy('booking_time')
             // ->having('total', '>=', $participants)
@@ -455,39 +456,19 @@ class UserBookingController extends Controller
     public function update_booking(Request $request, $id)
     {
         $booking = Booking::find($id);
-        if($booking->user->id == Auth::user()->id)
-        {
-            $input = $request->all();
+//        dd($request->all());
+        if($booking->user->id != Auth::user()->id)
+            abort(403);
 
-            //update booking
+        $oldBooking = $booking; // for sending email
+        $booking->update([
+            'booking_date' => $request->event_date_bk,
+            'booking_time' => $request->booking_slot,
+        ]);
+        $user = auth()->user()->email;
 
-            $booking->update([
-                'booking_date' => $input['event_date_bk'],
-                'booking_time' => $input['booking_slot']
-            ]);
-
-            //if sync is enabled and booking have calender event_id
-
-            if(config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != NULL) {
-
-                //create new timestamp
-                $time_string = $input['event_date_bk'] . " " . $input['booking_slot'];
-                $start_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'));
-                $end_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'))->addMinutes($booking->package->duration);
-
-                try{
-                    //update google calendar event
-                    $event = Event::find($booking->google_calendar_event_id);
-                    $event->startDateTime = $start_instance;
-                    $event->endDateTime = $end_instance;
-                    $event->save();
-                } catch(\Exception $ex) {
-                    //do nothing
-                }
-
-            }
-
-        }
+        // send mail to user.
+        \App\Jobs\BookingDateChangedEmail::dispatch($booking, $oldBooking, $user);
 
         return redirect()->route('customerBookings');
 
@@ -615,12 +596,34 @@ class UserBookingController extends Controller
         ]);
         
         if($request->has('participant'))
-            foreach($request->participant as $participant)
+            foreach($request->participant as $key => $participant){
                 $info->participants()->create([
                     'full_name' => $participant['name'],
                     'id_card' => $participant['id_card'],
                     'relation' => $participant['relation'],
                 ]);
+
+                ${"var{$key}"} = Booking::create([
+                    'user_id' => $booking->user_id,
+                    'package_id' => $booking->package_id,
+                    'department_id' => $booking->department_id,
+                    'serial_no' => '#' . ($key + 1) .'-'.$booking->serial_no,
+                    'booking_date' => $booking->booking_date,
+                    'booking_type' => $booking->booking_type,
+                    'booking_time' => $booking->booking_time,
+                    'email' => $booking->email,
+                    'status' => $booking->status,
+                ]);
+
+                ${"var{$key}"}->info()->create([
+                    'full_name' => $info->full_name ."| {$participant['relation']}",
+                    'email' => $info->email,
+                    'phone' => $info->phone,
+                    'id_card' => $participant['id_card'],
+                    'postal' => $info->postal,
+                    'address' => $info->address,
+                ]);
+            }
 
         \DB::commit();
 
@@ -682,15 +685,19 @@ class UserBookingController extends Controller
         if(session()->has('participant')) $participants -= session('participant');
         // dd($participants);
 
+
         //should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
+            ->where('status','!=' ,'Cancelled')
             ->groupBy('booking_date')
             ->having('total', '>=', $participants)
             ->having('booking_date', '>=', date('Y-m-d'))
             ->get()
             ->pluck('booking_date')
             ->toArray();
+
+//        dd($bookedDates);
 
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
@@ -876,6 +883,7 @@ class UserBookingController extends Controller
         //should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $booking->package->id)
+            ->where('status','!=' ,'Cancelled')
             ->groupBy('booking_date')
             ->having('total', '>=', --$package->daily_acceptance)
             ->having('booking_date', '>=', date('Y-m-d'))

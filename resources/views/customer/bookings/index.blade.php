@@ -57,7 +57,7 @@
                                         <td>{{ $booking->package->title }}</td>
                                         <td>{{ $booking->booking_date }}</td>
                                         <td>{{ $booking->booking_time }}</td>
-                                        <td><span class="label {{ $booking->status == __('backend.cancelled') ? 'label-danger' : 'label-success' }}">{{ $booking->status }}</span></td>
+                                        <td><span class="label {{ $booking->status == 'cancelled' ? 'label-danger' : 'label-success' }}">{{ $booking->status }}</span></td>
                                         <td>{{ $booking->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('showBooking', $booking->id) }}" class="btn btn-primary btn-sm">{{ __('backend.details') }}</a>

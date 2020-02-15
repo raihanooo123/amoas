@@ -86,19 +86,14 @@
                                 <td>{{ __('app.full_name') }}</td>
                                 <td>{{ __('app.id_card') }}</td>
                                 <td>{{ __('app.relationType') }}</td>
-                                <td>{{ __('app.select_service') }}</td>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($booking->info->participants as $participant)
                             <tr>
-                                <td>{{ $participant['name'] }}</td>
+                                <td>{{ $participant['full_name'] }}</td>
                                 <td>{{ $participant['id_card'] }}</td>
                                 <td>{{ $participant['relation'] }}</td>
-                                <td>{{ $participant['package'] }}</td>
-                                <!-- <td>
-                                    <a href="#">Print</a>
-                                </td> -->
                             </tr>
                             @endforeach
                         </tbody>

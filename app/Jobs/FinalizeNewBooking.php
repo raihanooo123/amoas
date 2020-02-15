@@ -35,7 +35,7 @@ class FinalizeNewBooking implements ShouldQueue
         if(!$this->booking->user && !isset($this->booking->email) && (!isset($this->booking->info) && !isset($this->booking->info->email))) return 'No email provided.';
         
         $email     = $this->booking->email ?? $this->booking->info->email ?? $this->booking->user->email;
-        $sender    = env('MAIL_USERNAME');
+//        $sender    = env('MAIL_USERNAME');
         // $validator = new SmtpEmailValidator($email, $sender);
         
         // If debug mode is turned on, logged data is printed as it happens:

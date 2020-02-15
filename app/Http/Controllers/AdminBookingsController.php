@@ -363,36 +363,15 @@ class AdminBookingsController extends Controller
     {
         $booking = Booking::find($id);
 
-        $input = $request->all();
-
-        //update booking
-
+        $oldBooking = $booking; // for sending email
         $booking->update([
-            'booking_date' => $input['event_date_bk'],
-            'booking_time' => $input['booking_slot']
+            'booking_date' => $request->event_date_bk,
+            'booking_time' => $request->booking_slot,
         ]);
+        $user = 'admin';
 
-
-        //if sync is enabled and booking have calender event_id
-
-        if(config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != NULL) {
-
-            //create new timestamp
-            $time_string = $input['event_date_bk'] . " " . $input['booking_slot'];
-            $start_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'));
-            $end_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'))->addMinutes($booking->package->duration);
-
-            try{
-                //update google calendar event
-                $event = Event::find($booking->google_calendar_event_id);
-                $event->startDateTime = $start_instance;
-                $event->endDateTime = $end_instance;
-                $event->save();
-            } catch(\Exception $ex) {
-                //do nothing
-            }
-
-        }
+        // send mail to user.
+        \App\Jobs\BookingDateChangedEmail::dispatch($booking, $oldBooking, $user);
 
         return redirect()->route('bookings.index');
     }
@@ -405,7 +384,7 @@ class AdminBookingsController extends Controller
      */
     public function dataTable()
     {
-        $bookings = Booking::with(['package:id,title', 'info'])->latest();
+        $bookings = Booking::select('bookings.*')->with(['package:id,title', 'info']);
         return Datatables::of($bookings)
             ->addColumn('action', function($booking){
                 $action = '<a href="' . route('bookings.show', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';

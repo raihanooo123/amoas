@@ -42,17 +42,21 @@ class CancelRequestController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $input['status'] = __('backend.pending');
-        CancelRequest::create($input);
-
         Session::flash('cancel_request_received', __('backend.cancel_request_received'));
 
-        $booking = Booking::find($input['booking_id']);
-        
+        $booking = Booking::find($request->booking_id);
+
+        if($booking->user->id != auth()->id())
+            abort(403);
+
         $booking->update(['status'=>'cancelled']);
 
-        return redirect()->route('showBooking', $input['booking_id']);
+        $user = 'admin';
+
+        // send mail to user.
+        \App\Jobs\BookingCancelledEmail::dispatch($booking, $user);
+
+        return redirect()->route('showBooking', $request->booking_id);
     }
 
     /**
