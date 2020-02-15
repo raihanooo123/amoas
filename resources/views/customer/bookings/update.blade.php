@@ -86,7 +86,7 @@
         $('#event_date_bk').datepicker({
             autoclose: true,
             orientation : 'bottom left',
-            startDate: today,
+            startDate: '2020-03-01',
             datesDisabled: JSON.parse('{!! $disabledDates !!}'),
             // format: 'dd-mm-yyyy',
             format: 'yyyy-mm-dd',

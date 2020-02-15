@@ -51,7 +51,7 @@ class CancelRequestController extends Controller
 
         $booking->update(['status'=>'cancelled']);
 
-        $user = 'admin';
+        $user = auth()->user()->email;
 
         // send mail to user.
         \App\Jobs\BookingCancelledEmail::dispatch($booking, $user);
