@@ -164,11 +164,14 @@
 
 <script>
     var nowDate = new Date();
+    var firstDay = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+    var lastDay = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0);
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
     $('#event_date').datepicker({
         orientation: "auto right",
         autoclose: true,
-        startDate: '2020-03-01',
+        startDate: today,
+        endDate: new Date(lastDay.setMonth(lastDay.getMonth()+4)),
         datesDisabled: JSON.parse('{!! (auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())) ? "[]" : $disabledDates !!}'),
         format: 'yyyy-mm-dd',
         // format: 'dd-mm-yyyy',

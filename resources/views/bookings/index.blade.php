@@ -45,6 +45,18 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
+                                <tfoot>
+                                    <th searching="false">#</th>
+                                    <th>{{ __('backend.serial_no') }}</th>
+                                    <th>{{ __('backend.date') }}</th>
+                                    <th>{{ __('backend.time') }}</th>
+                                    <th>{{ __('backend.package') }}</th>
+                                    <th>{{ __('backend.applicant') }}</th>
+                                    <th>{{ __('backend.id_card') }}</th>
+                                    <th searching="false">{{ __('backend.type') }}</th>
+                                    <th>{{ __('backend.status') }}</th>
+                                    <th searching="false">{{ __('backend.actions') }}</th>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -62,6 +74,14 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+
+        $('#xtreme-table tfoot th').each( function () {
+            var title = $(this).text();
+            if($(this).attr('searching') != 'false')
+                $(this).html( '<input type="text" class="form-control" placeholder="Search '+title+'" />' );
+            // $(this).html('<textarea class="form-control" rows="2"></textarea>');
+        });
+
         var table = $('#xtreme-table').DataTable({
             processing: true,
             serverSide: true,
@@ -121,6 +141,19 @@
             ],
             "order": [[ 0, 'desc' ]]
         });
+
+        // Apply the search
+        table.columns().every( function () {
+            var that = this;
+    
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search(this.value.replace(/;/g, "|"), true, false)
+                        .draw();
+                }
+            });
+        });
+
     });
 </script>
 

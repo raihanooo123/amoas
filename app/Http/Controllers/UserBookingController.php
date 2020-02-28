@@ -573,6 +573,17 @@ class UserBookingController extends Controller
         $request->session()->put('booking_slot', $request->booking_slot);
         $request->session()->put('participantInfo', $request->participant);
 
+        // dd(now()->addWeeks()->endOfDay()->format('Y-m-d H:i:s'));
+        // dd(now()->startOfDay()->format('Y-m-d H:i:s'));
+        $bookingCountInWeek = auth()
+                                ->user()
+                                ->bookings()
+                                ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
+                                ->where('created_at', '<=', now()->addWeeks()->endOfDay()->format('Y-m-d H:i:s'))
+                                ->get();
+
+        if($bookingCountInWeek > 0) $var = 'working';
+        
         \DB::beginTransaction();
         $booking = Booking::create([
             'user_id' => auth()->id(),
