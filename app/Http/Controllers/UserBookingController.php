@@ -580,9 +580,17 @@ class UserBookingController extends Controller
                                 ->bookings()
                                 ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
                                 ->where('created_at', '<=', now()->addWeeks()->endOfDay()->format('Y-m-d H:i:s'))
-                                ->get();
+                                ->get()
+                                ->count();
 
-        if($bookingCountInWeek > 0) $var = 'working';
+        if($bookingCountInWeek > 0){
+
+            $lastBooking = auth()->user()->bookings()->latest()->first();
+
+            $tillDate = optional($lastBooking->created_at)->addWeeks()->addDays()->startOfDay()->format('Y-m-d H:i:s');
+            // dd($tillDate);
+            abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
+        }
         
         \DB::beginTransaction();
         $booking = Booking::create([
@@ -639,7 +647,7 @@ class UserBookingController extends Controller
         \DB::commit();
 
         $booking->load(['user', 'info', 'package', 'department']);
-        \App\Jobs\FinalizeNewBooking::dispatch($booking);
+        // \App\Jobs\FinalizeNewBooking::dispatch($booking);
 
         $request->session()->put('bookingId', $booking->id);
 

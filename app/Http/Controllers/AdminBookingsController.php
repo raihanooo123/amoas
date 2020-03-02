@@ -220,139 +220,14 @@ class AdminBookingsController extends Controller
 
     public function cancel(Request $request, $id)
     {
-        //get input
-
-        $input = $request->all();
-
-        //set booking status to cancelled
 
         $booking = Booking::find($id);
-        $input_booking['status'] = __('backend.cancelled');
+        $input_booking['status'] = 'Cancelled';
         $booking->update($input_booking);
 
-        //If have cancel request, set to Completed
-
-        $input_cancel_request['status'] = __('backend.completed');
-        $cancel_request = $booking->cancel_request()->first();
-        if(count($cancel_request))
-        {
-            $cancel_request->update($input_cancel_request);
-        }
-
-        //refund if selected
-
-        if($input['refund_selection'] == 1)
-        {
-
-            //issue refund
-
-            $invoice = $booking->invoice()->first();
-
-            if($invoice['payment_method'] == __('app.credit_card'))
-            {
-                //refund via stripe
-
-                Stripe::refunds()->create($booking->invoice->transaction_id, $booking->invoice->amount , [
-                    'reason' => 'requested_by_customer'
-                ]);
-
-                //update invoice to refunded
-
-                $input_invoice['is_refunded'] = 1;
-                $booking->invoice()->update($input_invoice);
-
-            }
-            else if($invoice['payment_method'] == __('app.paypal'))
-            {
-
-
-                //refund via paypal - get relative paypal transaction
-
-                $payment = Payment::get($booking->invoice->transaction_id, $this->_api_context);
-                $transactions = $payment->getTransactions();
-                $resources = $transactions[0]->getRelatedResources();
-
-                //get saleID from transaction
-
-                $sale = $resources[0]->getSale();
-                $saleID = $sale->getId();
-
-                //set amount and currency
-
-                $amt = new Amount();
-                $amt->setTotal($booking->invoice->amount)
-                    ->setCurrency(config('settings.default_currency'));
-
-                //create refund request
-
-                $refund = new RefundRequest();
-                $refund->setAmount($amt);
-
-
-                //set saleID for refund
-
-                $sale = new Sale();
-                $sale->setId($saleID);
-
-
-                //execute refund
-
-                $sale->refundSale($refund, $this->_api_context);
-
-                //update invoice to refunded
-
-                $input_invoice['is_refunded'] = 1;
-                $booking->invoice()->update($input_invoice);
-
-            }
-
-            else if($invoice['payment_method']== __('app.offline_payment'))
-            {
-                //update invoice to refunded
-
-                $input_invoice['is_refunded'] = 1;
-                $booking->invoice()->update($input_invoice);
-            }
-
-            //send email to customer - refund true
-
-            try {
-                Mail::to($booking->user)->send(new BookingCancelled($booking , "1"));
-            } catch(\Exception $ex) {
-                //do nothing
-            }
-
-        }
-
-        else
-        {
-            //send email to customer - refund false
-            try {
-                Mail::to($booking->user)->send(new BookingCancelled($booking, "0"));
-            } catch (\Exception $ex) {
-                //do nothing
-            }
-        }
-
-        //update google calendar event if set
-
-        if(config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != NULL)
-        {
-
-            $new_status = __('backend.cancelled');
-
-            try {
-                //update google calendar event
-                $event = Event::find($booking->google_calendar_event_id);
-                $event->name = $booking->package->category->title." - ".$booking->package->title." ".__('app.booking')." - ".$new_status;
-                $event->save();
-            } catch(\Exception $ex) {
-                //do nothing
-            }
-        }
-
-
-        //set success message and redirect to booking page
+        $user = 'admin';
+        // send mail to user.
+        \App\Jobs\BookingCancelledEmail::dispatch($booking,  $user);
 
         Session::flash('booking_cancelled', __('backend.booking_cancelled_message'));
 

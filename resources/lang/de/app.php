@@ -249,4 +249,7 @@ return [
     'forAdminUsers' => '<strong>Die Feiertage sind aktiviert</strong>, Dieser Teil ist nur für Admin-Benutzer sichtbar.',
     // 'bookedInUrgent' => 'urgent booked :urgentBooked',
     'bookedInUrgent' => ':booking Antragsteller wurden an diesem Datum als dringend registriert',
+    'max_limit' => 'Sie haben Ihr maximales Limit für Buchungstermine erreicht. Sie dürfen keine Termine vor <u>:tillDate</u> buchen.',
+    'backToHome' => 'Zurück zur Startseite',
+    'lastBookings' => 'Ihre letzten Buchungen',
 ];

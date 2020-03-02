@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>404 HTML Tempate by Colorlib</title>
+	<title>403 AMOAS Forbidden</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,900" rel="stylesheet">
@@ -80,6 +80,15 @@
             margin: 0px;
             }
 
+            .notfound h2 {
+            font-family: 'Maven Pro', sans-serif;
+            font-size: 25px;
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin: 0px;
+            }
+
             .notfound p {
             font-family: 'Maven Pro', sans-serif;
             font-size: 16px;
@@ -131,11 +140,16 @@
 				<h1>403</h1>
 			</div>
 			<h2></h2>
-			<p>The page you are looking for might have been removed had its name changed or is temporarily unavailable.</p>
-			<a href="#">Back To Homepage</a>
+			<h2>
+                {!! $exception->getMessage() !!}
+                {{-- @lang('max_limit', ['tillDate' => $tillDate]) --}}
+            </h2>
+            <h2>&nbsp;</h2>
+			<a href="{{ url('/') }}">@lang('app.backToHome')</a>
+			<a href="{{ route('customerBookings') }}">@lang('app.lastBookings')</a>
 		</div>
 	</div>
 
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</body>
 
 </html>
