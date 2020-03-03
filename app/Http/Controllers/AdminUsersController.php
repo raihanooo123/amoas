@@ -195,7 +195,8 @@ class AdminUsersController extends Controller
         $user = User::with('role:id,name')->latest();
         return Datatables::of($user)
             ->addColumn('action', function($user){
-                $action = '<a href="' . route('users.show', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+                $action = '<a href="' . route('users.manualVerify', $user->id) .'" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>&nbsp;';
+                $action .= '<a href="' . route('users.show', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
                 $action .= '<a href="' . route('users.edit', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
@@ -207,5 +208,11 @@ class AdminUsersController extends Controller
             //     return $user->first_name.' '.$user->last_name;
             // })
             ->make(true);
+    }
+
+    public function verify(User $user)
+    {
+        $user->update(['email_verified_at' => now()->format('Y-m-d H:i:s')]);
+        return back();
     }
 }

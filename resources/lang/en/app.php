@@ -254,7 +254,7 @@ return [
     'forAdminUsers' => '<strong>The holydays are enabled</strong>, This part is visible only for admin users.',
     // 'bookedInUrgent' => 'urgent booked :urgentBooked',
     'bookedInUrgent' => ':booking applicant/s has been registered as emergency on this date',
-    'max_limit' => 'You have reached to your maximum limit of booking appointments. You are not allowed to book any appointments before <u>:tillDate</u>.',
+    'max_limit' => 'Appointment bookings are limitied to one appointment per person and week. Please book an appointment after <u>:tillDate</u>.',
     'backToHome' => 'Back To Homepage',
     'lastBookings' => 'Your last bookings',
 ];

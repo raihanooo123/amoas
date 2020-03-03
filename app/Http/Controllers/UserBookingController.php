@@ -583,7 +583,7 @@ class UserBookingController extends Controller
                                 ->get()
                                 ->count();
 
-        if($bookingCountInWeek > 0){
+        if($bookingCountInWeek > 0 && auth()->user()->role_id == 2){
 
             $lastBooking = auth()->user()->bookings()->latest()->first();
 

@@ -54,6 +54,7 @@ Route::get('/test-pick', function(){
 Route::group(['middleware'=>['admin', 'verified']], function(){
 
     Route::get('/users/d-table', 'AdminUsersController@dataTable')->name('users.data');
+    Route::get('/users/verify/{user}', 'AdminUsersController@verify')->name('users.manualVerify');
     Route::resource('/users','AdminUsersController');
 
     Route::resource('/categories', 'AdminCategoriesController');
