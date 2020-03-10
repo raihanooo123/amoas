@@ -647,7 +647,7 @@ class UserBookingController extends Controller
         \DB::commit();
 
         $booking->load(['user', 'info', 'package', 'department']);
-        // \App\Jobs\FinalizeNewBooking::dispatch($booking);
+        \App\Jobs\FinalizeNewBooking::dispatch($booking);
 
         $request->session()->put('bookingId', $booking->id);
 

@@ -54,18 +54,16 @@ class HomeController extends Controller
             $cancel_requests = DB::table('cancel_requests')->where('status','=', __('backend.pending'))->get();
 
 
-            //set date range for bookings and earning weekly data
-            $days = Input::get('days', 7);
-            $range = Carbon::now()->subDays($days);
+            // get start of the month
+            $now = now()->startOfMonth();
 
-            // dd($range->format('Y-m-d'));
             //get data for bookings graph
-            $stats_booking = Booking::where('booking_date', '>=', $range->format('Y-m-d'))
-                ->where('status', '!=', 'cancelled')
-                ->groupBy('date')
-                ->orderBy('date', 'ASC')
-                ->get([DB::raw('Date(created_at) as date'),
-                    DB::raw('COUNT(*) as value')]);
+            $stats_booking = Booking::select('booking_date as date', \DB::raw('count(*) as value'))
+                ->where('booking_date', '>=', $now->format('Y-m-d'))
+                ->where('booking_date', '<=', $now->endOfMonth()->format('Y-m-d'))
+                ->where('status','!=' ,'Cancelled')
+                ->groupBy('booking_date')
+                ->get();
 
             //get data for cancelled bookings
             $bookings_cancelled = DB::table('bookings')->where('status','=', __('backend.cancelled'))->get();
