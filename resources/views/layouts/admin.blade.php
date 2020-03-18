@@ -183,6 +183,7 @@
                     <ul class="sub-menu" style="display: none;">
                         <li class="{{ Request::is('users') || Request::is('users/*/edit') ? 'active' : '' }}"><a href="{{ route('users.index') }}">{{ __('backend.all_users') }}</a></li>
                         <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li>
+                        <li class="{{ Request::is('users/roles') ? 'active' : '' }}"><a href="{{ route('roles.index') }}">{{ __('backend.role') }}</a></li>
                     </ul>
                 </li>
                 <li class="{{ Request::is('categories') || Request::is('categories/*') ? 'active' : '' }}">
