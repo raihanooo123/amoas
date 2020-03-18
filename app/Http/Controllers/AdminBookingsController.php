@@ -51,6 +51,11 @@ class AdminBookingsController extends Controller
 
         $this->_api_context->setConfig($settings);
 
+        $this->middleware(['permission:booking show'])->only(['index', 'show']);
+        $this->middleware(['permission:booking change date'])->only(['edit', 'update', 'update_booking_time']);
+        $this->middleware(['permission:booking cancel'])->only(['cancel']);
+        $this->middleware(['permission:booking delete'])->only(['destroy']);
+
     }
 
     /**
@@ -62,27 +67,6 @@ class AdminBookingsController extends Controller
     {
         // $bookings = Booking::all();
         return view('bookings.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**

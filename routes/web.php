@@ -55,6 +55,8 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
 
     Route::get('/users/d-table', 'AdminUsersController@dataTable')->name('users.data');
     Route::get('/users/verify/{user}', 'AdminUsersController@verify')->name('users.manualVerify');
+    Route::post('/users/roles/assign/{role}','RolesController@assign')->name('roles.assign');
+    Route::delete('/users/roles/revoke/{role}','RolesController@revoke')->name('roles.revoke');
     Route::resource('/users/roles','RolesController');
     Route::resource('/users','AdminUsersController');
 

@@ -14,6 +14,15 @@ use Yajra\Datatables\Datatables;
 class AdminUsersController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['permission:user show'])->only(['index']);
+        $this->middleware(['permission:user create'])->only(['create', 'store']);
+        $this->middleware(['permission:user edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:user verify'])->only(['verify']);
+        $this->middleware(['permission:user delete'])->only(['destroy']);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Admin Users Controller
@@ -31,7 +40,6 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
         return view('users.index', compact('users'));
     }
 
@@ -192,7 +200,7 @@ class AdminUsersController extends Controller
      */
     public function dataTable()
     {
-        $user = User::with('role:id,name')->latest();
+        $user = User::with('role:id,name');
         return Datatables::of($user)
             ->addColumn('action', function($user){
                 $action = '<a href="' . route('users.manualVerify', $user->id) .'" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>&nbsp;';

@@ -29,7 +29,7 @@
 </div>
 <br>
 <br>
-@if(auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()))
+@if(auth()->check() && auth()->user()->role && (auth()->user()->hasPermissionTo('booking emergency')))
     <h5>{{ __('app.urgentBooking') }}</h5>
     <br>
     <p>@lang('app.forAdminUsers')</p>
