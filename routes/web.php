@@ -80,6 +80,23 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
     
     Route::resource('/holidays', 'HolidaysController');
 
+    Route::group(['prefix'=>'tracing'], function(){
+        Route::get('/docs/table', 'Tracing\DocumentController@dataTable')->name('docs.data');
+        Route::resource('/docs', 'Tracing\DocumentController');
+        
+        Route::get('/passport/import', 'Tracing\PassportController@import')->name('passport.import');
+        Route::get('/passport/import-progress', function(){
+            return response()->json([
+                'status' => session('progressCount') > 0 ? 'Importing Excel' : 'Uploading File' ,
+                'importedCount' => session('progressCount'),
+                'importedTotalCount' => session('totalCount'),
+            ]);
+        })->name('passport.import-progress');
+        // Route::get('/passport/import-progress', 'Tracing\PassportController@impProgressStatus')->name('passport.import-progress');
+        Route::get('/passport/table', 'Tracing\PassportController@dataTable')->name('passport.data');
+        Route::resource('/passport', 'Tracing\PassportController');
+    });
+
     Route::group(['prefix'=>'visa'], function(){
         
         Route::post('/approve/{visa_form}', 'Visa\VisaFormController@approve')->name('visa.approve');

@@ -204,7 +204,24 @@
                     </ul>
                 </li>
 
-                <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active open' : '' }}">
+                <li class="droplink {{ Request::is('tracing') || Request::is('tracing/*') ? 'active open' : '' }}">
+
+                    <a class="waves-effect waves-button">
+                        <span class="menu-icon icon-docs"></span>
+                        <p>Traceable Docs</p>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li class="{{ Request::is('tracing/docs') || Request::is('tracing/docs/*/edit') ? 'active' : '' }}">
+                            <a href="{{ route('docs.index') }}">All Docs</a>
+                        </li>
+                        <li class="{{ Request::is('tracing/passport') || Request::is('tracing/passport/*/edit') ? 'active' : '' }}">
+                            <a href="{{ route('passport.index') }}">Passport</a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active open' : '' }}">
 
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-docs"></span>
@@ -215,9 +232,9 @@
                         <li class="{{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*/edit') ? 'active' : '' }}">
                             <a href="{{ route('verification.index') }}">{{ __('backend.verification') }}</a>
                         </li>
-                        {{-- <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li> --}}
+                        <li class="{{ Request::is('users/create') ? 'active' : '' }}"><a href="{{ route('users.create') }}">{{ __('backend.add_new_user') }}</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="{{ Request::is('visa/visa-form') || Request::is('visa/visa-form/*') ? 'active' : '' }}">
                     <a href="{{ route('visa-form.index') }}" class="waves-effect waves-button">
