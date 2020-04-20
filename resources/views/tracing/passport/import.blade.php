@@ -90,11 +90,11 @@
             <div class="modal-body text-center">
                 <img src="{{asset('images/loader.gif')}}" alt="" srcset="">
                 <h2>{{ __('app.loadingPlzWait') }}</h2>
-                <div class="progress">
+                {{-- <div class="progress">
                     <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                         <span></span>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -113,7 +113,10 @@
         // event.preventDefault();
         $('#loadingModal').modal({backdrop: 'static', keyboard: false, show: true});
 
-        var timer = setInterval(function(){ progress_bar_process(timer); },1500);
+        window.onbeforeunload = function(){
+            alert('You can\'t leave, the operation need time to perform so be patient.')
+        }
+        // var timer = setInterval(function(){ progress_bar_process(timer); },1500);
     }
 
     function progress_bar_process(timer)

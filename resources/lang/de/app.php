@@ -252,4 +252,15 @@ return [
     'max_limit' => 'Terminbuchungen sind auf einen Termin pro Woche und Person beschränkt. Bitte buchen Sie einen Termin nach <u>:tillDate</u>.',
     'backToHome' => 'Zurück zur Startseite',
     'lastBookings' => 'Ihre letzten Buchungen',
+    'quickLinksTraceDoc' =>    '<li>
+                                    Überprüfen Sie Ihren Dokumentstatus <a href=":href">hier.</a>
+                                    <br>
+                                    Wie Reisepass, Geburtsurkunde usw ... 
+                                </li>',
+
+    'checkDocTracingTitle' => 'Verfolgen Sie den Status Ihres Dokumentprozesses',
+    'uidDocTracing' => 'Einzigartig ID: <small> Die UID ist eine nachvollziehbare Nummer, die von unserer Mission angegeben wurde',
+    'searchResult' => 'Suchergebnisse',
+    'applicantTracing' => 'Antragstellerin',
+    'considerationsTracing' => 'Überlegungen',
 ];

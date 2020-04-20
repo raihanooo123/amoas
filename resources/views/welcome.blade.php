@@ -42,6 +42,7 @@
                         <ul>
                             {{-- @lang('app.quickLinksCheckVisa', ['href'=> route('check-status')]) --}}
                             @lang('app.quickLinksCreateAccount', ['href'=> route('register')])
+                            @lang('app.quickLinksTraceDoc', ['href'=> route('docs.check')])
                             
                         </ul>
                     </div>

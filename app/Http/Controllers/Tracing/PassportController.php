@@ -51,7 +51,6 @@ class PassportController extends Controller
      */
     public function storeImports(Request $request)
     {
-        sleep(50);
         $this->validate($request, [
             'department_id' => 'required',
             'note' => 'nullable|max:254',
@@ -61,40 +60,10 @@ class PassportController extends Controller
         // Import to Array
         $passportsArr = \Excel::toArray(new ImpPassportTracing, request()->file('excel_file'));
 
-        if(array_key_exists(0, $passportsArr)){
-            
-            session(['totalCount' => count($passportsArr[0])]);
-            // $this->impProgressTotalCount = count($passportsArr[0]);
-            //Get the uids that already exist
-            $alreadyExist = Passport::whereIn('uid', array_column($passportsArr[0], 'id'))->get();
-            $alreadyExist = optional($alreadyExist)->pluck('uid')->toArray();
+        // session(['totalCount' => 0, 'progressCount' => 0]);
 
-            foreach($passportsArr[0] as $passport){
-                if(!in_array($passport['id'], $alreadyExist))
-                    if($passport['id'] != null){
-                        $pass = Passport::create([
-                                'uid' => $passport['id'],
-                                'family_name' => $passport['family_name'],
-                                'given_name' => $passport['given_names'],
-                                'passport_no' => $passport['passport_no'],
-                                'department_id' => $request->department_id,
-                                'status' => $passport['status'],
-                                'date' => !$passport['date'] ?: \Carbon\Carbon::createFromFormat('d-M-Y',$passport['date'])->format('Y-m-d'),
-                            ]);
-                                
-                        $pass->trace()->create([
-                                'department_id' => $request->department_id,
-                                'uid' => $passport['id'],
-                                'status' => $passport['status'],
-                                'is_public' => $request->is_public,
-                                'note' => $request->note,
-                                'registrar_id' => auth()->id(),
-                                'applicant' => $passport['given_names'] . ' ' . $passport['family_name'],
-                            ]);
-                    }
-                session(['progressCount' => session('progressCount', -1) + 1]);
-            }
-        }
+        if(array_key_exists(0, $passportsArr))
+            \App\Jobs\ImportPassportTracingExcel::dispatch($passportsArr[0], $request->except(['excel_file', '_token']));
         
         return redirect(route('passport.index'))
             ->with(['alert'=>'Excel imported successfully']);
@@ -163,9 +132,10 @@ class PassportController extends Controller
      */
     public function dataTable()
     {
-        return Datatables::of(Passport::query())
-            ->addColumn('action', function($doc){
-                $action = '<a href="' . route('passport.show', $doc->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+        $passports = Passport::with(['department:id,name_en']);
+        return Datatables::of($passports)
+            ->addColumn('action', function($passport){
+                $action = '<a href="' . route('passport.show', $passport->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })

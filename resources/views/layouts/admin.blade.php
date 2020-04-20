@@ -174,6 +174,27 @@
                     </li>
                 @endif
 
+                
+                <li class="droplink {{ Request::is('tracing') || Request::is('tracing/*') ? 'active open' : '' }}">
+
+                    <a class="waves-effect waves-button">
+                        <span class="menu-icon icon-docs"></span>
+                        <p>Traceable Docs</p>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li class="{{ Request::is('tracing/docs')  || Request::is('tracing/docs/*') ? 'active' : '' }}">
+                            <a href="{{ route('docs.index') }}">All Docs</a>
+                        </li>
+                        <li class="{{ Request::is('tracing/passport')  || Request::is('tracing/passport/*') ? 'active' : '' }}">
+                            <a href="{{ route('passport.index') }}">Passport</a>
+                        </li>
+                        <li class="{{ Request::is('tracing/misc')  || Request::is('tracing/misc/*') ? 'active' : '' }}">
+                            <a href="{{ route('misc.index') }}">Miscellaneous</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="droplink {{ Request::is('users') || Request::is('users/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-users"></span>
@@ -204,22 +225,6 @@
                     </ul>
                 </li>
 
-                <li class="droplink {{ Request::is('tracing') || Request::is('tracing/*') ? 'active open' : '' }}">
-
-                    <a class="waves-effect waves-button">
-                        <span class="menu-icon icon-docs"></span>
-                        <p>Traceable Docs</p>
-                        <span class="arrow"></span>
-                    </a>
-                    <ul class="sub-menu" style="display: none;">
-                        <li class="{{ Request::is('tracing/docs') || Request::is('tracing/docs/*/edit') ? 'active' : '' }}">
-                            <a href="{{ route('docs.index') }}">All Docs</a>
-                        </li>
-                        <li class="{{ Request::is('tracing/passport') || Request::is('tracing/passport/*/edit') ? 'active' : '' }}">
-                            <a href="{{ route('passport.index') }}">Passport</a>
-                        </li>
-                    </ul>
-                </li>
 
                 {{-- <li class="droplink {{ Request::is('tazkira/verification') || Request::is('tazkira/verification/*') ? 'active open' : '' }}">
 

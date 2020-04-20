@@ -257,4 +257,15 @@ return [
     'max_limit' => 'Appointment bookings are limitied to one appointment per person and week. Please book an appointment after <u>:tillDate</u>.',
     'backToHome' => 'Back To Homepage',
     'lastBookings' => 'Your last bookings',
+    'quickLinksTraceDoc' =>    '<li>
+                                    Check your document status <a href=":href">here.</a>
+                                    <br>
+                                    Like passport, birth certificate and etc... 
+                                </li>',
+
+    'checkDocTracingTitle' => 'Track your document process status',
+    'uidDocTracing' => 'Unique ID: <small> UID is traceable number given by our mission',
+    'searchResult' => 'Search results',
+    'applicantTracing' => 'Applicant',
+    'considerationsTracing' => 'Considerations',
 ];

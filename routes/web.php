@@ -85,6 +85,7 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
         Route::resource('/docs', 'Tracing\DocumentController');
         
         Route::get('/passport/import', 'Tracing\PassportController@import')->name('passport.import');
+        Route::get('/passport/filter', 'Tracing\PassportController@filter')->name('passport.filter');
         Route::get('/passport/import-progress', function(){
             return response()->json([
                 'status' => session('progressCount') > 0 ? 'Importing Excel' : 'Uploading File' ,
@@ -95,6 +96,12 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
         // Route::get('/passport/import-progress', 'Tracing\PassportController@impProgressStatus')->name('passport.import-progress');
         Route::get('/passport/table', 'Tracing\PassportController@dataTable')->name('passport.data');
         Route::resource('/passport', 'Tracing\PassportController');
+        
+        //Miscellaneous routes
+        Route::get('/misc/table', 'Tracing\MiscellaneousController@dataTable')->name('misc.data');
+        Route::get('/misc/status/{misc}', 'Tracing\MiscellaneousController@changeStatus')->name('misc.status');
+        Route::post('/misc/status/{misc}', 'Tracing\MiscellaneousController@status')->name('misc.changeStatus');
+        Route::resource('/misc', 'Tracing\MiscellaneousController');
     });
 
     Route::group(['prefix'=>'visa'], function(){
@@ -189,6 +196,12 @@ Route::group(['prefix'=>'visa'], function(){
     Route::post('/visaform', 'Visa\VisaFormController@store')->name('visa-form.fill.store');
     Route::get('/print/{visa_form}', 'Visa\VisaFormController@print')->name('visa.print');
     Route::get('/visa-completion/{visa_form}', 'Visa\VisaFormController@visaComplete')->name('visa.complete');
+});
+
+Route::group(['prefix'=>'check'], function(){
+    Route::get('/docs', 'Tracing\DocumentController@checkStatus')
+        ->name('docs.check')
+        ->middleware(['throttle:30,1']);
 });
 
 Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');

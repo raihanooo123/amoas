@@ -30,6 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
     ];
 
+    protected $appends = ['full_name'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -96,5 +98,10 @@ class User extends Authenticatable implements MustVerifyEmail
         preg_match('/super-admin|super_admin|super admin|super administrator/i', $this->role->name, $matches);
 
         return $matches ? true : false;
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

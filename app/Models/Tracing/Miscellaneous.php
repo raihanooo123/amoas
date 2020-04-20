@@ -4,9 +4,9 @@ namespace App\Models\Tracing;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Passport extends Model
+class Miscellaneous extends Model
 {
-    protected $table = 'traceable_passports';
+    protected $table = 'traceable_miscellaneous';
     
     /**
      * The attributes that are mass assignable.
@@ -15,12 +15,13 @@ class Passport extends Model
      */
     protected $fillable = [
         'uid',
-        'family_name',
-        'given_name',
-        'passport_no',
         'department_id',
-        'status',
-        'date',
+        'doc_type',
+        'noti_lang',
+        'alt_email',
+        'phone_no',
+        'descriptions',
+        'registrar_id',
     ];
 
     protected $appends = ['title'];
@@ -37,6 +38,17 @@ class Passport extends Model
 
     public function getTitleAttribute()
     {
-        return 'Passport';
+        return optional($this->type)->type;
     }
+
+    public function type()
+    {
+        return $this->belongsTo('App\Models\Tracing\MiscellaneousType', 'doc_type');
+    }
+
+    public function registrar()
+    {
+        return $this->belongsTo('App\User', 'registrar_id');
+    }
+
 }

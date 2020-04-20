@@ -1,4 +1,4 @@
-@extends('layouts.admin', ['title' => __('backend.bookings')])
+@extends('layouts.admin', ['title' => 'Traceable Documents'])
 
 @section('styles')
 <link href="{{ asset('plugins/datatables/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
@@ -7,24 +7,22 @@
 
 @section('content')
 
-    <div class="page-title">
-        <h3>Traceable Documents</h3>
-        <div class="page-breadcrumb">
-            <ol class="breadcrumb">
-                <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
-                <li class="active">Passport</li>
-            </ol>
-        </div>
+<div class="page-title">
+    <h3>Traceable Documents</h3>
+    <div class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
+            <li class="active"><a href="{{ route('misc.index') }}">Miscellaneous</a></li>
+        </ol>
     </div>
+</div>
 
     <div id="main-wrapper">
         <div class="row">
             <div class="col-md-12" >
                 @include('alerts.alert')
-                <a class="btn btn-primary" href="{{ route('passport.import') }}"><i
-                    class="fa fa-arrow-down"></i>&nbsp;&nbsp;Import Excel</a>
-                <a class="btn btn-default" href="{{ route('passport.filter') }}"><i
-                    class="fa fa-filter"></i>&nbsp;&nbsp;Filter</a>
+                <a class="btn btn-primary" href="{{ route('misc.create') }}"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Create</a>
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="col-md-8" id="options">
@@ -37,11 +35,11 @@
                                 <tr>
                                     <th>#</th>
                                     <th>UID</th>
-                                    <th>Full name</th>
-                                    <th>Passport No.</th>
-                                    <th>Department</th>
-                                    <th>Date</th>
+                                    <th>Title</th>
+                                    <th>Applicant</th>
+                                    <th>Email</th>
                                     <th>Status</th>
+                                    <th>Is Public</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </thead>
@@ -50,11 +48,11 @@
                                 <tfoot>
                                     <th searching="false">#</th>
                                     <th>UID</th>
-                                    <th>Full name</th>
-                                    <th>Passport No.</th>
-                                    <th>Department</th>
-                                    <th>Date</th>
+                                    <th>Title</th>
+                                    <th>Applicant</th>
+                                    <th>Email</th>
                                     <th>Status</th>
+                                    <th>Is Public</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
                             </table>
@@ -95,7 +93,7 @@
                     },
                 },
             ],
-            ajax: "{!! route('passport.data') !!}",
+            ajax: "{!! route('misc.data') !!}",
             columns: [{
                     data: 'id',
                     name: 'id'
@@ -105,24 +103,24 @@
                     name: 'uid'
                 },
                 {
-                    data: 'given_name',
-                    name: 'given_name'
+                    data: 'type.type',
+                    name: 'type.type'
                 },
                 {
-                    data: 'passport_no',
-                    name: 'passport_no'
+                    data: 'trace.applicant',
+                    name: 'trace.applicant'
                 },
                 {
-                    data: 'department.name_en',
-                    name: 'department.name_en'
+                    data: 'trace.email',
+                    name: 'trace.email'
                 },
                 {
-                    data: 'date',
-                    name: 'date'
+                    data: 'trace.status',
+                    name: 'trace.status'
                 },
                 {
-                    data: 'status',
-                    name: 'status'
+                    data: 'isPublic',
+                    name: 'isPublic'
                 },
                 {
                     data: 'action',

@@ -34,9 +34,9 @@
                                     <th>UID</th>
                                     <th>{{ __('backend.type') }}</th>
                                     <th>{{ __('backend.status') }}</th>
-                                    <th>Is public</th>
                                     <th>Applicant</th>
-                                    <th>{{ __('backend.actions') }}</th>
+                                    <th>Email</th>
+                                    <th>Is public</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -46,9 +46,9 @@
                                     <th>UID</th>
                                     <th>{{ __('backend.type') }}</th>
                                     <th>{{ __('backend.status') }}</th>
-                                    <th>Is public</th>
                                     <th>Applicant</th>
-                                    <th searching="false">{{ __('backend.actions') }}</th>
+                                    <th>Email</th>
+                                    <th>Is public</th>
                                 </tfoot>
                             </table>
                         </div>
@@ -98,26 +98,26 @@
                     name: 'uid'
                 },
                 {
-                    data: 'traceable_type',
-                    name: 'traceable_type'
+                    data: 'traceable.title',
+                    name: 'traceable.title',
+                    orderable: false, 
+                    searchable: false
                 },
                 {
                     data: 'status',
                     name: 'status'
                 },
                 {
-                    data: 'is_public',
-                    name: 'is_public'
-                },
-                {
                     data: 'applicant',
                     name: 'applicant'
                 },
                 {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false, 
-                    searchable: false
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'is_public',
+                    name: 'is_public'
                 }
             ],
             "order": [[ 0, 'desc' ]]

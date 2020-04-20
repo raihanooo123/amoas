@@ -94,11 +94,34 @@ class DocumentController extends Controller
     {
         $docs = Document::with(['traceable']);
         return Datatables::of($docs)
-            ->addColumn('action', function($doc){
-                $action = '<a href="' . route('docs.show', $doc->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+            ->addColumn('is_public', function($doc){
+                $action = $doc->is_public == 1 ? '<span class="badge badge-info">Yes</span>' : '<span class="badge badge-dark">No</span>';
+                // $action = '<a href="' . route('docs.show', $doc->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
+            ->rawColumns(['is_public'])
             ->make(true);
+    }
+
+    /**
+     * check the status of a document
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function checkStatus()
+    {
+        $message = null;
+        $docs = null;
+        if(strlen(request()->uid) < 5)
+            $message = __('validation.min.string', ['min'=>5, 'attribute'=> 'Unique ID']);
+        else {
+            $docs = Document::where('uid', request()->uid)
+                        ->where('is_public', 1)
+                        ->get();
+        }
+
+        return view('tracing.docs.check-status', compact('message', 'docs'));
     }
 }

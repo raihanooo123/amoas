@@ -16,4 +16,4 @@ yarn-error.log
 .env
 storage/*
 storage/fonts/*
-/bootstrap/
+bootstrap/*
