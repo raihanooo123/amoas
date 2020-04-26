@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form method="post" action="{{route('misc.changeStatus')}}" enctype="multipart/form-data">
+                        <form method="post" action="{{route('misc.changeStatus', $misc->id)}}" enctype="multipart/form-data">
 
                             {{csrf_field()}}
                             <div class="col-md-12 form-group {{$errors->has('status') ? ' has-error' : ''}}">
@@ -42,11 +42,9 @@
                                 <select class="form-control" name="noti_lang">
                                     <option>{{ __('backend.select_one') }}</option>
                                     @foreach(array_values(preg_grep('/^([^.])/', scandir(resource_path('lang')))) as $key => $lang)
-                                        @if(old('noti_lang') == $lang)
-                                            <option value="{{$lang}}" selected>{{$lang}}</option>
-                                        @else
-                                            <option value="{{$lang}}" {{ $key==0 ? 'selected' : null}}>{{$lang}}</option>
-                                        @endif
+                                        
+                                        <option value="{{$lang}}" {{ $lang==$misc->noti_lang ? 'selected' : null}}>{{$lang}}</option>
+                                        
                                     @endforeach
                                 </select>
                                 @if ($errors->has('noti_lang'))
@@ -57,7 +55,7 @@
                             </div>
 
                             <div class="col-md-12 form-group {{$errors->has('send') ? ' has-error' : ''}}">
-                                <label class="control-label" for="send"><span class="text-danger">*</span> Send changes to Applicant email?</label>
+                                <label class="control-label" for="send"><span class="text-danger">*</span> Send the changes to Applicant's email?</label>
                                 <select class="form-control" name="send">
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
@@ -71,7 +69,7 @@
 
                             <div class="col-md-12 form-group {{$errors->has('note') ? ' has-error' : ''}}">
                                 <label class="control-label" for="note">Mission's Note <small>this field will directly send to applicant</small></label>
-                                <textarea class="form-control" name="note" rows="5">{{old('note')}}</textarea>
+                                <textarea class="form-control" name="note" rows="5">{{ optional($misc->trace)->note }}</textarea>
                                 @if ($errors->has('note'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('note') }}</strong>

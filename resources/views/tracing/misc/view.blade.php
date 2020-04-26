@@ -67,7 +67,7 @@
                         </div>
                         <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>Missions Note:</strong></div>
-                            <div class="col-md-6">{{ optional($misc->registrar)->note ?? 'N/A' }}</div>
+                            <div class="col-md-6">{{ optional($misc->trace)->note ?? 'N/A' }}</div>
                         </div>
                     </div>
                 </div>
@@ -103,8 +103,12 @@
                             </div>
                         </div>
                         <div class="row table-row">
+                            <div class="col-md-6 bold-font"><strong>Created At:</strong></div>
+                            <div class="col-md-6">{{ optional($misc->created_at)->format('Y-d-m g:i A') }}</div>
+                        </div>
+                        <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>Last Changes:</strong></div>
-                            <div class="col-md-6">{{ json_encode($misc->getChanges()) }}</div>
+                            <div class="col-md-6">{{ optional($misc->updated_at)->format('Y-d-m g:i A') }}</div>
                         </div>
                     </div>
                 </div>

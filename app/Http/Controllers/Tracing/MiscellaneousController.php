@@ -180,10 +180,10 @@ class MiscellaneousController extends Controller
         return view('tracing.misc.change-status', compact('misc'));
     }
 
-    public function status(Miscellaneous $misc)
+    public function status(Request $request, Miscellaneous $misc)
     {
         $this->validate($request, [
-            'status' => 'required',
+            'status' => 'required|max:255',
             'send' => 'required',
         ]);
         $misc->trace()->update([
@@ -191,9 +191,12 @@ class MiscellaneousController extends Controller
             'note' => $request->note,
         ]);
 
-        if($request->send == 1)
-            
+        if($request->send == 1){
+            $misc->load(['trace', 'department']);
+            \App\Jobs\TracingStatusChanged::dispatch($misc, $misc->noti_lang);
+        }
 
-        return view('tracing.misc.change-status', compact('misc'));
+        return redirect(route('misc.show', $misc->id))
+            ->with(['alert'=>'Action performed successfully']);
     }
 }
