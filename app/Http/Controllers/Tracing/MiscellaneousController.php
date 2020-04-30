@@ -63,7 +63,7 @@ class MiscellaneousController extends Controller
 
         $misc->trace()->create([
             'uid' => $uid,
-            'status' => 'Processing',
+            'status' => __('app.processingState', [], $request->noti_lang ?? 'en') ?? 'Processing',
             'department_id' => $userDep->id,
             'is_public' => 1,
             'registrar_id' => auth()->id(),

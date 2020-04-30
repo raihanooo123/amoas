@@ -266,6 +266,10 @@ return [
     'checkDocTracingTitle' => 'Track your document process status',
     'uidDocTracing' => 'Unique ID: <small> UID is traceable number given by our mission',
     'searchResult' => 'Search results',
-    'applicantTracing' => 'Applicant',
-    'considerationsTracing' => 'Considerations',
+    'applicantTracing' => 'Applicant: :applicant',
+    'considerationsTracing' => 'Considerations: :consTracing',
+    'uidTracing' => 'UID: :uid',
+    'depTracing' => 'Applied Mission: :dep',
+    'processingState' => 'Processing',
+
 ];

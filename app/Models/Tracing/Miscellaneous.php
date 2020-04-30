@@ -24,7 +24,7 @@ class Miscellaneous extends Model
         'registrar_id',
     ];
 
-    protected $appends = ['title'];
+    protected $appends = ['title', 'lang'];
 
     public function trace()
     {
@@ -39,6 +39,11 @@ class Miscellaneous extends Model
     public function getTitleAttribute()
     {
         return optional($this->type)->type;
+    }
+
+    public function getLangAttribute()
+    {
+        return $this->noti_lang;
     }
 
     public function type()

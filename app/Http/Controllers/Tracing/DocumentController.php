@@ -119,9 +119,22 @@ class DocumentController extends Controller
         else {
             $docs = Document::where('uid', request()->uid)
                         ->where('is_public', 1)
+                        ->with(['traceable'])
                         ->get();
-        }
 
+            if($docs)
+                $docs = $docs->map(function($item, $key){
+                        if(optional($item->traceable)->noti_lang == 'dr')
+                            $item->setAttribute('dep_name', optional($item->department)->name_dr);
+                        elseif(optional($item->traceable)->noti_lang == 'ps')
+                            $item->setAttribute('dep_name', optional($item->department)->name_pa);
+                        else 
+                            $item->setAttribute('dep_name', optional($item->department)->name_en);
+                        
+                        return $item;
+                    });
+        }
+        
         return view('tracing.docs.check-status', compact('message', 'docs'));
     }
 }

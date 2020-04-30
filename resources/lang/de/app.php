@@ -263,4 +263,6 @@ return [
     'searchResult' => 'Suchergebnisse',
     'applicantTracing' => 'Antragstellerin',
     'considerationsTracing' => 'Überlegungen',
+    'processingState' => 'Den rechtlichen Prozess durchlaufen',
+
 ];

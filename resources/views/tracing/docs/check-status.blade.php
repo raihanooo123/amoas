@@ -28,7 +28,7 @@
         <div class="row">
             <div class="container">
                 <form action="{{route('docs.check')}}" method="get">
-                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                    <div class="col-sm-12 col-md-8 col-lg-7 col-xl-7">
                         <div class="form-group">
                             <label for="uid">@lang('app.uidDocTracing')</label>
                             <input name="uid" value="{{request()->uid}}" type="text"
@@ -49,7 +49,7 @@
         <div class="row mb-md-5 mb-lg-5 mb-xl-5">
             <div class="container">
                 @if($message)
-                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                <div class="col-sm-12 col-md-8 col-lg-7 col-xl-7">
                     <div class="alert alert-danger" role="alert">
                         {{ $message }}
                     </div>
@@ -57,22 +57,30 @@
                 @endif
                 @if($docs)
                     @forelse ($docs as $doc)
-                        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                        @php
+                            $lang = optional($doc->traceable)->lang ?? app()->getLocale();
+                        @endphp
+                        <div class="col-sm-12 col-md-8 col-lg-7 col-xl-7" style="{!! in_array($lang, ['dr', 'ps', 'ar']) ? 'direction: rtl; text-align: right' : null !!}">
                             <ul class="list-group">
                                 <li class="list-group-item">
-                                    <span>{{ __('app.searchResult') }}</span>
+                                    <span>{{ __('app.searchResult', [], $lang) }}</span>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1 font-weight-normal">UID: {{$doc->uid}}</h5>
-                                        <small class="text-info">{{$doc->status}}</small>
+                                        {{-- <h5 class="mb-1 font-weight-normal">UID: {{$doc->uid}}</h5> --}}
+                                        <h5 class="mb-1 font-weight-normal">{{__('app.uidTracing', ['uid' => $doc->uid ], $lang)}}</h5>
+                                        <span>&nbsp;&nbsp;</span>
+                                        <p class="text-info">{{$doc->status}}</p>
                                     </div>
                                     <div class="d-flex w-100 justify-content-between">
-                                        <p>{{__('app.applicantTracing')}}: {{$doc->applicant}}</p>
+                                        {{-- <p>{{__('app.applicantTracing')}}: {{$doc->applicant}}</p> --}}
+                                        <p>{{__('app.applicantTracing', ['applicant' => $doc->applicant ], $lang)}}</p>
                                         <small>{{optional($doc->traceable)->title}}</small>
                                     </div>
-                                    <p class="mb-2">{{__('backend.department')}}: {{optional($doc->department)->name_en}}</p>
-                                    <p class="mb-1">{{__('app.considerationsTracing')}}: {{$doc->note ?? 'N/A'}}</p>
+                                    <p class="mb-2">{{__('app.depTracing', ['dep' => $doc->dep_name ?? optional($doc->department)->name_en], $lang)}}</p>
+                                    <p class="mb-1">{{__('app.considerationsTracing', ['consTracing' => $doc->note ?? 'N/A'], $lang)}}</p>
+                                    {{-- <p class="mb-2">{{__('backend.department')}}: {{optional($doc->department)->name_en}}</p>
+                                    <p class="mb-1">{{__('app.considerationsTracing')}}: {{$doc->note ?? 'N/A'}}</p> --}}
                                 </li>
                             </ul>
                         </div>

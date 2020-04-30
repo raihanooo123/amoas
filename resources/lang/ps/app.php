@@ -99,4 +99,6 @@ return [
     'offline_payment_heading' => 'Book Now & Pay After Service',
     'complete_booking' => 'Click Here To Finalize',
     'offline_payment' => 'Offline Payment',
+    'processingState' => 'در حال طی مراحل',
+
 ];

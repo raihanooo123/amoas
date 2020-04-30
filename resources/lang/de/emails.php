@@ -13,33 +13,27 @@ return [
     |
     */
 
-    'greeting' => 'Sehr geehrter',
-    'admin_notification_title' => 'Neue Buchung erhalten - Buchung',
-    'new_invoice_title' => 'Ihr Zahlungsbeleg für die Buchung',
-    'new_booking_title' => 'Ihre Buchung ist eingegangen. Ref#',
-    'admin_new_booking_text' => 'Sie haben eine neue Buchung erhalten',
-    'admin_notification_login_text' => 'Bitte loggen Sie sich in Ihr Administratorkonto ein, um die vollständigen Details der neuen Buchung anzuzeigen.',
-    'login_btn' => 'In Mein Konto einloggen',
-    'spam_notice' => 'So stellen Sie sicher, dass diese E-Mail kein Spam ist. Wir werden Sie immer mit einem vollständigen Vor- und Nachnamen ansprechen, so wie Sie es auf unserer Website angegeben haben. Wenn Sie eine E-Mail erhalten, die Sie nicht mit Ihrem vollständigen Namen anspricht. Betrachten Sie es als Spam und melden Sie sich bei uns.',
-    'invoice_notice' => 'Wir haben Ihre Buchung erhalten. Bitte überprüfen Sie Ihre Zahlungsrechnung unten. Diese Rechnung dient als Kaufbeleg für Ihre Buchung. Vielen Dank für Ihre Buchung.',
-    'invoice_heading' => 'Hier sind Ihre Rechnungsdetails',
-    'invoice_number' => 'Rechnung #',
-    'amount' => 'Menge',
-    'date' => 'Datum',
-    'booking_notice' => 'Wir haben Ihre Buchung erhalten. Bitte überprüfen Sie Details Ihrer Buchung unten. Wir haben Ihre Zahlungsrechnung auch in einer separaten E-Mail gesendet. Vielen Dank für Ihre Buchung.',
-    'booking_heading' => 'Hier sind Ihre Buchungsdetails',
-    'extra_services' => 'Extra Dienstleistungen',
-    'total_paid' => 'Ganz bezahlt',
-    'to_be_paid' => 'Bezahlt werden',
-    'via' => 'Über',
-    'cancellation_received' => 'Stornierungsanfrage wurde erfolgreich für Ihre Buchung erhalten. Buchung #',
-    'user_login' => 'Sie können sich jederzeit in Ihrem Konto anmelden. Wenn Sie diese Anfrage nicht eingereicht haben, wenden Sie sich bitte so schnell wie möglich an den Kundensupport und sichern Sie Ihr Konto.',
-    'admin_cancel_subject' => 'Neue Stornierungsanfrage erhalten',
-    'admin_cancel_text' => 'Eine neue Stornierungsanfrage wird gegen eine Buchung erhalten.',
-    'booking_cancelled_subject' => 'Ihre Buchung # :booking_id wird storniert.',
-    'booking_cancelled_message' => 'Ihre Buchung # :booking_id wurde erfolgreich storniert. Wir bedauern, dass Sie gehen. Bitte überprüfen Sie unten den Status Ihrer Rückerstattung.',
-    'invoice_refunded' => 'Ihre Zahlung von :amount wird über :payment_method zurückerstattet. Im Falle eines Problems, kontaktieren Sie uns bitte.',
-    'invoice_not_refunded' => 'Ihre Zahlung von :amount wird nicht zurückerstattet. Im Falle eines Problems, kontaktieren Sie uns bitte.',
+    'greeting'          => 'Sehr geehrter :name',
+    'afg'               => 'Die islamische Republik Afghanistan',
+    'mfa'               => 'Das afghanische Außenministerium',
+    'adots'             => 'Online System zur Verfolgung von Bewerberdokumenten',
+    'content'           => 'این ایمیل آدرس شما بحیث راه ارتباطی نزد سیستم ما
+                                در :department ثبت
+                                گردیده است.<br>&nbsp;حالت مرحله&nbsp;اسناد شما
+                                تغییر کرده است، مرحله جدید اسناد شما: <span
+                                    style="color:#FFFFE0;background-color:#CC932B;">
+                                    :status
+                                    </span><br>
+                                لطفاً به یادداشت ذیل را ملاحظه فرمائید
+                            ',
+    'sincerly'          => 'Mit freundlichen Grüßen',
+    'p1'                => 'ihre E-Mail Adresse wurde als Kontaktkanal für unser System beim :department registriert.',
+    'p2'                => 'Der Status Ihres Dokuments wurde in
+                            <span
+                                style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, \'helvetica neue\', helvetica, arial, sans-serif;line-height:24px;color:#FFFFFF;background-color:#CC932B;">
+                                :status
+                            </span>.<br>Bitte beachten Sie den folgenden Hinweis zu Ihrem Dokument.
+                            ',
 
-
+    'tracing_status_changed' => 'Ihr Dokumentprozessstatus hat sich geändert',
 ];

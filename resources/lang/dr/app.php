@@ -99,4 +99,14 @@ return [
     'offline_payment_heading' => 'Book Now & Pay After Service',
     'complete_booking' => 'Click Here To Finalize',
     'offline_payment' => 'Offline Payment',
+
+    //Doc tracing translation
+    'checkDocTracingTitle' => 'سیستم ردیابی/پیگیری آنلاین اسناد مراجعین',
+    'uidDocTracing' => 'Unique ID: <small> UID is traceable number given by our mission',
+    'searchResult' => 'نتایج جستجو',
+    'applicantTracing' => 'اسم متقاضی: :applicant',
+    'considerationsTracing' => 'یاد داشت: :consTracing',
+    'uidTracing' => 'یوآیدی: :uid',
+    'depTracing' => 'مرجع: :dep',
+    'processingState' => 'در حال طی مراحل قانونی',
 ];
