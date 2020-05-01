@@ -67,19 +67,16 @@
                                 </li>
                                 <li class="list-group-item">
                                     <div class="d-flex w-100 justify-content-between">
-                                        {{-- <h5 class="mb-1 font-weight-normal">UID: {{$doc->uid}}</h5> --}}
                                         <h5 class="mb-1 font-weight-normal">{{__('app.uidTracing', ['uid' => $doc->uid ], $lang)}}</h5>
                                         <span>&nbsp;&nbsp;</span>
                                         <p class="text-info">{{$doc->status}}</p>
                                     </div>
                                     <div class="d-flex w-100 justify-content-between">
-                                        {{-- <p>{{__('app.applicantTracing')}}: {{$doc->applicant}}</p> --}}
                                         <p>{{__('app.applicantTracing', ['applicant' => $doc->applicant ], $lang)}}</p>
                                         <small>{{optional($doc->traceable)->title}}</small>
                                     </div>
                                     <p class="mb-2">{{__('app.depTracing', ['dep' => $doc->dep_name ?? optional($doc->department)->name_en], $lang)}}</p>
                                     <p class="mb-1">{{__('app.considerationsTracing', ['consTracing' => $doc->note ?? 'N/A'], $lang)}}</p>
-                                    {{-- <p class="mb-2">{{__('backend.department')}}: {{optional($doc->department)->name_en}}</p>
                                     <p class="mb-1">{{__('app.considerationsTracing')}}: {{$doc->note ?? 'N/A'}}</p> --}}
                                 </li>
                             </ul>

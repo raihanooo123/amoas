@@ -126,7 +126,7 @@
                                                             <div class="modal-body">
                                                                 <p>{{ __('backend.delete_category_message') }}</p>
                                                             </div>
-                                                            <form method="post" action="{{ route('holidays.destroy', $holiday->id) }}">
+                                                            <form method="post" action="{{ route('roles.destroy', $holiday->id) }}">
                                                                 <div class="modal-footer">
                                                                     {{csrf_field()}}
                                                                     {{ method_field('DELETE') }}

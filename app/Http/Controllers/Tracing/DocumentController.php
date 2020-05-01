@@ -96,8 +96,6 @@ class DocumentController extends Controller
         return Datatables::of($docs)
             ->addColumn('is_public', function($doc){
                 $action = $doc->is_public == 1 ? '<span class="badge badge-info">Yes</span>' : '<span class="badge badge-dark">No</span>';
-                // $action = '<a href="' . route('docs.show', $doc->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
-                // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
             ->rawColumns(['is_public'])

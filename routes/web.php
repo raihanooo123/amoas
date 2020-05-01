@@ -98,6 +98,7 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
         Route::resource('/passport', 'Tracing\PassportController');
         
         //Miscellaneous routes
+        Route::resource('/misc/misc-types', 'Tracing\MiscTypeController');
         Route::get('/misc/table', 'Tracing\MiscellaneousController@dataTable')->name('misc.data');
         Route::get('/misc/status/{misc}', 'Tracing\MiscellaneousController@changeStatus')->name('misc.status');
         Route::post('/misc/status/{misc}', 'Tracing\MiscellaneousController@status')->name('misc.changeStatus');

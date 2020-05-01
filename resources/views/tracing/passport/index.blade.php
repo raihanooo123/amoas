@@ -23,8 +23,8 @@
                 @include('alerts.alert')
                 <a class="btn btn-primary" href="{{ route('passport.import') }}"><i
                     class="fa fa-arrow-down"></i>&nbsp;&nbsp;Import Excel</a>
-                <a class="btn btn-default" href="{{ route('passport.filter') }}"><i
-                    class="fa fa-filter"></i>&nbsp;&nbsp;Filter</a>
+                {{-- <a class="btn btn-default" href="{{ route('passport.filter') }}"><i
+                    class="fa fa-filter"></i>&nbsp;&nbsp;Filter</a> --}}
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="col-md-8" id="options">

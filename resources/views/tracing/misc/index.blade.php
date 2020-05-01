@@ -23,6 +23,8 @@
                 @include('alerts.alert')
                 <a class="btn btn-primary" href="{{ route('misc.create') }}"><i
                     class="fa fa-plus"></i>&nbsp;&nbsp;Create</a>
+                <a class="btn btn-default" href="{{ route('misc-types.index') }}"><i
+                    class="fa fa-list-ul"></i>&nbsp;&nbsp;Misc Types</a>
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="col-md-8" id="options">

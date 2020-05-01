@@ -98,9 +98,9 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        $role->user()->sync([]);
+        $role->users()->sync([]);
         $role->permissions()->sync([]);
         $role->delete();
 
