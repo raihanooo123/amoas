@@ -77,7 +77,6 @@
                                     </div>
                                     <p class="mb-2">{{__('app.depTracing', ['dep' => $doc->dep_name ?? optional($doc->department)->name_en], $lang)}}</p>
                                     <p class="mb-1">{{__('app.considerationsTracing', ['consTracing' => $doc->note ?? 'N/A'], $lang)}}</p>
-                                    <p class="mb-1">{{__('app.considerationsTracing')}}: {{$doc->note ?? 'N/A'}}</p> --}}
                                 </li>
                             </ul>
                         </div>

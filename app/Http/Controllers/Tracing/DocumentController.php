@@ -113,7 +113,7 @@ class DocumentController extends Controller
         $message = null;
         $docs = null;
         if(strlen(request()->uid) < 5)
-            $message = __('validation.min.string', ['min'=>5, 'attribute'=> 'Unique ID']);
+            $message = !request()->filled('uid') ? null : __('validation.min.string', ['min'=>5, 'attribute'=> 'Unique ID']);
         else {
             $docs = Document::where('uid', request()->uid)
                         ->where('is_public', 1)

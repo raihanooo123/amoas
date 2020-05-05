@@ -50,6 +50,8 @@ class Document extends Model
             return strtoupper(substr($word, 0, 1));
         }, explode(" ", $request->applicant));
 
+        $firstChars = preg_match('/[^A-Za-z]/', implode('',$firstChars)) ? [] : $firstChars;
+
         $serialNo = $depCode . '-' . implode('',$firstChars) . date('ny') . '-' . date('j') . sprintf('%03d', ++$counts);
 
         return $serialNo;

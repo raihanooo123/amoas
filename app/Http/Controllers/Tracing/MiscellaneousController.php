@@ -159,7 +159,8 @@ class MiscellaneousController extends Controller
      */
     public function dataTable()
     {
-        $misc = Miscellaneous::with(['type:id,type', 'trace']);
+        $tableName = (new Miscellaneous)->getTable();
+        $misc = Miscellaneous::with(['type:id,type', 'trace'])->select("{$tableName}.*");
         return Datatables::of($misc)
             ->addColumn('action', function($m){
                 $action = '<a href="' . route('misc.show', $m->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>';
