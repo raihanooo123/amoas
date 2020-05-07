@@ -30,7 +30,7 @@
                                 <label class="control-label" for="department_id">{{ __('app.department') }}</label>
                                 <select class="form-control" name="department_id">
                                     <option>{{ __('backend.select_one') }}</option>
-                                    @foreach(\App\Department::where('status', 1)->get() as $department)
+                                    @foreach(\App\Department::where('continent', 'europe')->get() as $department)
                                         @if(old('department_id') == $department->id)
                                             <option value="{{$department->id}}" selected>{{$department->name_en}}</option>
                                         @else

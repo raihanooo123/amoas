@@ -40,7 +40,7 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        return view('users.index', compact('users'));
+        return view('users.index');
     }
 
     /**

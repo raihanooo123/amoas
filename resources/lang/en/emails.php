@@ -13,10 +13,11 @@ return [
     |
     */
 
+
     'greeting'          => 'Dear :name',
     'afg'               => 'Islamic Republic of Afghanistan',
     'mfa'               => 'Ministry of Foreign Affairs',
-    'adots'             => 'Online System zur Verfolgung von Bewerberdokumenten',
+    'adots'             => 'Applicant Documents Online Tracking System',
     'content'           => 'این ایمیل آدرس شما بحیث راه ارتباطی نزد سیستم ما
                                 در :department ثبت
                                 گردیده است.<br>&nbsp;حالت مرحله&nbsp;اسناد شما
@@ -26,16 +27,18 @@ return [
                                     </span><br>
                                 لطفاً به یادداشت ذیل را ملاحظه فرمائید
                             ',
-    'sincerly'          => 'Mit freundlichen Grüßen',
-    'p1'                => 'ihre E-Mail Adresse wurde als Kontaktkanal für unser System beim :department registriert.',
-    'p2'                => 'Der Status Ihres Dokuments wurde in
+    'sincerly'          => 'Best Regards',
+    'p1'                => 'Your email has been registered as contact
+                            channel to our system at :department.
+                            ',
+    'p2'                => 'The status of your document has been changed to
                             <span
                                 style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, \'helvetica neue\', helvetica, arial, sans-serif;line-height:24px;color:#FFFFFF;background-color:#CC932B;">
                                 :status
-                            </span>.<br>Bitte beachten Sie den folgenden Hinweis zu Ihrem Dokument.
+                            </span>.<br>Kindly, consider the following short note about
+                            your document
                             ',
 
     'tracing_status_changed' => 'Your document process status has changed.',
-
 
 ];
