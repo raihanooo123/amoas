@@ -9,6 +9,15 @@ use Yajra\Datatables\Datatables;
 
 class MiscellaneousController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:misc show'])->only(['index', 'show']);
+        $this->middleware(['permission:misc create'])->only(['create', 'store']);
+        $this->middleware(['permission:misc edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:misc change status'])->only(['changeStatus']);
+        $this->middleware(['permission:booking delete'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

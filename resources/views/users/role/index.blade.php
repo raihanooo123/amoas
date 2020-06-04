@@ -78,7 +78,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <div class="panel panel-white">
                         <div class="panel-heading clearfix">
                             <h4 class="panel-title">{{ __('All Roles') }}</h4>
@@ -147,57 +147,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="panel panel-white">
-                        <div class="panel-heading clearfix">
-                            <h4 class="panel-title">{{ __('All Permissions') }}</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table id="xtreme-table" class="display table" style="width: 100%; cellspacing: 0;">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ __('Name') }}</th>
-                                        <th>{{ __('Gaurd') }}</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ __('Name') }}</th>
-                                        <th>{{ __('Gaurd') }}</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    @foreach($permissions as $holiday)
-                                        <tr>
-                                            <td>{{ $holiday->id }}</td>
-                                            <td>{{ $holiday->name }}</td>
-                                            <td>{{ $holiday->guard_name }}</td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 
 @endsection
-
-{{-- @section('scripts')
-    <script src="{{ asset('plugins/select2/select2.min.js') }}"></script>
-
-    <script>
-        $('#permissions').select2({
-            multiple: true,
-            theme: "bootstrap",
-            tags: "true"
-        });
-    </script>
-@endsection --}}

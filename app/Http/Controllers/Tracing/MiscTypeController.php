@@ -8,6 +8,13 @@ use App\Models\Tracing\MiscellaneousType;
 
 class MiscTypeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:MiscType show'])->only(['index', 'show']);
+        $this->middleware(['permission:MiscType create'])->only(['create', 'store']);
+        $this->middleware(['permission:MiscType edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:MiscType delete'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

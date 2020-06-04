@@ -38,8 +38,8 @@
                                     <th>{{ __('backend.package') }}</th>
                                     <th>{{ __('backend.applicant') }}</th>
                                     <th>{{ __('backend.id_card') }}</th>
-                                    <th>{{ __('backend.type') }}</th>
-                                    <th>{{ __('backend.status') }}</th>
+                                    <th>{{ __('backend.email') }}</th>
+                                    <th>{{ __('backend.phone') }}</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </thead>
@@ -53,8 +53,8 @@
                                     <th>{{ __('backend.package') }}</th>
                                     <th>{{ __('backend.applicant') }}</th>
                                     <th>{{ __('backend.id_card') }}</th>
-                                    <th searching="false">{{ __('backend.type') }}</th>
-                                    <th>{{ __('backend.status') }}</th>
+                                    <th>{{ __('backend.email') }}</th>
+                                    <th>{{ __('backend.phone') }}</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
                             </table>
@@ -125,12 +125,12 @@
                     name: 'info.id_card'
                 },
                 {
-                    data: 'booking_type',
-                    name: 'booking_type'
+                    data: 'email',
+                    name: 'email'
                 },
                 {
-                    data: 'status',
-                    name: 'status'
+                    data: 'info.phone',
+                    name: 'info.phone'
                 },
                 {
                     data: 'action',

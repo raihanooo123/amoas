@@ -9,6 +9,13 @@ use Yajra\Datatables\Datatables;
 
 class DocumentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:docs show'])->only(['index', 'show']);
+        // $this->middleware(['permission:docs create'])->only(['create', 'store']);
+        // $this->middleware(['permission:booking delete'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -21,6 +21,7 @@ class AdminUsersController extends Controller
         $this->middleware(['permission:user edit'])->only(['edit', 'update']);
         $this->middleware(['permission:user verify'])->only(['verify']);
         $this->middleware(['permission:user delete'])->only(['destroy']);
+        $this->middleware(['permission:user reset'])->only(['reset']);
     }
 
     /*
@@ -192,6 +193,27 @@ class AdminUsersController extends Controller
         return redirect('/users');
 
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reset(User $user)
+    {
+        $password = 'Bonn'. date('m-d');
+        $new_password = bcrypt($password);
+
+        $user->update([
+            'password' => $new_password
+        ]);
+        
+        // return back()->with(['alert' => 'User password reset to: '.$password]);
+        //set session message and redirect back to users.index
+        Session::flash('action', 'User password reset to: '.$password);
+        return back();
+
+    }
 
     /**
      * Process datatables ajax request.
@@ -204,7 +226,7 @@ class AdminUsersController extends Controller
         return Datatables::of($user)
             ->addColumn('action', function($user){
                 $action = '<a href="' . route('users.manualVerify', $user->id) .'" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>&nbsp;';
-                $action .= '<a href="' . route('users.show', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+                $action .= '<a href="' . route('users.reset', $user->id) .'" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure want to reset user password?\')"><i class="fa fa-recycle"></i></a>&nbsp;';
                 $action .= '<a href="' . route('users.edit', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })

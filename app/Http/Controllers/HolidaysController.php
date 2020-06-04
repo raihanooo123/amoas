@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class HolidaysController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:holidays show'])->only(['index', 'show']);
+        $this->middleware(['permission:holidays create'])->only(['create', 'store']);
+        $this->middleware(['permission:holidays edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:holidays delete'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

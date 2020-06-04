@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Session;
 class AdminCategoriesController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['permission:category show'])->only(['index', 'show']);
+        $this->middleware(['permission:category create'])->only(['create', 'store']);
+        $this->middleware(['permission:category edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:category delete'])->only(['destroy']);
+    }
     /*
     |--------------------------------------------------------------------------
     | Admin Categories Controller

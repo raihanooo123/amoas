@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Session;
 
 class AdminBookingTimesController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:BookingTimes show'])->only(['index', 'show']);
+        $this->middleware(['permission:BookingTimes create'])->only(['create', 'store']);
+        $this->middleware(['permission:BookingTimes edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:BookingTimes delete'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

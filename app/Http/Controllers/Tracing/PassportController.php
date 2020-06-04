@@ -10,6 +10,12 @@ use App\Imports\ImpPassportTracing;
 
 class PassportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:passport show'])->only(['index', 'show']);
+        $this->middleware(['permission:passport import'])->only(['store', 'import']);
+        $this->middleware(['permission:passport delete'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -9,3 +9,7 @@
 @if(Session::has('user_updated'))
     <div class="alert alert-success">{{session('user_updated')}}</div>
 @endif
+
+@if(Session::has('action'))
+    <div class="alert alert-info">{{session('action')}}</div>
+@endif

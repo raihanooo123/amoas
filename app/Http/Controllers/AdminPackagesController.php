@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Session;
 class AdminPackagesController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['permission:package show'])->only(['index', 'show']);
+        $this->middleware(['permission:package create'])->only(['create', 'store']);
+        $this->middleware(['permission:package edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:package delete'])->only(['destroy']);
+    }
     /*
     |--------------------------------------------------------------------------
     | Admin Packages Controller
