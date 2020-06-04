@@ -6,118 +6,48 @@ $.ajaxSetup({
 
 $(document).ready(function(){
 
-    alert('hi');
-    //remove first_name error
-    
-    $("input[id=first_name]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#first_name_error_holder').addClass('d-none');
-    });
-
-    //remove last_name error
-
-    $("input[id=last_name]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#last_name_error_holder').addClass('d-none');
-    });
-
-    //remove phone_number error
-
-    $("input[id=phone_number]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#phone_number_error_holder').addClass('d-none');
-    });
-
-    //remove email error
-
-    $("input[id=email]").keyup(function () {
-        $(this).removeClass('is-invalid');
-        $(this).addClass('is-valid');
-        $('#email_error_holder').addClass('d-none');
-    });
-
+    var URL_CONCAT = $('meta[name="index"]').attr('content');
     //get packages on click of div.category_box
 
-    $("div").on("click", "div.category_box", function(){
-        var category_id = $(this).attr('data-category-id');
-        $('.type_title').removeClass('active');
-        $(this).find('.type_title').addClass('active');
-
-        var URL_CONCAT = $('meta[name="index"]').attr('content');
-
-        $.ajax({
-            type: 'POST',
-            url: URL_CONCAT + '/get_packages',
-            data: {parent:category_id},
-            beforeSend: function() {
-                $('#packages_loader').removeClass('d-none');
-                $('#packages_holder').html('&nbsp;');
+    $(".owl-carousel").owlCarousel({
+        margin:20,
+        dots:false,
+        nav:true,
+        navText: [
+            '<img src="'+ URL_CONCAT + '/images/left.png">',
+            '<img src="'+ URL_CONCAT + '/images/right.png">'
+        ],
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1
             },
-            success: function(response) {
-                $('#packages_holder').fadeIn().html(response);
-                $(".owl-carousel").owlCarousel({
-                    margin:20,
-                    dots:false,
-                    nav:true,
-                    navText: [
-                        '<img src="'+ URL_CONCAT + '/images/left.png">',
-                        '<img src="'+ URL_CONCAT + '/images/right.png">'
-                    ],
-                    responsiveClass: true,
-                    responsive: {
-                        0: {
-                            items: 1
-                        },
-                        480: {
-                            items: 1
-                        },
-                        769: {
-                            items: 3
-                        }
-                    }
-                });
+            480: {
+                items: 2
             },
-            complete: function () {
-                $('#packages_loader').addClass('d-none');
+            769: {
+                items: 4
             }
-        });
+        }
     });
 
     //append form with selected package_id
-
-    $('body').on('click', 'a.btn_package_select', function() {
-        var package_id = $(this).attr('data-package-id');
-        $('#package_error').addClass('d-none');
-
-        $('#package_id').remove();
-        $('#booking_step_1').append('<input type="hidden" name="package_id" id="package_id" value="'+package_id+'">');
-    });
 
     //handle form submission of step 1
     $('#booking_step_1').submit(function(e){
 
         var check = true;
-        var package_id  = $('input[name=package_id]').val();
+        var package_id = $('input[name=package_id]').val();
 
-        alert(package_id);
-        if(package_id === undefined)
-        {
+        if (package_id === undefined) {
+            
             $('#package_error').removeClass('d-none');
-            $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
-            check = false;
-        }
-
-        if(check === false)
-        {
+            $("html, body").animate({
+                scrollTop: $(document).height() - $(window).height()
+            });
             return false;
         }
-        else if(check === true)
-        {
-            e.submit();
-        }
+        this.submit();
     });
 
     //remove address field error
@@ -161,107 +91,18 @@ $(document).ready(function(){
 
     //append selected slot to booking_step_2 form
 
-    $('#slots_holder').on('click', 'a.btn-slot', function() {
+    $('#slots_holder').on('click', 'a.btn-slot', function () {
         var slot_time = $(this).attr('data-slot-time');
+        var type = $(this).attr('type');
         $('#slots_holder').find('.btn-slot').removeClass('slot-picked');
         $('#booking_slot').remove();
-        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="'+slot_time+'">');
+        $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' + slot_time + '">');
+        if (type !== undefined && type ==='urgent'){
+            $('#emergency_holder').html('<input type="hidden" name="booking_type" value="emergency">');
+        } else{
+            $('#emergency_holder').html('<span></span>');
+        }
         $(this).addClass('slot-picked');
-    });
-
-    //handle form submission of step 2
-
-    $('#booking_step_2').submit(function(e){
-
-        var check = true;
-        var address;
-        address = $('input[name=address]').val();
-        var event_date;
-        event_date = $('input[name=event_date]').val();
-        var booking_slot;
-        booking_slot = $('input[name=booking_slot]').val();
-
-
-        if(event_date === "")
-        {
-            $('#event_date').addClass('is-invalid');
-            $('#date_error_holder').removeClass('d-none');
-            $("html, body").animate({ scrollTop: 2000 }, "slow");
-            check = false;
-        }
-
-        if(check === false)
-        {
-            return false;
-        }
-        else if(check === true)
-        {
-            if(booking_slot === undefined)
-            {
-                $('#slot_error').removeClass('d-none');
-                $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
-                return false;
-            }
-            else
-            {
-                e.submit();
-            }
-        }
-    });
-
-
-    //initialize addons carousel
-
-    var URL_CONCAT = $('meta[name="index"]').attr('content');
-
-    $("#addons_carousel").owlCarousel({
-        margin:20,
-        dots:false,
-        nav:true,
-        navText: [
-            '<img src="'+ URL_CONCAT +'/images/left.png">',
-            '<img src="'+ URL_CONCAT +'/images/right.png">'
-        ],
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            480: {
-                items: 1
-            },
-            769: {
-                items: 3
-            }
-        }
-    });
-
-    $('.addon_buttons').on('click', 'a.btn-addon', function() {
-        var addon_id = $(this).attr('data-addon-id');
-        var method = $(this).attr('data-method');
-
-        if(method === "add")
-        {
-            $.ajax({
-                type: 'POST',
-                url: URL_CONCAT + '/session_addons',
-                data: {addon_id:addon_id, session_email:$('input[name=session_email]').val()},
-                success: function() {
-                    $('#' + addon_id).attr('data-method','remove');
-                }
-            });
-        }
-        else if(method === "remove")
-        {
-            $.ajax({
-                type: 'POST',
-                url: URL_CONCAT + '/remove_session_addon',
-                data: {addon_id:addon_id, session_email:$('input[name=session_email]').val()},
-                success: function() {
-                    $('#' + addon_id).attr('data-method','add');
-                }
-            });
-        }
     });
 
 });

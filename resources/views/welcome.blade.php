@@ -47,7 +47,7 @@
                         </ul>
                     </div>
                 </div>
-                <br>
+                {{-- <br>
                 <div id="categories_holder">
                     <h5>@lang('app.selectCategoryOfService')</h5>
                     <br>
@@ -72,7 +72,7 @@
                         @endif
                     </div>
                     <br>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-md-12">
@@ -80,7 +80,9 @@
                     </div>
                 </div>
 
-                <div id="packages_holder"></div>
+                <div id="packages_holder">
+                    @include('blocks.packages')
+                </div>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -197,7 +199,6 @@
                 
             });
         });
-        
     </script>
 
 @endsection

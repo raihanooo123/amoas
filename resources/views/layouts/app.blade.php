@@ -102,7 +102,6 @@
     @yield('content')
     <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
     @if(config('settings.freshchat_widget')!=NULL)
     <script src="https://wchat.freshchat.com/js/widget.js"></script>
     <script>

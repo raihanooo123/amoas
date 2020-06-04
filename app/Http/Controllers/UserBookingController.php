@@ -51,10 +51,10 @@ class UserBookingController extends Controller
             if($department)
                 request()->session()->put('department',$department);
         }
-            
-        $random_pass_string = str_random(10);
-        $categories = Category::all();
-        return view('welcome', compact('random_pass_string', 'categories'));
+
+        $categories = Category::with('packages')->get();
+
+        return view('welcome', compact('categories'));
     }
 
     public function ajaxPackageInfo(Request $request)
