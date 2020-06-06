@@ -60,6 +60,11 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
     Route::delete('/users/roles/revoke/{role}','RolesController@revoke')->name('roles.revoke');
     Route::resource('/users/roles','RolesController');
     Route::resource('/users','AdminUsersController');
+    
+    Route::get('/postal/d-table', 'Post\PostalPackageController@dataTable')->name('postal.data');
+    Route::get('/postal/new/{type}{model}','Post\PostalPackageController@new')->name('postal.new');
+    Route::get('/postal/existing/{type}{model}','Post\PostalPackageController@existing')->name('postal.existing');
+    Route::resource('/postal','Post\PostalPackageController');
 
     Route::resource('/categories', 'AdminCategoriesController');
     Route::resource('/packages', 'AdminPackagesController');

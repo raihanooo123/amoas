@@ -195,6 +195,13 @@
                     </ul>
                 </li>
 
+                <li class="{{ Request::is('postal') || Request::is('postal/*') ? 'active' : '' }}">
+                    <a href="{{ route('postal.index') }}" class="waves-effect waves-button">
+                        <span class="menu-icon icon-bag"></span>
+                        <p>Postal Packages</p>
+                    </a>
+                </li>
+
                 <li class="droplink {{ Request::is('users') || Request::is('users/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-users"></span>
