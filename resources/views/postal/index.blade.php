@@ -40,6 +40,7 @@
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Phone</th>
+                                    <th>Documents</th>
                                     <th>Post</th>
                                     <th>Status</th>
                                     <th>{{ __('backend.actions') }}</th>
@@ -53,6 +54,7 @@
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Phone</th>
+                                    <th>Documents</th>
                                     <th>Post</th>
                                     <th>Status</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
@@ -115,6 +117,10 @@
                 {
                     data: 'phone',
                     name: 'phone'
+                },
+                {
+                    data: 'documents',
+                    name: 'documents'
                 },
                 {
                     data: 'post',

@@ -53,4 +53,8 @@ class PostalPackage extends Model
         return optional($this->passports())->count() + optional($this->miscs())->count();
     }
 
+    public function deliverables(){
+        return $this->hasMany('App\Models\Post\DeliverableDoc', 'postal_id');
+    }
+
 }

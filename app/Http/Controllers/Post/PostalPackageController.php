@@ -45,11 +45,19 @@ class PostalPackageController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $rules = array();
+        foreach(range(1, 8) as $c1){
+            $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
+            $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
+            $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
+        }
+
+        $this->validate($request, array_merge([
             'name' => 'required|min:3',
             'address' => 'required|min:3',
             'phone_no' => 'required',
-        ]);
+            
+        ], $rules));
 
         \DB::beginTransaction();
 
@@ -68,6 +76,14 @@ class PostalPackageController extends Controller
                 'description' => $request->description,
                 'registrar_id' => auth()->id(),
             ]);
+
+        foreach(range(1, 8) as $c)
+            if(request()->filled('doc_type' .$c) && request()->filled('name' .$c) && request()->filled('uid' .$c) )
+                $misc->deliverables()->create([
+                    'doc_type' => $request->input('doc_type' . $c),
+                    'name' => $request->input('name' . $c),
+                    'uid' => $request->input('uid' . $c),
+                ]);
 
         \DB::commit();
 
@@ -106,11 +122,19 @@ class PostalPackageController extends Controller
      */
     public function update(Request $request, PostalPackage $postal)
     {
-        $this->validate($request, [
+        $rules = array();
+        foreach(range(1, 8) as $c1){
+            $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
+            $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
+            $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
+        }
+
+        $this->validate($request, array_merge([
             'name' => 'required|min:3',
             'address' => 'required|min:3',
             'phone_no' => 'required',
-        ]);
+            
+        ], $rules));
 
         \DB::beginTransaction();
 
@@ -122,6 +146,23 @@ class PostalPackageController extends Controller
                 'phone' => $request->phone_no,
                 'description' => $request->description,
             ]);
+
+        foreach(range(1, 8) as $c)
+            if(request()->filled('id' .$c))
+                $postal->deliverables()->find($request->input('id' . $c))->update([
+                    'doc_type' => $request->input('doc_type' . $c),
+                    'name' => $request->input('name' . $c),
+                    'uid' => $request->input('uid' . $c),
+                ]);
+            else
+                if(request()->filled('doc_type' .$c) && request()->filled('name' .$c) && request()->filled('uid' .$c) )
+                    $postal->deliverables()->create([
+                        'doc_type' => $request->input('doc_type' . $c),
+                        'name' => $request->input('name' . $c),
+                        'uid' => $request->input('uid' . $c),
+                    ]);
+
+        \DB::commit();
 
         \DB::commit();
 
@@ -142,7 +183,7 @@ class PostalPackageController extends Controller
 
     public function dataTable()
     {
-        $postal = PostalPackage::query();
+        $postal = PostalPackage::with('deliverables')->select('postal_packages.*');
         return Datatables::of($postal)
             ->addColumn('action', function($postal){
                 $action = '<a href="' . route('postal.edit', $postal->id) .'" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>&nbsp;';
@@ -150,6 +191,20 @@ class PostalPackageController extends Controller
                 // $action .= '<a href="' . route('users.edit', $postal->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
+            ->addColumn('documents', function(PostalPackage $postal) {
+                $deliverables = optional($postal->deliverables)->all();
+
+                $deliverables = array_map(function($value){
+                    return $value->doc_type . "|" . str_replace(' ', '.', $value->name) . "|" . $value->uid . "\n";  
+                }, $deliverables);
+
+                return nl2br(implode('', $deliverables));
+            })
+            // ->filterColumn('documents', function($query, $keyword) {
+            //     $sql = "select * from deliverable_docs where deliverable_docs.doc_type like ? or deliverable_docs.name like ? or deliverable_docs.uid like ?";
+            //     $query->whereRaw($sql, ["%{$keyword}%", "%{$keyword}%", "%{$keyword}%"]);
+            // })
+            ->rawColumns(['documents', 'action'])
             ->make(true);
     }
 
@@ -173,4 +228,5 @@ class PostalPackageController extends Controller
 
         }
     }
+
 }
