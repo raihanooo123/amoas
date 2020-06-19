@@ -39,9 +39,11 @@
                                     <th>UID</th>
                                     <th>Name</th>
                                     <th>Address</th>
+                                    <th>Postal Code</th>
+                                    <th>Place</th>
+                                    <th>Date</th>
                                     <th>Phone</th>
                                     <th>Documents</th>
-                                    <th>Post</th>
                                     <th>Status</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
@@ -53,9 +55,11 @@
                                     <th>UID</th>
                                     <th>Name</th>
                                     <th>Address</th>
+                                    <th>Postal Code</th>
+                                    <th>Place</th>
+                                    <th>Date</th>
                                     <th>Phone</th>
                                     <th>Documents</th>
-                                    <th>Post</th>
                                     <th>Status</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
@@ -115,16 +119,24 @@
                     name: 'address'
                 },
                 {
+                    data: 'post',
+                    name: 'post'
+                },
+                {
+                    data: 'place',
+                    name: 'place'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
                     data: 'phone',
                     name: 'phone'
                 },
                 {
                     data: 'documents',
                     name: 'documents'
-                },
-                {
-                    data: 'post',
-                    name: 'post'
                 },
                 {
                     data: 'status',

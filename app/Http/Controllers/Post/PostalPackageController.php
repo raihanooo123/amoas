@@ -46,11 +46,11 @@ class PostalPackageController extends Controller
     public function store(Request $request)
     {
         $rules = array();
-        foreach(range(1, 8) as $c1){
-            $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
-            $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
-            $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
-        }
+        // foreach(range(1, 8) as $c1){
+        //     $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
+        //     $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
+        //     $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
+        // }
 
         $this->validate($request, array_merge([
             'name' => 'required|min:3',
@@ -71,6 +71,8 @@ class PostalPackageController extends Controller
                 'name' => $request->name,
                 'status' => $request->status,
                 'post' => $request->post,
+                'date' => $request->date,
+                'place' => $request->place,
                 'address' => $request->address,
                 'phone' => $request->phone_no,
                 'description' => $request->description,
@@ -78,7 +80,7 @@ class PostalPackageController extends Controller
             ]);
 
         foreach(range(1, 8) as $c)
-            if(request()->filled('doc_type' .$c) && request()->filled('name' .$c) && request()->filled('uid' .$c) )
+            if(request()->filled('name' .$c))
                 $misc->deliverables()->create([
                     'doc_type' => $request->input('doc_type' . $c),
                     'name' => $request->input('name' . $c),
@@ -124,9 +126,10 @@ class PostalPackageController extends Controller
     {
         $rules = array();
         foreach(range(1, 8) as $c1){
-            $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
-            $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
-            $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
+            // $rules['name' .$c1] = 'required';
+            // $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
+            // $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
+            // $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
         }
 
         $this->validate($request, array_merge([
@@ -142,6 +145,8 @@ class PostalPackageController extends Controller
                 'name' => $request->name,
                 'status' => $request->status,
                 'post' => $request->post,
+                'date' => $request->date,
+                'place' => $request->place,
                 'address' => $request->address,
                 'phone' => $request->phone_no,
                 'description' => $request->description,
@@ -155,7 +160,7 @@ class PostalPackageController extends Controller
                     'uid' => $request->input('uid' . $c),
                 ]);
             else
-                if(request()->filled('doc_type' .$c) && request()->filled('name' .$c) && request()->filled('uid' .$c) )
+                if(request()->filled('name' .$c))
                     $postal->deliverables()->create([
                         'doc_type' => $request->input('doc_type' . $c),
                         'name' => $request->input('name' . $c),
@@ -195,7 +200,8 @@ class PostalPackageController extends Controller
                 $deliverables = optional($postal->deliverables)->all();
 
                 $deliverables = array_map(function($value){
-                    return $value->doc_type . "|" . str_replace(' ', '.', $value->name) . "|" . $value->uid . "\n";  
+                    return str_replace(' ', '-', $value->name) ."\n";  
+                    // return $value->doc_type . "|" . str_replace(' ', '.', $value->name) . "|" . $value->uid . "\n";  
                 }, $deliverables);
 
                 return nl2br(implode('', $deliverables));

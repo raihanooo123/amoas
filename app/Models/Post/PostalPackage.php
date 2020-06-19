@@ -23,6 +23,8 @@ class PostalPackage extends Model
         'post',
         'registrar_id',
         'department_id',
+        'place',
+        'date',
         'description',
     ];
 

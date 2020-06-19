@@ -28,7 +28,7 @@
                             {{csrf_field()}}
                             @method('PUT')
 
-                            <div class="col-md-4 form-group {{$errors->has('name') ? ' has-error' : ''}}">
+                            <div class="col-md-3 form-group {{$errors->has('name') ? ' has-error' : ''}}">
                                 <label class="control-label" for="name"><span class="text-danger">*</span> Applicant full name</label>
                                 <input type="text" class="form-control" name="name" value="{{$postal->name}}">
                                 @if ($errors->has('name'))
@@ -38,12 +38,32 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-8 form-group {{$errors->has('address') ? ' has-error' : ''}}">
+                            <div class="col-md-3 form-group {{$errors->has('address') ? ' has-error' : ''}}">
                                 <label class="control-label" for="address"><span class="text-danger">*</span>Address</label>
                                 <input type="text" class="form-control" name="address" value="{{$postal->address}}">
                                 @if ($errors->has('address'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 form-group {{$errors->has('post') ? ' has-error' : ''}}">
+                                <label class="control-label" for="post">Postal Code</label>
+                                <input type="text" class="form-control" name="post" value="{{$postal->post}}">
+                                @if ($errors->has('post'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('post') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 form-group {{$errors->has('place') ? ' has-error' : ''}}">
+                                <label class="control-label" for="place">Place</label>
+                                <input type="text" class="form-control" name="place" value="{{$postal->place}}">
+                                @if ($errors->has('place'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('place') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -78,6 +98,16 @@
                                 @endif
                             </div> --}}
 
+                            <div class="col-md-3 form-group {{$errors->has('date') ? ' has-error' : ''}}">
+                                <label class="control-label" for="date">Date</label>
+                                <input type="date" value="{{$postal->date}}" class="form-control" name="date">
+                                @if ($errors->has('date'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('date') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
                             <div class="col-md-3 form-group {{$errors->has('status') ? ' has-error' : ''}}">
                                 <label class="control-label" for="status">Status</label>
                                 {{-- <input type="text" class="form-control" name="status" value="{{old('status')}}"> --}}
@@ -95,21 +125,12 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-3 form-group {{$errors->has('post') ? ' has-error' : ''}}">
-                                <label class="control-label" for="post">Post</label>
-                                <input type="text" class="form-control" name="post" value="{{$postal->post}}">
-                                @if ($errors->has('post'))
-                                    <span class="help-block">
-                                        <strong class="text-danger">{{ $errors->first('post') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
                             <div class="col-md-12 form-group">
                                 <hr>
                                 <h3>List of Deliverable Documents</h3>
                             </div>
 
+                            <div class="col-md-4">
                             @php
                                 $count = $postal->deliverables()->count();
                             @endphp
@@ -118,7 +139,7 @@
                                     $counter++
                                 @endphp
                                 <input type="hidden" name="id{{$counter}}" value="{{$d->id}}">
-                                <div class="col-md-4 form-group {{$errors->has('doc_type'. $counter) ? ' has-error' : ''}}">
+                                {{-- <div class="col-md-4 form-group {{$errors->has('doc_type'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="doc_type">Document type {{$counter}} </label>
                                     <input type="text" class="form-control" name="doc_type{{$counter}}" value="{{$d->doc_type}}">
                                     @if ($errors->has('doc_type'. $counter))
@@ -126,9 +147,9 @@
                                             <strong class="text-danger">{{ $errors->first('doc_type'. $counter) }}</strong>
                                         </span>
                                     @endif
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-4 form-group {{$errors->has('name'. $counter) ? ' has-error' : ''}}">
+                                <div class="form-group {{$errors->has('name'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="name">Name {{$counter}}</label>
                                     <input type="text" class="form-control" name="name{{$counter}}" value="{{$d->name}}">
                                     @if ($errors->has('name'. $counter))
@@ -138,7 +159,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-4 form-group {{$errors->has('uid'. $counter) ? ' has-error' : ''}}">
+                                {{-- <div class="col-md-4 form-group {{$errors->has('uid'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="uid">Unique ID (uid) {{$counter}}</label>
                                     <input type="text" class="form-control" name="uid{{$counter}}" value="{{$d->uid}}">
                                     @if ($errors->has('uid'. $counter))
@@ -146,12 +167,12 @@
                                             <strong class="text-danger">{{ $errors->first('uid'. $counter) }}</strong>
                                         </span>
                                     @endif
-                                </div>
+                                </div> --}}
                             @endforeach
 
                             @foreach (range(++$count,8) as $counter)
                                 
-                                <div class="col-md-4 form-group {{$errors->has('doc_type'. $counter) ? ' has-error' : ''}}">
+                                {{-- <div class="col-md-4 form-group {{$errors->has('doc_type'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="doc_type">Document type {{$counter}} </label>
                                     <input type="text" class="form-control" name="doc_type{{$counter}}" value="{{old('doc_type'. $counter)}}">
                                     @if ($errors->has('doc_type'. $counter))
@@ -159,9 +180,9 @@
                                             <strong class="text-danger">{{ $errors->first('doc_type'. $counter) }}</strong>
                                         </span>
                                     @endif
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-4 form-group {{$errors->has('name'. $counter) ? ' has-error' : ''}}">
+                                <div class="form-group {{$errors->has('name'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="name">Name {{$counter}}</label>
                                     <input type="text" class="form-control" name="name{{$counter}}" value="{{old('name'. $counter)}}">
                                     @if ($errors->has('name'. $counter))
@@ -171,7 +192,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-4 form-group {{$errors->has('uid'. $counter) ? ' has-error' : ''}}">
+                                {{-- <div class="col-md-4 form-group {{$errors->has('uid'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="uid">Unique ID (uid) {{$counter}}</label>
                                     <input type="text" class="form-control" name="uid{{$counter}}" value="{{old('uid'. $counter)}}">
                                     @if ($errors->has('uid'. $counter))
@@ -179,12 +200,12 @@
                                             <strong class="text-danger">{{ $errors->first('uid'. $counter) }}</strong>
                                         </span>
                                     @endif
-                                </div>
+                                </div> --}}
                             @endforeach
                             
-                            
-                            <div class="col-md-12 form-group {{$errors->has('description') ? ' has-error' : ''}}">
-                                <label class="control-label" for="description">Descriptions</label>
+                            </div>
+                            <div class="col-md-8 form-group {{$errors->has('description') ? ' has-error' : ''}}">
+                                <label class="control-label" for="description">Remarks</label>
                                 <textarea class="form-control" name="description" rows="5">{{$postal->description}}</textarea>
                                 @if ($errors->has('descriptions'))
                                     <span class="help-block">
