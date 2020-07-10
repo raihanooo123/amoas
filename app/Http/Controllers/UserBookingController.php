@@ -523,7 +523,8 @@ class UserBookingController extends Controller
         ]);
 
         // search for specific pattern
-        // 4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+
+        // 4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+ bonn
+        // 'regex:/^(01[0-9]\d+|04[0-9]\d+|12[0-9]\d+|13[0-9]\d+|141[0-9]\d+|20[0-9]\d+)/' berlin
 
         $validator->sometimes('postal', ['regex:/^(4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+)/'], function ($input) use ($request, $validator) {
 

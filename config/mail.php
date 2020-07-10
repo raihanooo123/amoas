@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_USERNAME', 'no-reply@bookify.xtreme-webs.com'),
-        'name' => env('APP_NAME', 'Bookify'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply.amoas@mfa.af'),
+        'name' => env('APP_NAME', 'AMOAS'),
     ],
 
     /*
