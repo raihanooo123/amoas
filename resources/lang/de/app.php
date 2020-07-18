@@ -107,7 +107,7 @@ return [
     'postal' => 'Postleitzahl',
     'zip' => 'Postleitzahl',
     'phone' => 'Telefonnummer',
-    'participant' => 'Anzahl der Teilnehmer',
+    'participant' => 'Anzahl der Teilnehmer/Familie',
     'participant_desc' => 'Anzahl der Teilnehmer die mit dem Antragsteller erscheinen.',
     'address' => 'Adresse',
     'address_desc' => 'Bitte tragen Sie Ihre Vollständige Adresse ein. An diese senden wir Dokumente wie Ihren Pass oder Tazkira.',
@@ -264,5 +264,6 @@ return [
     'applicantTracing' => 'Antragstellerin',
     'considerationsTracing' => 'Überlegungen',
     'processingState' => 'Den rechtlichen Prozess durchlaufen',
+    'holidays_blocked' => 'Der :date ist ein Feiertag. Bitte wählen Sie ein anderes Datum als dieses',
 
 ];

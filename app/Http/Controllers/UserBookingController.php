@@ -562,12 +562,16 @@ class UserBookingController extends Controller
      */
     public function postStep3(Request $request)
     {
+        $holidays = session()->has('holidays') ? implode(',', session('holidays')) : null;
+
         $this->validate($request, [
-            'event_date' => 'date|required',
+            'event_date' => 'date|required|not_in:'. $holidays,
             'booking_slot' => 'required',
             "participant.*.name"  => "required",
             "participant.*.id_card"  => "required",
             "participant.*.relation"  => "required",
+        ],[
+            'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date])
         ]);
 
         $request->session()->put('event_date', $request->event_date);
@@ -699,7 +703,10 @@ class UserBookingController extends Controller
             ->pluck('date')
             ->toArray();
 
-        $holydays = array_merge(...$holydays);
+        if($holydays)
+            $holydays = array_merge(...$holydays);
+
+        request()->session()->put('holidays', $holydays);
 
         $participants = --$package->daily_acceptance;
         if(session()->has('participant')) $participants -= session('participant');

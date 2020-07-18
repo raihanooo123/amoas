@@ -90,7 +90,7 @@
                     <br>
                     <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.select_date') }} <small>{{ __('app.no_paticipant_including_you', ['paticipant'=> session()->has('participant') ? session('participant') + 1 : 1]) }}</small></h5>
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" onkeydown="return false" name="event_date" id="event_date" placeholder="{{ __('app.date_placeholder') }}" value="{{old('email')}}">
+                        <input type="text" class="form-control form-control-lg {{$errors->has('event_date') ? ' is-invalid' : ''}}" onkeydown="return false" name="event_date" id="event_date" placeholder="{{ __('app.date_placeholder') }}" value="{{old('email')}}">
                         <p class="form-text text-danger d-none" id="date_error_holder">
                             {{ __('app.date_error') }}
                         </p>

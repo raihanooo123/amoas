@@ -107,7 +107,7 @@ return [
     'postal' => 'Postal Code',
     'zip' => 'Zip Code',
     'phone' => 'Phone Number',
-    'participant' => 'Number of Participant',
+    'participant' => 'Number of Participant/Family',
     'participant_desc' => 'Number of people participating with applicant.',
     'address' => 'Address',
     'address_desc' => 'Please enter your address precisely. We will send packages like Passport or Tazkira.',
@@ -271,5 +271,6 @@ return [
     'uidTracing' => 'UID: :uid',
     'depTracing' => 'Applied Mission: :dep',
     'processingState' => 'Processing',
+    'holidays_blocked' => 'The :date is holidays, please select other date except this one.',
 
 ];

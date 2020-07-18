@@ -9,7 +9,7 @@
             $availiblity = array_key_exists($hour,$bookedByHours) ? ($eachSlotAvailablity - $bookedByHours[$hour] >= 0 ? $eachSlotAvailablity - $bookedByHours[$hour] : 0) : $eachSlotAvailablity;
         @endphp
         @if($availiblity > 0)
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <a class="btn btn-outline-dark btn-lg btn-block btn-slot {{ $availiblity >= (session("participant") + 1) ? '' : 'disabled' }}" data-slot-time="{{ $hour }}">
                     {{ $hour }} 
                     <span class="badge badge-info" style="position: relative;top: -20px;right: -38px;">
@@ -17,7 +17,7 @@
                 </a>
             </div>
         @else
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <a class="btn btn-outline-dark btn-lg btn-block btn-slot disabled">
                 {{ $hour }}
                 <span class="badge badge-warning" style="position: relative;top: -20px;right: -38px;">
