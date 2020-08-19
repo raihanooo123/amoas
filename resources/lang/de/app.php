@@ -265,5 +265,12 @@ return [
     'considerationsTracing' => 'Überlegungen',
     'processingState' => 'Den rechtlichen Prozess durchlaufen',
     'holidays_blocked' => 'Der :date ist ein Feiertag. Bitte wählen Sie ein anderes Datum als dieses',
-
+    'weekend_blocked' => 'Die Wochenenden sind für Besucher geschlossen. Verfügbare Wochentage sind :days.',
+    'Monday' => 'Montag',
+    'Tuesday' => 'Dienstag',
+    'Wednesday' => 'Mittwoch',
+    'Thursday' => 'Donnerstag',
+    'Friday' => 'Freitag',
+    'Saturday' => 'Samstag',
+    'Sunday' => 'Sonntag',
 ];

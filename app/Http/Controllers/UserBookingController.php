@@ -456,7 +456,6 @@ class UserBookingController extends Controller
     public function update_booking(Request $request, $id)
     {
         $booking = Booking::find($id);
-//        dd($request->all());
         if($booking->user->id != Auth::user()->id)
             abort(403);
 
@@ -562,18 +561,30 @@ class UserBookingController extends Controller
      */
     public function postStep3(Request $request)
     {
+        $dateNumber = $weekday = date('N', strtotime($request->event_date));
+
+        $offDaysNum = DB::table('booking_times')
+                            ->where('is_off_day', '=', '0')
+                            ->get()
+                            ->pluck('id', 'day')
+                            ->toArray();
+
         $holidays = session()->has('holidays') ? implode(',', session('holidays')) : null;
 
         $this->validate($request, [
-            'event_date' => 'date|required|not_in:'. $holidays,
+            'event_date' => 'date|required|in:'.implode(',', $offDaysNum).'|not_in:'. $holidays,
             'booking_slot' => 'required',
             "participant.*.name"  => "required",
             "participant.*.id_card"  => "required",
             "participant.*.relation"  => "required",
         ],[
-            'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date])
+            'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date]),
+            'event_date.in' => __('app.weekend_blocked', ['days' => implode(', ', array_map(function($item){
+                return __('app.' . $item);
+            }, array_keys($offDaysNum)))])
         ]);
 
+        
         $request->session()->put('event_date', $request->event_date);
         $request->session()->put('booking_slot', $request->booking_slot);
         $request->session()->put('participantInfo', $request->participant);

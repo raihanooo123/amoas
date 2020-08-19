@@ -272,5 +272,13 @@ return [
     'depTracing' => 'Applied Mission: :dep',
     'processingState' => 'Processing',
     'holidays_blocked' => 'The :date is holidays, please select other date except this one.',
-
+    'weekend_blocked' => 'The weekends are closed to visitors. Available days of the week are :days.',
+    'Monday' => 'Monday',
+    'Tuesday' => 'Tuesday',
+    'Wednesday' => 'Wednesday',
+    'Thursday' => 'Thursday',
+    'Friday' => 'Friday',
+    'Saturday' => 'Saturday',
+    'Sunday' => 'Sunday',
+    
 ];
