@@ -571,26 +571,31 @@ class UserBookingController extends Controller
 
         $holidays = session()->has('holidays') ? implode(',', session('holidays')) : null;
 
-        $this->validate($request, [
-            'event_date' => 'date|required|in:'.implode(',', $offDaysNum).'|not_in:'. $holidays,
-            'booking_slot' => 'required',
-            "participant.*.name"  => "required",
-            "participant.*.id_card"  => "required",
-            "participant.*.relation"  => "required",
-        ],[
-            'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date]),
-            'event_date.in' => __('app.weekend_blocked', ['days' => implode(', ', array_map(function($item){
-                return __('app.' . $item);
-            }, array_keys($offDaysNum)))])
-        ]);
+        $validator = \Validator::make($request->all(), [
+                'event_date' => 'date|required|not_in:'. $holidays,
+                'booking_slot' => 'required',
+                "participant.*.name"  => "required",
+                "participant.*.id_card"  => "required",
+                "participant.*.relation"  => "required",
+            ],[
+                'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date]),
+            ]);
 
-        
+        $validator->after(function ($validator) use ($dateNumber, $offDaysNum) {
+            if (!in_array($dateNumber, $offDaysNum))
+                $validator->errors()->add('event_date', __('app.weekend_blocked', ['days' => implode(', ', array_map(function($item){
+                            return __('app.' . $item);
+                        }, array_keys($offDaysNum)))]));
+        });
+
+        if ($validator->fails())
+            return back()->withErrors($validator)->withInput();
+
+
         $request->session()->put('event_date', $request->event_date);
         $request->session()->put('booking_slot', $request->booking_slot);
         $request->session()->put('participantInfo', $request->participant);
 
-        // dd(now()->addWeeks()->endOfDay()->format('Y-m-d H:i:s'));
-        // dd(now()->startOfDay()->format('Y-m-d H:i:s'));
         $bookingCountInWeek = auth()
                                 ->user()
                                 ->bookings()
@@ -604,7 +609,7 @@ class UserBookingController extends Controller
             $lastBooking = auth()->user()->bookings()->latest()->first();
 
             $tillDate = optional($lastBooking->created_at)->addWeeks()->addDays()->startOfDay()->format('Y-m-d H:i:s');
-            // dd($tillDate);
+
             abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
         }
         
