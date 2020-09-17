@@ -33,14 +33,12 @@
     <h5>{{ __('app.urgentBooking') }}</h5>
     <br>
     <p>@lang('app.forAdminUsers')</p>
-    <p>{{ __('app.bookedInUrgent', ['booking' => $ungentBooking]) }}</p>
+    <p>{{ __('app.bookedInUrgent', ['booking' => $urgentBookingCount]) }}</p>
     <div class="row">
         @foreach($hours as $hour)
             <div class="col-md-3">
-                <a class="btn btn-outline-dark btn-lg btn-block btn-slot" data-slot-time="{{ $hour }}" type="urgent">
+                <a class="btn btn-outline-dark btn-lg btn-block btn-slot {{$urgentBookingCount >= $package->emergency_acceptance && !auth()->user()->isSuperAdmin() ? 'disabled' : null}}" data-slot-time="{{ $hour }}" type="urgent">
                     {{ $hour }} 
-                    {{-- <span class="badge " style="position: relative;top: -20px;right: -38px; background-color:#1f4897;color:white;">
-                    <small>{{ __('app.bookedInUrgent', ['urgentBooked' => 5]) }}</span></small> --}}
                 </a>
             </div>
         @endforeach

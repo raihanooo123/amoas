@@ -273,6 +273,7 @@ return [
     'Friday' => 'Freitag',
     'Saturday' => 'Samstag',
     'Sunday' => 'Sonntag',
-
-    'Sunday' => 'Die ausgewählte Zeit ":time" am ":date" ist bereits bis zur maximalen Buchungszahl erreicht. Bitte wählen Sie eine verfügbare Buchungszeit.',
+    
+    'slotBlocked' => 'Die ausgewählte Zeit ":time" am ":date" ist bereits bis zur maximalen Buchungszahl erreicht. Bitte wählen Sie eine verfügbare Buchungszeit.',
+    'notInAvailableHours' => 'Die ausgewählte Stunde ":time" ist nicht verfügbar.',
 ];

@@ -282,5 +282,5 @@ return [
     'Sunday' => 'Sunday',
 
     'slotBlocked' => 'The selected time ":time" on ":date" is already reached to its maximum booking count. Please select an available booking time.',
-    
+    'notInAvailableHours' => 'The selected hour ":time" is not available.'
 ];

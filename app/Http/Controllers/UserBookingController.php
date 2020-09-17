@@ -275,10 +275,11 @@ class UserBookingController extends Controller
             ->pluck('total','booking_time')
             ->toArray();
 
-        $ungentBooking = 0;
+        $urgentBookingCount = 0;
         if(auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()))
-            $ungentBooking = Booking::where('package_id', $package->id)
+            $urgentBookingCount = Booking::where('package_id', $package->id)
                 ->where('booking_type', '=', 'emergency')
+                ->where('status','!=' ,'Cancelled')
                 ->whereDate('booking_date', $event_date)
                 ->count();
         
@@ -295,7 +296,7 @@ class UserBookingController extends Controller
 
         $eachSlotAvailablity = round($package->daily_acceptance/count($hours), 0, PHP_ROUND_HALF_DOWN);
 
-        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity', 'ungentBooking'));
+        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity', 'urgentBookingCount', 'package'));
     }
 
     public function availableHours($event_date){
@@ -324,7 +325,7 @@ class UserBookingController extends Controller
             
         }
 
-        return count($hours);
+        return $hours;
     }
 
     public function getUpdateSlots()
@@ -621,17 +622,22 @@ class UserBookingController extends Controller
             if ($request->booking_type != 'emergency'){
 
                 $bookedCountInRequestedHour = Booking::whereDate('booking_date', '=', $request->event_date)
+                                                    ->where('package_id', session('package_id'))
                                                     ->where('booking_time', $request->booking_slot)
                                                     ->where('booking_type', '!=', 'Emergency')
+                                                    ->where('status', '!=', 'cancelled')
                                                     ->count();
                 
-                $totalSlotCount = $this->availableHours($request->event_date);
+                $availableSlots = $this->availableHours($request->event_date);
                 
+                if(!in_array($request->booking_slot, $availableSlots))
+                    $validator->errors()->add('event_date', __('app.notInAvailableHours', ['time' => $request->booking_slot]));
+
                 $dailyAcceptance = Package::find(session('package_id'))->daily_acceptance;
                 
-                $availableInEachSlot = $dailyAcceptance / $totalSlotCount;
+                $availableInEachSlot = $dailyAcceptance / count($availableSlots);
 
-                if($bookedCountInRequestedHour >= floor($availableInEachSlot))
+                if($bookedCountInRequestedHour + (session('participant') + 1) > floor($availableInEachSlot))
                     $validator->errors()->add('event_date', __('app.slotBlocked', ['time' => $request->booking_slot, 'date' => $request->event_date]));
 
             }
@@ -669,7 +675,7 @@ class UserBookingController extends Controller
             'department_id' => session('department_id'),
             'serial_no' => Booking::genSerialNo(session('department_id')),
             'booking_date' => $request->event_date,
-            'booking_type' => isset($request->booking_type) ? ucfirst($request->booking_type) : 'Ordinary',
+            'booking_type' => ucfirst($request->booking_type) ?? 'Ordinary',
             'booking_time' => $request->booking_slot,
             'email' => session('email'),
             'status' => 'Waiting',

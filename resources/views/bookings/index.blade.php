@@ -40,6 +40,7 @@
                                     <th>{{ __('backend.id_card') }}</th>
                                     <th>{{ __('backend.email') }}</th>
                                     <th>{{ __('backend.phone') }}</th>
+                                    <th>{{ __('Type') }}</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </thead>
@@ -55,6 +56,7 @@
                                     <th>{{ __('backend.id_card') }}</th>
                                     <th>{{ __('backend.email') }}</th>
                                     <th>{{ __('backend.phone') }}</th>
+                                    <th>{{ __('Type') }}</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
                             </table>
@@ -131,6 +133,10 @@
                 {
                     data: 'info.phone',
                     name: 'info.phone'
+                },
+                {
+                    data: 'booking_type',
+                    name: 'booking_type'
                 },
                 {
                     data: 'action',
