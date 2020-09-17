@@ -273,4 +273,6 @@ return [
     'Friday' => 'Freitag',
     'Saturday' => 'Samstag',
     'Sunday' => 'Sonntag',
+
+    'Sunday' => 'Die ausgewählte Zeit ":time" am ":date" ist bereits bis zur maximalen Buchungszahl erreicht. Bitte wählen Sie eine verfügbare Buchungszeit.',
 ];
