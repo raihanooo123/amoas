@@ -45,14 +45,14 @@ class HomeController extends Controller
         {
             //find all customers
             $role = Role::find(2);
-            $customers = $role->users->count();
 
+            $customers = $role->users->count();
+            $todayCustomerCount = $role->users()->whereDate('created_at', date('Y-m-d'))->count();
+
+            // dd($todayCustomerCount);
             //find all bookings
             $bookings = Booking::count();
-
-            //get all cancel requests
-            $cancel_requests = DB::table('cancel_requests')->where('status','=', __('backend.pending'))->get();
-
+            $todayBookings = Booking::whereDate('booking_date', date('Y-m-d'))->get();
 
             // get start of the month
             $now = now()->startOfMonth();
@@ -66,10 +66,19 @@ class HomeController extends Controller
                 ->get();
 
             //get data for cancelled bookings
-            $bookings_cancelled = DB::table('bookings')->where('status','=', __('backend.cancelled'))->get();
+            $bookings_cancelled = Booking::where('status','=', 'cancelled')->count();
+            $todayCancelledBookings = $todayBookings->whereIn('status',['Cancelled', 'cancelled'])
+                                                    ->count();
 
-            return view('dashboard.admin', compact('customers', 'bookings',
-                  'stats_booking', 'bookings_cancelled', 'cancel_requests'));
+            return view('dashboard.admin', compact(
+                'customers',
+                'todayCustomerCount',
+                'bookings',
+                'stats_booking',
+                'bookings_cancelled',
+                'todayCancelledBookings',
+                'todayBookings',
+            ));
         }
 
         //if Auth user role is customer

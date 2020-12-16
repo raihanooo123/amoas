@@ -243,13 +243,36 @@ class AdminBookingsController extends Controller
      */
     public function dataTable()
     {
-        $bookings = Booking::select('bookings.*')->with(['package:id,title', 'info']);
+        $bookings = Booking::select('bookings.*')->with([
+            'package:id,title', 
+            'info',
+            'user' => function($query){
+                $query->withCount('bookings');
+            }]);
         return Datatables::of($bookings)
             ->addColumn('action', function($booking){
                 $action = '<a href="' . route('bookings.show', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
+            ->editColumn('user.email', function($booking){
+                if($booking->user->bookings_count > 1)
+                    return '<span class="badge badge-dark">' . $booking->user->bookings_count . '</span> ' .$booking->email;
+                
+                return $booking->email;
+            })
+            ->editColumn('email', function($booking){
+                return \Illuminate\Support\Str::limit($booking->email, 10);
+            })
+            ->editColumn('serial_no', function($booking){
+                return '<a href="' . route('bookings.show', $booking->id) .'">'.$booking->serial_no.'</a>';
+            })
+            ->addIndexColumn()
+            ->rawColumns([
+                'serial_no',
+                'action',
+                'user.email'
+            ])
             ->make(true);
     }
 }

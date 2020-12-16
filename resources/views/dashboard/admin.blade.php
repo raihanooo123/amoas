@@ -26,7 +26,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">{{ $customers }}</p>
+                            <p class="counter">{{ $todayCustomerCount }} <u>of</u> {{ $customers }}</p>
                             <span class="info-box-title">{{ __('backend.total_customers') }}</span>
                         </div>
                         <div class="info-box-icon">
@@ -39,7 +39,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">{{ $bookings }}</p>
+                            <p class="counter">{{ $todayBookings->count() }} <u>of</u> {{ $bookings }}</p>
                             <span class="info-box-title">{{ __('backend.total_bookings') }}</span>
                         </div>
                         <div class="info-box-icon">
@@ -52,7 +52,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">{{ count($bookings_cancelled) }}</p>
+                            <p class="counter">{{ $todayCancelledBookings }} <u>of</u> {{ $bookings_cancelled }}</p>
                             <span class="info-box-title">{{ __('backend.bookings_cancelled') }}</span>
                         </div>
                         <div class="info-box-icon">
@@ -66,9 +66,9 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter">
-
+                                {{ $todayBookings->where('status', 'Completed')->count() }}
                             </p>
-                            <span class="info-box-title">{{ __('backend.total_earning') }}</span>
+                            <span class="info-box-title">{{ __('Today\'s completed bookings') }}</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="icon-graph"></i>
@@ -81,9 +81,10 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter">
+                                {{ $todayBookings->whereIn('status', ['Processing', 'In Progress'])->count() }}
 
                             </p>
-                            <span class="info-box-title">{{ __('backend.invoices_refunded') }}</span>
+                            <span class="info-box-title">{{ __('Today\'s in process bookings') }}</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="icon-bar-chart"></i>
@@ -96,9 +97,9 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter">
-
+                                {{ $todayBookings->where('status', 'Waiting')->count() }}
                             </p>
-                            <span class="info-box-title">{{ __('backend.unpaid_invoices') }}</span>
+                            <span class="info-box-title">{{ __('Today\'s untouched bookings') }}</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="icon-energy"></i>

@@ -41,7 +41,7 @@
                                     <th>{{ __('backend.email') }}</th>
                                     <th>{{ __('backend.phone') }}</th>
                                     <th>{{ __('Type') }}</th>
-                                    <th>{{ __('backend.actions') }}</th>
+                                    <th>{{ __('Registrar') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -57,7 +57,7 @@
                                     <th>{{ __('backend.email') }}</th>
                                     <th>{{ __('backend.phone') }}</th>
                                     <th>{{ __('Type') }}</th>
-                                    <th searching="false">{{ __('backend.actions') }}</th>
+                                    <th>{{ __('Registrar') }}</th>
                                 </tfoot>
                             </table>
                         </div>
@@ -99,7 +99,7 @@
             ],
             ajax: "{!! route('bookings.data') !!}",
             columns: [{
-                    data: 'id',
+                    data: 'DT_RowIndex',
                     name: 'id'
                 },
                 {
@@ -139,10 +139,8 @@
                     name: 'booking_type'
                 },
                 {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false, 
-                    searchable: false
+                    data: 'user.email',
+                    name: 'user.email',
                 }
             ],
             "order": [[ 0, 'desc' ]]
