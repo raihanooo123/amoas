@@ -22,13 +22,15 @@
                     class="fa fa-bell fa-lg"></i> &nbsp; {{ __('backend.change_booking_status') }}</a>
             <a class="btn btn-danger btn-lg " data-toggle="modal" data-target="#confirm"><i
                     class="fa fa-trash-o fa-lg"></i> &nbsp; {{ __('backend.delete_booking') }}</a>
-
             @if($booking->status != __('backend.cancelled'))
                 <a class="btn btn-danger btn-lg" data-toggle="modal" data-target="#cancel"><i
                         class="fa fa-times-circle fa-lg"></i> &nbsp; {{ __('backend.cancel_booking') }}</a>
                 <a class="btn btn-info btn-lg" href="{{ route('bookings.edit', $booking->id) }}"><i
                         class="fa fa-clock-o fa-lg"></i> &nbsp; {{ __('backend.change_booking_time') }}</a>
             @endif
+
+            <a class="btn btn-default btn-lg" href="{{ route('misc.import', $booking->id) }}"><i
+                class="fa fa-clock-o fa-lg"></i> &nbsp; {{ __('Add Traceable Docs') }}</a>
 
             <br>
             <br>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tracing;
 
+use App\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tracing\Miscellaneous;
@@ -65,6 +66,7 @@ class MiscellaneousController extends Controller
                 'alt_email' => $request->alt_email,
                 'doc_type' => $request->doc_type,
                 'noti_lang' => $request->noti_lang,
+                'booking_id' => $request->booking_id ?? null,
                 'phone_no' => $request->phone_no,
                 'descriptions' => $request->descriptions,
                 'registrar_id' => auth()->id(),
@@ -208,5 +210,17 @@ class MiscellaneousController extends Controller
 
         return redirect(route('misc.show', $misc->id))
             ->with(['alert'=>'Action performed successfully']);
+    }
+
+    /**
+     * import from bookings data
+     *
+     * @param Booking $booking Description
+     * @return type
+     **/
+    public function import(Booking $booking)
+    {
+        $booking->load(['user', 'info']);
+        return view('tracing.misc.import', compact('booking'));
     }
 }

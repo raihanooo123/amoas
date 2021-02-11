@@ -21,6 +21,7 @@ class Miscellaneous extends Model
         'alt_email',
         'phone_no',
         'descriptions',
+        'booking_id',
         'registrar_id',
     ];
 
