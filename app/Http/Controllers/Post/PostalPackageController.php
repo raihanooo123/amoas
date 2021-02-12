@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Post\PostalPackage;
@@ -46,17 +47,13 @@ class PostalPackageController extends Controller
     public function store(Request $request)
     {
         $rules = array();
-        // foreach(range(1, 8) as $c1){
-        //     $rules['doc_type' .$c1] = 'required_with:name'.$c1.',uid'.$c1;
-        //     $rules['name' .$c1] = 'required_with:doc_type'.$c1.',uid'.$c1;
-        //     $rules['uid' .$c1] = 'required_with:doc_type'.$c1.',name'.$c1;
-        // }
 
         $this->validate($request, array_merge([
             'name' => 'required|min:3',
-            'address' => 'required|min:3',
+            'address' => 'required',
             'phone_no' => 'required',
-            
+            'doc_price' => 'nullable|numeric',
+            'post_price' => 'nullable|numeric',
         ], $rules));
 
         \DB::beginTransaction();
@@ -74,7 +71,14 @@ class PostalPackageController extends Controller
                 'date' => $request->date,
                 'place' => $request->place,
                 'address' => $request->address,
+                
+                'street' => $request->street,
+                'house_no' => $request->house_no,
+                'doc_price' => $request->doc_price,
+                'post_price' => $request->post_price,
+
                 'phone' => $request->phone_no,
+                'booking_id' => $request->booking_id ?? null,
                 'description' => $request->description,
                 'registrar_id' => auth()->id(),
             ]);
@@ -134,8 +138,10 @@ class PostalPackageController extends Controller
 
         $this->validate($request, array_merge([
             'name' => 'required|min:3',
-            'address' => 'required|min:3',
+            'address' => 'required',
             'phone_no' => 'required',
+            'doc_price' => 'nullable|numeric',
+            'post_price' => 'nullable|numeric',
             
         ], $rules));
 
@@ -150,6 +156,10 @@ class PostalPackageController extends Controller
                 'address' => $request->address,
                 'phone' => $request->phone_no,
                 'description' => $request->description,
+                'street' => $request->street,
+                'house_no' => $request->house_no,
+                'doc_price' => $request->doc_price,
+                'post_price' => $request->post_price,
             ]);
 
         foreach(range(1, 8) as $c)
@@ -166,8 +176,6 @@ class PostalPackageController extends Controller
                         'name' => $request->input('name' . $c),
                         'uid' => $request->input('uid' . $c),
                     ]);
-
-        \DB::commit();
 
         \DB::commit();
 
@@ -188,7 +196,7 @@ class PostalPackageController extends Controller
 
     public function dataTable()
     {
-        $postal = PostalPackage::with('deliverables')->select('postal_packages.*');
+        $postal = PostalPackage::with(['deliverables', 'booking:id,serial_no'])->select('postal_packages.*');
         return Datatables::of($postal)
             ->addColumn('action', function($postal){
                 $action = '<a href="' . route('postal.edit', $postal->id) .'" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>&nbsp;';
@@ -206,11 +214,13 @@ class PostalPackageController extends Controller
 
                 return nl2br(implode('', $deliverables));
             })
-            // ->filterColumn('documents', function($query, $keyword) {
-            //     $sql = "select * from deliverable_docs where deliverable_docs.doc_type like ? or deliverable_docs.name like ? or deliverable_docs.uid like ?";
-            //     $query->whereRaw($sql, ["%{$keyword}%", "%{$keyword}%", "%{$keyword}%"]);
-            // })
-            ->rawColumns(['documents', 'action'])
+            ->editColumn('booking.serial_no', function($postal){
+                if ($postal->booking)
+                    $action = '<a href="' . route('bookings.show', optional($postal->booking)->id) .'" >' . optional($postal->booking)->serial_no . '</a>';
+                return $action ?? null;
+            })
+            ->rawColumns(['documents', 'action', 'booking.serial_no'])
+            ->addIndexColumn()
             ->make(true);
     }
 
@@ -233,6 +243,18 @@ class PostalPackageController extends Controller
         else{
 
         }
+    }
+
+    /**
+     * import from bookings data
+     *
+     * @param Booking $booking Description
+     * @return type
+     **/
+    public function import(Booking $booking)
+    {
+        $booking->load(['user', 'info']);
+        return view('postal.import', compact('booking'));
     }
 
 }

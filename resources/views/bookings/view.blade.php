@@ -30,7 +30,10 @@
             @endif
 
             <a class="btn btn-default btn-lg" href="{{ route('misc.import', $booking->id) }}"><i
-                class="fa fa-clock-o fa-lg"></i> &nbsp; {{ __('Add Traceable Docs') }}</a>
+                class="icon-docs fa-lg"></i> &nbsp; {{ __('Add Traceable Docs') }}</a>
+
+            <a class="btn btn-default btn-lg" href="{{ route('postal.import', $booking->id) }}"><i
+                class="icon-bag fa-lg"></i> &nbsp; {{ __('Add Postal Package') }}</a>
 
             <br>
             <br>
@@ -150,25 +153,28 @@
                     <h4 class="panel-title">{{ __('backend.r_user_details') }}</h4>
                 </div>
                 <div class="panel-body">
-                    <div class="row table-row">
-                        <div class="col-md-6 bold-font"><strong>{{ __('backend.full_name') }}:</strong></div>
-                        <div class="col-md-6">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</div>
-                    </div>
-                    <div class="row table-row">
-                        <div class="col-md-6 bold-font"><strong>{{ __('backend.phone_number') }}:</strong></div>
-                        <div class="col-md-6"><a
-                                href="tel:{{ $booking->user->phone_number }}">{{ $booking->user->phone_number }}</a>
+                    <div class="account_details_view">
+                        <div class="row table-row">
+                            <div class="col-md-6 bold-font"><strong>{{ __('backend.full_name') }}:</strong></div>
+                            <div class="col-md-6">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</div>
                         </div>
-                    </div>
-                    <div class="row table-row">
-                        <div class="col-md-6 bold-font"><strong>{{ __('backend.email') }}:</strong></div>
-                        <div class="col-md-6"><a
-                                href="mailto:{{ $booking->user->email }}">{{ $booking->user->email }}</a></div>
+                        <div class="row table-row">
+                            <div class="col-md-6 bold-font"><strong>{{ __('backend.phone_number') }}:</strong></div>
+                            <div class="col-md-6"><a
+                                    href="tel:{{ $booking->user->phone_number }}">{{ $booking->user->phone_number }}</a>
+                            </div>
+                        </div>
+                        <div class="row table-row">
+                            <div class="col-md-6 bold-font"><strong>{{ __('backend.email') }}:</strong></div>
+                            <div class="col-md-6"><a
+                                    href="mailto:{{ $booking->user->email }}">{{ $booking->user->email }}</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="modal fade" id="status" data-backdrop="static" tabindex="-1" role="dialog"
+        <div class="modal fade" id="status" data-backdrop="static" tabindex="-1" role="dialog"
                 aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
                 <div class="modal-dialog">
                     <form method="post" action="{{ route('bookings.update', $booking->id) }}">
@@ -258,7 +264,6 @@
                 </div>
                 </form>
             </div>
-        </div>
 
     </div>
 </div>

@@ -39,6 +39,7 @@
                                     <th>UID</th>
                                     <th>Title</th>
                                     <th>Applicant</th>
+                                    <th>Booking ID</th>
                                     <th>Email</th>
                                     <th>Status</th>
                                     <th>Is Public</th>
@@ -51,6 +52,7 @@
                                     <th searching="false">#</th>
                                     <th>UID</th>
                                     <th>Title</th>
+                                    <th>Booking ID</th>
                                     <th>Applicant</th>
                                     <th>Email</th>
                                     <th>Status</th>
@@ -96,9 +98,12 @@
                 },
             ],
             ajax: "{!! route('misc.data') !!}",
-            columns: [{
-                    data: 'id',
-                    name: 'id'
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false, 
+                    searchable: false
                 },
                 {
                     data: 'uid',
@@ -111,6 +116,10 @@
                 {
                     data: 'trace.applicant',
                     name: 'trace.applicant'
+                },
+                {
+                    data: 'booking.serial_no',
+                    name: 'booking.serial_no'
                 },
                 {
                     data: 'trace.email',

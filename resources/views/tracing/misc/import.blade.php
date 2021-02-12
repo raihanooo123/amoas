@@ -19,7 +19,7 @@
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="col-md-12">
-                            <h4 class="panel-title">Import Miscellaneous docs for <u>({{$booking->info->full_name}})</u></h4>
+                            <h4 class="panel-title">Import Miscellaneous docs for <u>({{optional($booking->info)->full_name}})</u></h4>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -31,7 +31,7 @@
 
                             <div class="col-md-4 form-group {{$errors->has('applicant') ? ' has-error' : ''}}">
                                 <label class="control-label" for="applicant"><span class="text-danger">*</span> Applicant full name</label>
-                                <input type="text" class="form-control" name="applicant" value="{{$booking->info->full_name}}">
+                                <input type="text" class="form-control" name="applicant" value="{{optional($booking->info)->full_name}}">
                                 @if ($errors->has('applicant'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('applicant') }}</strong>
@@ -51,7 +51,7 @@
 
                             <div class="col-md-4 form-group {{$errors->has('alt_email') ? ' has-error' : ''}}">
                                 <label class="control-label" for="alt_email">Alternative Email</label>
-                                <input type="text" class="form-control" name="alt_email" value="{{$booking->user->email == $booking->email ? null : $booking->user->email}}">
+                                <input type="text" class="form-control" name="alt_email" value="{{optional($booking->user)->email == $booking->email ? null : optional($booking->user)->email}}">
                                 @if ($errors->has('email') || $errors->has('applicant') || $errors->has('alt_email'))
                                     <span class="help-block">
                                         <strong class="text-danger">{!! $errors->has('alt_email') ? $errors->first('alt_email') : '&nbsp;&nbsp;' !!}</strong>
@@ -95,7 +95,7 @@
 
                             <div class="col-md-4 form-group {{$errors->has('phone_no') ? ' has-error' : ''}}">
                                 <label class="control-label" for="phone_no">Phone Number</label>
-                                <input type="text" class="form-control" name="phone_no" value="{{$booking->info->phone}}">
+                                <input type="text" class="form-control" name="phone_no" value="{{optional($booking->info)->phone}}">
                                 @if ($errors->has('phone_no'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('phone_no') }}</strong>

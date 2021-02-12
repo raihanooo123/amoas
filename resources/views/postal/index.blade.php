@@ -38,12 +38,18 @@
                                     <th>#</th>
                                     <th>UID</th>
                                     <th>Name</th>
-                                    <th>Address</th>
+                                    <th>Booking ID</th>
                                     <th>Postal Code</th>
                                     <th>Place</th>
+                                    <th>Track No</th>
+                                    <th>Street</th>
+                                    <th>House No</th>
                                     <th>Date</th>
                                     <th>Phone</th>
+                                    <th>Email</th>
                                     <th>Documents</th>
+                                    <th>Doc Price €</th>
+                                    <th>Post Price €</th>
                                     <th>Status</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
@@ -54,12 +60,18 @@
                                     <th searching="false">#</th>
                                     <th>UID</th>
                                     <th>Name</th>
-                                    <th>Address</th>
+                                    <th>Booking ID</th>
                                     <th>Postal Code</th>
                                     <th>Place</th>
+                                    <th>Track No</th>
+                                    <th>Street</th>
+                                    <th>House No</th>
                                     <th>Date</th>
                                     <th>Phone</th>
+                                    <th>Email</th>
                                     <th>Documents</th>
+                                    <th>Doc Price €</th>
+                                    <th>Post Price €</th>
                                     <th>Status</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
@@ -77,6 +89,8 @@
 
 <script src="{{ asset('plugins/datatables/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/js/colVis.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/js/excel.datatables.min.js') }}"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -94,17 +108,17 @@
             dom: 'Bfrtip',
             buttons: [
                 'pageLength',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible'
-                    },
-                },
+                'print',
+                'excel',
+                'colvis'
             ],
             ajax: "{!! route('postal.data') !!}",
-            columns: [{
-                    data: 'id',
-                    name: 'id'
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false, 
+                    searchable: false
                 },
                 {
                     data: 'uid',
@@ -115,8 +129,8 @@
                     name: 'name'
                 },
                 {
-                    data: 'address',
-                    name: 'address'
+                    data: 'booking.serial_no',
+                    name: 'booking.serial_no'
                 },
                 {
                     data: 'post',
@@ -127,16 +141,44 @@
                     name: 'place'
                 },
                 {
+                    data: 'address',
+                    name: 'address',
+                    visible: false
+                },
+                {
+                    data: 'street',
+                    name: 'street'
+                },
+                {
+                    data: 'house_no',
+                    name: 'house_no',
+                    visible: false
+                },
+                {
                     data: 'date',
                     name: 'date'
                 },
                 {
                     data: 'phone',
-                    name: 'phone'
+                    name: 'phone',
+                    visible: false
+                },
+                {
+                    data: 'email',
+                    name: 'email',
+                    visible: false
                 },
                 {
                     data: 'documents',
                     name: 'documents'
+                },
+                {
+                    data: 'doc_price',
+                    name: 'doc_price'
+                },
+                {
+                    data: 'post_price',
+                    name: 'post_price'
                 },
                 {
                     data: 'status',
@@ -149,7 +191,7 @@
                     searchable: false
                 }
             ],
-            "order": [[ 0, 'desc' ]]
+            "order": [[ 0, 'asc' ]]
         });
 
         // Apply the search

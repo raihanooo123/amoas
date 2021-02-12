@@ -7,8 +7,8 @@
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
-                <li><a href="{{ route('misc.index') }}">Postal Packages</a></li>
-                <li class="active">Create</li>
+                <li><a href="{{ route('postal.index') }}">Postal Packages</a></li>
+                <li class="active">Import</li>
             </ol>
         </div>
     </div>
@@ -27,9 +27,11 @@
 
                             {{csrf_field()}}
 
+                            <input type="hidden" name="booking_id" value="{{$booking->id}}">
+
                             <div class="col-md-3 form-group {{$errors->has('name') ? ' has-error' : ''}}">
                                 <label class="control-label" for="name"><span class="text-danger">*</span> Applicant full name</label>
-                                <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                                <input type="text" class="form-control" name="name" value="{{optional($booking->info)->full_name}}">
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('name') }}</strong>
@@ -39,7 +41,7 @@
 
                             <div class="col-md-3 form-group {{$errors->has('post') ? ' has-error' : ''}}">
                                 <label class="control-label" for="post">Postal Code</label>
-                                <input type="text" class="form-control" name="post" value="{{old('post')}}">
+                                <input type="text" class="form-control" name="post" value="{{optional($booking->info)->postal}}">
                                 @if ($errors->has('post'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('post') }}</strong>
@@ -48,8 +50,8 @@
                             </div>
 
                             <div class="col-md-3 form-group {{$errors->has('place') ? ' has-error' : ''}}">
-                                <label class="control-label" for="place">Place</label>
-                                <input type="text" class="form-control" name="place" value="{{old('place')}}">
+                                <label class="control-label" for="place">place</label>
+                                <input type="text" class="form-control" name="place" value="{{optional($booking->info)->address}}">
                                 @if ($errors->has('place'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('place') }}</strong>
@@ -109,7 +111,7 @@
 
                             <div class="col-md-3 form-group {{$errors->has('phone_no') ? ' has-error' : ''}}">
                                 <label class="control-label" for="phone_no">Phone Number</label>
-                                <input type="text" class="form-control" name="phone_no" value="{{old('phone_no')}}">
+                                <input type="text" class="form-control" name="phone_no" value="{{optional($booking->info)->postal}}">
                                 @if ($errors->has('phone_no'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('phone_no') }}</strong>
@@ -118,7 +120,7 @@
                             </div>
                             <div class="col-md-3 form-group {{$errors->has('email') ? ' has-error' : ''}}">
                                 <label class="control-label" for="email">Email</label>
-                                <input type="text" class="form-control" name="email" value="{{old('email')}}">
+                                <input type="text" class="form-control" name="email" value="{{$booking->email}}">
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('email') }}</strong>

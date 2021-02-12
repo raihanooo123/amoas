@@ -38,16 +38,6 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-3 form-group {{$errors->has('address') ? ' has-error' : ''}}">
-                                <label class="control-label" for="address"><span class="text-danger">*</span>Address</label>
-                                <input type="text" class="form-control" name="address" value="{{$postal->address}}">
-                                @if ($errors->has('address'))
-                                    <span class="help-block">
-                                        <strong class="text-danger">{{ $errors->first('address') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
                             <div class="col-md-3 form-group {{$errors->has('post') ? ' has-error' : ''}}">
                                 <label class="control-label" for="post">Postal Code</label>
                                 <input type="text" class="form-control" name="post" value="{{$postal->post}}">
@@ -68,6 +58,55 @@
                                 @endif
                             </div>
 
+                            <div class="col-md-3 form-group {{$errors->has('address') ? ' has-error' : ''}}">
+                                <label class="control-label" for="address"><span class="text-danger">*</span>Track Number</label>
+                                <input type="text" class="form-control" name="address" value="{{$postal->address}}">
+                                @if ($errors->has('address'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 form-group {{$errors->has('street') ? ' has-error' : ''}}">
+                                <label class="control-label" for="street">Street</label>
+                                <input type="text" class="form-control" name="street" value="{{$postal->street}}">
+                                @if ($errors->has('street'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('street') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 form-group {{$errors->has('house_no') ? ' has-error' : ''}}">
+                                <label class="control-label" for="house_no">House Number</label>
+                                <input type="text" class="form-control" name="house_no" value="{{$postal->house_no}}">
+                                @if ($errors->has('house_no'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('house_no') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 form-group {{$errors->has('doc_price') ? ' has-error' : ''}}">
+                                <label class="control-label" for="doc_price">Document Price (€)</label>
+                                <input type="number" step="any" class="form-control" name="doc_price" value="{{$postal->doc_price}}">
+                                @if ($errors->has('doc_price'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('doc_price') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 form-group {{$errors->has('post_price') ? ' has-error' : ''}}">
+                                <label class="control-label" for="post_price">Post Price (€)</label>
+                                <input type="number" step="any" class="form-control" name="post_price" value="{{$postal->post_price}}">
+                                @if ($errors->has('post_price'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('post_price') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                             <div class="col-md-3 form-group {{$errors->has('phone_no') ? ' has-error' : ''}}">
                                 <label class="control-label" for="phone_no">Phone Number</label>
                                 <input type="text" class="form-control" name="phone_no" value="{{$postal->phone}}">

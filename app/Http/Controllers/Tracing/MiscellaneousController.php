@@ -171,7 +171,7 @@ class MiscellaneousController extends Controller
     public function dataTable()
     {
         $tableName = (new Miscellaneous)->getTable();
-        $misc = Miscellaneous::with(['type:id,type', 'trace'])->select("{$tableName}.*");
+        $misc = Miscellaneous::with(['type:id,type', 'trace', 'booking:id,serial_no'])->select("{$tableName}.*");
         return Datatables::of($misc)
             ->addColumn('action', function($m){
                 $action = '<a href="' . route('misc.show', $m->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>';
@@ -183,7 +183,13 @@ class MiscellaneousController extends Controller
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
-            ->rawColumns(['isPublic', 'action'])
+            ->editColumn('booking.serial_no', function($m){
+                if ($m->booking)
+                    $action = '<a href="' . route('bookings.show', optional($m->booking)->id) .'" >' . optional($m->booking)->serial_no . '</a>';
+                return $action ?? null;
+            })
+            ->rawColumns(['isPublic', 'action', 'booking.serial_no'])
+            ->addIndexColumn()
             ->make(true);
     }
 

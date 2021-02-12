@@ -27,10 +27,10 @@
                     <h1 class="text-dark"><strong>{{ $exception->getMessage() }}</strong></h1>
                     <br>
                     <h4 style="font-weight: 300;">
-                    Please contact to system administrator Mr. Mohd. Asif Gulistani <br>
-                    Email: <a href="mailto:a.gulistani@mfa.af">a.gulistani@mfa.af</a><br>
-                    Mobile: <a href="tel:+93798363336">+93798363336</a><br>
-                    WhatsApp: <a href="tel:+93747856597">+93747856597</a>
+                    Please contact to our Consulate<br>
+                    Email: <a href="mailto:bonn@mfa.af">bonn@mfa.af</a><br>
+                    Telephone: <a href="tel:022822720718">0228 2272 0718</a><br>
+                    {{-- WhatsApp: <a href="tel:+93747856597">+93747856597</a> --}}
                     </h4>
                     <br>
                     <a href="javascript:history.go(-1)" class="btn btn-dark btn-lg">{{ __('errors.go_back_btn') }}</a>

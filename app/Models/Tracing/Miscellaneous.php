@@ -23,6 +23,7 @@ class Miscellaneous extends Model
         'descriptions',
         'booking_id',
         'registrar_id',
+        'price',
     ];
 
     protected $appends = ['title', 'lang'];
@@ -50,6 +51,11 @@ class Miscellaneous extends Model
     public function type()
     {
         return $this->belongsTo('App\Models\Tracing\MiscellaneousType', 'doc_type');
+    }
+
+    public function booking()
+    {
+        return $this->belongsTo('App\Booking', 'booking_id');
     }
 
     public function registrar()

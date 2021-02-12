@@ -26,6 +26,11 @@ class PostalPackage extends Model
         'place',
         'date',
         'description',
+        'street', 
+        'house_no',
+        'post_price',
+        'doc_price',
+        'booking_id'
     ];
 
     protected $appends = ['total'];
@@ -57,6 +62,11 @@ class PostalPackage extends Model
 
     public function deliverables(){
         return $this->hasMany('App\Models\Post\DeliverableDoc', 'postal_id');
+    }
+
+    public function booking()
+    {
+        return $this->belongsTo('App\Booking', 'booking_id');
     }
 
 }
