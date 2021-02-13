@@ -143,7 +143,7 @@
                     name: 'user.email',
                 }
             ],
-            "order": [[ 0, 'desc' ]]
+            "order": []
         });
 
         // Apply the search

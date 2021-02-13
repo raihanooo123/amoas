@@ -87,6 +87,7 @@
 
 @section('scripts')
 
+<script src="{{ asset('plugins/datatables/js/jszip.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables/js/colVis.min.js') }}"></script>
@@ -109,6 +110,7 @@
             buttons: [
                 'pageLength',
                 'print',
+                'copy',
                 'excel',
                 'colvis'
             ],
@@ -191,7 +193,7 @@
                     searchable: false
                 }
             ],
-            "order": [[ 0, 'asc' ]]
+            "order": []
         });
 
         // Apply the search

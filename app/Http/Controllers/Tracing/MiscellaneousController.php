@@ -172,6 +172,10 @@ class MiscellaneousController extends Controller
     {
         $tableName = (new Miscellaneous)->getTable();
         $misc = Miscellaneous::with(['type:id,type', 'trace', 'booking:id,serial_no'])->select("{$tableName}.*");
+
+        if(!request()->order)
+            $misc->latest();
+
         return Datatables::of($misc)
             ->addColumn('action', function($m){
                 $action = '<a href="' . route('misc.show', $m->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>';

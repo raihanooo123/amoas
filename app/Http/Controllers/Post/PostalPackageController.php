@@ -197,6 +197,10 @@ class PostalPackageController extends Controller
     public function dataTable()
     {
         $postal = PostalPackage::with(['deliverables', 'booking:id,serial_no'])->select('postal_packages.*');
+        
+        if(!request()->order)
+            $postal->latest();
+            
         return Datatables::of($postal)
             ->addColumn('action', function($postal){
                 $action = '<a href="' . route('postal.edit', $postal->id) .'" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>&nbsp;';

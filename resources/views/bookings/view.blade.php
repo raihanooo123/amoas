@@ -174,6 +174,27 @@
             </div>
         </div>
 
+        <div class="col-md-6">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">{{ __('Services') }}</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="account_details_view">
+                        <div class="row table-row">
+                            <div class="col-md-6 bold-font"><strong>{{ __('backend.full_name') }}:</strong></div>
+                            <div class="col-md-6">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</div>
+                        </div>
+
+                        @foreach ($booking->miscs as $traceableDocs)
+                            
+                        @endforeach
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="status" data-backdrop="static" tabindex="-1" role="dialog"
                 aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
                 <div class="modal-dialog">

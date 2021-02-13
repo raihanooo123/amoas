@@ -60,6 +60,16 @@ class Booking extends Model
         return $this->hasOne('App\CancelRequest');
     }
 
+    public function miscs()
+    {
+        return $this->hasMany('App\Models\Tracing\Miscellaneous');
+    }
+
+    public function postalPackage()
+    {
+        return $this->hasMany('App\Models\Post\PostalPackage');
+    }
+
     public static function genSerialNo($departmentId)
     {
         $counts = self::whereDate('created_at', '=', date('Y-m-d'))->count();

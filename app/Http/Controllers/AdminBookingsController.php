@@ -249,6 +249,10 @@ class AdminBookingsController extends Controller
             'user' => function($query){
                 $query->withCount('bookings');
             }]);
+            
+        if(!request()->order)
+            $bookings->latest();
+
         return Datatables::of($bookings)
             ->addColumn('action', function($booking){
                 $action = '<a href="' . route('bookings.show', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
