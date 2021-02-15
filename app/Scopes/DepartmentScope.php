@@ -18,7 +18,7 @@ class DepartmentScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         if (auth()->check() && auth()->user()->isAdmin()) 
-            $builder->where('department_id', auth()->user()->department_id);
+            $builder->where("{$model->getTable()}.department_id", auth()->user()->department_id);
 
     }
 }

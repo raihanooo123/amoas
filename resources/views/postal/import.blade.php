@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-md-3 form-group {{$errors->has('email') ? ' has-error' : ''}}">
                                 <label class="control-label" for="email">Email</label>
-                                <input type="text" class="form-control" name="email" value="{{$booking->email}}">
+                                <input type="email" class="form-control" name="email" value="{{$booking->email}}">
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('email') }}</strong>

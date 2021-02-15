@@ -62,24 +62,7 @@
                             <div class="col-md-6 bold-font"><strong>{{ __('backend.package') }}:</strong></div>
                             <div class="col-md-6">{{ $booking->package->title }}</div>
                         </div>
-                        <div class="row table-row">
-                            <div class="col-md-6 bold-font"><strong>{{ __('backend.instructions') }}:</strong></div>
-                            <div class="col-md-6">
-                                {{ $booking->booking_instructions ? $booking->booking_instructions : __('backend.not_provided') }}
-                            </div>
-                        </div>
-                        <div class="row table-row">
-                            <div class="col-md-6 bold-font"><strong>{{ __('backend.extra_services') }}:</strong></div>
-                            <div class="col-md-6">
-                                @if(count($addons))
-                                @foreach($addons as $addon)
-                                {{ $addon->title }}<br>
-                                @endforeach
-                                @else
-                                {{ __('backend.none') }}
-                                @endif
-                            </div>
-                        </div>
+                        
                         <div class="row table-row">
                             <div class="col-md-6 bold-font"><strong>{{ __('backend.date') }}:</strong></div>
                             <div class="col-md-6">{{ $booking->booking_date }}</div>
@@ -181,18 +164,35 @@
                 </div>
                 <div class="panel-body">
                     <div class="account_details_view">
-                        <div class="row table-row">
-                            <div class="col-md-6 bold-font"><strong>{{ __('backend.full_name') }}:</strong></div>
-                            <div class="col-md-6">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</div>
-                        </div>
 
-                        @foreach ($booking->miscs as $traceableDocs)
+                        @php
+                            $miscs = $booking->miscs;
+                            $packages = $booking->postalPackage;
+
+                            $services = $miscs->merge($packages);
+                            
+                        @endphp
+
+                        @foreach ($services as $s)
                             <div class="row table-row">
-                                <div class="col-md-6 bold-font"><strong>{{ __('Service Type') }}:</strong></div>
-                                <div class="col-md-6">
-                                    Miscellaneous Doc: 
-                                    <a href="{{route('misc.show', $traceableDocs->id)}}"></a>
-                                </div>
+                                <div class="col-md-4 bold-font"><strong>{{ __('Service Type') }}:</strong></div>
+                                @if ($s instanceof  App\Models\Post\PostalPackage)
+                                    <div class="col-md-8">
+                                        Postal Package : 
+                                        <a href="{{route('postal.edit', $s->id)}}">
+                                            {{$s->uid}}
+                                        </a>
+                                    </div>
+                                
+                                @endif
+                                @if ($s instanceof App\Models\Tracing\Miscellaneous)
+                                    <div class="col-md-8">
+                                        Miscellaneous Doc: 
+                                        <a href="{{route('misc.show', $s->id)}}">
+                                            {{$s->uid}}
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                         
