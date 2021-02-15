@@ -71,6 +71,7 @@ class PostalPackageController extends Controller
                 'date' => $request->date,
                 'place' => $request->place,
                 'address' => $request->address,
+                'email' => $request->email,
                 
                 'street' => $request->street,
                 'house_no' => $request->house_no,
@@ -160,6 +161,7 @@ class PostalPackageController extends Controller
                 'house_no' => $request->house_no,
                 'doc_price' => $request->doc_price,
                 'post_price' => $request->post_price,
+                'email' => $request->email,
             ]);
 
         foreach(range(1, 8) as $c)
@@ -259,6 +261,30 @@ class PostalPackageController extends Controller
     {
         $booking->load(['user', 'info']);
         return view('postal.import', compact('booking'));
+    }
+
+    /**
+     * reject the postal package
+     *
+     * @param Booking $booking Description
+     * @return type
+     **/
+    public function reject(PostalPackage $postal)
+    {
+        $desc = $postal->description;
+
+        $desc .= "\n___________________________________\n";
+        $desc .= "Rejected by: ". auth()->user()->email . "\n";
+        $desc .= request()->reason;
+
+        $postal->description = $desc;
+        $postal->status = 'Rejected';
+        $postal->save();
+
+        \App\Jobs\PostalPackageRejected::dispatch($postal, request()->reason);
+        
+        return redirect(route('postal.edit', $postal->id))
+                    ->with(['alert'=>'Action performed successfully']);
     }
 
 }

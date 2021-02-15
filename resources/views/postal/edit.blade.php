@@ -16,6 +16,9 @@
     <div id="main-wrapper">
         <div class="row">
             <div class="col-md-12">
+                @include('alerts.alert')
+                <a class="btn btn-danger btn-lg" data-toggle="modal" data-target="#reject-dg"><i
+                    class="fa fa-times"></i>&nbsp;&nbsp;Reject Post</a>
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="col-md-12">
@@ -119,23 +122,13 @@
 
                             <div class="col-md-3 form-group {{$errors->has('email') ? ' has-error' : ''}}">
                                 <label class="control-label" for="email">Email</label>
-                                <input type="text" class="form-control" name="email" value="{{$postal->phone}}">
+                                <input type="email" class="form-control" name="email" value="{{$postal->email}}">
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
-
-                            {{-- <div class="col-md-3 form-group {{$errors->has('status') ? ' has-error' : ''}}">
-                                <label class="control-label" for="status">Status</label>
-                                <input type="text" class="form-control" name="status" value="{{$postal->status}}">
-                                @if ($errors->has('status'))
-                                    <span class="help-block">
-                                        <strong class="text-danger">{{ $errors->first('status') }}</strong>
-                                    </span>
-                                @endif
-                            </div> --}}
 
                             <div class="col-md-3 form-group {{$errors->has('date') ? ' has-error' : ''}}">
                                 <label class="control-label" for="date">Date</label>
@@ -156,6 +149,7 @@
                                     <option value="Shipped" {{$postal->status == 'Shipped' ? 'selected': ''}}>Shipped</option>
                                     <option value="Delivered" {{$postal->status == 'Delivered' ? 'selected': ''}}>Delivered</option>
                                     <option value="Returned" {{$postal->status == 'Returned' ? 'selected': ''}}>Returned</option>
+                                    <option value="Rejected" {{$postal->status == 'Rejected' ? 'selected': ''}}>Rejected</option>
                                 </select>
                                 @if ($errors->has('status'))
                                     <span class="help-block">
@@ -178,16 +172,6 @@
                                     $counter++
                                 @endphp
                                 <input type="hidden" name="id{{$counter}}" value="{{$d->id}}">
-                                {{-- <div class="col-md-4 form-group {{$errors->has('doc_type'. $counter) ? ' has-error' : ''}}">
-                                    <label class="control-label" for="doc_type">Document type {{$counter}} </label>
-                                    <input type="text" class="form-control" name="doc_type{{$counter}}" value="{{$d->doc_type}}">
-                                    @if ($errors->has('doc_type'. $counter))
-                                        <span class="help-block">
-                                            <strong class="text-danger">{{ $errors->first('doc_type'. $counter) }}</strong>
-                                        </span>
-                                    @endif
-                                </div> --}}
-
                                 <div class="form-group {{$errors->has('name'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="name">Name {{$counter}}</label>
                                     <input type="text" class="form-control" name="name{{$counter}}" value="{{$d->name}}">
@@ -197,30 +181,9 @@
                                         </span>
                                     @endif
                                 </div>
-
-                                {{-- <div class="col-md-4 form-group {{$errors->has('uid'. $counter) ? ' has-error' : ''}}">
-                                    <label class="control-label" for="uid">Unique ID (uid) {{$counter}}</label>
-                                    <input type="text" class="form-control" name="uid{{$counter}}" value="{{$d->uid}}">
-                                    @if ($errors->has('uid'. $counter))
-                                        <span class="help-block">
-                                            <strong class="text-danger">{{ $errors->first('uid'. $counter) }}</strong>
-                                        </span>
-                                    @endif
-                                </div> --}}
                             @endforeach
 
                             @foreach (range(++$count,8) as $counter)
-                                
-                                {{-- <div class="col-md-4 form-group {{$errors->has('doc_type'. $counter) ? ' has-error' : ''}}">
-                                    <label class="control-label" for="doc_type">Document type {{$counter}} </label>
-                                    <input type="text" class="form-control" name="doc_type{{$counter}}" value="{{old('doc_type'. $counter)}}">
-                                    @if ($errors->has('doc_type'. $counter))
-                                        <span class="help-block">
-                                            <strong class="text-danger">{{ $errors->first('doc_type'. $counter) }}</strong>
-                                        </span>
-                                    @endif
-                                </div> --}}
-
                                 <div class="form-group {{$errors->has('name'. $counter) ? ' has-error' : ''}}">
                                     <label class="control-label" for="name">Name {{$counter}}</label>
                                     <input type="text" class="form-control" name="name{{$counter}}" value="{{old('name'. $counter)}}">
@@ -230,22 +193,12 @@
                                         </span>
                                     @endif
                                 </div>
-
-                                {{-- <div class="col-md-4 form-group {{$errors->has('uid'. $counter) ? ' has-error' : ''}}">
-                                    <label class="control-label" for="uid">Unique ID (uid) {{$counter}}</label>
-                                    <input type="text" class="form-control" name="uid{{$counter}}" value="{{old('uid'. $counter)}}">
-                                    @if ($errors->has('uid'. $counter))
-                                        <span class="help-block">
-                                            <strong class="text-danger">{{ $errors->first('uid'. $counter) }}</strong>
-                                        </span>
-                                    @endif
-                                </div> --}}
                             @endforeach
                             
                             </div>
                             <div class="col-md-8 form-group {{$errors->has('description') ? ' has-error' : ''}}">
                                 <label class="control-label" for="description">Remarks</label>
-                                <textarea class="form-control" name="description" rows="5">{{$postal->description}}</textarea>
+                                <textarea class="form-control" name="description" rows="29">{{$postal->description}}</textarea>
                                 @if ($errors->has('descriptions'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('descriptions') }}</strong>
@@ -261,6 +214,35 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="reject-dg" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+            <div class="modal-dialog">
+                <form method="post" action="{{ route('postal.reject', $postal->id) }}">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Rejecting Postal Package!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Reason to Reject package</label>
+                                <small>The below text will send directly to user's email address.</small>
+                                <textarea name="reason" required class="form-control" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">{{ __('backend.update') }}</button>
+                            <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{{ __('backend.close') }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 
 @endsection

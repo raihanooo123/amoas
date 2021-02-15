@@ -64,6 +64,7 @@ Route::group(['middleware'=>['admin', 'verified']], function(){
     Route::get('/postal/d-table', 'Post\PostalPackageController@dataTable')->name('postal.data');
     Route::get('/postal/new/{type}{model}','Post\PostalPackageController@new')->name('postal.new');
     Route::get('/postal/import/{booking}', 'Post\PostalPackageController@import')->name('postal.import');
+    Route::post('/postal/reject/{postal}', 'Post\PostalPackageController@reject')->name('postal.reject');
     Route::get('/postal/existing/{type}{model}','Post\PostalPackageController@existing')->name('postal.existing');
     Route::resource('/postal','Post\PostalPackageController');
 

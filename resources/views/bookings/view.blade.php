@@ -187,7 +187,13 @@
                         </div>
 
                         @foreach ($booking->miscs as $traceableDocs)
-                            
+                            <div class="row table-row">
+                                <div class="col-md-6 bold-font"><strong>{{ __('Service Type') }}:</strong></div>
+                                <div class="col-md-6">
+                                    Miscellaneous Doc: 
+                                    <a href="{{route('misc.show', $traceableDocs->id)}}"></a>
+                                </div>
+                            </div>
                         @endforeach
                         
                     </div>
