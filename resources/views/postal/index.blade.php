@@ -51,6 +51,7 @@
                                     <th>Doc Price €</th>
                                     <th>Post Price €</th>
                                     <th>Status</th>
+                                    <th>Registrar</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
                                 </thead>
@@ -73,6 +74,7 @@
                                     <th>Doc Price €</th>
                                     <th>Post Price €</th>
                                     <th>Status</th>
+                                    <th>Registrar</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
                             </table>
@@ -185,6 +187,11 @@
                 {
                     data: 'status',
                     name: 'status'
+                },
+                {
+                    data: 'by',
+                    name: 'registrar.last_name',
+                    visible: false
                 },
                 {
                     data: 'action',

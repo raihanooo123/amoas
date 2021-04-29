@@ -150,12 +150,40 @@
                                     <option value="Delivered" {{$postal->status == 'Delivered' ? 'selected': ''}}>Delivered</option>
                                     <option value="Returned" {{$postal->status == 'Returned' ? 'selected': ''}}>Returned</option>
                                     <option value="Rejected" {{$postal->status == 'Rejected' ? 'selected': ''}}>Rejected</option>
+                                    <option value="Data Entry" {{$postal->status == 'Data Entry' ? 'selected': ''}}>Data Entry</option>
+                                    <option value="Waiting" {{$postal->status == 'Waiting' ? 'selected': ''}}>Waiting</option>
                                 </select>
                                 @if ($errors->has('status'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('status') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+
+                            <div class="col-md-12">
+                                <hr>
+                                @php
+                                    $checklists = $postal->checklists()->pluck('status','id')->toArray();
+                                    $deactiveChecklists = array_filter($checklists, function($val){ return $val == 0 ;});
+                                    $deactiveChecklists = $deactiveChecklists ? \App\Models\Post\PostCheckList::find(array_keys($deactiveChecklists)) : [];
+                                @endphp
+                                <div class="row">
+                                    @foreach (\App\Models\Post\PostCheckList::active()->get() as $cl)
+                                        <div class="col-md-3">
+                                            <input type="checkbox" name="checklist[{{$cl->id}}]" {{ !in_array($cl->id, array_keys($checklists)) ? null : 'checked'}}> 
+                                            {{$cl->name}}
+                                        </div>
+                                    @endforeach
+                                    @foreach ($deactiveChecklists as $dcl)
+                                        <div class="col-md-3">
+                                            <input type="checkbox" name="checklist[{{$dcl->id}}]" checked> 
+                                            {{$dcl->name}}
+                                        </div>
+                                    @endforeach
+                                    <div class="col-md-3">
+                                        <input type="text" name="others" value="{{old('others')}}" style="width: 100%" placeholder="Others... if more, saparete with (-)dash.">
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-12 form-group">
@@ -197,13 +225,89 @@
                             
                             </div>
                             <div class="col-md-8 form-group {{$errors->has('description') ? ' has-error' : ''}}">
-                                <label class="control-label" for="description">Remarks</label>
-                                <textarea class="form-control" name="description" rows="29">{{$postal->description}}</textarea>
-                                @if ($errors->has('descriptions'))
-                                    <span class="help-block">
-                                        <strong class="text-danger">{{ $errors->first('descriptions') }}</strong>
-                                    </span>
-                                @endif
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="control-label" for="description">Remarks</label>
+                                        <textarea class="form-control" name="description" rows="19">{{$postal->description}}</textarea>
+                                        @if ($errors->has('descriptions'))
+                                            <span class="help-block">
+                                                <strong class="text-danger">{{ $errors->first('descriptions') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-12">
+                                        @foreach ($logs as $index => $log)
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h4>{{$log->causer->first_name .' '. $log->causer->last_name .' '. $log->description}} on {{$log->created_at}}</h4>
+                                                    <ul>
+                                                        @if ($log->properties->get('attributes'))
+                                                            @foreach ($log->properties->get('attributes') as $key => $value)
+                                                                <li>{{$key}}: {{$value}}</li>
+                                                            @endforeach
+                                                        @endif
+
+                                                        @php
+                                                            // get the curent CL and Deliverables
+                                                            $newCL = $log->getExtraProperty('checklists');
+                                                            $deliverables = $log->getExtraProperty('deliverables');
+
+                                                            // get old CL and Deliverables
+                                                            $nextLog = $logs->get(++$index);
+                                                            $oldCL = !$nextLog ? [] : $nextLog->getExtraProperty('checklists');
+                                                            $oldDel = !$nextLog ? [] : $nextLog->getExtraProperty('deliverables');
+
+                                                            $diffCL = array_diff($newCL ?? [], $oldCL ?? []);
+                                                            $diffDel = array_diff($deliverables ?? [], $oldDel ?? []);
+                                                        @endphp
+                                                        
+                                                        <li> Checklists:
+                                                            <ol>
+                                                                @foreach ((array) $diffCL as $checklist)
+                                                                    <li>{{$checklist}}</li>
+                                                                @endforeach
+                                                            </ol>
+                                                            
+                                                        </li>
+                                                        <li> Deliverables:
+                                                            <ol>
+                                                                @foreach ((array) $diffDel as $deliverable)
+                                                                    <li>{{$deliverable}}</li>
+                                                                @endforeach
+                                                            </ol>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h4>Old Data</h4>
+                                                    <ul>
+                                                        @if ($log->properties->get('old'))
+                                                            @foreach ($log->properties->get('old') as $key => $value)
+                                                                <li>{{$key}}: {{$value}}</li>
+                                                            @endforeach
+                                                        @endif
+                                                                
+                                                        <li> Checklists:
+                                                            <ol>
+                                                                @foreach (array_diff($oldCL ?? [], $newCL ?? []) as $oldChecklist)
+                                                                    <li>{{$oldChecklist}}</li>
+                                                                @endforeach
+                                                            </ol>
+                                                        </li>
+                                                        <li> Deliverables:
+                                                            <ol>
+                                                                @foreach (array_diff($oldDel ?? [], $deliverables ?? []) as $oldDeliverable)
+                                                                    <li>{{$oldDeliverable}}</li>
+                                                                @endforeach
+                                                            </ol>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-12 form-group  text-right">

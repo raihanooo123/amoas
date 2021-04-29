@@ -147,12 +147,27 @@
                                     <option value="Shipped">Shipped</option>
                                     <option value="Delivered">Delivered</option>
                                     <option value="Returned">Returned</option>
+                                    <option value="Data Entry">Data Entry</option>
+                                    <option value="Waiting">Waiting</option>
                                 </select>
                                 @if ($errors->has('status'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('status') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="row">
+                                    @foreach (\App\Models\Post\PostCheckList::active()->get() as $cl)
+                                        <div class="col-md-3">
+                                            <input type="checkbox" name="checklist[{{$cl->id}}]"> {{$cl->name}}
+                                        </div>
+                                    @endforeach
+                                    <div class="col-md-3">
+                                        <input type="text" name="others" value="{{old('others')}}" style="width: 100%" placeholder="Others... if more, saparete with (-)dash.">
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-12 form-group">

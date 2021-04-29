@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post\PostalPackage;
 use Yajra\Datatables\Datatables;
 use App\Models\Tracing\Passport;
+use Spatie\Activitylog\Models\Activity;
 
 class PostalPackageController extends Controller
 {
@@ -58,11 +59,14 @@ class PostalPackageController extends Controller
 
         \DB::beginTransaction();
 
+        // Disable log for manually logging
+        activity()->disableLogging();
         
         $counts = PostalPackage::whereDate('created_at', '=', date('Y-m-d'))->count();
         $uid = date('ynj') . ++$counts;
 
-        $misc = PostalPackage::create([
+        try {
+            $misc = PostalPackage::create([
                 'uid' => $uid,
                 'department_id' => auth()->id(),
                 'name' => $request->name,
@@ -84,15 +88,67 @@ class PostalPackageController extends Controller
                 'registrar_id' => auth()->id(),
             ]);
 
-        foreach(range(1, 8) as $c)
-            if(request()->filled('name' .$c))
-                $misc->deliverables()->create([
-                    'doc_type' => $request->input('doc_type' . $c),
-                    'name' => $request->input('name' . $c),
-                    'uid' => $request->input('uid' . $c),
-                ]);
+            foreach(range(1, 8) as $c)
+                if(request()->filled('name' .$c))
+                    $misc->deliverables()->create([
+                        'doc_type' => $request->input('doc_type' . $c),
+                        'name' => $request->input('name' . $c),
+                        'uid' => $request->input('uid' . $c),
+                    ]);
 
-        \DB::commit();
+            // associate checklist
+            if($request->filled('checklist'))
+                $misc->checklists()->attach(array_keys($request->checklist));
+
+            // new checklist in others' field
+            if($request->filled('others')){
+                $others = explode('-', $request->others);
+                foreach ($others as $other)
+                    $misc->checklists()->create(['name' => $other]);
+            }
+
+            // Disable log for manually logging
+            activity()->enableLogging();
+
+            // Log manually
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($misc)
+                ->tap(function(Activity $activity) use (&$misc) {
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('attributes', $misc->only([
+                                        "name",
+                                        "address",
+                                        "email",
+                                        "phone",
+                                        "status",
+                                        "post",
+                                        "place",
+                                        "date",
+                                        "description",
+                                        "street",
+                                        "house_no",
+                                        "post_price",
+                                        "doc_price",
+                                    ]));
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('checklists', $misc->checklists()->pluck('name')->toArray());
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('deliverables', $misc->deliverables()->pluck('name')->toArray());
+                })
+                ->log('created');
+
+            \DB::commit();
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        // send notifaction to user email addres
+        
 
         return redirect(route('postal.index'))
             ->with(['alert'=>'Action performed successfully']);
@@ -117,7 +173,13 @@ class PostalPackageController extends Controller
      */
     public function edit(PostalPackage $postal)
     {
-        return view('postal.edit', compact('postal'));
+        $logs = Activity::with(['causer'])
+                                ->where('subject_type', 'App\Models\Post\PostalPackage')
+                                ->where('subject_id', $postal->id)
+                                ->latest()
+                                ->get();
+
+        return view('postal.edit', compact('postal', 'logs'));
     }
 
     /**
@@ -147,8 +209,12 @@ class PostalPackageController extends Controller
         ], $rules));
 
         \DB::beginTransaction();
-
-        $postal->update([
+        
+        // Disable log for manually logging
+        activity()->disableLogging();
+        try {
+            $oldPostal = clone $postal;
+            $postal->fill([
                 'name' => $request->name,
                 'status' => $request->status,
                 'post' => $request->post,
@@ -163,23 +229,66 @@ class PostalPackageController extends Controller
                 'post_price' => $request->post_price,
                 'email' => $request->email,
             ]);
+            $postal->save();
 
-        foreach(range(1, 8) as $c)
-            if(request()->filled('id' .$c))
-                $postal->deliverables()->find($request->input('id' . $c))->update([
-                    'doc_type' => $request->input('doc_type' . $c),
-                    'name' => $request->input('name' . $c),
-                    'uid' => $request->input('uid' . $c),
-                ]);
-            else
-                if(request()->filled('name' .$c))
-                    $postal->deliverables()->create([
+            foreach(range(1, 8) as $c)
+                if(request()->filled('id' .$c))
+                    $postal->deliverables()->find($request->input('id' . $c))->update([
                         'doc_type' => $request->input('doc_type' . $c),
                         'name' => $request->input('name' . $c),
                         'uid' => $request->input('uid' . $c),
                     ]);
+                else
+                    if(request()->filled('name' .$c))
+                        $postal->deliverables()->create([
+                            'doc_type' => $request->input('doc_type' . $c),
+                            'name' => $request->input('name' . $c),
+                            'uid' => $request->input('uid' . $c),
+                        ]);
 
-        \DB::commit();
+            // associate checklist
+            if($request->filled('checklist'))
+                $postal->checklists()->sync(array_keys($request->checklist));
+
+            // new checklist in others' field
+            if($request->filled('others')){
+                $others = explode('-', $request->others);
+                foreach ($others as $other)
+                    $postal->checklists()->create(['name' => $other]);
+            }
+
+            // Disable log for manually logging
+            activity()->enableLogging();
+
+            // Log manually
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($postal)
+                ->tap(function(Activity $activity) use (&$postal, &$oldPostal) {
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('attributes', $postal->getChanges());
+
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('old', $oldPostal->only(array_keys($postal->getChanges())));
+
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('checklists', $postal->checklists()->pluck('name')->toArray());
+
+                    $activity->properties = $activity
+                                    ->properties
+                                    ->put('deliverables', $postal->deliverables()->pluck('name')->toArray());
+                })
+                ->log('updated');
+
+            \DB::commit();
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
 
         return redirect(route('postal.index'))
             ->with(['alert'=>'Action performed successfully']);
@@ -198,7 +307,7 @@ class PostalPackageController extends Controller
 
     public function dataTable()
     {
-        $postal = PostalPackage::with(['deliverables', 'booking:id,serial_no'])->select('postal_packages.*');
+        $postal = PostalPackage::with(['deliverables', 'registrar:id,first_name,last_name', 'booking:id,serial_no'])->select('postal_packages.*');
         
         if(!request()->order)
             $postal->latest();
@@ -219,6 +328,9 @@ class PostalPackageController extends Controller
                 }, $deliverables);
 
                 return nl2br(implode('', $deliverables));
+            })
+            ->addColumn('by', function(PostalPackage $postal) {
+                return optional($postal->registrar)->first_name . ' ' . optional($postal->registrar)->last_name;
             })
             ->editColumn('booking.serial_no', function($postal){
                 if ($postal->booking)

@@ -145,6 +145,9 @@
                                     <option value="Shipped">Shipped</option>
                                     <option value="Delivered">Delivered</option>
                                     <option value="Returned">Returned</option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Data Entry">Data Entry</option>
+                                    <option value="Waiting">Waiting</option>
                                 </select>
                                 @if ($errors->has('status'))
                                     <span class="help-block">
