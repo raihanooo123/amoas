@@ -147,8 +147,9 @@ class PostalPackageController extends Controller
             \DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        // send notifaction to user email addres
-        
+
+        // send notifaction to user email address
+        \App\Jobs\PostalPackageStatusChanged::dispatch($misc);
 
         return redirect(route('postal.index'))
             ->with(['alert'=>'Action performed successfully']);
@@ -289,6 +290,9 @@ class PostalPackageController extends Controller
             \DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
         }
+
+        // send notifaction to user email addres
+        \App\Jobs\PostalPackageStatusChanged::dispatch($postal);
 
         return redirect(route('postal.index'))
             ->with(['alert'=>'Action performed successfully']);
