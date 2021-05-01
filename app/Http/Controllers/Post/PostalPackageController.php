@@ -292,7 +292,8 @@ class PostalPackageController extends Controller
         }
 
         // send notifaction to user email addres
-        \App\Jobs\PostalPackageStatusChanged::dispatch($postal);
+        if ($oldPostal->status != $postal->status)
+            \App\Jobs\PostalPackageStatusChanged::dispatch($postal);
 
         return redirect(route('postal.index'))
             ->with(['alert'=>'Action performed successfully']);
