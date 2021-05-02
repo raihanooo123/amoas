@@ -372,17 +372,28 @@
                                                                         <b>Dear {{$postal->name}},</b></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Your postal package has been registered in our system. We will inform your document progress through this email address.</p>
+                                                                        Your postal package has been registered in our system. 
+                                                                        We will inform your document progress through this email address. 
+                                                                        {{$postal->uid}} is UID number of your documents.
+                                                                        You can track your documents process in our website.</p>
                                                                     <p
-                                                                        align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        پاکت پستی شما ثبت سیستم پست ما گردید لطفا منتظر تماس بعدی ما باشید</p>
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        پاکت پستی شما ثبت سیستم پست ما گردید لطفا منتظر تماس بعدی ما باشید.
+                                                                    </p>
                                                                     <p
-                                                                        align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        {{$postal->uid}} شماره UID اسناد شما است.
+                                                                        می توانید روند اسناد خود را در وب سایت ما پیگیری نمایید.
+                                                                    </p>
+                                                                    <p
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         ستاسو پُستي پاکټ زموږ په سیستم کې ثبت شو، مهرباني وکړئ منتظر و اوسئ</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         Ihre Post wurde in unserem Postsystem registriert.
-                                                                        Bitte warten Sie bis das Generalkonsulat mit Ihnen Kontakt aufnimmt.</p>
+                                                                        Bitte warten Sie bis das Generalkonsulat mit Ihnen Kontakt aufnimmt.
+                                                                        {{$postal->uid}} ist UID-Nummer Ihrer documents.You können Ihre Dokumente verarbeiten in unserer Website verfolgen.
+                                                                    </p>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">

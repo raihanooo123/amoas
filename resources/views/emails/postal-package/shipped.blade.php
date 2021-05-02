@@ -372,16 +372,25 @@
                                                                         <b>Dear {{$postal->name}},</b></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Your documents have been issued and are being prepared to send to your address.</p>
+                                                                        Your documents have been issued and are being prepared to send to your address.{{$postal->uid}} is UID number of your documents.
+                                                                        You can track your documents process in our website.
+                                                                    </p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         اسناد تان صادر و در حال ارسال به آدرس شما میباشد</p>
+                                                                    <p
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        {{$postal->uid}} شماره UID اسناد شما است.
+                                                                        می توانید روند اسناد خود را در وب سایت ما پیگیری نمایید.
+                                                                    </p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         ستاسو اسناد صادر او ستاسو ادرس ته د لېږلو په حال کې دي</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Ihre Dokumente / Pässe sind ausgestellt und werden für den Postversand an die von Ihnen angegebene Adresse vorbereitet.</p>
+                                                                        Ihre Dokumente / Pässe sind ausgestellt und werden für den Postversand an die von Ihnen angegebene Adresse vorbereitet.
+                                                                        {{$postal->uid}} ist UID-Nummer Ihrer documents.You können Ihre Dokumente verarbeiten in unserer Website verfolgen.
+                                                                    </p>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">

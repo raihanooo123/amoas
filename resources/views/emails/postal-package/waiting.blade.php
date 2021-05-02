@@ -372,11 +372,16 @@
                                                                         <b>Dear {{$postal->name}},</b></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Your application cannot be processed due to missing documents, please contact our mission as soon as possible.</p>
+                                                                        Your application cannot be processed due to missing documents, please contact our mission as soon as possible.{{$postal->uid}} is UID number of your documents.
+                                                                        You can track your documents process in our website.</p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         درخواست شما به دلیل کمبود اسناد در حالت انتظار میباشد، لطفاً با این نمایندگی در تماس شوید</p>
                                                                     <p
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        {{$postal->uid}} شماره UID اسناد شما است.
+                                                                        می توانید روند اسناد خود را در وب سایت ما پیگیری نمایید.
+                                                                    </p><p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         ستاسو غوښتنلیک د اسنادو د کمښت له وجې د انتظار په حالت کې دي، مهرباني وکړئ، ددغه استازلۍ سره په اړيکه کې شئ</p>
                                                                     <p
@@ -397,6 +402,7 @@
                                                                                 <a href="mailto:tasadiq.bonn@mfa.af">tasadiq.bonn@mfa.af</a>
                                                                             </li> 
                                                                         </ul>
+                                                                        {{$postal->uid}} ist UID-Nummer Ihrer documents.You können Ihre Dokumente verarbeiten in unserer Website verfolgen.
                                                                     </p>
                                                                 </td>
                                                             </tr>

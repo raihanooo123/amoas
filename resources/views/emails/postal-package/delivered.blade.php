@@ -372,16 +372,23 @@
                                                                         <b>Dear {{$postal->name}},</b></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Your documents successfully sent to your address.</p>
+                                                                        Your documents successfully sent to your address.{{$postal->uid}} is UID number of your documents.
+                                                                        You can track your documents process in our website.</p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         اسناد تان به آدرس تان مواصلت ورزیده است</p>
+                                                                    <p
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        {{$postal->uid}} شماره UID اسناد شما است.
+                                                                        می توانید روند اسناد خود را در وب سایت ما پیگیری نمایید.
+                                                                    </p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         ستاسو اسناد، ستاسو ادرس ته ورسېدل</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Die Dokumente / Pässe sind einschließlich der Tracking Nummer Ihnen zugestellt worden.</p>
+                                                                        Die Dokumente / Pässe sind einschließlich der Tracking Nummer Ihnen zugestellt worden.
+                                                                        {{$postal->uid}} ist UID-Nummer Ihrer documents.You können Ihre Dokumente verarbeiten in unserer Website verfolgen.</p>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">

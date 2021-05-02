@@ -372,16 +372,23 @@
                                                                         <b>Dear {{$postal->name}},</b></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Your Passport Application Form was registered in the passport system of the Islamic Republic of Afghanistan.</p>
+                                                                        Your Passport Application Form was registered in the passport system of the Islamic Republic of Afghanistan.{{$postal->uid}} is UID number of your documents.
+                                                                        You can track your documents process in our website.</p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         درخواست شما ثبت سیستم پاسپورت جمهوری اسلامی افغانستان گردید</p>
+                                                                    <p
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        {{$postal->uid}} شماره UID اسناد شما است.
+                                                                        می توانید روند اسناد خود را در وب سایت ما پیگیری نمایید.
+                                                                    </p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         ستاسو غوښتنلیک، د جمهوري اسلامي افغانستان د پاسپورټ سيسټم کې ثبت شو</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Ihr Antrag wurde in dem Passportsystem der Islamischen Republik Afghanistan registriert.</p>
+                                                                        Ihr Antrag wurde in dem Passportsystem der Islamischen Republik Afghanistan registriert.
+                                                                        {{$postal->uid}} ist UID-Nummer Ihrer documents.You können Ihre Dokumente verarbeiten in unserer Website verfolgen.</p>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">

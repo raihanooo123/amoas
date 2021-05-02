@@ -372,17 +372,29 @@
                                                                         <b>Dear {{$postal->name}},</b></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
-                                                                        Your documents have been returned to this mission due to incorrect address. Please visit in person to receive your documents.</p>
+                                                                        Your documents have been returned to this mission due to incorrect address. 
+                                                                        Please visit in person to receive your documents.
+                                                                        {{$postal->uid}} is UID number of your documents.
+                                                                        You can track your documents process in our website.
+                                                                        
+                                                                    </p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         اسناد تان به دلیل نقص آدرس دوباره به این نمایندگی برگشت نموده است. لطفاً جهت دریافت اسناد تان شخصاً مراجعه فرمائید</p>
+                                                                    <p
+                                                                        dir="rtl" align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
+                                                                        {{$postal->uid}} شماره UID اسناد شما است.
+                                                                        می توانید روند اسناد خود را در وب سایت ما پیگیری نمایید.
+                                                                    </p>
                                                                     <p
                                                                         align="right" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         ستاسو اسناد د ناسم ادرس له وجې بېرته دغه استازولۍ ته راغلي، مهرباني وکړئ، د خپلو اسنادو تر لاسه کولو لپاره په خپله قونسلګرۍ ته مراجعه وکړئ</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         Ihre Dokumente / Pässe sind aufgrund falscher Adressenangaben oder Ablauf der Abholfrist bei Ihrem zuständigen Postamt wieder an das Generalkonsulat zurückgeschickt worden.
-                                                                        Bitte holen Sie persönlich Ihre Sendung in dem Generalkonsulat ab.</p>
+                                                                        Bitte holen Sie persönlich Ihre Sendung in dem Generalkonsulat ab.
+                                                                        {{$postal->uid}} ist UID-Nummer Ihrer documents.You können Ihre Dokumente verarbeiten in unserer Website verfolgen.
+                                                                    </p>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">

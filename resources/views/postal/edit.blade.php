@@ -141,7 +141,9 @@
                             </div>
 
                             <div class="col-md-3 form-group {{$errors->has('status') ? ' has-error' : ''}}">
-                                <label class="control-label" for="status">Status</label>
+                                <label class="control-label" for="status">Status 
+                                    (<input type="checkbox" checked name="send_status_email"> Send Email to Applicant)
+                                </label>
                                 {{-- <input type="text" class="form-control" name="status" value="{{old('status')}}"> --}}
                                 <select class="form-control" name="status">
                                     
