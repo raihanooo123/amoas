@@ -36,6 +36,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>DB ID</th>
                                     <th>UID</th>
                                     <th>Name</th>
                                     <th>Booking ID</th>
@@ -59,11 +60,12 @@
                                 </tbody>
                                 <tfoot>
                                     <th searching="false">#</th>
+                                    <th>DB ID</th>
                                     <th>UID</th>
                                     <th>Name</th>
                                     <th>Booking ID</th>
                                     <th>Postal Code</th>
-                                    <th>Place</th>
+                                    <th>City</th>
                                     <th>Track No</th>
                                     <th>Street</th>
                                     <th>House No</th>
@@ -123,6 +125,10 @@
                     name: 'DT_RowIndex',
                     orderable: false, 
                     searchable: false
+                },
+                {
+                    data: 'id',
+                    name: 'id'
                 },
                 {
                     data: 'uid',

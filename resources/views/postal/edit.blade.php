@@ -52,7 +52,7 @@
                             </div>
 
                             <div class="col-md-3 form-group {{$errors->has('place') ? ' has-error' : ''}}">
-                                <label class="control-label" for="place">Place</label>
+                                <label class="control-label" for="place">City</label>
                                 <input type="text" class="form-control" name="place" value="{{$postal->place}}">
                                 @if ($errors->has('place'))
                                     <span class="help-block">
