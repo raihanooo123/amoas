@@ -226,7 +226,11 @@ Route::group(['middleware' => ['web']], function() {
 Route::group(['prefix'=>'tasaadiq', 'middleware'=>'auth'], function(){
 
     Route::resource('/birth', 'Tasaadiq\BirthCertificateController');
-    Route::resource('/marraige', 'Tasaadiq\MarriageCertificateController');
+
+
+    Route::get('/marriage/d-table', 'Tasaadiq\MarriageCertificateController@dataTable')->name('marriage.data');
+    Route::get('/marriage/print/{marriage}', 'Tasaadiq\MarriageCertificateController@print')->name('marriage.print');
+    Route::resource('/marriage', 'Tasaadiq\MarriageCertificateController');
 
     Route::get('/celibacy/d-table', 'Tasaadiq\CelibacyCertificateController@dataTable')->name('celibacy.data');
     Route::get('/celibacy/print/{celibacy}', 'Tasaadiq\CelibacyCertificateController@print')->name('celibacy.print');

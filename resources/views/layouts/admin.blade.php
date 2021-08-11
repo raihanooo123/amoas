@@ -228,7 +228,7 @@
                     </a>
                     <ul class="sub-menu" style="display: none;">
                         <li class="{{ Request::is('Tasadiq/birth') || Request::is('Tasadiq/birth/*') ? 'active' : '' }}"><a href="{{ route('birth.index') }}">{{ __('Birth Certificates') }}</a></li>
-                        <li class="{{ Request::is('Tasadiq/marraige') || Request::is('Tasadiq/marraige/*') ? 'active' : '' }}"><a href="{{ route('marraige.index') }}">{{ __('Marraige Certificates') }}</a></li>
+                        <li class="{{ Request::is('Tasadiq/marriage') || Request::is('Tasadiq/marriage/*') ? 'active' : '' }}"><a href="{{ route('marriage.index') }}">{{ __('Marriage Certificates') }}</a></li>
                         <li class="{{ Request::is('Tasadiq/celibacy') || Request::is('Tasadiq/celibacy/*') ? 'active' : '' }}"><a href="{{ route('celibacy.index') }}">{{ __('Celibacy Certificates') }}</a></li>
                     </ul>
                 </li>

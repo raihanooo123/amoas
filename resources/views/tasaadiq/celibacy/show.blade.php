@@ -34,7 +34,7 @@
         <div class="col-md-8">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
-                    <h4 class="panel-title">{{ __('backend.booking_details') }}</h4>
+                    <h4 class="panel-title">{{ __('Certificate Details') }}</h4>
                 </div>
                 <div class="panel-body">
                     <div id="account_details_view">
