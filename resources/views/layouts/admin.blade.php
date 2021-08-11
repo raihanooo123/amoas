@@ -220,6 +220,19 @@
                         <p>{{ __('backend.categories') }}</p>
                     </a>
                 </li>
+                <li class="droplink {{ Request::is('tasaadiq') || Request::is('tasaadiq/*') ? 'active open' : '' }}">
+                    <a class="waves-effect waves-button">
+                        <span class="menu-icon icon-list"></span>
+                        <p>{{ __('Tasadiq/تصادیق') }}</p>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li class="{{ Request::is('Tasadiq/birth') || Request::is('Tasadiq/birth/*') ? 'active' : '' }}"><a href="{{ route('birth.index') }}">{{ __('Birth Certificates') }}</a></li>
+                        <li class="{{ Request::is('Tasadiq/marraige') || Request::is('Tasadiq/marraige/*') ? 'active' : '' }}"><a href="{{ route('marraige.index') }}">{{ __('Marraige Certificates') }}</a></li>
+                        <li class="{{ Request::is('Tasadiq/celibacy') || Request::is('Tasadiq/celibacy/*') ? 'active' : '' }}"><a href="{{ route('celibacy.index') }}">{{ __('Celibacy Certificates') }}</a></li>
+                    </ul>
+                </li>
+
                 <li class="droplink {{ Request::is('packages') || Request::is('packages/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-list"></span>

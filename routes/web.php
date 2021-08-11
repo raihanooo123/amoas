@@ -222,3 +222,14 @@ Route::group(['middleware' => ['web']], function() {
         return \Image::make(storage_path() . "/app/{$drive}/{$folder}/" . $filename)->response();
     });
 });
+
+Route::group(['prefix'=>'tasaadiq', 'middleware'=>'auth'], function(){
+
+    Route::resource('/birth', 'Tasaadiq\BirthCertificateController');
+    Route::resource('/marraige', 'Tasaadiq\MarriageCertificateController');
+
+    Route::get('/celibacy/d-table', 'Tasaadiq\CelibacyCertificateController@dataTable')->name('celibacy.data');
+    Route::get('/celibacy/print/{celibacy}', 'Tasaadiq\CelibacyCertificateController@print')->name('celibacy.print');
+    Route::resource('/celibacy', 'Tasaadiq\CelibacyCertificateController');
+
+});
