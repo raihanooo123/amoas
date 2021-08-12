@@ -1,13 +1,13 @@
-@extends('layouts.admin', ['title' => 'Celibacy Certificates'])
+@extends('layouts.admin', ['title' => 'Birth Certificates'])
 
 @section('content')
 
     <div class="page-title">
-        <h3>Celibacy Certificates</h3>
+        <h3>Birth Certificates</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
-                <li><a href="{{ route('celibacy.index') }}">Celibacy Certificates</a></li>
+                <li><a href="{{ route('birth.index') }}">Birth Certificates</a></li>
                 <li class="active">Create</li>
             </ol>
         </div>
@@ -19,11 +19,11 @@
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="col-md-12">
-                            <h4 class="panel-title">Add new Celibacy Certificates</h4>
+                            <h4 class="panel-title">Add new Birth Certificates</h4>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form method="post" action="{{route('celibacy.store')}}" enctype="multipart/form-data">
+                        <form method="post" action="{{route('birth.store')}}" enctype="multipart/form-data">
 
                             {{csrf_field()}}
 
@@ -45,6 +45,15 @@
                                     </span>
                                 @endif
                             </div>
+                            <div class="col-md-6 form-group {{$errors->has('previous_name') ? ' has-error' : ''}}">
+                                    <label class="control-label" for="previous_name">Name vor der Eheschließung /Name before the marriage</label>
+                                    <input type="text" class="form-control" name="previous_name" value="{{old('previous_name')}}">
+                                    @if ($errors->has('previous_name'))
+                                        <span class="help-block">
+                                            <strong class="text-danger">{{ $errors->first('previous_name') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             <div class="col-md-6 form-group {{$errors->has('sex') ? ' has-error' : ''}}">
                                 <label class="control-label" for="name"><span class="text-danger">*</span> Geschlecht /Sex</label>
                                 <select class="form-control" name="sex">
@@ -89,6 +98,24 @@
                                 @if ($errors->has('passport_no'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('passport_no') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="col-md-6 form-group {{$errors->has('father_name') ? ' has-error' : ''}}">
+                                <label class="control-label" for="father_name"><span class="text-danger">*</span> Name des Vaters/Fathers Name</label>
+                                <input type="text" class="form-control" name="father_name" value="{{old('father_name')}}">
+                                @if ($errors->has('father_name'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('father_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="col-md-6 form-group {{$errors->has('mother_name') ? ' has-error' : ''}}">
+                                <label class="control-label" for="mother_name"><span class="text-danger">*</span> Name der Mutter/Mothers Name</label>
+                                <input type="text" class="form-control" name="mother_name" value="{{old('mother_name')}}">
+                                @if ($errors->has('mother_name'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('mother_name') }}</strong>
                                     </span>
                                 @endif
                             </div>

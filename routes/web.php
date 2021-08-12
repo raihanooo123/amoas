@@ -225,6 +225,8 @@ Route::group(['middleware' => ['web']], function() {
 
 Route::group(['prefix'=>'tasaadiq', 'middleware'=>'auth'], function(){
 
+    Route::get('/birth/d-table', 'Tasaadiq\BirthCertificateController@dataTable')->name('birth.data');
+    Route::get('/birth/print/{birth}', 'Tasaadiq\BirthCertificateController@print')->name('birth.print');
     Route::resource('/birth', 'Tasaadiq\BirthCertificateController');
 
 
