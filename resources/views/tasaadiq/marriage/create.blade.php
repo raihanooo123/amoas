@@ -82,6 +82,12 @@
                                             <strong class="text-danger">{{ $errors->first('husband_pob') }}</strong>
                                         </span>
                                     @endif
+                                    <input type="text" placeholder="Or born outside of country..." class="form-control" name="husband_pob_outside" value="{{old('husband_pob_outside')}}">
+                                    @if ($errors->has('husband_pob_outside'))
+                                        <span class="help-block">
+                                            <strong class="text-danger">{{ $errors->first('husband_pob_outside') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="form-group {{$errors->has('husband_passport_no') ? ' has-error' : ''}}">
                                     <label class="control-label" for="husband_passport_no"><span class="text-danger">*</span> Passnummer/Tazkira No/Passport No</label>
@@ -146,6 +152,12 @@
                                     @if ($errors->has('wife_pob'))
                                         <span class="help-block">
                                             <strong class="text-danger">{{ $errors->first('wife_pob') }}</strong>
+                                        </span>
+                                    @endif
+                                    <input type="text" placeholder="Or born outside of country..." class="form-control" name="wife_pob_outside" value="{{old('wife_pob_outside')}}">
+                                    @if ($errors->has('wife_pob_outside'))
+                                        <span class="help-block">
+                                            <strong class="text-danger">{{ $errors->first('wife_pob_outside') }}</strong>
                                         </span>
                                     @endif
                                 </div>

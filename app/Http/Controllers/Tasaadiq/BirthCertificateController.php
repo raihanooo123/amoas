@@ -49,8 +49,8 @@ class BirthCertificateController extends Controller
             'given_name' => 'required',
             'sex' => 'required',
             'dob' => 'required',
-            'pob' => 'required',
-            'passport_no' => 'required',
+            'pob' => 'required_without:pob_outside',
+            'pob_outside' => 'required_without:pob',
             'father_name' => 'required',
             'mother_name' => 'required',
         ]);
@@ -65,7 +65,7 @@ class BirthCertificateController extends Controller
                 'previous_name' => strtoupper($request->previous_name),
                 'sex' => strtoupper($request->sex),
                 'dob' => $request->dob,
-                'pob' => strtoupper($request->pob),
+                'pob' => $request->filled('pob_outside') ?  strtoupper($request->pob_outside) : strtoupper($request->pob),
                 'passport_no' => strtoupper($request->passport_no),
                 'father_name' => strtoupper($request->father_name),
                 'mother_name' => strtoupper($request->mother_name),
@@ -121,7 +121,8 @@ class BirthCertificateController extends Controller
             'given_name' => 'required',
             'sex' => 'required',
             'dob' => 'required',
-            'pob' => 'required',
+            'pob' => 'required_without:pob_outside',
+            'pob_outside' => 'required_without:pob',
             'passport_no' => 'required',
             'father_name' => 'required',
             'mother_name' => 'required',
@@ -135,7 +136,7 @@ class BirthCertificateController extends Controller
                 'previous_name' => strtoupper($request->previous_name),
                 'sex' => strtoupper($request->sex),
                 'dob' => $request->dob,
-                'pob' => strtoupper($request->pob),
+                'pob' => $request->filled('pob_outside') ?  strtoupper($request->pob_outside) : strtoupper($request->pob),
                 'passport_no' => strtoupper($request->passport_no),
                 'father_name' => strtoupper($request->father_name),
                 'mother_name' => strtoupper($request->mother_name),
@@ -186,13 +187,14 @@ class BirthCertificateController extends Controller
 
         try{
 
+            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
             $writableData = [
                 'family_name' => $birth->family_name,
                 'given_name' => $birth->given_name,
                 'previous_name' => $birth->previous_name,
                 'sex' => $birth->sex,
                 'dob' => $birth->dob,
-                'pob' => $birth->pob . '/AFG',
+                'pob' => $pob,
                 'passport_no' => $birth->passport_no,
                 'issue_date' => $birth->issue_date,
                 'serial_no' => $birth->serial_no,

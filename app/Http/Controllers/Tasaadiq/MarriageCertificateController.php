@@ -49,13 +49,15 @@ class MarriageCertificateController extends Controller
             'husband_family_name' => 'required',
             'husband_given_name' => 'required',
             'husband_dob' => 'required',
-            'husband_pob' => 'required',
+            'husband_pob' => 'required_without:husband_pob_outside',
+            'husband_pob_outside' => 'required_without:husband_pob',
             'husband_passport_no' => 'required',
 
             'wife_family_name' => 'required',
             'wife_given_name' => 'required',
             'wife_dob' => 'required',
-            'wife_pob' => 'required',
+            'wife_pob' => 'required_without:wife_pob_outside',
+            'wife_pob_outside' => 'required_without:wife_pob',
             'wife_passport_no' => 'required',
 
             'pom' => 'required',
@@ -69,14 +71,16 @@ class MarriageCertificateController extends Controller
             $newMC = MarriageCertificate::create([
                 'husband_family_name' => strtoupper($request->husband_family_name) ,
                 'husband_given_name' => strtoupper($request->husband_given_name) ,
+                'husband_previous_name' => strtoupper($request->husband_previous_name) ,
                 'husband_dob' => $request->husband_dob ,
-                'husband_pob' => strtoupper($request->husband_pob) ,
+                'husband_pob' => $request->filled('husband_pob_outside') ? strtoupper($request->husband_pob_outside) : strtoupper($request->husband_pob) ,
                 'husband_passport_no' => strtoupper($request->husband_passport_no) ,
 
                 'wife_family_name' => strtoupper($request->wife_family_name) ,
                 'wife_given_name' => strtoupper($request->wife_given_name) ,
+                'wife_previous_name' => strtoupper($request->wife_previous_name) ,
                 'wife_dob' => $request->wife_dob ,
-                'wife_pob' => strtoupper($request->wife_pob) ,
+                'wife_pob' => $request->filled('wife_pob_outside') ? strtoupper($request->wife_pob_outside) : strtoupper($request->wife_pob) ,
                 'wife_passport_no' => strtoupper($request->wife_passport_no) ,
 
                 'pom' => strtoupper($request->pom) ,
@@ -134,13 +138,15 @@ class MarriageCertificateController extends Controller
             'husband_family_name' => 'required',
             'husband_given_name' => 'required',
             'husband_dob' => 'required',
-            'husband_pob' => 'required',
+            'husband_pob' => 'required_without:husband_pob_outside',
+            'husband_pob_outside' => 'required_without:husband_pob',
             'husband_passport_no' => 'required',
 
             'wife_family_name' => 'required',
             'wife_given_name' => 'required',
             'wife_dob' => 'required',
-            'wife_pob' => 'required',
+            'wife_pob' => 'required_without:wife_pob_outside',
+            'wife_pob_outside' => 'required_without:wife_pob',
             'wife_passport_no' => 'required',
 
             'pom' => 'required',
@@ -153,14 +159,16 @@ class MarriageCertificateController extends Controller
             $marriage->update([
                 'husband_family_name' => strtoupper($request->husband_family_name) ,
                 'husband_given_name' => strtoupper($request->husband_given_name) ,
+                'husband_previous_name' => strtoupper($request->husband_previous_name) ,
                 'husband_dob' => $request->husband_dob ,
-                'husband_pob' => strtoupper($request->husband_pob) ,
+                'husband_pob' => $request->filled('husband_pob_outside') ? strtoupper($request->husband_pob_outside) : strtoupper($request->husband_pob) ,
                 'husband_passport_no' => strtoupper($request->husband_passport_no) ,
 
                 'wife_family_name' => strtoupper($request->wife_family_name) ,
                 'wife_given_name' => strtoupper($request->wife_given_name) ,
+                'wife_previous_name' => strtoupper($request->wife_previous_name) ,
                 'wife_dob' => $request->wife_dob ,
-                'wife_pob' => strtoupper($request->wife_pob) ,
+                'wife_pob' => $request->filled('wife_pob_outside') ? strtoupper($request->wife_pob_outside) : strtoupper($request->wife_pob) ,
                 'wife_passport_no' => strtoupper($request->wife_passport_no) ,
 
                 'pom' => strtoupper($request->pom) ,
@@ -228,14 +236,14 @@ class MarriageCertificateController extends Controller
                 'husband_given_name' => $marriage->husband_given_name,
                 'husband_previous_name' => $marriage->husband_previous_name,
                 'husband_dob' => $marriage->husband_dob,
-                'husband_pob' => $marriage->husband_pob,
+                'husband_pob' => strpos($marriage->husband_pob, '/') ? $marriage->husband_pob : $marriage->husband_pob . '/AFG',
                 'husband_passport_no' => $marriage->husband_passport_no,
 
                 'wife_family_name' => $marriage->wife_family_name,
                 'wife_given_name' => $marriage->wife_given_name,
                 'wife_previous_name' => $marriage->wife_previous_name,
                 'wife_dob' => $marriage->wife_dob,
-                'wife_pob' => $marriage->wife_pob,
+                'wife_pob' => strpos($marriage->wife_pob, '/') ? $marriage->wife_pob : $marriage->wife_pob . '/AFG',
                 'wife_passport_no' => $marriage->wife_passport_no,
                 
             ];

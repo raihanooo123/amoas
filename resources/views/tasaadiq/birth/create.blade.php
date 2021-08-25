@@ -91,6 +91,13 @@
                                         <strong class="text-danger">{{ $errors->first('pob') }}</strong>
                                     </span>
                                 @endif
+
+                                <input type="text" placeholder="Or born outside of country..." class="form-control" name="pob_outside" value="{{old('pob_outside')}}">
+                                @if ($errors->has('pob_outside'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('pob_outside') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                             <div class="col-md-6 form-group {{$errors->has('passport_no') ? ' has-error' : ''}}">
                                 <label class="control-label" for="passport_no"><span class="text-danger">*</span> Passnummer/Tazkira No/Passport No</label>

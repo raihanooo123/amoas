@@ -52,7 +52,7 @@ class BirthCertificate extends Model
     public static function generateSerialNo()
     {
         
-        $counts = self::count();
+        $counts = self::withoutGlobalScopes()->count();
         $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 
         return 'BC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
