@@ -29,7 +29,7 @@
 
                             <div class="col-md-6 form-group {{$errors->has('family_name') ? ' has-error' : ''}}">
                                 <label class="control-label" for="family_name"><span class="text-danger">*</span> Name/ Family Name</label>
-                                <input type="text" class="form-control" name="family_name" value="{{old('family_name')}}">
+                                <input type="text" autofocus class="form-control" name="family_name" value="{{old('family_name')}}">
                                 @if ($errors->has('family_name'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('family_name') }}</strong>

@@ -155,25 +155,25 @@
                         <p>{{ __('backend.bookings') }}</p>
                     </a>
                 </li>
+                
+                @if (auth()->user()->can('receipts show'))
+                    <li class="droplink {{ Request::is('finance') || Request::is('finance/*') ? 'active open' : '' }}">
 
-                @if(config('settings.allow_to_cancel'))
-                    <li class="{{ Request::is('cancel-requests')  ? 'active' : '' }}">
-                        <a href="{{ route('cancel-requests.index') }}" class="waves-effect waves-button">
-                            <span class="menu-icon icon-close"></span>
-                            <p>{{ __('backend.cancel_request_admin_menu') }}</p>
+                        <a class="waves-effect waves-button">
+                            <span class="menu-icon icon-notebook"></span>
+                            <p>Finance</p>
+                            <span class="arrow"></span>
                         </a>
+                        <ul class="sub-menu" style="display: none;">
+                            <li class="{{ Request::is('finance/receipts')  || Request::is('finance/receipts/*') ? 'active' : '' }}">
+                                <a href="{{ route('receipts.dashboard') }}">Receipts</a>
+                            </li>
+                            {{-- <li class="{{ Request::is('tracing/passport')  || Request::is('tracing/passport/*') ? 'active' : '' }}">
+                                <a href="{{ route('passport.index') }}">Clearance</a>
+                            </li> --}}
+                        </ul>
                     </li>
                 @endif
-
-                @if(config('settings.offline_payments'))
-                    <li class="{{ Request::is('unpaid-invoices') ? 'active' : '' }}">
-                        <a href="{{ route('unpaidInvoices') }}" class="waves-effect waves-button">
-                            <span class="menu-icon icon-energy"></span>
-                            <p>{{ __('backend.unpaid_invoices') }}</p>
-                        </a>
-                    </li>
-                @endif
-
                 
                 <li class="droplink {{ Request::is('tracing') || Request::is('tracing/*') ? 'active open' : '' }}">
 
@@ -202,6 +202,20 @@
                     </a>
                 </li>
 
+                <li class="droplink {{ Request::is('tasaadiq') || Request::is('tasaadiq/*') ? 'active open' : '' }}">
+                    <a class="waves-effect waves-button">
+                        <span class="menu-icon icon-list"></span>
+                        <p>{{ __('Tasadiq/تصادیق') }}</p>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li class="{{ Request::is('Tasadiq/forms') || Request::is('Tasadiq/forms/*') ? 'active' : '' }}"><a href="{{ route('birth.index') }}">{{ __('Birth Certificates') }}</a></li>
+                        <li class="{{ Request::is('Tasadiq/birth') || Request::is('Tasadiq/birth/*') ? 'active' : '' }}"><a href="{{ route('birth.index') }}">{{ __('Birth Certificates') }}</a></li>
+                        <li class="{{ Request::is('Tasadiq/marriage') || Request::is('Tasadiq/marriage/*') ? 'active' : '' }}"><a href="{{ route('marriage.index') }}">{{ __('Marriage Certificates') }}</a></li>
+                        <li class="{{ Request::is('Tasadiq/celibacy') || Request::is('Tasadiq/celibacy/*') ? 'active' : '' }}"><a href="{{ route('celibacy.index') }}">{{ __('Celibacy Certificates') }}</a></li>
+                    </ul>
+                </li>
+
                 <li class="droplink {{ Request::is('users') || Request::is('users/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-users"></span>
@@ -220,18 +234,7 @@
                         <p>{{ __('backend.categories') }}</p>
                     </a>
                 </li>
-                <li class="droplink {{ Request::is('tasaadiq') || Request::is('tasaadiq/*') ? 'active open' : '' }}">
-                    <a class="waves-effect waves-button">
-                        <span class="menu-icon icon-list"></span>
-                        <p>{{ __('Tasadiq/تصادیق') }}</p>
-                        <span class="arrow"></span>
-                    </a>
-                    <ul class="sub-menu" style="display: none;">
-                        <li class="{{ Request::is('Tasadiq/birth') || Request::is('Tasadiq/birth/*') ? 'active' : '' }}"><a href="{{ route('birth.index') }}">{{ __('Birth Certificates') }}</a></li>
-                        <li class="{{ Request::is('Tasadiq/marriage') || Request::is('Tasadiq/marriage/*') ? 'active' : '' }}"><a href="{{ route('marriage.index') }}">{{ __('Marriage Certificates') }}</a></li>
-                        <li class="{{ Request::is('Tasadiq/celibacy') || Request::is('Tasadiq/celibacy/*') ? 'active' : '' }}"><a href="{{ route('celibacy.index') }}">{{ __('Celibacy Certificates') }}</a></li>
-                    </ul>
-                </li>
+                
 
                 <li class="droplink {{ Request::is('packages') || Request::is('packages/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">

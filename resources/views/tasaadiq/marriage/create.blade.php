@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="form-group {{$errors->has('husband_family_name') ? ' has-error' : ''}}">
                                     <label class="control-label" for="husband_family_name"><span class="text-danger">*</span> Name/ Family Name</label>
-                                    <input type="text" class="form-control" name="husband_family_name" value="{{old('husband_family_name')}}">
+                                    <input type="text" autofocus class="form-control" name="husband_family_name" value="{{old('husband_family_name')}}">
                                     @if ($errors->has('husband_family_name'))
                                         <span class="help-block">
                                             <strong class="text-danger">{{ $errors->first('husband_family_name') }}</strong>

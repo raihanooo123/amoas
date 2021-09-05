@@ -237,5 +237,27 @@ Route::group(['prefix'=>'tasaadiq', 'middleware'=>'auth'], function(){
     Route::get('/celibacy/d-table', 'Tasaadiq\CelibacyCertificateController@dataTable')->name('celibacy.data');
     Route::get('/celibacy/print/{celibacy}', 'Tasaadiq\CelibacyCertificateController@print')->name('celibacy.print');
     Route::resource('/celibacy', 'Tasaadiq\CelibacyCertificateController');
+    
+    // online forms
+    Route::get('/forms', 'Tasaadiq\OnlineFormController@dataTable')->name('forms.search');
+    Route::get('/forms/import', 'Tasaadiq\OnlineFormController@dataTable')->name('forms.import');
 
+
+});
+
+Route::group(['prefix'=>'forms', 'middleware' => ['web']], function() {
+    Route::get('/', 'Forms\OnlineFormController@index');
+    Route::get('/birth-certificate', 'Forms\OnlineFormController@birthCertificate')->name('forms.birth');
+    Route::post('/birth-certificate', 'Forms\OnlineFormController@storeBirth')->name('forms.storeBirth');
+    Route::get('/celibacy-certificate', 'Forms\OnlineFormController@celibacy')->name('forms.celibacy');
+    Route::get('/marriage-certificate', 'Forms\OnlineFormController@marriage')->name('forms.marriage');
+    // Route::put('/store', 'Forms\OnlineFormController@store')->name('forms.store');
+});
+
+Route::group(['prefix'=>'finance', 'middleware' => ['web', 'auth']], function() {
+    
+    Route::get('/receipts/dashboard', 'Finance\ReceiptController@dashboard')->name('receipts.dashboard');
+    Route::get('/receipts/d-table', 'Finance\ReceiptController@dataTable')->name('receipts.data');
+    Route::get('/receipts/print/{receipt}', 'Finance\ReceiptController@print')->name('receipts.print');
+    Route::resource('/receipts', 'Finance\ReceiptController');
 });

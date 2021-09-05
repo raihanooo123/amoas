@@ -1,0 +1,219 @@
+<?php
+
+namespace App\Http\Controllers\Finance;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Finance\PaymentService;
+use App\Models\Finance\Receipt;
+
+class ReceiptController extends Controller
+{
+
+    public function __construct()
+    {
+        $this->middleware(['permission:receipts show'])->only(['index', 'show', 'dataTable']);
+        $this->middleware(['permission:receipts create'])->only(['create', 'store']);
+        $this->middleware(['permission:receipts edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:receipts delete'])->only(['destroy']);
+        $this->middleware(['permission:receipts print'])->only(['print']);
+    }
+
+    /**
+     * Display the statistics of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        // $statistics = \DB::table('receipts')
+        //         ->leftJoin('transactions', function($join){
+        //             $join->on('receipts.id', '=', 'transactions.accountable_id')
+        //                 ->where('transactions.accountable_type', '=', Receipt::class);
+        //         })
+        //         ->whereNull('receipts.clearance_id')
+        //         ->groupBy('accountant_id', 'date')
+        //         ->toSql();
+
+        // $statistics = Receipt::groupBy('accountant_id')->dump();
+        //         dd($statistics);
+        return view('finance.receipts.dashboard');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('finance.receipts.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('finance.receipts.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if(!$request->ajax())
+            return abort(404);
+        
+        //validations
+        $servicesIdInString = implode(', ', PaymentService::active()->get()->pluck('id')->toArray()); // like '1,2,3,...'
+
+        $this->validate($request, [
+            'client_name'=> 'required|min:2|max:191',
+            'id_card'=> 'nullable|max:191',
+            'service_id'=> 'required|numeric|in:' . $servicesIdInString,
+        ]);
+
+        \DB::beginTransaction();
+
+        try{
+
+            $service = PaymentService::findOrFail($request->service_id);
+
+            $receiptNo = Receipt::generateSerialNo();
+
+            $newReceipt = Receipt::create([
+                'receipt_no' => $receiptNo,
+                'date' => date('Y-m-d'),
+                'client_name'=> $request->client_name,
+                'id_card'=> $request->id_card,
+                'service_id'=> $request->service_id,
+                'received_by' => auth()->id(),
+                'accountant_id' => auth()->id(),
+                'registrar_id' => auth()->id(),
+            ]);
+
+            $newReceipt->transaction()->create([
+                'type' => 'income',
+                'amount' => $service->amount,
+                'currency' => $service->currency,
+                'registrar_id' => auth()->id(),
+            ]);
+
+            \DB::commit();
+
+        } catch (\Exception $e) {
+            return abort(500, $e->getMessage());
+        }
+
+        return response()->json(['receiptNo' => $newReceipt->id], 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * print on pdf page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function print(Receipt $receipt)
+    {
+        $tempName = 'templates/receipt-fixed.pdf';
+        $receipt->load(['transaction', 'service']);
+
+        try{
+
+            $writableData = [
+                'receipt_no' => $receipt->receipt_no,
+                'date' => $receipt->date->format('d M Y'),
+                'transaction_no' => $receipt->transaction_no,
+                'client_name' => $receipt->client_name . ( $receipt->id_card ? " ({$receipt->id_card})" : '' ),
+                'service_name' => optional($receipt->service)->name,
+                'amount' => optional($receipt->transaction)->amount . ' ' . optional($receipt->transaction)->currency,
+                'received_by' => optional($receipt->registrar)->fullName,
+            ];
+            $pdf = new \FPDM($tempName);
+            $pdf->Load($writableData, true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
+            // $pdf->Image(route('image.show',['employee', $photo->path]),20,100);
+            $pdf->Merge();
+            $pdf->Output();
+
+        } catch (\Exception $e) {
+            return abort(500, $e->getMessage());
+        }
+    }
+
+    public function dataTable()
+    {
+        $receipts = Receipt::with([
+                'registrar:id,first_name,last_name',
+                'transaction',
+                'service:id,name',
+            ])->select('receipts.*');
+        
+        if(!request()->order)
+            $receipts->latest();
+        
+        return datatables()::of($receipts)
+            ->addColumn('action', function($r){
+                $action = '<a href="' . route('receipts.print', $r->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-print"></i></a>&nbsp;';
+                // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
+                return $action;
+            })
+            ->editColumn('transaction.amount', function($r){
+                return optional($r->transaction)->amount . ' ' . optional($r->transaction)->currency;  
+            })
+            ->addIndexColumn()
+            ->make(true);
+    }
+}
