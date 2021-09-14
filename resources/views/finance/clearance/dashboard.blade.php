@@ -1,9 +1,9 @@
-@extends('layouts.admin', ['title' => 'Receipts'])
+@extends('layouts.admin', ['title' => 'Clearance'])
 
 @section('content')
 
     <div class="page-title">
-        <h3>{{ 'Receipts' }}</h3>
+        <h3>{{ 'Clearance' }}</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">{{ __('backend.home') }}</a></li>
@@ -14,11 +14,11 @@
     <div id="main-wrapper">
         <div class="row">
             <div class="col-md-12">
-                <a class="btn btn-primary" href="{{ route('receipts.create') }}"><i
+                <a class="btn btn-primary" href="{{ route('clearance.create') }}"><i
                     class="fa fa-plus"></i>&nbsp;&nbsp;Create</a>
 
-                <a class="btn btn-default" href="{{ route('receipts.index') }}"><i
-                    class="fa fa-list-ol"></i>&nbsp;&nbsp;List of Receipt</a>
+                <a class="btn btn-default" href="{{ route('clearance.index') }}"><i
+                    class="fa fa-list-ol"></i>&nbsp;&nbsp;List of Clearance</a>
             </div>
         </div>
 
@@ -29,7 +29,7 @@
                         <div class="panel-body">
                             <div class="info-box-stats">
                                 <p class="counter">{{ $item->amount }}</p>
-                                <span class="info-box-title">{{$item->date }} by {{$item->user}}</span>
+                                <span class="info-box-title">{{$item->user}}</span>
                             </div>
                             <div class="info-box-icon">
                                 <i class="icon-users"></i>

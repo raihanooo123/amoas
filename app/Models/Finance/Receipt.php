@@ -55,9 +55,9 @@ class Receipt extends Model
                 $builder->where('accountant_id', auth()->id());
         });
 
-        static::addGlobalScope('cleared', function (Builder $builder) {
-            $builder->whereNull('clearance_id');
-        });
+        // static::addGlobalScope('cleared', function (Builder $builder) {
+        //     $builder->whereNull('clearance_id');
+        // });
 
     }
 
@@ -93,5 +93,16 @@ class Receipt extends Model
     public function getTransactionNoAttribute()
     {
         return sprintf('%08d', optional($this->transaction)->id);
+    }
+
+    /**
+     * Scope a query to only get the uncleared transcation.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCleared($query)
+    {
+        return $query->whereNull('clearance_id');
     }
 }

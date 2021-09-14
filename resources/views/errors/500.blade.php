@@ -26,6 +26,11 @@
                     </p>
                     <h1 class="text-dark"><strong>{{ __('errors.error_500') }}</strong></h1>
                     <br>
+                    @if (auth()->check() && !auth()->user()->isCustomer())
+                    
+                    <h4 style="font-weight: 300;">Error: {{ $exception->getMessage() }}</h4>
+                    @endif
+                    <br>
                     <h4 style="font-weight: 300;">{{ __('errors.500_message') }}</h4>
                     <br>
                     <a href="javascript:history.go(-1)" class="btn btn-dark btn-lg">{{ __('errors.go_back_btn') }}</a>

@@ -168,9 +168,9 @@
                             <li class="{{ Request::is('finance/receipts')  || Request::is('finance/receipts/*') ? 'active' : '' }}">
                                 <a href="{{ route('receipts.dashboard') }}">Receipts</a>
                             </li>
-                            {{-- <li class="{{ Request::is('tracing/passport')  || Request::is('tracing/passport/*') ? 'active' : '' }}">
-                                <a href="{{ route('passport.index') }}">Clearance</a>
-                            </li> --}}
+                            <li class="{{ Request::is('finance/clearance')  || Request::is('finance/clearance/*') ? 'active' : '' }}">
+                                <a href="{{ route('clearance.dashboard') }}">Clearance</a>
+                            </li>
                         </ul>
                     </li>
                 @endif

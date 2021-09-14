@@ -260,4 +260,10 @@ Route::group(['prefix'=>'finance', 'middleware' => ['web', 'auth']], function() 
     Route::get('/receipts/d-table', 'Finance\ReceiptController@dataTable')->name('receipts.data');
     Route::get('/receipts/print/{receipt}', 'Finance\ReceiptController@print')->name('receipts.print');
     Route::resource('/receipts', 'Finance\ReceiptController');
+    
+    
+    Route::get('/clearance/dashboard', 'Finance\ClearanceController@dashboard')->name('clearance.dashboard');
+    Route::get('/clearance/d-table', 'Finance\ClearanceController@dataTable')->name('clearance.data');
+    Route::get('/clearance/print/{clearance}', 'Finance\ClearanceController@print')->name('clearance.print');
+    Route::resource('/clearance', 'Finance\ClearanceController');
 });

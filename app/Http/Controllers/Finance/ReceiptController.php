@@ -26,18 +26,24 @@ class ReceiptController extends Controller
      */
     public function dashboard()
     {
-        // $statistics = \DB::table('receipts')
-        //         ->leftJoin('transactions', function($join){
-        //             $join->on('receipts.id', '=', 'transactions.accountable_id')
-        //                 ->where('transactions.accountable_type', '=', Receipt::class);
-        //         })
-        //         ->whereNull('receipts.clearance_id')
-        //         ->groupBy('accountant_id', 'date')
-        //         ->toSql();
+        $statistics = \DB::table('receipts as r')
+                ->leftJoin('transactions as t', function($join){
+                    $join->on('r.id', '=', 't.accountable_id')
+                        ->where('t.accountable_type', '=', Receipt::class);
+                })
+                ->leftJoin('users as u', 'r.accountant_id', '=', 'u.id')
+                ->groupBy('r.date', 'r.accountant_id')
+                ->whereNull('r.clearance_id')
+                ->select([
+                    'r.date',
+                    'r.accountant_id',
+                    \DB::raw('concat(u.first_name, " " , u.last_name) as user'), 
+                    // '',
+                    \DB::raw('SUM(t.amount) as amount'),
+                ])
+                ->get();
 
-        // $statistics = Receipt::groupBy('accountant_id')->dump();
-        //         dd($statistics);
-        return view('finance.receipts.dashboard');
+        return view('finance.receipts.dashboard', compact('statistics'));
     }
 
     /**
@@ -109,6 +115,7 @@ class ReceiptController extends Controller
             \DB::commit();
 
         } catch (\Exception $e) {
+            \DB::rollback();
             return abort(500, $e->getMessage());
         }
 
@@ -199,7 +206,7 @@ class ReceiptController extends Controller
                 'registrar:id,first_name,last_name',
                 'transaction',
                 'service:id,name',
-            ])->select('receipts.*');
+            ])->cleared()->select('receipts.*');
         
         if(!request()->order)
             $receipts->latest();

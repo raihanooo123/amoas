@@ -71,6 +71,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/visa'),
         ],
+        'finance' => [
+            'driver' => 'local',
+            'root' => storage_path('app/finance'),
+        ],
 
     ],
 
