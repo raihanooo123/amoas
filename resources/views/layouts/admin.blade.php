@@ -216,6 +216,13 @@
                     </ul>
                 </li>
 
+                <li class="{{ Request::is('passport/extensions') || Request::is('passport/extensions/*') ? 'active' : '' }}">
+                    <a href="{{ route('extensions.index') }}" class="waves-effect waves-button">
+                        <span class="menu-icon icon-credit-card"></span>
+                        <p>Passport Extention</p>
+                    </a>
+                </li>
+
                 <li class="droplink {{ Request::is('users') || Request::is('users/*') ? 'active open' : '' }}">
                     <a class="waves-effect waves-button">
                         <span class="menu-icon icon-users"></span>

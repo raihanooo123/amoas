@@ -267,3 +267,11 @@ Route::group(['prefix'=>'finance', 'middleware' => ['web', 'auth']], function() 
     Route::get('/clearance/print/{clearance}', 'Finance\ClearanceController@print')->name('clearance.print');
     Route::resource('/clearance', 'Finance\ClearanceController');
 });
+
+Route::group(['prefix'=>'passport', 'middleware' => ['web', 'auth']], function() {
+    
+    // Route::get('/extensions/dashboard', 'Passport\ExtensionController@dashboard')->name('extensions.dashboard');
+    Route::get('/extensions/d-table', 'Passport\ExtensionController@dataTable')->name('extensions.data');
+    Route::post('/extensions/status/{extension}', 'Passport\ExtensionController@status')->name('extensions.status');
+    Route::resource('/extensions', 'Passport\ExtensionController');
+});
