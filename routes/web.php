@@ -209,6 +209,7 @@ Route::group(['prefix'=>'visa'], function(){
 });
 
 Route::group(['prefix'=>'check'], function(){
+    Route::get('verify','VerifyController@check')->name('verify');
     Route::get('/docs', 'Tracing\DocumentController@checkStatus')
         ->name('docs.check')
         ->middleware(['throttle:30,1']);

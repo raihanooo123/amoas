@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Tasaadiq;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tasaadiq\BirthCertificate;
+use Carbon\Carbon;
+use Mpdf\Mpdf;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
 
 class BirthCertificateController extends Controller
 {
@@ -182,6 +186,96 @@ class BirthCertificateController extends Controller
     }
 
     public function print(BirthCertificate $birth)
+    {
+        $tempName = 'templates/birth_certificate_new.pdf';
+
+        try{
+
+            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
+            
+            ob_clean();
+            header('Content-type: application/pdf');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');
+
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+
+            $mpdf = new Mpdf([
+                'fontDir' => array_merge($fontDirs, [
+                    public_path()."/fonts",
+                ]),
+                'fontdata' => $fontData + [
+                    'biosans' => [
+                        'R' => 'biosans_r.ttf',
+                        'B' => 'biosans_b.ttf',
+                        'I' => 'biosans_i.ttf'
+                    ]
+                ],
+                'default_font' => 'biosans'
+            ]);
+
+            $pagecount = $mpdf->SetSourceFile($tempName);
+            $tplIdx = $mpdf->ImportPage($pagecount);
+            $mpdf->UseTemplate($tplIdx);
+
+            $mpdf->SetFont('biosans','B', 13);
+            $mpdf->WriteText(42, 61, $birth->serial_no);
+            
+            $issueDate = Carbon::parse($birth->issue_date);
+            
+            $mpdf->WriteText(42, 74, $issueDate->format('d.m.Y'));
+            
+            $mpdf->SetFont('biosans','R', 13);
+            $mpdf->WriteText(25, 116, $birth->family_name);
+
+            $mpdf->WriteText(25, 131, $birth->given_name);
+            
+            $mpdf->WriteText(25, 145, $birth->previous_name);
+
+            $mpdf->WriteText(25, 160, $birth->sex);
+
+            $dob = Carbon::parse($birth->dob);
+            $mpdf->WriteText(25, 174.5, $dob->format('d.m.Y'));
+
+            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
+            $mpdf->WriteText(25, 189, $pob);
+
+            $mpdf->WriteText(25, 203.5, $birth->father_name);
+
+            $mpdf->WriteText(25, 218, $birth->mother_name);
+
+            $mpdf->WriteText(25, 233, $birth->passport_no);
+
+            $qrCodeData = $this->getQrCode($birth);
+            $mpdf->Image('temp/birth_qrcode.png', 15, 53.6, 22.2);
+            
+            $mpdf->Output();
+
+            ob_end_flush();
+
+        } catch (\Exception $e) {
+            return abort(500, $e->getMessage());
+        }
+    }
+
+    private function getQrCode(BirthCertificate $birth)
+    {
+        
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->data('https://www.bonn.mfa.af/amoas/check/verify?type=1&code=' . base64_encode($birth->serial_no))
+            ->size(100)
+            ->margin(0)
+            ->build();
+
+        return $result->saveToFile('temp/birth_qrcode.png');
+    }
+
+    public function old_print(BirthCertificate $birth)
     {
         $tempName = 'templates/birth_certificate.pdf';
 
