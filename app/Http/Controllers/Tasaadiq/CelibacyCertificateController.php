@@ -181,6 +181,15 @@ class CelibacyCertificateController extends Controller
             ->make(true);
     }
 
+    
+    // public function print(CelibacyCertificate $celibacy)
+    // {
+    //     if ($celibacy->print_type == 'new')
+    //         return $this->newPrint($celibacy);
+
+    //     return $this->oldPrint($celibacy);
+    // }
+
     public function print(CelibacyCertificate $celibacy)
     {
         $tempName = 'templates/celibacy_certificate_new.pdf';
@@ -267,7 +276,7 @@ class CelibacyCertificateController extends Controller
         return $result->saveToFile('temp/celibacy_qrcode.png');
     }
 
-    public function oldprint(CelibacyCertificate $celibacy)
+    public function oldPrint(CelibacyCertificate $celibacy)
     {
         $tempName = 'templates/celibacy_certificate.pdf';
 

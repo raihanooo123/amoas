@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Tasaadiq;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tasaadiq\MarriageCertificate;
+use Carbon\Carbon;
+use Mpdf\Mpdf;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
 
 class MarriageCertificateController extends Controller
 {
@@ -219,8 +223,102 @@ class MarriageCertificateController extends Controller
             ->make(true);
     }
 
-    
     public function print(MarriageCertificate $marriage)
+    {
+        $tempName = 'templates/marriage_certificate_new.pdf';
+
+        try{
+
+            $pom = strpos($marriage->pom, '/') ? $marriage->pom : $marriage->pom . '/AFG';
+            
+            ob_clean();
+            header('Content-type: application/pdf');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');
+
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+
+            $mpdf = new Mpdf([
+                'fontDir' => array_merge($fontDirs, [
+                    public_path()."/fonts",
+                ]),
+                'fontdata' => $fontData + [
+                    'biosans' => [
+                        'R' => 'biosans_r.ttf',
+                        'B' => 'biosans_b.ttf',
+                        'I' => 'biosans_i.ttf'
+                    ]
+                ],
+                'default_font' => 'biosans'
+            ]);
+
+            $pagecount = $mpdf->SetSourceFile($tempName);
+            $tplIdx = $mpdf->ImportPage($pagecount);
+            $mpdf->UseTemplate($tplIdx);
+
+            $mpdf->SetFont('biosans','B', 13);
+            $mpdf->WriteText(42, 62.5, $marriage->serial_no . ' ');
+            
+            $issueDate = Carbon::parse($marriage->issue_date . ' ');
+            
+            $mpdf->WriteText(42, 75.5, $issueDate->format('d.m.Y'));
+            
+            $mpdf->SetFont('biosans','R', 13);
+            $mpdf->WriteText(25, 127, $marriage->husband_family_name . ' ');
+            $mpdf->WriteText(108, 127, $marriage->wife_family_name . ' ');
+
+            $mpdf->WriteText(25, 142, $marriage->husband_given_name . ' ');
+            $mpdf->WriteText(108, 142, $marriage->wife_given_name . ' ');
+            
+            $mpdf->WriteText(25, 156.5, $marriage->husband_previous_name . ' ');
+            $mpdf->WriteText(108, 156.5, $marriage->wife_previous_name . ' ');
+
+            $hDob = Carbon::parse($marriage->husband_dob);
+            $wDob = Carbon::parse($marriage->wife_dob);
+            $mpdf->WriteText(25, 171, $hDob->format('d.m.Y') . ' ');
+            $mpdf->WriteText(108, 171, $wDob->format('d.m.Y') . ' ');
+
+            $hPob = strpos($marriage->husband_pob, '/') ? $marriage->husband_pob : $marriage->husband_pob . '/AFG';
+            $wPob = strpos($marriage->wife_pob, '/') ? $marriage->wife_pob : $marriage->wife_pob . '/AFG';
+            $mpdf->WriteText(25, 185.5, $hPob . ' ');
+            $mpdf->WriteText(108, 185.5, $wPob . ' ');
+
+            $mpdf->WriteText(25, 200, $marriage->husband_passport_no . ' ');
+            $mpdf->WriteText(108, 200, $marriage->wife_passport_no . ' ');
+
+            $dom = Carbon::parse($marriage->dom);
+            $mpdf->WriteText(25, 214.8, $dom->format('d.m.Y') . ' - ' . $pom);
+
+            $qrCodeData = $this->getQrCode($marriage);
+            $mpdf->Image('temp/marriage_qrcode.png', 15, 55.2, 22.2);
+            
+            $mpdf->Output();
+
+            ob_end_flush();
+
+        } catch (\Exception $e) {
+            return abort(500, $e->getMessage());
+        }
+    }
+
+    private function getQrCode(MarriageCertificate $marriage)
+    {
+        
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->data('https://www.bonn.mfa.af/amoas/check/verify?type=3&code=' . base64_encode($marriage->serial_no))
+            ->size(100)
+            ->margin(0)
+            ->build();
+
+        return $result->saveToFile('temp/marriage_qrcode.png');
+    }
+    
+    public function oldPrint(MarriageCertificate $marriage)
     {
         $tempName = 'templates/marriage_certificate.pdf';
 

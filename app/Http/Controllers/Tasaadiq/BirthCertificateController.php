@@ -185,6 +185,14 @@ class BirthCertificateController extends Controller
             ->make(true);
     }
 
+    // public function print(BirthCertificate $birth)
+    // {
+    //     if ($birth->print_type == 'new')
+    //         return $this->newPrint($birth);
+
+    //     return $this->oldPrint($birth);
+    // }
+
     public function print(BirthCertificate $birth)
     {
         $tempName = 'templates/birth_certificate_new.pdf';
@@ -223,32 +231,32 @@ class BirthCertificateController extends Controller
             $mpdf->UseTemplate($tplIdx);
 
             $mpdf->SetFont('biosans','B', 13);
-            $mpdf->WriteText(42, 61, $birth->serial_no);
+            $mpdf->WriteText(42, 61, $birth->serial_no . ' ');
             
             $issueDate = Carbon::parse($birth->issue_date);
             
-            $mpdf->WriteText(42, 74, $issueDate->format('d.m.Y'));
+            $mpdf->WriteText(42, 74, $issueDate->format('d.m.Y') . ' ');
             
             $mpdf->SetFont('biosans','R', 13);
-            $mpdf->WriteText(25, 116, $birth->family_name);
+            $mpdf->WriteText(25, 116, $birth->family_name . ' ');
 
-            $mpdf->WriteText(25, 131, $birth->given_name);
+            $mpdf->WriteText(25, 131, $birth->given_name . ' ');
             
-            $mpdf->WriteText(25, 145, $birth->previous_name);
+            $mpdf->WriteText(25, 145, $birth->previous_name . ' ');
 
-            $mpdf->WriteText(25, 160, $birth->sex);
+            $mpdf->WriteText(25, 160, $birth->sex . ' ');
 
             $dob = Carbon::parse($birth->dob);
-            $mpdf->WriteText(25, 174.5, $dob->format('d.m.Y'));
+            $mpdf->WriteText(25, 174.5, $dob->format('d.m.Y') . ' ');
 
             $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
-            $mpdf->WriteText(25, 189, $pob);
+            $mpdf->WriteText(25, 189, $pob . ' ');
 
-            $mpdf->WriteText(25, 203.5, $birth->father_name);
+            $mpdf->WriteText(25, 203.5, $birth->father_name . ' ');
 
-            $mpdf->WriteText(25, 218, $birth->mother_name);
+            $mpdf->WriteText(25, 218, $birth->mother_name . ' ');
 
-            $mpdf->WriteText(25, 233, $birth->passport_no);
+            $mpdf->WriteText(25, 233, $birth->passport_no . ' ');
 
             $qrCodeData = $this->getQrCode($birth);
             $mpdf->Image('temp/birth_qrcode.png', 15, 53.6, 22.2);
@@ -275,7 +283,7 @@ class BirthCertificateController extends Controller
         return $result->saveToFile('temp/birth_qrcode.png');
     }
 
-    public function old_print(BirthCertificate $birth)
+    public function oldPrint(BirthCertificate $birth)
     {
         $tempName = 'templates/birth_certificate.pdf';
 
