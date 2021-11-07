@@ -24,6 +24,7 @@ class BirthCertificate extends Model
         'family_name',
         'given_name',
         'previous_name',
+        'print_type',
         'sex',
         'dob',
         'pob',
@@ -51,10 +52,20 @@ class BirthCertificate extends Model
 
     public static function generateSerialNo()
     {
-        
-        $counts = self::withoutGlobalScopes()->count();
-        $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 
-        return 'BC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
+        $counts = self::count();
+		$fixedCounter = 3240;
+        $serialNo = 'BC' . date('y') . '-' . ($counts + $fixedCounter);
+
+        // check if exists
+        while(self::where('serial_no', $serialNo )->exists()) 
+            $serialNo = 'BC' . date('y') . '-' . ($counts + $fixedCounter++);
+		
+		return $serialNo;
+        
+        // $counts = self::withoutGlobalScopes()->count();
+        // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
+
+        // return 'BC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
     }
 }

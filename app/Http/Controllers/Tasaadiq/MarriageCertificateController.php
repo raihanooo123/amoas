@@ -91,6 +91,7 @@ class MarriageCertificateController extends Controller
                 'dom' => $request->dom ,
 
                 'serial_no' => $serialNo,
+                'print_type' => 'new',
                 'issue_date' => date('Y-m-d'),
                 'department_id' => auth()->user()->department_id,
                 'registrar_id' => auth()->id(),
@@ -224,6 +225,14 @@ class MarriageCertificateController extends Controller
     }
 
     public function print(MarriageCertificate $marriage)
+    {
+        if ($marriage->print_type == 'new')
+            return $this->newPrint($marriage);
+
+        return $this->oldPrint($marriage);
+    }
+
+    public function newPrint(MarriageCertificate $marriage)
     {
         $tempName = 'templates/marriage_certificate_new_update.pdf';
 

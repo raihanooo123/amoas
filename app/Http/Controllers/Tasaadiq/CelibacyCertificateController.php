@@ -70,6 +70,7 @@ class CelibacyCertificateController extends Controller
                 'pob' => $request->pob,
                 'passport_no' => $request->passport_no,
                 'serial_no' => $serialNo,
+                'print_type' => 'new',
                 'issue_date' => date('Y-m-d'),
                 'department_id' => auth()->user()->department_id,
                 'registrar_id' => auth()->id(),
@@ -182,15 +183,15 @@ class CelibacyCertificateController extends Controller
     }
 
     
-    // public function print(CelibacyCertificate $celibacy)
-    // {
-    //     if ($celibacy->print_type == 'new')
-    //         return $this->newPrint($celibacy);
-
-    //     return $this->oldPrint($celibacy);
-    // }
-
     public function print(CelibacyCertificate $celibacy)
+    {
+        if ($celibacy->print_type == 'new')
+            return $this->newPrint($celibacy);
+
+        return $this->oldPrint($celibacy);
+    }
+
+    public function newPrint(CelibacyCertificate $celibacy)
     {
         $tempName = 'templates/celibacy_certificate_new_update.pdf';
 

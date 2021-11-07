@@ -21,6 +21,7 @@ class MarriageCertificate extends Model
     protected $fillable = [
         'serial_no',
         'issue_date',
+        'print_type',
         'dom',
         'pom',
         'husband_family_name',
@@ -56,10 +57,23 @@ class MarriageCertificate extends Model
 
     public static function generateSerialNo()
     {
-        
-        $counts = self::count();
-        $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 
-        return 'MC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
+        $counts = self::count();
+        // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
+		
+		// fixed counter
+		$fixedCounter = 390;
+
+        $serialNo = 'MC' . date('y') . '-' . ($counts + $fixedCounter);
+        // check if exists
+        while(self::where('serial_no', $serialNo)->exists()) 
+            $serialNo = 'MC' . date('y') . '-' . ($counts + $fixedCounter++);
+		
+		return $serialNo;
+        
+        // $counts = self::count();
+        // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
+
+        // return 'MC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
     }
 }

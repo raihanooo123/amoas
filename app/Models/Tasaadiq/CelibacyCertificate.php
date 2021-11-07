@@ -23,6 +23,7 @@ class CelibacyCertificate extends Model
         'issue_date',
         'family_name',
         'given_name',
+        'print_type',
         'sex',
         'dob',
         'pob',
@@ -48,10 +49,21 @@ class CelibacyCertificate extends Model
 
     public static function generateSerialNo()
     {
-        
-        $counts = self::count();
-        $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
+         $counts = self::count();
+		
+		// fixed counter
+		$fixedCounter = 164;
 
-        return 'CC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
+        $serialNo = 'CC' . date('y') . '-' . ($counts + $fixedCounter);
+        
+        // check if exists
+        while(self::where('serial_no', $serialNo)->exists()) 
+            $serialNo = 'CC' . date('y') . '-' . ($counts + $fixedCounter++);
+		
+		return $serialNo;
+        
+        // $counts = self::count();
+        // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
+        // return 'CC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);
     }
 }

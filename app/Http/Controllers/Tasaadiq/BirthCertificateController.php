@@ -74,6 +74,7 @@ class BirthCertificateController extends Controller
                 'father_name' => strtoupper($request->father_name),
                 'mother_name' => strtoupper($request->mother_name),
                 'serial_no' => $serialNo,
+                'print_type' => 'new',
                 'issue_date' => date('Y-m-d'),
                 'department_id' => auth()->user()->department_id,
                 'registrar_id' => auth()->id(),
@@ -185,15 +186,15 @@ class BirthCertificateController extends Controller
             ->make(true);
     }
 
-    // public function print(BirthCertificate $birth)
-    // {
-    //     if ($birth->print_type == 'new')
-    //         return $this->newPrint($birth);
-
-    //     return $this->oldPrint($birth);
-    // }
-
     public function print(BirthCertificate $birth)
+    {
+        if ($birth->print_type == 'new')
+            return $this->newPrint($birth);
+
+        return $this->oldPrint($birth);
+    }
+
+    public function newPrint(BirthCertificate $birth)
     {
         $tempName = 'templates/birth_certificate_new_update.pdf';
 
