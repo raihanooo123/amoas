@@ -195,7 +195,7 @@ class BirthCertificateController extends Controller
 
     public function print(BirthCertificate $birth)
     {
-        $tempName = 'templates/birth_certificate_new.pdf';
+        $tempName = 'templates/birth_certificate_new_update.pdf';
 
         try{
 
@@ -231,11 +231,11 @@ class BirthCertificateController extends Controller
             $mpdf->UseTemplate($tplIdx);
 
             $mpdf->SetFont('biosans','B', 13);
-            $mpdf->WriteText(42, 61, $birth->serial_no . ' ');
+            $mpdf->WriteText(42, 68.5, $birth->serial_no . ' ');
             
             $issueDate = Carbon::parse($birth->issue_date);
             
-            $mpdf->WriteText(42, 74, $issueDate->format('d.m.Y') . ' ');
+            $mpdf->WriteText(42, 82, $issueDate->format('d.m.Y') . ' ');
             
             $mpdf->SetFont('biosans','R', 13);
             $mpdf->WriteText(25, 116, $birth->family_name . ' ');
@@ -259,7 +259,7 @@ class BirthCertificateController extends Controller
             $mpdf->WriteText(25, 233, $birth->passport_no . ' ');
 
             $qrCodeData = $this->getQrCode($birth);
-            $mpdf->Image('temp/birth_qrcode.png', 15, 53.6, 22.2);
+            $mpdf->Image('temp/birth_qrcode.png', 15, 61.5, 22.2);
             
             $mpdf->Output();
 

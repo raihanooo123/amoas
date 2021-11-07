@@ -225,7 +225,7 @@ class MarriageCertificateController extends Controller
 
     public function print(MarriageCertificate $marriage)
     {
-        $tempName = 'templates/marriage_certificate_new.pdf';
+        $tempName = 'templates/marriage_certificate_new_update.pdf';
 
         try{
 
@@ -261,40 +261,40 @@ class MarriageCertificateController extends Controller
             $mpdf->UseTemplate($tplIdx);
 
             $mpdf->SetFont('biosans','B', 13);
-            $mpdf->WriteText(42, 62.5, $marriage->serial_no . ' ');
+            $mpdf->WriteText(42, 76, $marriage->serial_no . ' ');
             
             $issueDate = Carbon::parse($marriage->issue_date . ' ');
             
-            $mpdf->WriteText(42, 75.5, $issueDate->format('d.m.Y'));
+            $mpdf->WriteText(42,89.5, $issueDate->format('d.m.Y'));
             
             $mpdf->SetFont('biosans','R', 13);
-            $mpdf->WriteText(25, 127, $marriage->husband_family_name . ' ');
-            $mpdf->WriteText(108, 127, $marriage->wife_family_name . ' ');
+            $mpdf->WriteText(25, 142, $marriage->husband_family_name . ' ');
+            $mpdf->WriteText(108, 142, $marriage->wife_family_name . ' ');
 
-            $mpdf->WriteText(25, 142, $marriage->husband_given_name . ' ');
-            $mpdf->WriteText(108, 142, $marriage->wife_given_name . ' ');
+            $mpdf->WriteText(25, 156.5, $marriage->husband_given_name . ' ');
+            $mpdf->WriteText(108, 156.5, $marriage->wife_given_name . ' ');
             
-            $mpdf->WriteText(25, 156.5, $marriage->husband_previous_name . ' ');
-            $mpdf->WriteText(108, 156.5, $marriage->wife_previous_name . ' ');
+            $mpdf->WriteText(25, 171, $marriage->husband_previous_name . ' ');
+            $mpdf->WriteText(108, 171, $marriage->wife_previous_name . ' ');
 
             $hDob = Carbon::parse($marriage->husband_dob);
             $wDob = Carbon::parse($marriage->wife_dob);
-            $mpdf->WriteText(25, 171, $hDob->format('d.m.Y') . ' ');
-            $mpdf->WriteText(108, 171, $wDob->format('d.m.Y') . ' ');
+            $mpdf->WriteText(25, 185.5, $hDob->format('d.m.Y') . ' ');
+            $mpdf->WriteText(108, 185.5, $wDob->format('d.m.Y') . ' ');
 
             $hPob = strpos($marriage->husband_pob, '/') ? $marriage->husband_pob : $marriage->husband_pob . '/AFG';
             $wPob = strpos($marriage->wife_pob, '/') ? $marriage->wife_pob : $marriage->wife_pob . '/AFG';
-            $mpdf->WriteText(25, 185.5, $hPob . ' ');
-            $mpdf->WriteText(108, 185.5, $wPob . ' ');
+            $mpdf->WriteText(25, 200, $hPob . ' ');
+            $mpdf->WriteText(108, 200, $wPob . ' ');
 
-            $mpdf->WriteText(25, 200, $marriage->husband_passport_no . ' ');
-            $mpdf->WriteText(108, 200, $marriage->wife_passport_no . ' ');
+            $mpdf->WriteText(25, 214.5, $marriage->husband_passport_no . ' ');
+            $mpdf->WriteText(108, 214.5, $marriage->wife_passport_no . ' ');
 
             $dom = Carbon::parse($marriage->dom);
-            $mpdf->WriteText(25, 214.8, $dom->format('d.m.Y') . ' - ' . $pom);
+            $mpdf->WriteText(25, 229, $dom->format('d.m.Y') . ' - ' . $pom);
 
             $qrCodeData = $this->getQrCode($marriage);
-            $mpdf->Image('temp/marriage_qrcode.png', 15, 55.2, 22.2);
+            $mpdf->Image('temp/marriage_qrcode.png', 15, 69.2, 22.2);
             
             $mpdf->Output();
 

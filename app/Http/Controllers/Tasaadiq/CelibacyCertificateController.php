@@ -192,7 +192,7 @@ class CelibacyCertificateController extends Controller
 
     public function print(CelibacyCertificate $celibacy)
     {
-        $tempName = 'templates/celibacy_certificate_new.pdf';
+        $tempName = 'templates/celibacy_certificate_new_update.pdf';
 
         try{
 
@@ -228,31 +228,31 @@ class CelibacyCertificateController extends Controller
             $mpdf->UseTemplate($tplIdx);
 
             $mpdf->SetFont('biosans','B', 13);
-            $mpdf->WriteText(42, 60.5, $celibacy->serial_no);
+            $mpdf->WriteText(42, 77.8, $celibacy->serial_no);
             
             $issueDate = Carbon::parse($celibacy->issue_date);
             
-            $mpdf->WriteText(42, 73.5, $issueDate->format('d.m.Y'));
+            $mpdf->WriteText(42, 91, $issueDate->format('d.m.Y'));
             
             $mpdf->SetFont('biosans','R', 13);
-            $mpdf->WriteText(25, 116.5, $celibacy->family_name);
+            $mpdf->WriteText(25, 131.5, $celibacy->family_name);
 
-            $mpdf->WriteText(25, 131, $celibacy->given_name);
+            $mpdf->WriteText(25, 146.5, $celibacy->given_name);
             
-            $mpdf->WriteText(25, 145, $celibacy->sex);
+            $mpdf->WriteText(25, 161, $celibacy->sex);
 
             $dob = Carbon::parse($celibacy->dob);
-            $mpdf->WriteText(25, 160, $dob->format('d.m.Y'));
+            $mpdf->WriteText(25, 175.5, $dob->format('d.m.Y'));
 
             $pob = strpos($celibacy->pob, '/') ? $celibacy->pob : $celibacy->pob . '/AFG';
-            $mpdf->WriteText(25, 175, $pob);
+            $mpdf->WriteText(25, 190, $pob);
 
-            $mpdf->WriteText(25, 189, $celibacy->passport_no);
+            $mpdf->WriteText(25, 204, $celibacy->passport_no);
 
-            $mpdf->WriteText(25, 203.5, 'LEDIG/SINGLE');
+            $mpdf->WriteText(25, 219, 'LEDIG/SINGLE');
 
             $qrCodeData = $this->getQrCode($celibacy);
-            $mpdf->Image('temp/celibacy_qrcode.png', 15, 53, 22.2);
+            $mpdf->Image('temp/celibacy_qrcode.png', 15, 70.8, 22.2);
             
             $mpdf->Output();
 
