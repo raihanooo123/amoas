@@ -80,7 +80,7 @@ class Receipt extends Model
     {
         $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 
-        $userAbrrv = substr(auth()->user()->first_name, 0 , 1) . sprintf('%01d',(substr(auth()->user()->last_name, 0 , 1)));
+        $userAbrrv = substr(auth()->user()->first_name, 0 , 1) . substr(auth()->user()->last_name, 0 , 1);
 
         return date('ymd') .$userAbrrv. sprintf('%03d', $dayCounts + 1);
     }

@@ -48,8 +48,9 @@
                             <div class="form-group {{$errors->has('service_id') ? ' has-error' : ''}}">
                                 <label class="control-label" for="name"><span class="text-danger">*</span> Payment Services (required)</label>
                                 <select class="form-control" required name="service_id">
+									<option value=""></option>
                                     @foreach (\App\Models\Finance\PaymentService::active()->get() as $s)
-                                        <option value="{{$s->id}}">{{$s->name}}</option>                                        
+                                        <option value="{{$s->id}}">{{$s->name}} ({{$s->amount . ' ' . $s->currency}})</option>                                       
                                     @endforeach
                                 </select>
                                 @if ($errors->has('service_id'))

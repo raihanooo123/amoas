@@ -34,6 +34,7 @@ class ReceiptController extends Controller
                 ->leftJoin('users as u', 'r.accountant_id', '=', 'u.id')
                 ->groupBy('r.date', 'r.accountant_id')
                 ->whereNull('r.clearance_id')
+				->whereNull('r.deleted_at')
                 ->select([
                     'r.date',
                     'r.accountant_id',
