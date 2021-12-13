@@ -68,6 +68,21 @@ class ReceiptController extends Controller
     }
 
     /**
+     * Show the form for creating a new online payment method resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function online()
+    {
+        $latestReceipt = Receipt::whereNotNull('bill_no')
+                                ->where('payment_method', 'card')
+                                ->latest()
+                                ->first();
+
+        return view('finance.receipts.online', compact('latestReceipt'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -75,17 +90,27 @@ class ReceiptController extends Controller
      */
     public function store(Request $request)
     {
-        if(!$request->ajax())
-            return abort(404);
-        
+
         //validations
         $servicesIdInString = implode(', ', PaymentService::active()->get()->pluck('id')->toArray()); // like '1,2,3,...'
 
-        $this->validate($request, [
-            'client_name'=> 'required|min:2|max:191',
-            'id_card'=> 'nullable|max:191',
-            'service_id'=> 'required|numeric|in:' . $servicesIdInString,
-        ]);
+        if ($request->ajax()) {
+            $this->validate($request, [
+                'client_name'=> 'required|min:2|max:191',
+                'id_card'=> 'nullable|max:191',
+                'service_id'=> 'required|numeric|in:' . $servicesIdInString,
+            ]);
+
+        }else {
+            $this->validate($request, [
+                'client_name'=> 'required|min:2|max:191',
+                'id_card'=> 'nullable|max:191',
+                'service_id'=> 'required|numeric|in:' . $servicesIdInString,
+                'quantity'=> 'required|min:1',
+                'amount'=> 'nullable|min:0.1',
+            ]);
+
+        }
 
         \DB::beginTransaction();
 
@@ -104,11 +129,23 @@ class ReceiptController extends Controller
                 'received_by' => auth()->id(),
                 'accountant_id' => auth()->id(),
                 'registrar_id' => auth()->id(),
+                'quantity' => $request->quantity,
+                'remarks' => $request->remarks,
+                'bill_no' => $request->bill_no,
+                'payment_method' => $request->ajax() ? 'cash' : 'card',
             ]);
+            
+            if ($request->ajax()) {
+                $amount = $service->amount; 
+            } else {
+                $amount = $request->filled('amount')
+                    ? $request->amount
+                    : $service->amount * $request->quantity;
+            }
 
             $newReceipt->transaction()->create([
                 'type' => 'income',
-                'amount' => $service->amount,
+                'amount' => $amount,
                 'currency' => $service->currency,
                 'registrar_id' => auth()->id(),
             ]);
@@ -120,7 +157,10 @@ class ReceiptController extends Controller
             return abort(500, $e->getMessage());
         }
 
-        return response()->json(['receiptNo' => $newReceipt->id], 200);
+        if ($request->ajax())
+            return response()->json(['receiptNo' => $newReceipt->id], 200);
+
+        return back()->with(['alert'=> 'Receipt registered sucessfully.']);
     }
 
     /**

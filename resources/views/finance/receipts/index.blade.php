@@ -42,7 +42,11 @@
                                     <th>Date</th>
                                     <th>Client Name</th>
                                     <th>Services</th>
+                                    <th>Qauntity</th>
                                     <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Bill No</th>
+                                    <th>Remarks</th>
                                     <th>Received By</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
@@ -56,7 +60,11 @@
                                     <th>Date</th>
                                     <th>Client Name</th>
                                     <th>Services</th>
+                                    <th>Qauntity</th>
                                     <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Bill No</th>
+                                    <th>Remarks</th>
                                     <th>Received By</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
@@ -127,9 +135,32 @@
                     name: 'service.name'
                 },
                 {
+                    data: 'quantity',
+                    name: 'quantity',
+                    defaultContent: '-',
+                    visible:false
+                },
+                {
                     data: 'transaction.amount',
                     name: 'transaction.amount',
                     defaultContent: '-'
+                },
+                {
+                    data: 'payment_method',
+                    name: 'payment_method',
+                    defaultContent: '-'
+                },
+                {
+                    data: 'bill_no',
+                    name: 'bill_no',
+                    defaultContent: '-',
+                    visible:false
+                },
+                {
+                    data: 'remarks',
+                    name: 'remarks',
+                    defaultContent: '-',
+                    visible:false
                 },
                 {
                     data: 'registrar.full_name',
