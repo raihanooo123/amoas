@@ -15,7 +15,10 @@
         <div class="row">
             <div class="col-md-12">
                 <a class="btn btn-primary" href="{{ route('receipts.create') }}"><i
-                    class="fa fa-plus"></i>&nbsp;&nbsp;Create</a>
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Create Cash Receipt</a>
+
+                <a class="btn btn-primary" href="{{ route('receipts.online') }}"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Create Online Receipt</a>
 
                 <a class="btn btn-default" href="{{ route('receipts.index') }}"><i
                     class="fa fa-list-ol"></i>&nbsp;&nbsp;List of Receipt</a>

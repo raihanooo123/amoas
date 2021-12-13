@@ -27,6 +27,10 @@ class Receipt extends Model
         'accountant_id',
         'clearance_id',
         'registrar_id',
+        'payment_method', 
+        'bill_no', 
+        'quantity', 
+        'remarks'
     ];
 
     protected $casts = [
