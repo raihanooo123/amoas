@@ -120,6 +120,25 @@
                                         </span>
                                     @endif
                                 </div>
+								
+								<div class="form-group {{$errors->has('department_id') ? ' has-error' : ''}}">
+                                <label class="control-label" for="department_id">{{ __('app.department') }}</label>
+                                <select class="form-control" name="department_id">
+                                    <option>{{ __('backend.select_one') }}</option>
+                                    @foreach(\App\Department::where('status', 1)->get() as $department)
+                                        @if(old('department_id') == $department->id)
+                                            <option value="{{$department->id}}" selected>{{$department->name_en}}</option>
+                                        @else
+                                            <option value="{{$department->id}}">{{$department->name_en}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('department_id'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('department_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
 
                                 <div class="form-group{{$errors->has('photo_id') ? ' has-error' : ''}}">
                                     <label for="photo_id" class="control-label">{{ __('backend.select_profile_image') }}</label>

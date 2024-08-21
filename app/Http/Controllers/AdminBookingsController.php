@@ -261,7 +261,7 @@ class AdminBookingsController extends Controller
             })
             ->editColumn('user.email', function($booking){
                 if($booking->user->bookings_count > 1)
-                    return '<span class="badge badge-dark">' . $booking->user->bookings_count . '</span> ' .$booking->email;
+                    return '<span class="badge badge-dark">' . optional($booking->user)->bookings_count . '</span> ' .$booking->email;
                 
                 return $booking->email;
             })

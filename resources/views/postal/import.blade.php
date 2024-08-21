@@ -111,7 +111,7 @@
 
                             <div class="col-md-3 form-group {{$errors->has('phone_no') ? ' has-error' : ''}}">
                                 <label class="control-label" for="phone_no">Phone Number</label>
-                                <input type="text" class="form-control" name="phone_no" value="{{optional($booking->info)->postal}}">
+                                <input type="text" class="form-control" name="phone_no" value="{{optional($booking->info)->phone}}">
                                 @if ($errors->has('phone_no'))
                                     <span class="help-block">
                                         <strong class="text-danger">{{ $errors->first('phone_no') }}</strong>

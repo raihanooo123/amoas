@@ -55,7 +55,9 @@ class Receipt extends Model
         parent::boot();
 
         static::addGlobalScope('accountant', function (Builder $builder) {
-            if (!auth()->user()->isSuperAdmin())
+            if (auth()->user()->isSuperAdmin()){}
+			elseif (auth()->user()->hasPermissionTo('finance admin')){}
+			else
                 $builder->where('accountant_id', auth()->id());
         });
 

@@ -93,6 +93,7 @@
         var table = $('#xtreme-table').DataTable({
             processing: true,
             serverSide: true,
+			lengthMenu: [ [10, 30, 100, 500], [10, 30, 100, 500] ],
             dom: 'Bfrtip',
             buttons: [
                 'pageLength',

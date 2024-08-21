@@ -15,10 +15,10 @@ class BirthCertificateController extends Controller
 
     public function __construct()
     {
-        // $this->middleware(['permission:birth certificate show'])->only(['index', 'show']);
-        // $this->middleware(['permission:birth certificate create'])->only(['create', 'store']);
-        // $this->middleware(['permission:birth certificate edit'])->only(['edit', 'update']);
-        // $this->middleware(['permission:birth certificate delete'])->only(['destroy']);
+        $this->middleware(['permission:birth certificate show'])->only(['index', 'show']);
+        $this->middleware(['permission:birth certificate create'])->only(['create', 'store']);
+        $this->middleware(['permission:birth certificate edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:birth certificate delete'])->only(['destroy']);
     }
     /**
      * Display a listing of the resource.

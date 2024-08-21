@@ -15,10 +15,10 @@ class MarriageCertificateController extends Controller
 
     public function __construct()
     {
-        // $this->middleware(['permission:marraige certificate show'])->only(['index', 'show']);
-        // $this->middleware(['permission:marraige certificate create'])->only(['create', 'store']);
-        // $this->middleware(['permission:marraige certificate edit'])->only(['edit', 'update']);
-        // $this->middleware(['permission:marraige certificate delete'])->only(['destroy']);
+        $this->middleware(['permission:marriage certificate show'])->only(['index', 'show']);
+        $this->middleware(['permission:marriage certificate create'])->only(['create', 'store']);
+        $this->middleware(['permission:marriage certificate edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:marriage certificate delete'])->only(['destroy']);
     }
 
     /**

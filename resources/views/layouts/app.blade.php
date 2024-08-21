@@ -101,7 +101,7 @@
     </nav>
     @yield('content')
     <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ asset(mix('/js/app.js')) }}"></script>
     @if(config('settings.freshchat_widget')!=NULL)
     <script src="https://wchat.freshchat.com/js/widget.js"></script>
     <script>

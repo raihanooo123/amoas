@@ -51,7 +51,6 @@ class PostalPackageController extends Controller
 
         $this->validate($request, array_merge([
             'name' => 'required|min:3',
-            'address' => 'required',
             'phone_no' => 'required',
             'doc_price' => 'nullable|numeric',
             'post_price' => 'nullable|numeric',
@@ -203,7 +202,6 @@ class PostalPackageController extends Controller
 
         $this->validate($request, array_merge([
             'name' => 'required|min:3',
-            'address' => 'required',
             'phone_no' => 'required',
             'doc_price' => 'nullable|numeric',
             'post_price' => 'nullable|numeric',

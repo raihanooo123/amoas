@@ -635,9 +635,9 @@ class UserBookingController extends Controller
 
                 $dailyAcceptance = Package::find(session('package_id'))->daily_acceptance;
                 
-                $availableInEachSlot = $dailyAcceptance / count($availableSlots);
+                $availableInEachSlot = round($dailyAcceptance / count($availableSlots), 0, PHP_ROUND_HALF_DOWN);
 
-                if($bookedCountInRequestedHour + (session('participant') + 1) > floor($availableInEachSlot))
+                if($bookedCountInRequestedHour + (session('participant') + 1) > $availableInEachSlot)
                     $validator->errors()->add('event_date', __('app.slotBlocked', ['time' => $request->booking_slot, 'date' => $request->event_date]));
 
             }
@@ -655,7 +655,7 @@ class UserBookingController extends Controller
                                 ->user()
                                 ->bookings()
                                 ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
-                                ->where('created_at', '<=', now()->addWeeks()->endOfDay()->format('Y-m-d H:i:s'))
+                                ->where('created_at', '<=', now()->addWeeks(2)->endOfDay()->format('Y-m-d H:i:s'))
                                 ->get()
                                 ->count();
 

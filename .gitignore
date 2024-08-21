@@ -1,9 +1,6 @@
 /node_modules
-/storage/app/google-calendar/*.json
-/storage/*
 /public/hot
 /public/storage
-/images/*
 /storage/*.key
 /.idea
 /.vscode
@@ -12,8 +9,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/vendor/*
+/vendor
 .env
-storage/*
 storage/fonts/*
 bootstrap/*
+composer.lock
+composer.phar

@@ -228,7 +228,7 @@ class ReceiptController extends Controller
                 'client_name' => $receipt->client_name . ( $receipt->id_card ? " ({$receipt->id_card})" : '' ),
                 'service_name' => optional($receipt->service)->name,
                 'amount' => optional($receipt->transaction)->amount . ' ' . optional($receipt->transaction)->currency,
-                'received_by' => optional($receipt->registrar)->fullName,
+                'received_by' => optional($receipt->registrar)->fullName . ' by ' . $receipt->payment_method . '(' . $receipt->bill_no . ')', 
             ];
             $pdf = new \FPDM($tempName);
             $pdf->Load($writableData, true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8

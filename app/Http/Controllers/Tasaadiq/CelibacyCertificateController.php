@@ -15,10 +15,10 @@ class CelibacyCertificateController extends Controller
 
     public function __construct()
     {
-        // $this->middleware(['permission:celibacy certificate show'])->only(['index', 'show']);
-        // $this->middleware(['permission:celibacy certificate create'])->only(['create', 'store']);
-        // $this->middleware(['permission:celibacy certificate edit'])->only(['edit', 'update']);
-        // $this->middleware(['permission:celibacy certificate delete'])->only(['destroy']);
+        $this->middleware(['permission:celibacy certificate show'])->only(['index', 'show']);
+        $this->middleware(['permission:celibacy certificate create'])->only(['create', 'store']);
+        $this->middleware(['permission:celibacy certificate edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:celibacy certificate delete'])->only(['destroy']);
     }
 
     /**

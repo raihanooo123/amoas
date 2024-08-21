@@ -171,7 +171,7 @@
         orientation: "auto right",
         autoclose: true,
         startDate: today,
-        endDate: new Date(lastDay.setMonth(lastDay.getMonth()+4)),
+        endDate: new Date(lastDay.setMonth(lastDay.getMonth()+6)),
         datesDisabled: JSON.parse('{!! (auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())) ? "[]" : $disabledDates !!}'),
         format: 'yyyy-mm-dd',
         // format: 'dd-mm-yyyy',

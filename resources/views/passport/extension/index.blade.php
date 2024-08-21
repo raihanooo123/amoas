@@ -47,6 +47,7 @@
                                     <th>Members</th>
                                     <th>Family Members</th>
                                     <th>Status</th>
+									<th>Reg Date</th>
                                     <th>Registrar</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
@@ -66,6 +67,7 @@
                                     <th>Members</th>
                                     <th>Family Members</th>
                                     <th>Status</th>
+									<th>Reg Date</th>
                                     <th>Registrar</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
@@ -160,6 +162,10 @@
                 {
                     data: 'status',
                     name: 'status'
+                },
+				{
+                    data: 'created_at',
+                    name: 'created_at'
                 },
                 {
                     data: 'registrar.full_name',

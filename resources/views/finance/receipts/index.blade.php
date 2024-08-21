@@ -47,6 +47,7 @@
                                     <th>Method</th>
                                     <th>Bill No</th>
                                     <th>Remarks</th>
+									<th>UID</th>
                                     <th>Received By</th>
                                     <th>{{ __('backend.actions') }}</th>
                                 </tr>
@@ -65,6 +66,7 @@
                                     <th>Method</th>
                                     <th>Bill No</th>
                                     <th>Remarks</th>
+									<th>UID</th>
                                     <th>Received By</th>
                                     <th searching="false">{{ __('backend.actions') }}</th>
                                 </tfoot>
@@ -98,6 +100,10 @@
         var table = $('#xtreme-table').DataTable({
             processing: true,
             serverSide: true,
+			lengthMenu: [
+				[10, 50, 100, 500, 1000],
+				[10, 50, 100, 500, 1000],
+			],
             dom: 'Bfrtip',
             buttons: [
                 'pageLength',
@@ -159,6 +165,12 @@
                 {
                     data: 'remarks',
                     name: 'remarks',
+                    defaultContent: '-',
+                    visible:false
+                },
+				{
+                    data: 'id_card',
+                    name: 'id_card',
                     defaultContent: '-',
                     visible:false
                 },
