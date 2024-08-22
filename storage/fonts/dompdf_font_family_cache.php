@@ -78,9 +78,9 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'roboto' => array(
-    'italic' => $fontDir . '/roboto-italic_d5c10dd70a66238a4d11751aca1ac2f6',
-    'bold_italic' => $fontDir . '/roboto-bold-italic_3c4c982d93d98be963531fd17b72c633',
-    'normal' => $fontDir . '/roboto-normal_9fa47a070a8b30b595086d70bb7ac78c',
-    'bold' => $fontDir . '/roboto-bold_3d0ad20d45ace845335f9e6c390a09d9',
+    'italic' => $fontDir . '/roboto-italic_fb9dbc1b59a353dbcaca04fe08ac7537',
+    'bold_italic' => $fontDir . '/roboto-bold-italic_f76c12f5a011f276edfe90010c0afb35',
+    'normal' => $fontDir . '/roboto-normal_db1168cc5f8fc5193d9c7b7eda0425aa',
+    'bold' => $fontDir . '/roboto-bold_24123a87fbd881816d70b33a3b5b8d72',
   ),
 ) ?>
