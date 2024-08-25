@@ -17,20 +17,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-use PayPal\Api\PaymentExecution;
-use Spatie\GoogleCalendar\Event;
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
+use Illuminate\Support\Facades\Session;
 use PayPal\Api\Amount;
 use PayPal\Api\Item;
 use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
-
+use Spatie\GoogleCalendar\Event;
 
 class PaypalController extends Controller
 {
@@ -44,11 +41,9 @@ class PaypalController extends Controller
     | payment success, this controller will create a booking with all
     | details. In case of payment failure it will show a payment failed page.
     |
-    */
-
+     */
 
     private $_api_context;
-
 
     public function __construct()
     {
@@ -59,16 +54,12 @@ class PaypalController extends Controller
             'http.ConnectionTimeOut' => 1000,
             'log.LogEnabled' => true,
             'log.FileName' => storage_path() . '/logs/paypal.log',
-            'log.LogLevel' => 'FINE'
+            'log.LogLevel' => 'FINE',
 
         );
 
-        $this->_api_context = new ApiContext(new OAuthTokenCredential(config('settings.paypal_client_id'),
-            config('settings.paypal_client_secret')));
-
-        $this->_api_context->setConfig($settings);
+        // $this->_api_context->setConfig($settings);
     }
-
 
     /**
      * Calculate charges and initiate payment
@@ -81,7 +72,7 @@ class PaypalController extends Controller
         //calculate total amount to be charged
 
         $package = Package::find(Session::get('package_id'));
-        $session_addons = DB::table('session_addons')->where('session_email','=', Auth::user()->email)->get();
+        $session_addons = DB::table('session_addons')->where('session_email', '=', Auth::user()->email)->get();
 
         //calculate total
 
@@ -89,56 +80,47 @@ class PaypalController extends Controller
 
         //add addons price if any
 
-        foreach($session_addons as $session_addon)
-        {
+        foreach ($session_addons as $session_addon) {
             $total = $total + Addon::find($session_addon->addon_id)->price;
         }
 
         //check if GST is enabled and add it to total invoice
 
-        if(config('settings.enable_gst'))
-        {
-            $gst_amount = ( config('settings.gst_percentage') / 100 ) * $total;
-            $gst_amount = round($gst_amount,2);
+        if (config('settings.enable_gst')) {
+            $gst_amount = (config('settings.gst_percentage') / 100) * $total;
+            $gst_amount = round($gst_amount, 2);
             $total_with_gst = $total + $gst_amount;
         }
 
         //decide if to charge with GST or without GST
 
-        if(config('settings.enable_gst'))
-        {
+        if (config('settings.enable_gst')) {
             $amount_to_charge = $total_with_gst;
-        }
-        else
-        {
+        } else {
             $amount_to_charge = $total;
         }
-
 
         //create Payer
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
-
         //create billable items
 
         $item = new Item();
-        $item->setName(config('settings.business_name')." Booking")
-        ->setCurrency(config('settings.default_currency'))
+        $item->setName(config('settings.business_name') . " Booking")
+            ->setCurrency(config('settings.default_currency'))
             ->setQuantity(1)
             ->setPrice($amount_to_charge);
 
         $item_list = new ItemList();
         $item_list->setItems(array($item));
 
-
         //set amount to be charged
 
         $amount = new Amount();
         $amount->setCurrency(config('settings.default_currency'))
             ->setTotal($amount_to_charge);
-
 
         //create transaction
 
@@ -148,7 +130,7 @@ class PaypalController extends Controller
 
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(route('paymentSuccessful'))
-        ->setCancelUrl(route('paymentFailed'));
+            ->setCancelUrl(route('paymentFailed'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
@@ -156,23 +138,20 @@ class PaypalController extends Controller
             ->setRedirectUrls($redirect_urls)
             ->setTransactions(array($transaction));
 
-
         $payment->create($this->_api_context);
 
-        foreach($payment->getLinks() as $link) {
-            if($link->getRel() == 'approval_url') {
+        foreach ($payment->getLinks() as $link) {
+            if ($link->getRel() == 'approval_url') {
                 $redirect_url = $link->getHref();
                 break;
             }
         }
 
-
         //save payment ID and redirect to paypal for payment
         Session::put('paypal_payment_id', $payment->getId());
-        if(isset($redirect_url)) {
+        if (isset($redirect_url)) {
             return Redirect::away($redirect_url);
         }
-
 
         //set error and redirect to finalize booking
         Session::flash('paypal_error', __('backend.paypal_error'));
@@ -191,7 +170,7 @@ class PaypalController extends Controller
         //calculate total amount to be charged
 
         $package = Package::find(Session::get('package_id'));
-        $session_addons = DB::table('session_addons')->where('session_email','=', Auth::user()->email)->get();
+        $session_addons = DB::table('session_addons')->where('session_email', '=', Auth::user()->email)->get();
 
         //calculate total
 
@@ -199,31 +178,25 @@ class PaypalController extends Controller
 
         //add addons price if any
 
-        foreach($session_addons as $session_addon)
-        {
+        foreach ($session_addons as $session_addon) {
             $total = $total + Addon::find($session_addon->addon_id)->price;
         }
 
         //check if GST is enabled and add it to total invoice
 
-        if(config('settings.enable_gst'))
-        {
-            $gst_amount = ( config('settings.gst_percentage') / 100 ) * $total;
-            $gst_amount = round($gst_amount,2);
+        if (config('settings.enable_gst')) {
+            $gst_amount = (config('settings.gst_percentage') / 100) * $total;
+            $gst_amount = round($gst_amount, 2);
             $total_with_gst = $total + $gst_amount;
         }
 
         //decide if to charge with GST or without GST
 
-        if(config('settings.enable_gst'))
-        {
+        if (config('settings.enable_gst')) {
             $amount_to_charge = $total_with_gst;
-        }
-        else
-        {
+        } else {
             $amount_to_charge = $total;
         }
-
 
         //get payment ID saved already
 
@@ -250,18 +223,16 @@ class PaypalController extends Controller
 
         $result = $payment->execute($execution, $this->_api_context);
 
-
-        if($result->getState() == 'approved') {
+        if ($result->getState() == 'approved') {
 
             //success, proceed to save booking
 
             $package_id = Session::get('package_id');
             $package = Package::find($package_id);
 
-            if(config('settings.sync_events_to_calendar') && config('settings.google_calendar_id'))
-            {
+            if (config('settings.sync_events_to_calendar') && config('settings.google_calendar_id')) {
                 //create timestamp
-                $time_string = Session::get('event_date')." ".Session::get('booking_slot');
+                $time_string = Session::get('event_date') . " " . Session::get('booking_slot');
                 $start_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'));
                 $end_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'))->addMinutes($package->duration);
 
@@ -269,7 +240,7 @@ class PaypalController extends Controller
 
                     //create google calendar event
                     $event = new Event;
-                    $event->name = $package->category->title." - ".$package->title." ".__('app.booking')." - ".__('backend.processing');
+                    $event->name = $package->category->title . " - " . $package->title . " " . __('app.booking') . " - " . __('backend.processing');
                     $event->startDateTime = $start_instance;
                     $event->endDateTime = $end_instance;
                     $calendarEvent = $event->save();
@@ -286,7 +257,7 @@ class PaypalController extends Controller
                         'status' => __('backend.processing'),
                     ]);
 
-                } catch(\Exception $ex) {
+                } catch (\Exception $ex) {
 
                     //save booking without calendar event id
                     $booking = Booking::create([
@@ -301,10 +272,7 @@ class PaypalController extends Controller
 
                 }
 
-            }
-
-            else
-            {
+            } else {
                 //save booking without calendar event id
                 $booking = Booking::create([
                     'user_id' => Auth::user()->id,
@@ -317,7 +285,6 @@ class PaypalController extends Controller
                 ]);
             }
 
-
             //save invoice
             Invoice::create([
                 'booking_id' => $booking->id,
@@ -329,14 +296,13 @@ class PaypalController extends Controller
             ]);
 
             //attach all selected addons to addon_booking
-            $session_addons = DB::table('session_addons')->where('session_email','=', Auth::user()->email)->get();
-            foreach ($session_addons as $session_addon)
-            {
+            $session_addons = DB::table('session_addons')->where('session_email', '=', Auth::user()->email)->get();
+            foreach ($session_addons as $session_addon) {
                 Addon::find($session_addon->addon_id)->bookings()->attach($booking);
             }
 
             //delete all session addons
-            DB::table('session_addons')->where('session_email','=', Auth::user()->email)->delete();
+            DB::table('session_addons')->where('session_email', '=', Auth::user()->email)->delete();
 
             //send booking received email
             $user = User::find(Auth::user()->id);
@@ -347,14 +313,13 @@ class PaypalController extends Controller
                 Mail::to($user)->send(new BookingReceived($booking, $user));
                 Mail::to($user)->send(new BookingInvoice($booking));
 
-                foreach($admin as $recipient)
-                {
+                foreach ($admin as $recipient) {
                     Mail::to($recipient)->send(new AdminBookingNotice($booking, $recipient));
                 }
 
                 return redirect()->route('thankYou');
 
-            } catch(\Exception $ex) {
+            } catch (\Exception $ex) {
 
                 return redirect()->route('thankYou');
 
@@ -365,7 +330,6 @@ class PaypalController extends Controller
         //error, just redirect
 
         return redirect()->route('paymentFailed');
-
 
     }
 

@@ -12,6 +12,11 @@
         </div>
     </div>
     <div id="main-wrapper">
+        {{-- check if the verified  session is true it means that the user just verified --}}
+        @if (session('verified'))
+            <div class="alert alert-success">{{ __('app.email_verified') }}</div>
+        @endif
+
         <div class="row">
             <div class="col-md-4">
                 <div class="panel info-box panel-white">
@@ -50,48 +55,51 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        @if($bookings)
+                        @if ($bookings)
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ __('backend.category') }}</th>
-                                        <th>{{ __('backend.package') }}</th>
-                                        <th>{{ __('backend.date') }}</th>
-                                        <th>{{ __('backend.time') }}</th>
-                                        <th>{{ __('backend.status') }}</th>
-                                        <th>{{ __('backend.created') }}</th>
-                                        <th>{{ __('backend.actions') }}</th>
-                                    </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ __('backend.category') }}</th>
+                                            <th>{{ __('backend.package') }}</th>
+                                            <th>{{ __('backend.date') }}</th>
+                                            <th>{{ __('backend.time') }}</th>
+                                            <th>{{ __('backend.status') }}</th>
+                                            <th>{{ __('backend.created') }}</th>
+                                            <th>{{ __('backend.actions') }}</th>
+                                        </tr>
                                     </thead>
                                     <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ __('backend.category') }}</th>
-                                        <th>{{ __('backend.package') }}</th>
-                                        <th>{{ __('backend.date') }}</th>
-                                        <th>{{ __('backend.time') }}</th>
-                                        <th>{{ __('backend.status') }}</th>
-                                        <th>{{ __('backend.created') }}</th>
-                                        <th>{{ __('backend.actions') }}</th>
-                                    </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ __('backend.category') }}</th>
+                                            <th>{{ __('backend.package') }}</th>
+                                            <th>{{ __('backend.date') }}</th>
+                                            <th>{{ __('backend.time') }}</th>
+                                            <th>{{ __('backend.status') }}</th>
+                                            <th>{{ __('backend.created') }}</th>
+                                            <th>{{ __('backend.actions') }}</th>
+                                        </tr>
                                     </tfoot>
                                     <tbody>
-                                    @foreach($recent_bookings as $booking)
-                                        <tr>
-                                            <td>{{ $booking->id }}</td>
-                                            <td>{{ $booking->package->category->title }}</td>
-                                            <td>{{ $booking->package->title }}</td>
-                                            <td>{{ $booking->booking_date }}</td>
-                                            <td>{{ $booking->booking_time }}</td>
-                                            <td><span class="label {{ $booking->status == __('backend.cancelled') ? 'label-danger' : 'label-success' }}">{{ $booking->status }}</span></td>
-                                            <td>{{ $booking->created_at->diffForHumans() }}</td>
-                                            <td>
-                                                <a href="{{ route('showBooking', $booking->id) }}" class="btn btn-primary btn-sm">{{ __('backend.details') }}</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach ($recent_bookings as $booking)
+                                            <tr>
+                                                <td>{{ $booking->id }}</td>
+                                                <td>{{ $booking->package->category->title }}</td>
+                                                <td>{{ $booking->package->title }}</td>
+                                                <td>{{ $booking->booking_date }}</td>
+                                                <td>{{ $booking->booking_time }}</td>
+                                                <td><span
+                                                        class="label {{ $booking->status == __('backend.cancelled') ? 'label-danger' : 'label-success' }}">{{ $booking->status }}</span>
+                                                </td>
+                                                <td>{{ $booking->created_at->diffForHumans() }}</td>
+                                                <td>
+                                                    <a href="{{ route('showBooking', $booking->id) }}"
+                                                        class="btn btn-primary btn-sm">{{ __('backend.details') }}</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

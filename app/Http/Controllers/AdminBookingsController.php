@@ -3,20 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
-use App\Mail\BookingCancelled;
-use Carbon\Carbon;
-use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use PayPal\Api\Payment;
-use PayPal\Api\RefundRequest;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
 use Spatie\GoogleCalendar\Event;
-use PayPal\Api\Amount;
-use PayPal\Api\Sale;
 use Yajra\Datatables\Datatables;
 
 class AdminBookingsController extends Controller
@@ -30,7 +20,7 @@ class AdminBookingsController extends Controller
     | show all bookings, provide ability to edit and delete specific booking
     | and to cancel booking.
     |
-    */
+     */
 
     private $_api_context;
 
@@ -42,14 +32,9 @@ class AdminBookingsController extends Controller
             'http.ConnectionTimeOut' => 1000,
             'log.LogEnabled' => true,
             'log.FileName' => storage_path() . '/logs/paypal.log',
-            'log.LogLevel' => 'FINE'
+            'log.LogLevel' => 'FINE',
 
         );
-
-        $this->_api_context = new ApiContext(new OAuthTokenCredential(config('settings.paypal_client_id'),
-            config('settings.paypal_client_secret')));
-
-        $this->_api_context->setConfig($settings);
 
         $this->middleware(['permission:booking show'])->only(['index', 'show']);
         $this->middleware(['permission:booking change date'])->only(['edit', 'update', 'update_booking_time']);
@@ -96,18 +81,12 @@ class AdminBookingsController extends Controller
             ->where('is_off_day', '=', '1')
             ->get();
 
-
-
         $daynum = array();
 
-        foreach ($off_days as $off_day)
-        {
-            if($off_day->id != 7)
-            {
+        foreach ($off_days as $off_day) {
+            if ($off_day->id != 7) {
                 $daynum[] = $off_day->id;
-            }
-            else
-            {
+            } else {
                 $daynum[] = $off_day->id - 7;
             }
         }
@@ -131,38 +110,30 @@ class AdminBookingsController extends Controller
         $booking = Booking::find($id);
         $booking->update($input);
 
-        if(config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != NULL)
-        {
-            if($input['status']==__('backend.processing'))
-            {
+        if (config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != null) {
+            if ($input['status'] == __('backend.processing')) {
                 $new_status = __('backend.processing');
-            }
-            else if($input['status']==__('backend.in_progress'))
-            {
+            } else if ($input['status'] == __('backend.in_progress')) {
                 $new_status = __('backend.in_progress');
-            }
-            else if($input['status']==__('backend.completed'))
-            {
+            } else if ($input['status'] == __('backend.completed')) {
                 $new_status = __('backend.completed');
-            }
-            else if($input['status']==__('backend.cancelled'))
-            {
+            } else if ($input['status'] == __('backend.cancelled')) {
                 $new_status = __('backend.cancelled');
             }
 
             try {
                 //update google calendar event
                 $event = Event::find($booking->google_calendar_event_id);
-                $event->name = $booking->package->category->title." - ".$booking->package->title." ".__('app.booking')." - ".$new_status;
+                $event->name = $booking->package->category->title . " - " . $booking->package->title . " " . __('app.booking') . " - " . $new_status;
                 $event->save();
-            } catch(\Exception $ex) {
+            } catch (\Exception $ex) {
                 //do nothing
             }
         }
 
         //set session message and redirect back to bookings.show
         Session::flash('booking_updated', __('backend.booking_updated'));
-        return redirect()->route('bookings.show',$id);
+        return redirect()->route('bookings.show', $id);
     }
 
     /**
@@ -177,13 +148,12 @@ class AdminBookingsController extends Controller
         $booking->addons()->detach();
         Booking::destroy($booking->id);
 
-        if(config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != NULL)
-        {
+        if (config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != null) {
             try {
                 //remove google calendar event
                 $event = Event::find($booking->google_calendar_event_id);
                 $event->delete();
-            } catch(\Exception $ex) {
+            } catch (\Exception $ex) {
                 //do nothing
             }
         }
@@ -211,11 +181,11 @@ class AdminBookingsController extends Controller
 
         $user = 'admin';
         // send mail to user.
-        \App\Jobs\BookingCancelledEmail::dispatch($booking,  $user);
+        \App\Jobs\BookingCancelledEmail::dispatch($booking, $user);
 
         Session::flash('booking_cancelled', __('backend.booking_cancelled_message'));
 
-        return redirect()->route('bookings.show',$id);
+        return redirect()->route('bookings.show', $id);
     }
 
     public function update_booking_time(Request $request, $id)
@@ -235,7 +205,6 @@ class AdminBookingsController extends Controller
         return redirect()->route('bookings.index');
     }
 
-    
     /**
      * Process datatables ajax request.
      *
@@ -244,38 +213,40 @@ class AdminBookingsController extends Controller
     public function dataTable()
     {
         $bookings = Booking::select('bookings.*')->with([
-            'package:id,title', 
+            'package:id,title',
             'info',
-            'user' => function($query){
+            'user' => function ($query) {
                 $query->withCount('bookings');
             }]);
-            
-        if(!request()->order)
+
+        if (!request()->order) {
             $bookings->latest();
+        }
 
         return Datatables::of($bookings)
-            ->addColumn('action', function($booking){
-                $action = '<a href="' . route('bookings.show', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+            ->addColumn('action', function ($booking) {
+                $action = '<a href="' . route('bookings.show', $booking->id) . '" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
-            ->editColumn('user.email', function($booking){
-                if($booking->user->bookings_count > 1)
-                    return '<span class="badge badge-dark">' . optional($booking->user)->bookings_count . '</span> ' .$booking->email;
-                
+            ->editColumn('user.email', function ($booking) {
+                if ($booking->user->bookings_count > 1) {
+                    return '<span class="badge badge-dark">' . optional($booking->user)->bookings_count . '</span> ' . $booking->email;
+                }
+
                 return $booking->email;
             })
-            ->editColumn('email', function($booking){
+            ->editColumn('email', function ($booking) {
                 return \Illuminate\Support\Str::limit($booking->email, 10);
             })
-            ->editColumn('serial_no', function($booking){
-                return '<a href="' . route('bookings.show', $booking->id) .'">'.$booking->serial_no.'</a>';
+            ->editColumn('serial_no', function ($booking) {
+                return '<a href="' . route('bookings.show', $booking->id) . '">' . $booking->serial_no . '</a>';
             })
             ->addIndexColumn()
             ->rawColumns([
                 'serial_no',
                 'action',
-                'user.email'
+                'user.email',
             ])
             ->make(true);
     }

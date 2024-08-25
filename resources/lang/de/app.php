@@ -11,7 +11,7 @@ return [
     | the multilingual booking. You are free to change them to anything
     | you want to customize your views to better match your application.
     |
-    */
+     */
 
     'booking' => 'Buchung',
     'login_link' => 'Login',
@@ -111,8 +111,8 @@ return [
     'participant_desc' => 'Anzahl der Teilnehmer die mit dem Antragsteller erscheinen.',
     'address' => 'Adresse',
     'address_desc' => 'Bitte tragen Sie Ihre Vollständige Adresse ein. An diese senden wir Dokumente wie Ihren Pass oder Tazkira.',
-	
-	// 16-10-2019
+
+    // 16-10-2019
     'validation_t_message' => 'Ungültige Informationen. Bitte füllen Sie die folgenden Felder korrekt aus.',
     'participantInfo' => 'Sie haben :participant Teilnehmer ausgewählt, bitte folgende Informationen für alle Teilnehmer ausfüllen',
     'relationType' => 'Beziehung',
@@ -139,8 +139,8 @@ return [
     'howToReserve' => 'Wie Reserviere ich einen Termin?',
     'guidelineStep' => '<ol>
                         <li> <strong>Schritt 1:</strong> Wählen Sie den Service, den Sie buchen möchten.</li>
-                            <li>Wählen Sie ein Paket, das für diesen Service verfügbar ist. 
-                                Sie erhalten detailierte Informationen für jedes Paket, nachdem Sie diese ausgewählt haben, bitte lesen Sie diese sorgfältig durch. 
+                            <li>Wählen Sie ein Paket, das für diesen Service verfügbar ist.
+                                Sie erhalten detailierte Informationen für jedes Paket, nachdem Sie diese ausgewählt haben, bitte lesen Sie diese sorgfältig durch.
                                 <button class="btn btn-sm" onclick="return false;">
                                     <i class="far fa-clock"></i> &nbsp; Termin Buchen
                                 </button> Schaltfläche am Ende dieser Seite.</li>
@@ -150,7 +150,7 @@ return [
                                         Weiter »
                                 </button>
                                     Schaltfläche. Manche Pakete haben eine leicht veränderte Prozedur</li>
-                            
+
                             <li> <strong>Schritt 3:</strong> Wählen Sie das Buchungsdatum und die Buchungszeit. Ausgeblendete Zeiten sind entweder Ausgebucht oder außerhabl der Arbeitszeiten</li>
                             <li> <strong>Schritt 4:</strong> Dies ist der letzte Schritt. Sie haben erfolgreich einen Termin gebucht und die Bestätigung ausgedruckt. Dies ist erforderlich, um in usnerer Mission vorzusprechen.</li>
                         </ol>',
@@ -161,7 +161,7 @@ return [
                                 </li>',
     'quickLinksCreateAccount' => '<li>Ein Konto erstellen <a href=":href">hier.</a>
                                         <br>
-                                        Bevor Sie fortfahren, müssen Sie über ein verifiziertes Konto verfügen. 
+                                        Bevor Sie fortfahren, müssen Sie über ein verifiziertes Konto verfügen.
                                     </li>',
     'selectCategoryOfService' => 'Wählen Sie Ihre Kategorie von Dienstleistungen',
     'All Services' => 'Alle Dienstleistungen',
@@ -186,13 +186,13 @@ return [
     'visa-employmentDetail' => 'Details zur Anstellung',
     'visa-passportDetail' => 'Passdetails',
     'visa-detail' => 'Visa Details',
-    'visa-persoanlInfoTile'=> 'Titel',
-    'visa-persoanlInfoFamilyName'=> 'Familienname',
-    'visa-showAsPassport'=> 'wie im Pass gezeigt',
-    'visa-persoanlInfoGivenName'=> 'Vorname',
-    'visa-persoanlInfoFatherName'=> 'Vollständiger Name des Vater',
-    'visa-persoanlInfoMaritalStatus'=> 'Familienstand',
-    'app.visa-next'=> '',
+    'visa-persoanlInfoTile' => 'Titel',
+    'visa-persoanlInfoFamilyName' => 'Familienname',
+    'visa-showAsPassport' => 'wie im Pass gezeigt',
+    'visa-persoanlInfoGivenName' => 'Vorname',
+    'visa-persoanlInfoFatherName' => 'Vollständiger Name des Vater',
+    'visa-persoanlInfoMaritalStatus' => 'Familienstand',
+    'app.visa-next' => '',
     'Single' => 'Single',
     'Engaged' => 'Verlobt',
     'Married' => 'Verheiratet',
@@ -252,10 +252,10 @@ return [
     'max_limit' => 'Terminbuchungen sind auf einen Termin pro Woche und Person beschränkt. Bitte buchen Sie einen Termin nach <u>:tillDate</u>.',
     'backToHome' => 'Zurück zur Startseite',
     'lastBookings' => 'Ihre letzten Buchungen',
-    'quickLinksTraceDoc' =>    '<li>
+    'quickLinksTraceDoc' => '<li>
                                     Überprüfen Sie Ihren Dokumentstatus <a href=":href">hier.</a>
                                     <br>
-                                    Wie Reisepass, Geburtsurkunde usw ... 
+                                    Wie Reisepass, Geburtsurkunde usw ...
                                 </li>',
 
     'checkDocTracingTitle' => 'Verfolgen Sie den Status Ihres Dokumentprozesses',
@@ -273,7 +273,22 @@ return [
     'Friday' => 'Freitag',
     'Saturday' => 'Samstag',
     'Sunday' => 'Sonntag',
-    
+
     'slotBlocked' => 'Die ausgewählte Zeit ":time" am ":date" ist bereits bis zur maximalen Buchungszahl erreicht. Bitte wählen Sie eine verfügbare Buchungszeit.',
     'notInAvailableHours' => 'Die ausgewählte Stunde ":time" ist nicht verfügbar.',
+    'privacy_title' => 'Datenschutzrichtlinie',
+    'privacy_subtitle' => 'Unser Engagement für Ihre Privatsphäre',
+    'i_accept_terms' => 'Ich akzeptiere die Bedingungen, Konditionen und Datenschutzrichtlinie',
+    'registration' => 'Registrierung',
+    'password' => 'Passwort',
+    'password_confirmation' => 'Passwort bestätigen',
+    'for_more_information' => 'Für weitere Informationen besuchen Sie bitte unsere',
+    'data_privacy_policy' => 'Datenschutzrichtlinie',
+    'register' => 'Registrieren',
+    'email_verification' => 'E-Mail-Verifizierung',
+    'fresh_verification_link' => 'Ein neuer Verifizierungslink wurde an Ihre E-Mail-Adresse gesendet.',
+    'before_proceeding' => 'Bevor Sie fortfahren, überprüfen Sie bitte Ihre E-Mails auf einen Verifizierungslink.',
+    'if_not_received' => 'Wenn Sie ihn nicht erhalten haben, klicken Sie einfach auf den untenstehenden Button, um einen neuen anzufordern.',
+    'request_new_link' => 'Neuen Verifizierungslink anfordern',
+    'email_verified' => 'Ihre E-Mail wurde verifiziert!',
 ];

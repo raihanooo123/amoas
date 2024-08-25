@@ -11,7 +11,7 @@ return [
     | the multilingual booking. You are free to change them to anything
     | you want to customize your views to better match your application.
     |
-    */
+     */
 
     'booking' => 'Booking',
     'login_link' => 'Login',
@@ -111,7 +111,7 @@ return [
     'participant_desc' => 'Number of people participating with applicant.',
     'address' => 'Address',
     'address_desc' => 'Please enter your address precisely. We will send packages like Passport or Tazkira.',
-    
+
     // 16-10-2019
     'validation_t_message' => 'Invalid information. please fill the following input correctly.',
     'participantInfo' => 'You have selected :participant participants with you, please enter information of each one.',
@@ -139,18 +139,18 @@ return [
     'howToReserve' => 'How to reserve a set on our mission?',
     'guidelineStep' => '<ol>
                         <li> <strong>Step 1:</strong> Select the services which you want to be done by us.</li>
-                            <li>Select the package within the selected service. 
-                                The detailed information of each package will show with package selection, please read once and click on 
+                            <li>Select the package within the selected service.
+                                The detailed information of each package will show with package selection, please read once and click on
                                 <button class="btn btn-sm" onclick="return false;">
                                     <i class="far fa-clock"></i> &nbsp; Select Booking Time
                                 </button> button at bottom of the page.</li>
 
-                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on 
+                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on
                                 <button class="btn btn-sm" onclick="return false;">
                                         Next »
                                 </button>
                                     button, although some package may have different procedure for booking.</li>
-                            
+
                             <li> <strong>Step 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
                             <li> <strong>Step 4:</strong> This is final step. You have successfully booked a time and print the slip, it is necessary while entering to our mission.</li>
                         </ol>',
@@ -161,7 +161,7 @@ return [
                                 </li>',
     'quickLinksCreateAccount' => '<li>Create an account <a href=":href">here.</a>
                                         <br>
-                                        Before going further, you must have a verified account. 
+                                        Before going further, you must have a verified account.
                                     </li>',
     'selectCategoryOfService' => 'Select Your Category of Services',
     'All Services' => 'All Services',
@@ -184,13 +184,13 @@ return [
     'visa-employmentDetail' => 'Employment Details',
     'visa-passportDetail' => 'Passport Details',
     'visa-detail' => 'Visa Details',
-    'visa-persoanlInfoTile'=> 'Title',
-    'visa-persoanlInfoFamilyName'=> 'Family Name',
-    'visa-showAsPassport'=> 'shown as in passport',
-    'visa-persoanlInfoGivenName'=> 'Given Name',
-    'visa-persoanlInfoFatherName'=> 'Father\'s Full Name',
-    'visa-persoanlInfoMaritalStatus'=> 'Marital Status',
-    'app.visa-next'=> '',
+    'visa-persoanlInfoTile' => 'Title',
+    'visa-persoanlInfoFamilyName' => 'Family Name',
+    'visa-showAsPassport' => 'shown as in passport',
+    'visa-persoanlInfoGivenName' => 'Given Name',
+    'visa-persoanlInfoFatherName' => 'Father\'s Full Name',
+    'visa-persoanlInfoMaritalStatus' => 'Marital Status',
+    'app.visa-next' => '',
     'Single' => 'Single',
     'Engaged' => 'Engaged',
     'Married' => 'Married',
@@ -257,10 +257,10 @@ return [
     'max_limit' => 'Appointment bookings are limitied to one appointment per person and week. Please book an appointment after <u>:tillDate</u>.',
     'backToHome' => 'Back To Homepage',
     'lastBookings' => 'Your last bookings',
-    'quickLinksTraceDoc' =>    '<li>
+    'quickLinksTraceDoc' => '<li>
                                     Check your document status <a href=":href">here.</a>
                                     <br>
-                                    Like passport, birth certificate and etc... 
+                                    Like passport, birth certificate and etc...
                                 </li>',
 
     'checkDocTracingTitle' => 'Track your document process status',
@@ -282,5 +282,20 @@ return [
     'Sunday' => 'Sunday',
 
     'slotBlocked' => 'The selected time ":time" on ":date" is already reached to its maximum booking count. Please select an available booking time.',
-    'notInAvailableHours' => 'The selected hour ":time" is not available.'
+    'notInAvailableHours' => 'The selected hour ":time" is not available.',
+    'privacy_title' => 'Privacy Policy',
+    'privacy_subtitle' => 'Our commitment to your privacy',
+    'i_accept_terms' => 'I accept the terms, conditions and data privacy policy',
+    'registration' => 'Registration',
+    'password' => 'Password',
+    'password_confirmation' => 'Confirm Password',
+    'for_more_information' => 'For more information, please visit our',
+    'data_privacy_policy' => 'Data Privacy Policy',
+    'register' => 'Register',
+    'email_verification' => 'Email Verification',
+    'fresh_verification_link' => 'A fresh verification link has been sent to your email address.',
+    'before_proceeding' => 'Before continuing, kindly check your email for a verification link.',
+    'if_not_received' => 'If you haven\'t received it, simply click on bellow button to request a new fresh one.',
+    'request_new_link' => 'Request New Verification Link',
+    'email_verified' => 'Your email has been verified!',
 ];

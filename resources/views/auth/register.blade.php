@@ -5,31 +5,15 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('app.registration') }}</div>
 
                 <div class="card-body ">
-					<div class="row justify-content-center">
-        				<div class="col-md-6">
-							<p class="text-center m-t-md">{{ __('auth.login_via') }}</p>
-							<div class="form-group">
-								<!-- <div class="col-md-6"> -->
-									<a href="{{ url('login/facebook') }}" class="btn btn-block btn-social-icon btn-facebook" style="background: #627AAC;color: #fff">
-										Login Via Facebook</a>
-									<a href="#" class="btn btn-block btn-social-icon btn-twitter" style="background: #33BBF3;color: #fff">
-										Login Via Twitter (soon...)</a>
-									<a href="{{ url('login/google') }}" class="btn btn-block btn-social-icon btn-google" style="background: #E0745B;color: #fff">
-										Login Via Google</a>
-								<!-- </div> -->
-							</div>
-						</div>
-					</div>
 					
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 						<hr>
-						<p class="text-center m-t-md">{{ __('auth.register_with_email') }}</p>
                         <div class="form-group row">
-                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
+                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('app.first_name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
@@ -43,7 +27,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
+                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('app.last_name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required autofocus>
@@ -57,7 +41,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('app.email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
@@ -70,22 +54,8 @@
                             </div>
                         </div>
 
-                        {{-- <div class="form-group row">
-                            <label for="postal_code" class="col-md-4 col-form-label text-md-right">{{ __('Postal Code') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="postal_code" type="postal_code" class="form-control{{ $errors->has('postal_code') ? ' is-invalid' : '' }}" name="postal_code" value="{{ old('postal_code') }}" required>
-
-                                @if ($errors->has('postal_code'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('postal_code') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div> --}}
-
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('app.password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
@@ -99,17 +69,34 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('app.password_confirmation') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
 
+                        {{-- I need a check box to accept terms and data privacy policy --}}
+                        <div class="form-group row">
+                            <span class="col-md-4"></span>
+                            <div class="col-md-6">
+                                
+                                <label for="terms" class="col-form-label{{ $errors->has('terms') ? ' text-danger' : '' }}"> 
+                                    <input id="terms" type="checkbox" name="terms" required>
+                                    {{ __('app.i_accept_terms') }}
+                                </label>
+
+                                <span>
+                                    {{-- for more information, please visit <a href="{{ route('privacy-policy') }}">Data Privacy Policy</a>. --}}
+                                    {{ __('app.for_more_information') }} <a href="{{ route('privacy-policy') }}">{{ __('app.data_privacy_policy') }}</a>.
+                                </span>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('app.register') }}
                                 </button>
                             </div>
                         </div>
