@@ -3,9 +3,7 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Bookify Setup Utility',
     'next' => 'Next Step',
@@ -16,35 +14,29 @@ return [
     ],
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
         'templateTitle' => 'Let\'s Setup Bookify',
-        'title'   => 'Let\'s Setup Bookify',
+        'title' => 'Let\'s Setup Bookify',
         'message' => 'It\'s very easy and straight forward. In case of any issue please refer to documentation
         for complete setup guidelines. You can also contact our support if you are having any issue. Let\'s start
         by checking if your hosting or server setup is ready to run Bookify.',
-        'next'    => 'Click Here To Start',
+        'next' => 'Click Here To Start',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'templateTitle' => 'Basic Requirements',
         'title' => 'Basic Requirements',
-        'next'    => 'Check Permissions',
+        'next' => 'Check Permissions',
         'refresh' => 'Check Again',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'templateTitle' => 'Folder Permissions',
@@ -53,33 +45,27 @@ return [
     ],
 
     /**
-     *
      * Verify Purchase page translations.
-     *
      */
     'verifyPurchase' => [
         'templateTitle' => 'Verify Purchase',
         'title' => 'Verify Purchase',
         'next' => 'Click To Verify',
         'invalid_code' => 'Your purchase code appears to be invalid. Please try again with a valid
-        purchase code.'
+        purchase code.',
     ],
 
     /**
-     *
      * Settings page translations.
-     *
      */
     'settings' => [
         'templateTitle' => 'App Settings',
         'title' => 'App Settings',
-        'next' => 'Finalize Settings'
+        'next' => 'Finalize Settings',
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
 
@@ -89,7 +75,7 @@ return [
             'tabs' => [
                 'app' => 'App Configuration',
                 'database' => 'Database Configuration',
-                'mail' => 'Mailer Configuration'
+                'mail' => 'Mailer Configuration',
             ],
             'db_connection_failed' => 'Database connection failed. Please check database credentials and try again.',
             'form' => [
@@ -193,18 +179,14 @@ return [
     'install' => 'Install',
 
     /**
-     *
      * Installed Log translations.
-     *
      */
     'installed' => [
         'success_log_message' => 'Bookify is successfully installed on ',
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Installation Completed',
@@ -221,43 +203,33 @@ return [
     ],
 
     /**
-     *
      * Update specific translations
-     *
      */
     'updater' => [
         /**
-         *
          * Shared translations.
-         *
          */
         'title' => 'Laravel Updater',
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'welcome' => [
-            'title'   => 'Welcome To The Updater',
+            'title' => 'Welcome To The Updater',
             'message' => 'Welcome to the update wizard.',
         ],
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'overview' => [
-            'title'   => 'Overview',
+            'title' => 'Overview',
             'message' => 'There is 1 update.|There are :number updates.',
-            'install_updates' => "Install Updates"
+            'install_updates' => 'Install Updates',
         ],
 
         /**
-         *
          * Final page translations.
-         *
          */
         'final' => [
             'title' => 'Finished',

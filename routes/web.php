@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 // use mikehaertl\pdftk\Pdf;
 // use FPDM;
 
@@ -25,6 +26,7 @@ Route::get('/ajax_package_info', 'UserBookingController@ajaxPackageInfo');
 Route::get('/lang/{lang}', function ($lang) {
 
     \Request::session()->put('lang', $lang);
+
     return redirect()->back();
 })->name('lang');
 
@@ -225,7 +227,7 @@ Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');
 Route::group(['middleware' => ['web']], function () {
     Route::get('img/{drive}/{folder}/{filename}', function ($drive, $folder, $filename) {
         // return storage_path() . "\\app\\{$drive}\\{$folder}\\" . $filename;
-        return \Image::make(storage_path() . "/app/{$drive}/{$folder}/" . $filename)->response();
+        return \Image::make(storage_path()."/app/{$drive}/{$folder}/".$filename)->response();
     });
 });
 

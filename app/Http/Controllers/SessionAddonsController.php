@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class SessionAddonsController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | Session Addon Controller
@@ -40,7 +39,6 @@ class SessionAddonsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -74,7 +72,6 @@ class SessionAddonsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -92,6 +89,7 @@ class SessionAddonsController extends Controller
     public function destroy($id)
     {
         SessionAddon::destroy($id);
+
         return redirect()->route('loadFinalStep');
     }
 }

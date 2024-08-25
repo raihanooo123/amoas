@@ -13,7 +13,6 @@ return [
     |
     */
 
-
     'home' => 'صفحه نخست',
     'dashboard' => 'دشبورد',
     'my_profile' => 'پروفایلم',

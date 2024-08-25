@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Miscellaneous extends Model
 {
     protected $table = 'traceable_miscellaneous';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -62,5 +62,4 @@ class Miscellaneous extends Model
     {
         return $this->belongsTo('App\User', 'registrar_id');
     }
-
 }

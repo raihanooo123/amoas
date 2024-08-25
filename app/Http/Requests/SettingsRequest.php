@@ -27,7 +27,7 @@ class SettingsRequest extends FormRequest
             'business_logo_dark' => 'mimes:png',
             'business_logo_light' => 'mimes:png',
             'cover' => 'mimes:jpeg',
-            'contact_email' => 'email'
+            'contact_email' => 'email',
         ];
     }
 
@@ -36,7 +36,7 @@ class SettingsRequest extends FormRequest
         return [
             'business_logo_dark.mimes' => __('backend.select_png'),
             'business_logo_light.mimes' => __('backend.select_png'),
-            'cover.mimes' => __('backend.select_jpg')
+            'cover.mimes' => __('backend.select_jpg'),
         ];
     }
 }

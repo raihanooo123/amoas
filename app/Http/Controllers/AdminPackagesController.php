@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdminPackagesController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:package show'])->only(['index', 'show']);
@@ -37,6 +36,7 @@ class AdminPackagesController extends Controller
     public function index()
     {
         $packages = Package::all();
+
         return view('packages.index', compact('packages'));
     }
 
@@ -48,6 +48,7 @@ class AdminPackagesController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('packages.create', compact('categories'));
     }
 
@@ -62,14 +63,13 @@ class AdminPackagesController extends Controller
         $input = $request->all();
 
         //check if an image is selected
-        if($image = $request->file('photo_id'))
-        {   
+        if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
-            $image->move('images',$image_name);
+            $image->move('images', $image_name);
 
             //persist data into photos table
-            $photo = Photo::create(['file'=>$image_name]);
+            $photo = Photo::create(['file' => $image_name]);
 
             //save photo_id to package $input
             $input['photo_id'] = $photo->id;
@@ -105,6 +105,7 @@ class AdminPackagesController extends Controller
     {
         $package = Package::findOrFail($id);
         $categories = Category::all();
+
         return view('packages.edit', compact('package', 'categories'));
     }
 
@@ -120,14 +121,13 @@ class AdminPackagesController extends Controller
         $input = $request->all();
 
         //check if image is selected
-        if($image = $request->file('photo_id'))
-        {
+        if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
-            $image->move('images',$image_name);
+            $image->move('images', $image_name);
 
             //persist data into photos table
-            $photo = Photo::create(['file'=>$image_name]);
+            $photo = Photo::create(['file' => $image_name]);
 
             //save photo_id to category $input
             $input['photo_id'] = $photo->id;
@@ -136,8 +136,7 @@ class AdminPackagesController extends Controller
             $package = Package::findOrFail($id);
 
             //unlink old photo if set
-            if($package->photo != NULL)
-            {
+            if ($package->photo != null) {
                 unlink(public_path().$package->photo->file);
             }
 
@@ -149,6 +148,7 @@ class AdminPackagesController extends Controller
 
         //set session message and redirect back packages.index
         Session::flash('package_updated', __('backend.package_updated'));
+
         return redirect('/packages');
     }
 
@@ -163,8 +163,7 @@ class AdminPackagesController extends Controller
         //find specific package
         $package = Package::findOrFail($id);
 
-        if($package->photo)
-        {
+        if ($package->photo) {
             //unlink image
             unlink(public_path().$package->photo->file);
 
@@ -177,6 +176,7 @@ class AdminPackagesController extends Controller
 
         //set session message and redirect back to packages.index
         Session::flash('package_deleted', __('backend.package_deleted'));
+
         return redirect('/packages');
     }
 }

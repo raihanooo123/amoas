@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBookingsTable extends Migration
 {
@@ -17,11 +16,11 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('department_id')->default(0);
-            $table->string('serial_no',191)->index();
+            $table->string('serial_no', 191)->index();
             $table->integer('user_id')->unsigned()->index();
             $table->integer('package_id')->unsigned()->index();
             $table->date('booking_date');
-            $table->string('booking_time',50)->index();
+            $table->string('booking_time', 50)->index();
             $table->string('google_calendar_event_id')->nullable();
             $table->string('email')->nullable();
             $table->string('booking_type')->nullable();

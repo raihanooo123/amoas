@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers\Verification;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Verification\Verification;
 use Illuminate\Http\File;
+use Illuminate\Http\Request;
 
 class TazkiraController extends Controller
 {
-
     public function index()
     {
         // get the limits for pagination
         $limit = request()->has('limit') && request()->input('limit') <= 200 ? request()->input('limit') : 50;
 
         $verifications = null;
-        if(auth()->user()->isAdmin())
+        if (auth()->user()->isAdmin()) {
             $verifications = Verification::with(['country', 'sibling', 'service'])
                 ->latest()
                 ->paginate($limit);
-        else {
+        } else {
             $verifications = Verification::with(['country', 'sibling', 'service'])
                 ->where('registrar_id', auth()->id())
                 ->latest()
@@ -34,6 +33,7 @@ class TazkiraController extends Controller
     public function show(Verification $verification)
     {
         $verification->load(['country', 'sibling', 'service', 'province', 'district', 'village', 'image']);
+
         return view('tazkira.verification.show', compact('verification'));
     }
 
@@ -51,94 +51,94 @@ class TazkiraController extends Controller
     {
         // dd(request()->all());
         $this->validate(request(), [
-            "name" => 'required',
-            "last_name" => 'required',
-            "father_name" => 'required',
-            "grand_father_name" => 'required',
-            "occupation" => 'required',
-            "birth_place" => 'required',
-            "marital_status" => 'required',
-            "living_duration" => 'required',
-            "living_duration_unit" => 'required',
-            "last_trip" => 'required',
-            "contact_no" => 'required',
-            "email" => 'required',
-            "photo" => 'required',
-            "service_id" => 'required',
-            "original_village" => 'required',
-            "original_district" => 'required',
-            "original_province" => 'required',
-            "current_city" => 'required',
-            "zip_code" => 'required',
-            "current_country" => 'required',
-            "height" => 'required',
-            "eyes" => 'required',
-            "skin" => 'required',
-            "hair" => 'required',
-            "d_name" => 'required',
-            "d_last_name" => 'required',
-            "d_contact" => 'required',
-            "sibling_name" => 'required',
-            "sibling_last_name" => 'required',
-            "sibling_id" => 'required',
-            "page_no" => 'required',
-            "version_no" => 'required',
-            "note_no" => 'required',
-            "year" => 'required',
-            "month" => 'required',
-            "day" => 'required',
+            'name' => 'required',
+            'last_name' => 'required',
+            'father_name' => 'required',
+            'grand_father_name' => 'required',
+            'occupation' => 'required',
+            'birth_place' => 'required',
+            'marital_status' => 'required',
+            'living_duration' => 'required',
+            'living_duration_unit' => 'required',
+            'last_trip' => 'required',
+            'contact_no' => 'required',
+            'email' => 'required',
+            'photo' => 'required',
+            'service_id' => 'required',
+            'original_village' => 'required',
+            'original_district' => 'required',
+            'original_province' => 'required',
+            'current_city' => 'required',
+            'zip_code' => 'required',
+            'current_country' => 'required',
+            'height' => 'required',
+            'eyes' => 'required',
+            'skin' => 'required',
+            'hair' => 'required',
+            'd_name' => 'required',
+            'd_last_name' => 'required',
+            'd_contact' => 'required',
+            'sibling_name' => 'required',
+            'sibling_last_name' => 'required',
+            'sibling_id' => 'required',
+            'page_no' => 'required',
+            'version_no' => 'required',
+            'note_no' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'day' => 'required',
         ]);
-        
+
         $tazkiraVerify = Verification::create([
-            "department_id" => 1,
-            "name" => request()->name,
-            "last_name" => request()->last_name,
-            "father_name" => request()->father_name,
-            "grand_father_name" => request()->grand_father_name,
-            "occupation" => request()->occupation,
-            "birth_place" => request()->birth_place,
-            "marital_status" => request()->marital_status,
-            "living_duration" => request()->living_duration,
-            "living_duration_unit" => request()->living_duration_unit,
-            "last_trip" => request()->last_trip,
-            "contact_no" => request()->contact_no,
-            "email" => request()->email,
-            "service_id" => request()->service_id,
-            "new_absence_tazkira_case" => request()->new_absence_tazkira_case,
-            "original_village" => $this->setAttr(request()->original_village, 'App\Village'),
-            "original_province" => request()->original_province,
-            "original_district" => $this->setAttr(request()->original_district, 'App\District'),
-            "current_city" => request()->current_city,
-            "zip_code" => request()->zip_code,
-            "current_country" => request()->current_country,
-            "height" => request()->height,
-            "eyes" => request()->eyes,
-            "skin" => request()->skin,
-            "hair" => request()->hair,
-            "other" => request()->other,
-            "d_name" => request()->d_name,
-            "d_last_name" => request()->d_last_name,
-            "d_father_name" => request()->d_father_name,
-            "d_contact" => request()->d_contact,
-            "sibling_name" => request()->sibling_name,
-            "sibling_last_name" => request()->sibling_last_name,
-            "sibling_father_name" => request()->sibling_father_name,
-            "sibling_grand_father_name" => request()->sibling_grand_father_name,
-            "sibling_id" => request()->sibling_id,
-            "page_no" => request()->page_no,
-            "version_no" => request()->version_no,
-            "note_no" => request()->note_no,
-            "year" => request()->year,
-            "month" => request()->month,
-            "day" => request()->day,
-            "registrar_id" => auth()->id(),
+            'department_id' => 1,
+            'name' => request()->name,
+            'last_name' => request()->last_name,
+            'father_name' => request()->father_name,
+            'grand_father_name' => request()->grand_father_name,
+            'occupation' => request()->occupation,
+            'birth_place' => request()->birth_place,
+            'marital_status' => request()->marital_status,
+            'living_duration' => request()->living_duration,
+            'living_duration_unit' => request()->living_duration_unit,
+            'last_trip' => request()->last_trip,
+            'contact_no' => request()->contact_no,
+            'email' => request()->email,
+            'service_id' => request()->service_id,
+            'new_absence_tazkira_case' => request()->new_absence_tazkira_case,
+            'original_village' => $this->setAttr(request()->original_village, 'App\Village'),
+            'original_province' => request()->original_province,
+            'original_district' => $this->setAttr(request()->original_district, 'App\District'),
+            'current_city' => request()->current_city,
+            'zip_code' => request()->zip_code,
+            'current_country' => request()->current_country,
+            'height' => request()->height,
+            'eyes' => request()->eyes,
+            'skin' => request()->skin,
+            'hair' => request()->hair,
+            'other' => request()->other,
+            'd_name' => request()->d_name,
+            'd_last_name' => request()->d_last_name,
+            'd_father_name' => request()->d_father_name,
+            'd_contact' => request()->d_contact,
+            'sibling_name' => request()->sibling_name,
+            'sibling_last_name' => request()->sibling_last_name,
+            'sibling_father_name' => request()->sibling_father_name,
+            'sibling_grand_father_name' => request()->sibling_grand_father_name,
+            'sibling_id' => request()->sibling_id,
+            'page_no' => request()->page_no,
+            'version_no' => request()->version_no,
+            'note_no' => request()->note_no,
+            'year' => request()->year,
+            'month' => request()->month,
+            'day' => request()->day,
+            'registrar_id' => auth()->id(),
         ]);
 
         if (request()->hasFile('photo')) {
 
             $extension = request()->photo->getClientOriginalExtension();
 
-            $name = str_replace(' ', '_', $tazkiraVerify->name) . '-' . str_replace(' ', '_', $tazkiraVerify->last_name) . '-' . str_replace(' ', '_', $tazkiraVerify->father_name) . '-' . time();
+            $name = str_replace(' ', '_', $tazkiraVerify->name).'-'.str_replace(' ', '_', $tazkiraVerify->last_name).'-'.str_replace(' ', '_', $tazkiraVerify->father_name).'-'.time();
 
             $fullPath = \Storage::disk('verification')->putFile($name, new File(request()->photo));
 
@@ -155,6 +155,7 @@ class TazkiraController extends Controller
     public function edit(Verification $verification)
     {
         $verification->load(['country', 'sibling', 'service', 'province', 'district', 'village', 'image']);
+
         return view('tazkira.verification.edit', compact('verification'));
     }
 
@@ -162,94 +163,94 @@ class TazkiraController extends Controller
     {
         // dd(request()->all());
         $this->validate(request(), [
-            "name" => 'required',
-            "last_name" => 'required',
-            "father_name" => 'required',
-            "grand_father_name" => 'required',
-            "occupation" => 'required',
-            "birth_place" => 'required',
-            "marital_status" => 'required',
-            "living_duration" => 'required',
-            "living_duration_unit" => 'required',
-            "last_trip" => 'required',
-            "contact_no" => 'required',
-            "email" => 'required',
-            "service_id" => 'required',
-            "original_village" => 'required',
-            "original_district" => 'required',
-            "original_province" => 'required',
-            "current_city" => 'required',
-            "zip_code" => 'required',
-            "current_country" => 'required',
-            "height" => 'required',
-            "eyes" => 'required',
-            "skin" => 'required',
-            "hair" => 'required',
-            "d_name" => 'required',
-            "d_last_name" => 'required',
-            "d_contact" => 'required',
-            "sibling_name" => 'required',
-            "sibling_last_name" => 'required',
-            "sibling_id" => 'required',
-            "page_no" => 'required',
-            "version_no" => 'required',
-            "note_no" => 'required',
-            "year" => 'required',
-            "month" => 'required',
-            "day" => 'required',
+            'name' => 'required',
+            'last_name' => 'required',
+            'father_name' => 'required',
+            'grand_father_name' => 'required',
+            'occupation' => 'required',
+            'birth_place' => 'required',
+            'marital_status' => 'required',
+            'living_duration' => 'required',
+            'living_duration_unit' => 'required',
+            'last_trip' => 'required',
+            'contact_no' => 'required',
+            'email' => 'required',
+            'service_id' => 'required',
+            'original_village' => 'required',
+            'original_district' => 'required',
+            'original_province' => 'required',
+            'current_city' => 'required',
+            'zip_code' => 'required',
+            'current_country' => 'required',
+            'height' => 'required',
+            'eyes' => 'required',
+            'skin' => 'required',
+            'hair' => 'required',
+            'd_name' => 'required',
+            'd_last_name' => 'required',
+            'd_contact' => 'required',
+            'sibling_name' => 'required',
+            'sibling_last_name' => 'required',
+            'sibling_id' => 'required',
+            'page_no' => 'required',
+            'version_no' => 'required',
+            'note_no' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'day' => 'required',
         ]);
 
         $verification->update([
-            "name" => request()->name,
-            "last_name" => request()->last_name,
-            "father_name" => request()->father_name,
-            "grand_father_name" => request()->grand_father_name,
-            "occupation" => request()->occupation,
-            "birth_place" => request()->birth_place,
-            "marital_status" => request()->marital_status,
-            "living_duration" => request()->living_duration,
-            "living_duration_unit" => request()->living_duration_unit,
-            "last_trip" => request()->last_trip,
-            "contact_no" => request()->contact_no,
-            "email" => request()->email,
-            "service_id" => request()->service_id,
-            "new_absence_tazkira_case" => request()->new_absence_tazkira_case,
-            "original_village" => $this->setAttr(request()->original_village, 'App\Village'),
-            "original_province" => request()->original_province,
-            "original_district" => $this->setAttr(request()->original_district, 'App\District'),
-            "current_city" => request()->current_city,
-            "zip_code" => request()->zip_code,
-            "current_country" => request()->current_country,
-            "height" => request()->height,
-            "eyes" => request()->eyes,
-            "skin" => request()->skin,
-            "hair" => request()->hair,
-            "other" => request()->other,
-            "d_name" => request()->d_name,
-            "d_last_name" => request()->d_last_name,
-            "d_father_name" => request()->d_father_name,
-            "d_contact" => request()->d_contact,
-            "sibling_name" => request()->sibling_name,
-            "sibling_last_name" => request()->sibling_last_name,
-            "sibling_father_name" => request()->sibling_father_name,
-            "sibling_grand_father_name" => request()->sibling_grand_father_name,
-            "sibling_id" => request()->sibling_id,
-            "page_no" => request()->page_no,
-            "version_no" => request()->version_no,
-            "note_no" => request()->note_no,
-            "year" => request()->year,
-            "month" => request()->month,
-            "day" => request()->day,
+            'name' => request()->name,
+            'last_name' => request()->last_name,
+            'father_name' => request()->father_name,
+            'grand_father_name' => request()->grand_father_name,
+            'occupation' => request()->occupation,
+            'birth_place' => request()->birth_place,
+            'marital_status' => request()->marital_status,
+            'living_duration' => request()->living_duration,
+            'living_duration_unit' => request()->living_duration_unit,
+            'last_trip' => request()->last_trip,
+            'contact_no' => request()->contact_no,
+            'email' => request()->email,
+            'service_id' => request()->service_id,
+            'new_absence_tazkira_case' => request()->new_absence_tazkira_case,
+            'original_village' => $this->setAttr(request()->original_village, 'App\Village'),
+            'original_province' => request()->original_province,
+            'original_district' => $this->setAttr(request()->original_district, 'App\District'),
+            'current_city' => request()->current_city,
+            'zip_code' => request()->zip_code,
+            'current_country' => request()->current_country,
+            'height' => request()->height,
+            'eyes' => request()->eyes,
+            'skin' => request()->skin,
+            'hair' => request()->hair,
+            'other' => request()->other,
+            'd_name' => request()->d_name,
+            'd_last_name' => request()->d_last_name,
+            'd_father_name' => request()->d_father_name,
+            'd_contact' => request()->d_contact,
+            'sibling_name' => request()->sibling_name,
+            'sibling_last_name' => request()->sibling_last_name,
+            'sibling_father_name' => request()->sibling_father_name,
+            'sibling_grand_father_name' => request()->sibling_grand_father_name,
+            'sibling_id' => request()->sibling_id,
+            'page_no' => request()->page_no,
+            'version_no' => request()->version_no,
+            'note_no' => request()->note_no,
+            'year' => request()->year,
+            'month' => request()->month,
+            'day' => request()->day,
         ]);
-        
+
         if (request()->hasFile('photo')) {
 
             $extension = request()->photo->getClientOriginalExtension();
 
-            $name = str_replace(' ', '_', $verification->name) . '-' . str_replace(' ', '_', $verification->last_name) . '-' . str_replace(' ', '_', $verification->father_name) . '-' . time();
+            $name = str_replace(' ', '_', $verification->name).'-'.str_replace(' ', '_', $verification->last_name).'-'.str_replace(' ', '_', $verification->father_name).'-'.time();
 
             $fullPath = \Storage::disk('verification')->putFile($name, new File(request()->photo));
-            
+
             \Storage::disk('verification')->delete($verification->image->path);
 
             $verification->image()->update([
@@ -264,7 +265,9 @@ class TazkiraController extends Controller
 
     private function setAttr($attr, $model)
     {
-        if (is_numeric($attr)) return $attr;
+        if (is_numeric($attr)) {
+            return $attr;
+        }
 
         $instance = new $model;
         $instance->name = $attr;
@@ -280,8 +283,9 @@ class TazkiraController extends Controller
 
         $spreadsheet = $this->excelWriter($verification);
 
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('temp/verification_form.xlsx');
+
         return response()->download('temp/verification_form.xlsx');
     }
 
@@ -290,8 +294,9 @@ class TazkiraController extends Controller
         ini_set('memory_limit', '-1');
         $spreadsheet = $this->excelWriter($verification);
 
-        $xmlWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Mpdf');
+        $xmlWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
         $xmlWriter->save('temp/verification_form.pdf', 'landscape');
+
         return response()->download('temp/verification_form.pdf');
     }
 
@@ -301,13 +306,13 @@ class TazkiraController extends Controller
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('templates/verification_form_template.xlsx');
         $sheet = $spreadsheet->getActiveSheet();
         // dd($spreadsheet);
-        $sheet->setCellValue('D5', $verification->name . ' ' . $verification->last_name);
+        $sheet->setCellValue('D5', $verification->name.' '.$verification->last_name);
         $sheet->setCellValue('D6', $verification->father_name);
         $sheet->setCellValue('D7', $verification->grand_father_name);
         $sheet->setCellValue('D8', $verification->birth_place);
-        $sheet->setCellValue('D9', __('tazkira.' . $verification->marital_status));
+        $sheet->setCellValue('D9', __('tazkira.'.$verification->marital_status));
         $sheet->setCellValue('D10', $verification->occupation);
-        $sheet->setCellValue('D11', $verification->living_duration . ' ' .  __('tazkira.' . $verification->living_duration_unit));
+        $sheet->setCellValue('D11', $verification->living_duration.' '.__('tazkira.'.$verification->living_duration_unit));
 
         $sheet->setCellValue('D12', $verification->last_trip);
         $sheet->setCellValue('D13', $verification->contact_no);
@@ -327,10 +332,10 @@ class TazkiraController extends Controller
         $sheet->setCellValue('I11', $verification->skin);
         $sheet->setCellValue('I12', $verification->hair);
         $sheet->setCellValue('I13', $verification->other);
-        $sheet->setCellValue('J14', $verification->d_name . ' ' . $verification->d_last_name);
+        $sheet->setCellValue('J14', $verification->d_name.' '.$verification->d_last_name);
         $sheet->setCellValue('K14', $verification->d_contact);
 
-        $sheet->setCellValue('D18', $verification->sibling_name . ' ' . $verification->sibling_last_name);
+        $sheet->setCellValue('D18', $verification->sibling_name.' '.$verification->sibling_last_name);
         // $sheet->setCellValue('D5', );
 
         $sheet->setCellValue('I18', $verification->sibling_father_name);
@@ -360,17 +365,17 @@ class TazkiraController extends Controller
 
     public function printWord(Verification $verification)
     {
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord = new \PhpOffice\PhpWord\PhpWord;
 
         $template = $phpWord->loadTemplate('templates/verification_form_template.docx');
         // dd($spreadsheet);
-        $template->setValue('name', $verification->name . ' ' . $verification->last_name);
+        $template->setValue('name', $verification->name.' '.$verification->last_name);
         $template->setValue('father_name', $verification->father_name);
         $template->setValue('grand_father_name', $verification->grand_father_name);
         $template->setValue('birth_place', $verification->birth_place);
-        $template->setValue('marital_status', __('tazkira.' . $verification->marital_status));
+        $template->setValue('marital_status', __('tazkira.'.$verification->marital_status));
         $template->setValue('occupation', $verification->occupation);
-        $template->setValue('living_duration', $verification->living_duration . ' ' .  __('tazkira.' . $verification->living_duration_unit));
+        $template->setValue('living_duration', $verification->living_duration.' '.__('tazkira.'.$verification->living_duration_unit));
 
         $template->setValue('last_trip', $verification->last_trip);
         $template->setValue('contact_no', $verification->contact_no);
@@ -390,10 +395,10 @@ class TazkiraController extends Controller
         $template->setValue('skin', $verification->skin);
         $template->setValue('hair', $verification->hair);
         $template->setValue('other', $verification->other);
-        $template->setValue('d_name', $verification->d_name . ' ' . $verification->d_last_name);
+        $template->setValue('d_name', $verification->d_name.' '.$verification->d_last_name);
         $template->setValue('d_contact', $verification->d_contact);
 
-        $template->setValue('sibling_name', $verification->sibling_name . ' ' . $verification->sibling_last_name);
+        $template->setValue('sibling_name', $verification->sibling_name.' '.$verification->sibling_last_name);
         // $template->setValue('D5', );
 
         $template->setValue('sibling_father_name', $verification->sibling_father_name);

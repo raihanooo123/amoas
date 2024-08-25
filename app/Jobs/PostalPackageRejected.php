@@ -3,17 +3,19 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class PostalPackageRejected implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $postal;
+
     public $rejectedReason;
+
     /**
      * Create a new job instance.
      *
@@ -32,9 +34,9 @@ class PostalPackageRejected implements ShouldQueue
      */
     public function handle()
     {
-        $email     = $this->postal->email;
-        $sender    = env('MAIL_USERNAME');
-        
+        $email = $this->postal->email;
+        $sender = env('MAIL_USERNAME');
+
         \Mail::to($email)->send(new \App\Mail\PostalPackageRejected($this->postal, $this->rejectedReason));
     }
 }

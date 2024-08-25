@@ -27,7 +27,7 @@ class AddonUpdateRequest extends FormRequest
             'title' => 'required|string|max:255',
             'photo_id' => 'mimes:jpeg,png',
             'category_id' => 'required|not_in:0',
-            'price' => 'required'
+            'price' => 'required',
         ];
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAttachmentsTable extends Migration
 {
@@ -17,7 +17,7 @@ class CreateAttachmentsTable extends Migration
             $table->increments('id');
             $table->string('label');
             $table->string('path');
-            $table->string('mime_type',30);
+            $table->string('mime_type', 30);
             $table->unsignedInteger('attachable_id');
             $table->string('attachable_type');
             $table->timestamps();

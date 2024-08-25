@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Visa;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Visa\VisaForm;
 use Illuminate\Http\File;
-use FPDM;
+use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class VisaFormController extends Controller
 {
-     
     public function index()
     {
         // get the limits for pagination
         $limit = request()->has('limit') && request()->input('limit') <= 200 ? request()->input('limit') : 50;
 
-        $visaForms = VisaForm::with(['department', 'country','type', 'registrar'])
+        $visaForms = VisaForm::with(['department', 'country', 'type', 'registrar'])
             ->latest()
             ->paginate($limit);
+
         // dd($visaForms);
         return view('visa.index', compact('visaForms'));
     }
@@ -27,27 +26,22 @@ class VisaFormController extends Controller
     public function show(VisaForm $visa_form)
     {
         $visa_form->load(['department', 'country', 'type', 'image', 'registrar']);
-        
 
         $off_days = \DB::table('booking_times')
             ->where('is_off_day', '=', '1')
             ->get();
 
-        $dayNumber = array();
+        $dayNumber = [];
 
-        foreach ($off_days as $off_day)
-        {
-            if($off_day->id != 7)
-            {
+        foreach ($off_days as $off_day) {
+            if ($off_day->id != 7) {
                 $dayNumber[] = $off_day->id;
-            }
-            else
-            {
+            } else {
                 $dayNumber[] = $off_day->id - 7;
             }
         }
 
-        $disable_days_string = implode(",", $dayNumber);
+        $disable_days_string = implode(',', $dayNumber);
 
         $packageId = \App\Models\Visa\VisaForm::getPackageId();
 
@@ -56,18 +50,19 @@ class VisaFormController extends Controller
 
     public function fillForm()
     {
-        if(request()->has('mission')){
+        if (request()->has('mission')) {
             $department = \App\Department::where('code', strtoupper(request()->mission))->where('status', 1)->first();
-            if($department)
-                request()->session()->put('department',$department);
+            if ($department) {
+                request()->session()->put('department', $department);
+            }
         }
-        
+
         return view('visa.form.fill-form');
     }
 
     public function store()
     {
-        
+
         $this->validate(request(), [
             'department_id' => 'required',
             'title' => 'required',
@@ -167,12 +162,14 @@ class VisaFormController extends Controller
     {
         $visa = null;
         $message = null;
+
         return view('visa.form.check-visa', compact('visa', 'message'));
     }
 
     public function visaComplete(VisaForm $visa_form)
     {
         $visa_form->load(['department:id,name_en']);
+
         return view('visa.form.visa-completion', compact('visa_form'));
     }
 
@@ -182,45 +179,45 @@ class VisaFormController extends Controller
 
         $pdf = new \FPDM('templates/visa_fixed.pdf');
         $pdf->Load([
-            'serial_no'=> $visa_form->serial_no,
-            'Title'=> ucfirst($visa_form->title),
-            'Family_Name'=> $visa_form->family_name,
-            'Given_Names'=> $visa_form->given_name,
-            'Father_Name'=> $visa_form->father_name,
-            'DoB'=> date('m/d/y', strtotime($visa_form->dob)),
-            'Country_of_birth'=> $visa_form->birthCountry->name_en,
-            'marital_status'=> ucfirst($visa_form->marital_status),
-            'Country_of_Residence'=> $visa_form->country->name_en,
-            'Nationality'=> $visa_form->nationality,
-            'Other_Nationalities'=> $visa_form->other_nationality,
-            'Current_Address'=> $visa_form->address,
-            'Email'=> $visa_form->email,
-            'Mobile'=> $visa_form->mobile,
-            'Current_Occupation'=> $visa_form->occupation,
-            'Employers_Name'=> $visa_form->employer_name,
-            'Employeers_Address'=> $visa_form->employer_address,
-            'Previous_Employeers_Name'=> $visa_form->pre_employer_name,
-            'Previous_Employeers_Address'=> $visa_form->pre_employer_address,
-            'Visa_Type'=> $visa_form->type->label_en,
-            'purpose'=> $visa_form->purpose,
-            'Entry_Date'=> date('m/d/y', strtotime($visa_form->entry_date)),
-            'Intended Duration of Stay'=> $visa_form->intend_duration,
-            'Point of Entry'=> $visa_form->entry_point,
-            'Number_of_Children'=> $visa_form->children_no,
-            'Places in Afghanistan intended to visit'=> $visa_form->visit_places,
-            'Complete Address in Afghanistan'=> $visa_form->af_address,
-            'Place_visit_afghanistan'=> $visa_form->visited_before,
-            'Visa_Applied_Before'=> $visa_form->visited_before,
-            'Crime_Details'=> $visa_form->criminal_record,
-            'Passport_Type'=> $visa_form->passport_type,
-            'Passport_Number'=> $visa_form->passport_no,
-            'Place_of_Issue'=> $visa_form->issue_place,
-            'Issue_date_af_date'=> date('m/d/y', strtotime($visa_form->issue_date)),
-            'Expiry_date_af_date'=> date('m/d/y', strtotime($visa_form->expire_date)),
+            'serial_no' => $visa_form->serial_no,
+            'Title' => ucfirst($visa_form->title),
+            'Family_Name' => $visa_form->family_name,
+            'Given_Names' => $visa_form->given_name,
+            'Father_Name' => $visa_form->father_name,
+            'DoB' => date('m/d/y', strtotime($visa_form->dob)),
+            'Country_of_birth' => $visa_form->birthCountry->name_en,
+            'marital_status' => ucfirst($visa_form->marital_status),
+            'Country_of_Residence' => $visa_form->country->name_en,
+            'Nationality' => $visa_form->nationality,
+            'Other_Nationalities' => $visa_form->other_nationality,
+            'Current_Address' => $visa_form->address,
+            'Email' => $visa_form->email,
+            'Mobile' => $visa_form->mobile,
+            'Current_Occupation' => $visa_form->occupation,
+            'Employers_Name' => $visa_form->employer_name,
+            'Employeers_Address' => $visa_form->employer_address,
+            'Previous_Employeers_Name' => $visa_form->pre_employer_name,
+            'Previous_Employeers_Address' => $visa_form->pre_employer_address,
+            'Visa_Type' => $visa_form->type->label_en,
+            'purpose' => $visa_form->purpose,
+            'Entry_Date' => date('m/d/y', strtotime($visa_form->entry_date)),
+            'Intended Duration of Stay' => $visa_form->intend_duration,
+            'Point of Entry' => $visa_form->entry_point,
+            'Number_of_Children' => $visa_form->children_no,
+            'Places in Afghanistan intended to visit' => $visa_form->visit_places,
+            'Complete Address in Afghanistan' => $visa_form->af_address,
+            'Place_visit_afghanistan' => $visa_form->visited_before,
+            'Visa_Applied_Before' => $visa_form->visited_before,
+            'Crime_Details' => $visa_form->criminal_record,
+            'Passport_Type' => $visa_form->passport_type,
+            'Passport_Number' => $visa_form->passport_no,
+            'Place_of_Issue' => $visa_form->issue_place,
+            'Issue_date_af_date' => date('m/d/y', strtotime($visa_form->issue_date)),
+            'Expiry_date_af_date' => date('m/d/y', strtotime($visa_form->expire_date)),
             // 'Male'=> $visa_form->gender == 'male' ? 'On' : 'No',
             // 'Female'=> $visa_form->gender == 'female' ? 'Yes' : 'No',
-            'gender'=> ucfirst($visa_form->gender),
-            'under_18'=> $visa_form->gender == '1' ? 'Yes' : 'No',
+            'gender' => ucfirst($visa_form->gender),
+            'under_18' => $visa_form->gender == '1' ? 'Yes' : 'No',
         ], true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
         // $pdf->Image('logo.png');
         $pdf->Merge();
@@ -245,29 +242,29 @@ class VisaFormController extends Controller
             'booking_slot' => 'required',
         ]);
         \DB::beginTransaction();
-            $booking = \App\Booking::create([
-                'user_id' => $visa_form->registrar_id,
-                'package_id' => request('package_id'),
-                'department_id' => $visa_form->department_id,
-                'serial_no' => \App\Booking::genSerialNo($visa_form->department_id),
-                'booking_date' => request()->event_date,
-                'booking_time' => request()->booking_slot,
-                'email' => $visa_form->email,
-                'booking_type' => request()->booking_type ?? 'Ordinary',
-                'status' => 'Processing',
-            ]);
+        $booking = \App\Booking::create([
+            'user_id' => $visa_form->registrar_id,
+            'package_id' => request('package_id'),
+            'department_id' => $visa_form->department_id,
+            'serial_no' => \App\Booking::genSerialNo($visa_form->department_id),
+            'booking_date' => request()->event_date,
+            'booking_time' => request()->booking_slot,
+            'email' => $visa_form->email,
+            'booking_type' => request()->booking_type ?? 'Ordinary',
+            'status' => 'Processing',
+        ]);
 
-            $booking->info()->create([
-                'full_name' =>  $visa_form->given_name. ' ' .$visa_form->family_name ,
-                'email' => $visa_form->email,
-                'phone' => $visa_form->mobile,
-                'id_card' => $visa_form->passport_no,
-                'postal' => 'N/A',
-                'address' => 'N/A',
-            ]);
+        $booking->info()->create([
+            'full_name' => $visa_form->given_name.' '.$visa_form->family_name,
+            'email' => $visa_form->email,
+            'phone' => $visa_form->mobile,
+            'id_card' => $visa_form->passport_no,
+            'postal' => 'N/A',
+            'address' => 'N/A',
+        ]);
 
-            $visa_form->status = __('backend.approvedInterviewOn'). $booking->booking_date . ' ' . $booking->booking_time;
-            $visa_form->save();
+        $visa_form->status = __('backend.approvedInterviewOn').$booking->booking_date.' '.$booking->booking_time;
+        $visa_form->save();
         \DB::commit();
 
         $booking->load(['user', 'info', 'package', 'department']);
@@ -288,20 +285,23 @@ class VisaFormController extends Controller
 
         return back()->with([
             'alert' => __('backend.action.performed'),
-            'class' => 'alert-danger'
+            'class' => 'alert-danger',
         ]);
     }
 
     public function dataTable()
     {
-        $visaForms = VisaForm::with(['department', 'country','type', 'registrar'])->latest();
+        $visaForms = VisaForm::with(['department', 'country', 'type', 'registrar'])->latest();
+
         return Datatables::of($visaForms)
-            ->addColumn('name', function($visaForm){
-                $name = ucwords($visaForm->title . ' ' . $visaForm->given_name . ' ' . $visaForm->family_name) ;
+            ->addColumn('name', function ($visaForm) {
+                $name = ucwords($visaForm->title.' '.$visaForm->given_name.' '.$visaForm->family_name);
+
                 return $name;
             })
-            ->addColumn('action', function($visaForms){
-                $action = '<a href="' . route('visa-form.show', $visaForms->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+            ->addColumn('action', function ($visaForms) {
+                $action = '<a href="'.route('visa-form.show', $visaForms->id).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+
                 return $action;
             })
             ->make(true);

@@ -12,7 +12,7 @@ class BirthCertificate extends Model
     use SoftDeletes;
 
     protected $table = 'birth_certificates';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,8 +36,11 @@ class BirthCertificate extends Model
     ];
 
     protected static $logFillable = true;
+
     protected static $logName = 'Birth Certificate';
+
     protected static $ignoreChangedAttributes = ['updated_at'];
+
     protected static $logOnlyDirty = true;
 
     public function department()
@@ -54,15 +57,16 @@ class BirthCertificate extends Model
     {
 
         $counts = self::count();
-		$fixedCounter = 3240;
-        $serialNo = 'BC' . date('y') . '-' . ($counts + $fixedCounter);
+        $fixedCounter = 3240;
+        $serialNo = 'BC'.date('y').'-'.($counts + $fixedCounter);
 
         // check if exists
-        while(self::where('serial_no', $serialNo )->exists()) 
-            $serialNo = 'BC' . date('y') . '-' . ($counts + $fixedCounter++);
-		
-		return $serialNo;
-        
+        while (self::where('serial_no', $serialNo)->exists()) {
+            $serialNo = 'BC'.date('y').'-'.($counts + $fixedCounter++);
+        }
+
+        return $serialNo;
+
         // $counts = self::withoutGlobalScopes()->count();
         // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 

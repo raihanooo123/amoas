@@ -19,6 +19,6 @@ return [
     '500_message' => 'Etwas ist kaputt. Wir arbeiten daran, es bald zu beheben. Bitte schau später nochmal vorbei.',
     'go_back_btn' => 'Gehen Sie zurück zur vorherigen Seite',
     'account_disabled' => 'Konto Deaktiviert',
-    'account_disabled_text' => 'Leider ist dein Konto deaktiviert. Bitte konsultieren Sie den Systemadministrator für Details.'
+    'account_disabled_text' => 'Leider ist dein Konto deaktiviert. Bitte konsultieren Sie den Systemadministrator für Details.',
 
 ];

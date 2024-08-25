@@ -12,7 +12,7 @@ class PassportExtension extends Model
     use SoftDeletes;
 
     protected $table = 'passport_extensions';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -35,8 +35,11 @@ class PassportExtension extends Model
     ];
 
     protected static $logFillable = true;
+
     protected static $logName = 'Passport Extensions';
+
     protected static $ignoreChangedAttributes = ['updated_at'];
+
     protected static $logOnlyDirty = true;
 
     public function members()

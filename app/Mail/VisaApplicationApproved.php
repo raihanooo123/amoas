@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class VisaApplicationApproved extends Mailable
 {
@@ -31,6 +30,7 @@ class VisaApplicationApproved extends Mailable
     public function build()
     {
         $this->subject('Afghanistan Online Visa Application Form result anouncement.');
+
         return $this->view('emails.visa-form-accepted', compact('visaForm'));
     }
 }

@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdminBookingTimesController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:BookingTimes show'])->only(['index', 'show']);
@@ -16,6 +15,7 @@ class AdminBookingTimesController extends Controller
         $this->middleware(['permission:BookingTimes edit'])->only(['edit', 'update']);
         $this->middleware(['permission:BookingTimes delete'])->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +24,7 @@ class AdminBookingTimesController extends Controller
     public function index()
     {
         $booking_times = BookingTime::all();
+
         return view('settings.bookingTimes', compact('booking_times'));
     }
 
@@ -40,7 +41,6 @@ class AdminBookingTimesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -73,7 +73,6 @@ class AdminBookingTimesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -84,6 +83,7 @@ class AdminBookingTimesController extends Controller
 
         //set session message and redirect back booking-times.index
         Session::flash('booking_time_updated', __('backend.booking_time_updated'));
+
         return redirect('/booking-times');
     }
 

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Tracing;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Tracing\Passport;
-use Yajra\Datatables\Datatables;
 use App\Imports\ImpPassportTracing;
+use App\Models\Tracing\Passport;
+use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class PassportController extends Controller
 {
@@ -16,6 +16,7 @@ class PassportController extends Controller
         $this->middleware(['permission:passport import'])->only(['store', 'import']);
         $this->middleware(['permission:passport delete'])->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,20 +40,19 @@ class PassportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        if($request->exists('import'))
+        if ($request->exists('import')) {
             return $this->storeImports($request);
-            
+        }
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function storeImports(Request $request)
@@ -62,17 +62,18 @@ class PassportController extends Controller
             'note' => 'nullable|max:254',
             'excel_file' => 'required',
         ]);
-            
+
         // Import to Array
         $passportsArr = \Excel::toArray(new ImpPassportTracing, request()->file('excel_file'));
 
         // session(['totalCount' => 0, 'progressCount' => 0]);
 
-        if(array_key_exists(0, $passportsArr))
+        if (array_key_exists(0, $passportsArr)) {
             \App\Jobs\ImportPassportTracingExcel::dispatch($passportsArr[0], $request->except(['excel_file', '_token']));
-        
+        }
+
         return redirect(route('passport.index'))
-            ->with(['alert'=>'Excel imported successfully']);
+            ->with(['alert' => 'Excel imported successfully']);
     }
 
     /**
@@ -100,7 +101,6 @@ class PassportController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -130,7 +130,7 @@ class PassportController extends Controller
     {
         return view('tracing.passport.import');
     }
-    
+
     /**
      * Process datatables ajax request.
      *
@@ -139,9 +139,11 @@ class PassportController extends Controller
     public function dataTable()
     {
         $passports = Passport::with(['department:id,name_en']);
+
         return Datatables::of($passports)
-            ->addColumn('action', function($passport){
-                $action = '<a href="' . route('passport.show', $passport->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+            ->addColumn('action', function ($passport) {
+                $action = '<a href="'.route('passport.show', $passport->id).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
@@ -151,7 +153,7 @@ class PassportController extends Controller
     public function impProgressStatus()
     {
         return response()->json([
-            'status' => session('progressCount') > 0 ? 'Importing Excel' : 'Uploading File' ,
+            'status' => session('progressCount') > 0 ? 'Importing Excel' : 'Uploading File',
             'importedCount' => session('progressCount'),
             'importedTotalCount' => session('totalCount'),
         ]);

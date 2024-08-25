@@ -32,5 +32,4 @@ return [
     'word' => 'Word',
     'update' => 'Update',
 
-
 ];

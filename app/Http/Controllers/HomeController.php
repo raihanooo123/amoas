@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
-use App\CancelRequest;
-use App\Invoice;
 use App\Role;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
 class HomeController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | Home Controller
@@ -30,7 +24,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        $this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -41,8 +35,7 @@ class HomeController extends Controller
     public function index()
     {
         //if Auth user role is admin
-        if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
-        {
+        if (Auth::user()->isAdmin() || Auth::user()->isSuperAdmin()) {
             //find all customers
             $role = Role::find(2);
 
@@ -61,14 +54,14 @@ class HomeController extends Controller
             $stats_booking = Booking::select('booking_date as date', \DB::raw('count(*) as value'))
                 ->where('booking_date', '>=', $now->format('Y-m-d'))
                 ->where('booking_date', '<=', $now->endOfMonth()->format('Y-m-d'))
-                ->where('status','!=' ,'Cancelled')
+                ->where('status', '!=', 'Cancelled')
                 ->groupBy('booking_date')
                 ->get();
 
             //get data for cancelled bookings
-            $bookings_cancelled = Booking::where('status','=', 'cancelled')->count();
-            $todayCancelledBookings = $todayBookings->whereIn('status',['Cancelled', 'cancelled'])
-                                                    ->count();
+            $bookings_cancelled = Booking::where('status', '=', 'cancelled')->count();
+            $todayCancelledBookings = $todayBookings->whereIn('status', ['Cancelled', 'cancelled'])
+                ->count();
 
             return view('dashboard.admin', compact(
                 'customers',
@@ -82,33 +75,29 @@ class HomeController extends Controller
         }
 
         //if Auth user role is customer
-        else if(Auth::user()->isCustomer())
-        {
+        elseif (Auth::user()->isCustomer()) {
             $user = Auth::user();
-            $bookings = $user->bookings()->where('status','!=', __('backend.cancelled'))->count('id');
+            $bookings = $user->bookings()->where('status', '!=', __('backend.cancelled'))->count('id');
             $recent_bookings = $user->bookings()->orderBy('created_at', 'ASC')->limit('5')->get();
 
             //find successful invoices and calculate total
-            $successful_invoices = $user->invoices()->where('is_refunded','=', 0)->get();
+            $successful_invoices = $user->invoices()->where('is_refunded', '=', 0)->get();
             $total_paid = 0;
-            foreach ($successful_invoices as $successful_invoice)
-            {
+            foreach ($successful_invoices as $successful_invoice) {
                 $total_paid = $total_paid + $successful_invoice->amount;
             }
 
             //find refunded invoices and calculate total
-            $refunded_invoices = $user->invoices()->where('is_refunded','=', 1)->get();
+            $refunded_invoices = $user->invoices()->where('is_refunded', '=', 1)->get();
             $total_refunded = 0;
-            foreach ($refunded_invoices as $refunded_invoice)
-            {
+            foreach ($refunded_invoices as $refunded_invoice) {
                 $total_refunded = $total_refunded + $refunded_invoice->amount;
             }
 
-            $bookings_cancelled = $user->bookings()->where('status','=', __('backend.cancelled'))->count('id');
+            $bookings_cancelled = $user->bookings()->where('status', '=', __('backend.cancelled'))->count('id');
 
             return view('dashboard.customer', compact('bookings', 'total_paid',
                 'bookings_cancelled', 'recent_bookings', 'total_refunded'));
         }
     }
-
 }

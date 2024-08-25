@@ -2,30 +2,30 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
     use HasRoles;
-    
+    use Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'first_name', 
-        'last_name', 
-        'phone_number', 
-        'email', 
-        'password', 
-        'role_id', 
-        'is_active', 
-        'photo_id', 
+        'first_name',
+        'last_name',
+        'phone_number',
+        'email',
+        'password',
+        'role_id',
+        'is_active',
+        'photo_id',
         'department_id',
         'email_verified_at',
     ];
@@ -38,7 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 
+        'password',
         'remember_token',
     ];
 
@@ -64,37 +64,45 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function department()
     {
-        if(!$this->department_id)
+        if (! $this->department_id) {
             throw new \App\Exceptions\CustomException('User does not assigned to a department.');
+        }
+
         return $this->belongsTo('App\Department');
     }
 
     public function isAdmin()
     {
-        if(!$this->role) return false;
+        if (! $this->role) {
+            return false;
+        }
 
-        if($this->role->id == 1)
-        {
+        if ($this->role->id == 1) {
             return true;
         }
+
         return false;
     }
 
     public function isCustomer()
     {
-        if(!$this->role) return true;
-
-        if($this->role->id == 2)
-        {
+        if (! $this->role) {
             return true;
         }
+
+        if ($this->role->id == 2) {
+            return true;
+        }
+
         return false;
     }
 
     public function isSuperAdmin()
     {
-        if(!$this->role) return false;
-        
+        if (! $this->role) {
+            return false;
+        }
+
         preg_match('/super-admin|super_admin|super admin|super administrator/i', $this->role->name, $matches);
 
         return $matches ? true : false;

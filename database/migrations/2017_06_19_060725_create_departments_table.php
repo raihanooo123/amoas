@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDepartmentsTable extends Migration
 {
@@ -15,12 +15,12 @@ class CreateDepartmentsTable extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name_en',250);
-            $table->string('name_dr',250)->nullable();
-            $table->string('name_pa',250)->nullable();
-            $table->string('type',30)->default('directorate');
+            $table->string('name_en', 250);
+            $table->string('name_dr', 250)->nullable();
+            $table->string('name_pa', 250)->nullable();
+            $table->string('type', 30)->default('directorate');
             $table->unsignedInteger('parent_id');
-            $table->string('code',20)->default('SOME_TYPE_CODE');
+            $table->string('code', 20)->default('SOME_TYPE_CODE');
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });

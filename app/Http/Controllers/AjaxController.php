@@ -14,12 +14,13 @@ class AjaxController extends Controller
             if (request()->has('t')) {
                 $query = \DB::table(request()->t);
                 $query->select(request()->f);
-                foreach (request()->s as $key => $field){
-                    if($key == 0){
-                        $query->where($field, 'like', '%' . request()->term . '%');
+                foreach (request()->s as $key => $field) {
+                    if ($key == 0) {
+                        $query->where($field, 'like', '%'.request()->term.'%');
+
                         continue;
                     }
-                    $query->orWhere($field, 'like', '%' . request()->term . '%');
+                    $query->orWhere($field, 'like', '%'.request()->term.'%');
                 }
                 $result = $query->get();
 

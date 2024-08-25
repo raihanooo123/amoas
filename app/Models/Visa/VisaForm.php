@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Models\Visa;
-use App\Scopes\DepartmentScope;
 
+use App\Scopes\DepartmentScope;
 use Illuminate\Database\Eloquent\Model;
 
 class VisaForm extends Model
 {
     protected $table = 'visa_form';
+
     protected $fillable = [
         'department_id',
         'serial_no',
@@ -55,6 +56,7 @@ class VisaForm extends Model
     protected $casts = [
         'under_18' => 'boolean',
     ];
+
     /**
      * The "booting" method of the model.
      *
@@ -102,9 +104,9 @@ class VisaForm extends Model
         // get count of today's record
         $counts = self::count();
 
-        $department = \App\Department::find($departmentId) ? \App\Department::find($departmentId)->code : 'AFG' ;
+        $department = \App\Department::find($departmentId) ? \App\Department::find($departmentId)->code : 'AFG';
 
-        $serialNo = date('ynj') . '-' . $department . '-' . sprintf('%04d', ++$counts);
+        $serialNo = date('ynj').'-'.$department.'-'.sprintf('%04d', ++$counts);
 
         return $serialNo;
         // return sprintf('%04d', 2565426);
@@ -113,6 +115,7 @@ class VisaForm extends Model
     public static function getPackageId()
     {
         $package = \App\Package::select(['id', 'title'])->whereRaw("lower(title) REGEXP 'visa|ویزا'")->first();
+
         return $package->id;
     }
 }

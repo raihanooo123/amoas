@@ -5,16 +5,15 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Endroid\QrCode\QrCode;
 
 class NewTimeBooked extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $booking;
+
     public $name;
-    
+
     /**
      * Create a new message instance.
      *
@@ -33,7 +32,8 @@ class NewTimeBooked extends Mailable
      */
     public function build()
     {
-        $this->subject('You have successfully reserved an appointment at ' . $this->booking->department->name_en);
+        $this->subject('You have successfully reserved an appointment at '.$this->booking->department->name_en);
+
         return $this->view('print-booking-success');
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Finance;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Finance\PaymentService;
 use App\Models\Finance\Receipt;
+use Illuminate\Http\Request;
 
 class ReceiptController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:receipts show'])->only(['index', 'show', 'dataTable']);
@@ -27,22 +26,22 @@ class ReceiptController extends Controller
     public function dashboard()
     {
         $statistics = \DB::table('receipts as r')
-                ->leftJoin('transactions as t', function($join){
-                    $join->on('r.id', '=', 't.accountable_id')
-                        ->where('t.accountable_type', '=', Receipt::class);
-                })
-                ->leftJoin('users as u', 'r.accountant_id', '=', 'u.id')
-                ->groupBy('r.date', 'r.accountant_id')
-                ->whereNull('r.clearance_id')
-				->whereNull('r.deleted_at')
-                ->select([
-                    'r.date',
-                    'r.accountant_id',
-                    \DB::raw('concat(u.first_name, " " , u.last_name) as user'), 
-                    // '',
-                    \DB::raw('SUM(t.amount) as amount'),
-                ])
-                ->get();
+            ->leftJoin('transactions as t', function ($join) {
+                $join->on('r.id', '=', 't.accountable_id')
+                    ->where('t.accountable_type', '=', Receipt::class);
+            })
+            ->leftJoin('users as u', 'r.accountant_id', '=', 'u.id')
+            ->groupBy('r.date', 'r.accountant_id')
+            ->whereNull('r.clearance_id')
+            ->whereNull('r.deleted_at')
+            ->select([
+                'r.date',
+                'r.accountant_id',
+                \DB::raw('concat(u.first_name, " " , u.last_name) as user'),
+                // '',
+                \DB::raw('SUM(t.amount) as amount'),
+            ])
+            ->get();
 
         return view('finance.receipts.dashboard', compact('statistics'));
     }
@@ -75,9 +74,9 @@ class ReceiptController extends Controller
     public function online()
     {
         $latestReceipt = Receipt::whereNotNull('bill_no')
-                                ->where('payment_method', 'card')
-                                ->latest()
-                                ->first();
+            ->where('payment_method', 'card')
+            ->latest()
+            ->first();
 
         return view('finance.receipts.online', compact('latestReceipt'));
     }
@@ -85,7 +84,6 @@ class ReceiptController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -96,25 +94,25 @@ class ReceiptController extends Controller
 
         if ($request->ajax()) {
             $this->validate($request, [
-                'client_name'=> 'required|min:2|max:191',
-                'id_card'=> 'nullable|max:191',
-                'service_id'=> 'required|numeric|in:' . $servicesIdInString,
+                'client_name' => 'required|min:2|max:191',
+                'id_card' => 'nullable|max:191',
+                'service_id' => 'required|numeric|in:'.$servicesIdInString,
             ]);
 
-        }else {
+        } else {
             $this->validate($request, [
-                'client_name'=> 'required|min:2|max:191',
-                'id_card'=> 'nullable|max:191',
-                'service_id'=> 'required|numeric|in:' . $servicesIdInString,
-                'quantity'=> 'required|min:1',
-                'amount'=> 'nullable|min:0.1',
+                'client_name' => 'required|min:2|max:191',
+                'id_card' => 'nullable|max:191',
+                'service_id' => 'required|numeric|in:'.$servicesIdInString,
+                'quantity' => 'required|min:1',
+                'amount' => 'nullable|min:0.1',
             ]);
 
         }
 
         \DB::beginTransaction();
 
-        try{
+        try {
 
             $service = PaymentService::findOrFail($request->service_id);
 
@@ -123,9 +121,9 @@ class ReceiptController extends Controller
             $newReceipt = Receipt::create([
                 'receipt_no' => $receiptNo,
                 'date' => date('Y-m-d'),
-                'client_name'=> $request->client_name,
-                'id_card'=> $request->id_card,
-                'service_id'=> $request->service_id,
+                'client_name' => $request->client_name,
+                'id_card' => $request->id_card,
+                'service_id' => $request->service_id,
                 'received_by' => auth()->id(),
                 'accountant_id' => auth()->id(),
                 'registrar_id' => auth()->id(),
@@ -134,9 +132,9 @@ class ReceiptController extends Controller
                 'bill_no' => $request->bill_no,
                 'payment_method' => $request->ajax() ? 'cash' : 'card',
             ]);
-            
+
             if ($request->ajax()) {
-                $amount = $service->amount; 
+                $amount = $service->amount;
             } else {
                 $amount = $request->filled('amount')
                     ? $request->amount
@@ -154,13 +152,15 @@ class ReceiptController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
+
             return abort(500, $e->getMessage());
         }
 
-        if ($request->ajax())
+        if ($request->ajax()) {
             return response()->json(['receiptNo' => $newReceipt->id], 200);
+        }
 
-        return back()->with(['alert'=> 'Receipt registered sucessfully.']);
+        return back()->with(['alert' => 'Receipt registered sucessfully.']);
     }
 
     /**
@@ -188,7 +188,6 @@ class ReceiptController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -219,16 +218,16 @@ class ReceiptController extends Controller
         $tempName = 'templates/receipt-fixed.pdf';
         $receipt->load(['transaction', 'service']);
 
-        try{
+        try {
 
             $writableData = [
                 'receipt_no' => $receipt->receipt_no,
                 'date' => $receipt->date->format('d M Y'),
                 'transaction_no' => $receipt->transaction_no,
-                'client_name' => $receipt->client_name . ( $receipt->id_card ? " ({$receipt->id_card})" : '' ),
+                'client_name' => $receipt->client_name.($receipt->id_card ? " ({$receipt->id_card})" : ''),
                 'service_name' => optional($receipt->service)->name,
-                'amount' => optional($receipt->transaction)->amount . ' ' . optional($receipt->transaction)->currency,
-                'received_by' => optional($receipt->registrar)->fullName . ' by ' . $receipt->payment_method . '(' . $receipt->bill_no . ')', 
+                'amount' => optional($receipt->transaction)->amount.' '.optional($receipt->transaction)->currency,
+                'received_by' => optional($receipt->registrar)->fullName.' by '.$receipt->payment_method.'('.$receipt->bill_no.')',
             ];
             $pdf = new \FPDM($tempName);
             $pdf->Load($writableData, true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
@@ -244,22 +243,24 @@ class ReceiptController extends Controller
     public function dataTable()
     {
         $receipts = Receipt::with([
-                'registrar:id,first_name,last_name',
-                'transaction',
-                'service:id,name',
-            ])->cleared()->select('receipts.*');
-        
-        if(!request()->order)
+            'registrar:id,first_name,last_name',
+            'transaction',
+            'service:id,name',
+        ])->cleared()->select('receipts.*');
+
+        if (! request()->order) {
             $receipts->latest();
-        
+        }
+
         return datatables()::of($receipts)
-            ->addColumn('action', function($r){
-                $action = '<a href="' . route('receipts.print', $r->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-print"></i></a>&nbsp;';
+            ->addColumn('action', function ($r) {
+                $action = '<a href="'.route('receipts.print', $r->id).'" class="btn btn-primary btn-sm"><i class="fa fa-print"></i></a>&nbsp;';
+
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
-            ->editColumn('transaction.amount', function($r){
-                return optional($r->transaction)->amount . ' ' . optional($r->transaction)->currency;  
+            ->editColumn('transaction.amount', function ($r) {
+                return optional($r->transaction)->amount.' '.optional($r->transaction)->currency;
             })
             ->addIndexColumn()
             ->make(true);

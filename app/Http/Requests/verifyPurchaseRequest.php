@@ -24,7 +24,7 @@ class verifyPurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'purchase_key' => 'required|string'
+            'purchase_key' => 'required|string',
         ];
     }
 }

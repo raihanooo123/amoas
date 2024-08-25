@@ -5,13 +5,13 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BookingCancelled extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $booking;
+
     public $user;
 
     /**
@@ -32,10 +32,11 @@ class BookingCancelled extends Mailable
      */
     public function build()
     {
-        $this->subject('Your appointment has been cancelled at ' . $this->booking->department->name_en);
+        $this->subject('Your appointment has been cancelled at '.$this->booking->department->name_en);
 
-        if ($this->user == 'admin')
+        if ($this->user == 'admin') {
             return $this->view('emails.booking-cancelled-by-admin');
+        }
 
         return $this->view('emails.booking-cancelled');
     }

@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Booking;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command

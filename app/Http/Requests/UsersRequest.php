@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
+
 class UsersRequest extends FormRequest
 {
     /**
@@ -12,6 +15,7 @@ class UsersRequest extends FormRequest
     {
         return true;
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +30,7 @@ class UsersRequest extends FormRequest
             'password' => 'required|string|min:6',
             'is_active' => 'required',
             'role_id' => 'required|not_in:0',
-            'photo_id' => 'mimes:jpeg,png'
+            'photo_id' => 'mimes:jpeg,png',
         ];
     }
 }

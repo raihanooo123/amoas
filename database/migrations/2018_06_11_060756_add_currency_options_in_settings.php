@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddCurrencyOptionsInSettings extends Migration
 {
@@ -15,9 +15,9 @@ class AddCurrencyOptionsInSettings extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->string('currency_symbol_position')->default(__('backend.left'));
-            $table->string('thousand_separator')->default(",");
-            $table->string('decimal_separator')->default(".");
-            $table->string('decimal_points')->default("2");
+            $table->string('thousand_separator')->default(',');
+            $table->string('decimal_separator')->default('.');
+            $table->string('decimal_points')->default('2');
         });
     }
 

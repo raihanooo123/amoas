@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Tracing;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tracing\MiscellaneousType;
+use Illuminate\Http\Request;
 
 class MiscTypeController extends Controller
 {
@@ -15,6 +15,7 @@ class MiscTypeController extends Controller
         $this->middleware(['permission:MiscType edit'])->only(['edit', 'update']);
         $this->middleware(['permission:MiscType delete'])->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,6 +24,7 @@ class MiscTypeController extends Controller
     public function index()
     {
         $types = MiscellaneousType::all();
+
         return view('tracing.type.index', compact('types'));
     }
 
@@ -39,23 +41,22 @@ class MiscTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-         // dd($request->all());
-         $this->validate(request(), [
+        // dd($request->all());
+        $this->validate(request(), [
             'name' => 'required|min:3',
         ]);
 
         \DB::beginTransaction();
 
         MiscellaneousType::create(['type' => $request->name]);
-        
+
         \DB::commit();
 
-        return redirect(route('misc-types.index'))->with(['alert'=>'Misc type Created']);
+        return redirect(route('misc-types.index'))->with(['alert' => 'Misc type Created']);
     }
 
     /**
@@ -83,7 +84,6 @@ class MiscTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -96,10 +96,10 @@ class MiscTypeController extends Controller
         \DB::beginTransaction();
 
         $misc_type->update(['type' => $request->name]);
-        
+
         \DB::commit();
 
-        return redirect(route('misc-types.index'))->with(['alert'=>'Misc type updated']);
+        return redirect(route('misc-types.index'))->with(['alert' => 'Misc type updated']);
     }
 
     /**
@@ -112,6 +112,6 @@ class MiscTypeController extends Controller
     {
         $misc_type->delete();
 
-        return back()->with(['alert'=>'Type has been deleted.']);
+        return back()->with(['alert' => 'Type has been deleted.']);
     }
 }

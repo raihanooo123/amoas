@@ -5,13 +5,13 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class AdminCancellationNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $booking;
+
     public $user;
 
     /**
@@ -33,6 +33,7 @@ class AdminCancellationNotification extends Mailable
     public function build()
     {
         $this->subject(__('emails.admin_cancel_subject'));
+
         return $this->view('vendor.emails.AdminCancelNotification');
     }
 }

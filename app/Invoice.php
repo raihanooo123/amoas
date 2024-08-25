@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-
     protected $fillable = [
         'booking_id', 'user_id', 'transaction_id', 'amount', 'payment_method', 'is_refunded', 'is_paid',
     ];
@@ -20,5 +19,4 @@ class Invoice extends Model
     {
         return $this->belongsTo('App\User');
     }
-
 }

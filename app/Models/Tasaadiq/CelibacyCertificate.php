@@ -12,7 +12,7 @@ class CelibacyCertificate extends Model
     use SoftDeletes;
 
     protected $table = 'celibacy_certificates';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,8 +33,11 @@ class CelibacyCertificate extends Model
     ];
 
     protected static $logFillable = true;
+
     protected static $logName = 'Celibacy Certificate';
+
     protected static $ignoreChangedAttributes = ['updated_at'];
+
     protected static $logOnlyDirty = true;
 
     public function department()
@@ -49,19 +52,20 @@ class CelibacyCertificate extends Model
 
     public static function generateSerialNo()
     {
-         $counts = self::count();
-		
-		// fixed counter
-		$fixedCounter = 164;
+        $counts = self::count();
 
-        $serialNo = 'CC' . date('y') . '-' . ($counts + $fixedCounter);
-        
+        // fixed counter
+        $fixedCounter = 164;
+
+        $serialNo = 'CC'.date('y').'-'.($counts + $fixedCounter);
+
         // check if exists
-        while(self::where('serial_no', $serialNo)->exists()) 
-            $serialNo = 'CC' . date('y') . '-' . ($counts + $fixedCounter++);
-		
-		return $serialNo;
-        
+        while (self::where('serial_no', $serialNo)->exists()) {
+            $serialNo = 'CC'.date('y').'-'.($counts + $fixedCounter++);
+        }
+
+        return $serialNo;
+
         // $counts = self::count();
         // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
         // return 'CC' . date('ymd') . sprintf('%02d', $dayCounts + 1) . sprintf('%03d', $counts + 1);

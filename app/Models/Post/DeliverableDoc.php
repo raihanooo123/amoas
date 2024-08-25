@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DeliverableDoc extends Model
 {
     protected $table = 'deliverable_docs';
-    
+
     /**
      * The attributes that are mass assignable.
      *

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Passport;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Passport\PassportExtension;
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class ExtensionController extends Controller
@@ -32,7 +32,6 @@ class ExtensionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,21 +57,24 @@ class ExtensionController extends Controller
                 'registrar_id' => auth()->id(),
             ]);
 
-            foreach(range(1, 6) as $c)
-                if(request()->filled('pass_no' .$c) || request()->filled('given_name' .$c))
+            foreach (range(1, 6) as $c) {
+                if (request()->filled('pass_no'.$c) || request()->filled('given_name'.$c)) {
                     $newExt->members()->create([
-                        'pass_no' => strtoupper($request->get('pass_no' . $c)),
-                        'given_name' => ucwords($request->get('given_name' . $c)),
-                        'last_name' => strtoupper($request->get('last_name' . $c)),
+                        'pass_no' => strtoupper($request->get('pass_no'.$c)),
+                        'given_name' => ucwords($request->get('given_name'.$c)),
+                        'last_name' => strtoupper($request->get('last_name'.$c)),
                         'registrar_id' => auth()->id(),
                         'status' => 'registered',
                         'phone' => $request->phone,
                     ]);
+                }
+            }
 
             \DB::commit();
 
         } catch (\Exception $e) {
             \DB::rollback();
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
@@ -88,6 +90,7 @@ class ExtensionController extends Controller
     public function show(PassportExtension $extension)
     {
         $extension->load('members');
+
         return view('passport.extension.show', compact('extension'));
     }
 
@@ -100,13 +103,13 @@ class ExtensionController extends Controller
     public function edit(PassportExtension $extension)
     {
         $extension->load('members');
+
         return view('passport.extension.edit', compact('extension'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -147,21 +150,24 @@ class ExtensionController extends Controller
                 ]);
             }
 
-            foreach(range(1, 2) as $c)
-                if(request()->filled('pass_no' .$c) || request()->filled('given_name' .$c))
+            foreach (range(1, 2) as $c) {
+                if (request()->filled('pass_no'.$c) || request()->filled('given_name'.$c)) {
                     $extension->members()->create([
-                        'pass_no' => strtoupper($request->get('pass_no' . $c)),
-                        'given_name' => ucwords($request->get('given_name' . $c)),
-                        'last_name' => strtoupper($request->get('last_name' . $c)),
+                        'pass_no' => strtoupper($request->get('pass_no'.$c)),
+                        'given_name' => ucwords($request->get('given_name'.$c)),
+                        'last_name' => strtoupper($request->get('last_name'.$c)),
                         'registrar_id' => auth()->id(),
                         'status' => 'registered',
                         'phone' => $request->phone,
                     ]);
+                }
+            }
 
             \DB::commit();
 
         } catch (\Exception $e) {
             \DB::rollback();
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
@@ -187,7 +193,9 @@ class ExtensionController extends Controller
      */
     public function status(PassportExtension $extension, Request $request)
     {
-        if ($extension->status == $request->status) return back();
+        if ($extension->status == $request->status) {
+            return back();
+        }
 
         \DB::beginTransaction();
 
@@ -199,34 +207,38 @@ class ExtensionController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
+
         return redirect(route('extensions.show', $extension->id));
     }
 
     public function dataTable()
     {
         $extension = PassportExtension::with(['registrar:id,first_name,last_name', 'members'])
-                                            ->whereNull('family_id')
-                                            ->select('passport_extensions.*');
-        
-        if(!request()->order)
+            ->whereNull('family_id')
+            ->select('passport_extensions.*');
+
+        if (! request()->order) {
             $extension->latest();
-            
+        }
+
         return DataTables::of($extension)
-            ->addColumn('action', function($e){
-                $action = '<a href="' . route('extensions.show', $e->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>';
+            ->addColumn('action', function ($e) {
+                $action = '<a href="'.route('extensions.show', $e->id).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>';
+
                 return $action;
             })
-            ->addColumn('total_member', function($e){
+            ->addColumn('total_member', function ($e) {
                 return optional($e->members)->count();
             })
-            ->addColumn('members', function($e) {
+            ->addColumn('members', function ($e) {
                 $deliverables = optional($e->members)->all();
 
-                $deliverables = array_map(function($value){
-                    return $value->given_name . ' ' . $value->last_name ."\n";  
-                    // return $value->doc_type . "|" . str_replace(' ', '.', $value->name) . "|" . $value->uid . "\n";  
+                $deliverables = array_map(function ($value) {
+                    return $value->given_name.' '.$value->last_name."\n";
+                    // return $value->doc_type . "|" . str_replace(' ', '.', $value->name) . "|" . $value->uid . "\n";
                 }, $deliverables);
 
                 return nl2br(implode('', $deliverables));

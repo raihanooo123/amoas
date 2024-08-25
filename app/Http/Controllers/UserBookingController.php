@@ -7,18 +7,16 @@ use App\Booking;
 use App\BookingTime;
 use App\Category;
 use App\Package;
-use Carbon\Carbon;
+use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Spatie\GoogleCalendar\Event;
-use Endroid\QrCode\QrCode;
 
 class UserBookingController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | User Booking Controller
@@ -31,25 +29,29 @@ class UserBookingController extends Controller
 
     /**
      * get user bookings and load user bookings view
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         $bookings = Auth::user()->bookings()->latest()->get();
+
         return view('customer.bookings.index', compact('bookings'));
     }
 
     /**
      * Initialize a booking
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function loadBooking()
     {
         // dd(request()->all());
-        if(request()->has('mission')){
+        if (request()->has('mission')) {
             $department = \App\Department::where('code', strtoupper(request()->mission))->where('status', 1)->first();
-            if($department)
-                request()->session()->put('department',$department);
+            if ($department) {
+                request()->session()->put('department', $department);
+            }
         }
 
         $categories = Category::with('packages')->get();
@@ -69,6 +71,7 @@ class UserBookingController extends Controller
     {
         $category_id = \request('parent');
         $packages = Category::find($category_id)->packages()->get();
+
         return view('blocks.packages', compact('packages'));
     }
 
@@ -97,90 +100,69 @@ class UserBookingController extends Controller
         $hour_end = $booking_time->closing_time;
 
         //decide what will be the duration of each slot
-        if(config('settings.slots_with_package_duration'))
-        {
+        if (config('settings.slots_with_package_duration')) {
             //use package duration as slot duration
             $package = Package::find($selected_package_id);
             $slot_duration = $package->duration * 60;
-        }
-        else
-        {
+        } else {
             //use regular slot duration
             $slot_duration = config('settings.slot_duration') * 60;
         }
-        
+
         //decide how many slots will be generated
-        if(strtotime($hour_start) > strtotime($hour_end))
-        {
-            $hours = round((strtotime($hour_start) - strtotime($hour_end))/$slot_duration, 1);
-            
-        }
-        else if(strtotime($hour_end)>strtotime($hour_start))
-        {
-            $hours = round((strtotime($hour_end) - strtotime($hour_start))/$slot_duration, 1);
-        }
-        else if(strtotime($hour_start)==strtotime($hour_end))
-        {
+        if (strtotime($hour_start) > strtotime($hour_end)) {
+            $hours = round((strtotime($hour_start) - strtotime($hour_end)) / $slot_duration, 1);
+
+        } elseif (strtotime($hour_end) > strtotime($hour_start)) {
+            $hours = round((strtotime($hour_end) - strtotime($hour_start)) / $slot_duration, 1);
+        } elseif (strtotime($hour_start) == strtotime($hour_end)) {
             $hours = 24;
         }
-        
+
         //get all bookings to block some already booked slots
-        $bookings = Booking::all()->where('status', '!=',__('backend.cancelled'));
+        $bookings = Booking::all()->where('status', '!=', __('backend.cancelled'));
 
         //reset the counter to disable slots
         $count_next_disabled = 0;
 
         //start loop for slot generation
-        for($i = 0; $i < $hours; $i++)
-        {
+        for ($i = 0; $i < $hours; $i++) {
             // minutes to add in lap of each slot
             $minutes_to_add = $slot_duration * $i;
 
             // increment each slot by minutes_to_add
-            $timeslot = date('H:i:s', strtotime($hour_start)+$minutes_to_add);
+            $timeslot = date('H:i:s', strtotime($hour_start) + $minutes_to_add);
 
             //clock format choice
-            if(config('settings.clock_format')==12)
-            {
+            if (config('settings.clock_format') == 12) {
                 $list_slot[$i]['slot'] = date('h:i A', strtotime($timeslot));
-            }
-            else
-            {
+            } else {
                 $list_slot[$i]['slot'] = date('H:i', strtotime($timeslot));
             }
 
             //if counter for disabling slots is not zero, block the slot as already booked
-            if($count_next_disabled!=0)
-            {
+            if ($count_next_disabled != 0) {
                 $list_slot[$i]['is_available'] = false;
                 $count_next_disabled--;
-            }
-            else
-            {
+            } else {
                 $list_slot[$i]['is_available'] = true;
             }
 
             //checking slot availability
-            foreach ($bookings as $booking)
-            {
-                if(strtotime($booking->booking_date)==strtotime($event_date) && strtotime($booking->booking_time)==strtotime($timeslot))
-                {
+            foreach ($bookings as $booking) {
+                if (strtotime($booking->booking_date) == strtotime($event_date) && strtotime($booking->booking_time) == strtotime($timeslot)) {
                     //put multiple booking logic
 
                     //one booking at one slot
 
-                    if(config('settings.slots_method') == 1)
-                    {
+                    if (config('settings.slots_method') == 1) {
                         //prevent multiple bookings at same time
                         $list_slot[$i]['is_available'] = false;
                         $package_booking = Package::find($booking->package_id);
                         $package = Package::find($selected_package_id);
-                        if(config('settings.slots_with_package_duration'))
-                        {
+                        if (config('settings.slots_with_package_duration')) {
                             $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
-                        }
-                        else
-                        {
+                        } else {
                             $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
 
                         }
@@ -188,20 +170,15 @@ class UserBookingController extends Controller
 
                     //multiple with different package
 
-                    if(config('settings.slots_method') == 3)
-                    {
-                        if($selected_package_id == $booking->package->id)
-                        {
+                    if (config('settings.slots_method') == 3) {
+                        if ($selected_package_id == $booking->package->id) {
                             //prevent multiple bookings at same time
                             $list_slot[$i]['is_available'] = false;
                             $package_booking = Package::find($booking->package_id);
                             $package = Package::find($selected_package_id);
-                            if(config('settings.slots_with_package_duration'))
-                            {
+                            if (config('settings.slots_with_package_duration')) {
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
-                            }
-                            else
-                            {
+                            } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
 
                             }
@@ -210,20 +187,15 @@ class UserBookingController extends Controller
 
                     //multiple with different category
 
-                    if(config('settings.slots_method') == 4)
-                    {
-                        if($selected_category_id == $booking->package->category->id)
-                        {
+                    if (config('settings.slots_method') == 4) {
+                        if ($selected_category_id == $booking->package->category->id) {
                             //prevent multiple bookings at same time
                             $list_slot[$i]['is_available'] = false;
                             $package_booking = Package::find($booking->package_id);
                             $package = Package::find($selected_package_id);
-                            if(config('settings.slots_with_package_duration'))
-                            {
+                            if (config('settings.slots_with_package_duration')) {
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
-                            }
-                            else
-                            {
+                            } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
 
                             }
@@ -234,7 +206,7 @@ class UserBookingController extends Controller
             }
 
         }
-        dd($hours); 
+        dd($hours);
 
         return view('blocks.slots', compact('list_slot', 'hours'));
 
@@ -246,14 +218,13 @@ class UserBookingController extends Controller
         $event_date = request('event_date');
 
         //get selected package_id
-        $package =  Package::find(Session::get('package_id', request('package_id')));
+        $package = Package::find(Session::get('package_id', request('package_id')));
 
         //get day name to select slot timings
         $timestamp_for_event = strtotime($event_date);
         $today_number = date('N', $timestamp_for_event);
         // return $today_number;
         $booking_time = BookingTime::findOrFail($today_number);
-
 
         //decide starting and ending hours for selected date
         $hour_start = $booking_time->opening_time;
@@ -262,44 +233,46 @@ class UserBookingController extends Controller
         $endSeconds = strtotime($hour_end);
 
         //get the booking count
-        
+
         $bookedByHours = Booking::select('booking_time', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
             ->where('booking_type', '!=', 'emergency')
-            ->where('status','!=' ,'Cancelled')
+            ->where('status', '!=', 'Cancelled')
             ->whereDate('booking_date', $event_date)
             ->groupBy('booking_time')
             // ->having('total', '>=', $participants)
             // ->having('booking_time', '=', $event_date)
             ->get()
-            ->pluck('total','booking_time')
+            ->pluck('total', 'booking_time')
             ->toArray();
 
         $urgentBookingCount = 0;
-        if(auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin()))
+        if (auth()->check() && auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())) {
             $urgentBookingCount = Booking::where('package_id', $package->id)
                 ->where('booking_type', '=', 'emergency')
-                ->where('status','!=' ,'Cancelled')
+                ->where('status', '!=', 'Cancelled')
                 ->whereDate('booking_date', $event_date)
                 ->count();
-        
-        $hours = array();
-        while($startSeconds < $endSeconds){
-            
+        }
+
+        $hours = [];
+        while ($startSeconds < $endSeconds) {
+
             $time = date('g:i A', $startSeconds);
 
             $hours[] = $time;
 
-            $startSeconds += 60*60;
-            
+            $startSeconds += 60 * 60;
+
         }
 
-        $eachSlotAvailablity = round($package->daily_acceptance/count($hours), 0, PHP_ROUND_HALF_DOWN);
+        $eachSlotAvailablity = round($package->daily_acceptance / count($hours), 0, PHP_ROUND_HALF_DOWN);
 
         return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity', 'urgentBookingCount', 'package'));
     }
 
-    public function availableHours($event_date){
+    public function availableHours($event_date)
+    {
 
         //change to timestamp
         $timestamp_for_event = strtotime($event_date);
@@ -314,15 +287,15 @@ class UserBookingController extends Controller
         $startSeconds = strtotime($hour_start);
         $endSeconds = strtotime($hour_end);
 
-        $hours = array();
-        while($startSeconds < $endSeconds){
-            
+        $hours = [];
+        while ($startSeconds < $endSeconds) {
+
             $time = date('g:i A', $startSeconds);
 
             $hours[] = $time;
 
-            $startSeconds += 60*60;
-            
+            $startSeconds += 60 * 60;
+
         }
 
         return $hours;
@@ -346,85 +319,64 @@ class UserBookingController extends Controller
         $hour_end = $booking_time->closing_time;
 
         //decide what will be the duration of each slot
-        if(config('settings.slots_with_package_duration'))
-        {
+        if (config('settings.slots_with_package_duration')) {
             //use package duration as slot duration
             $package = Package::find($selected_package_id);
             $slot_duration = $package->duration * 60;
-        }
-        else
-        {
+        } else {
             //use regular slot duration
             $slot_duration = config('settings.slot_duration') * 60;
         }
 
-        if(strtotime($hour_start)>strtotime($hour_end))
-        {
-            $hours = round((strtotime($hour_start) - strtotime($hour_end))/$slot_duration, 1);
-        }
-        else if(strtotime($hour_end)>strtotime($hour_start))
-        {
-            $hours = round((strtotime($hour_end) - strtotime($hour_start))/$slot_duration, 1);
-        }
-        else if(strtotime($hour_start)==strtotime($hour_end))
-        {
+        if (strtotime($hour_start) > strtotime($hour_end)) {
+            $hours = round((strtotime($hour_start) - strtotime($hour_end)) / $slot_duration, 1);
+        } elseif (strtotime($hour_end) > strtotime($hour_start)) {
+            $hours = round((strtotime($hour_end) - strtotime($hour_start)) / $slot_duration, 1);
+        } elseif (strtotime($hour_start) == strtotime($hour_end)) {
             $hours = 24;
         }
 
-        $bookings = Booking::all()->where('status', '!=',__('backend.cancelled'));
+        $bookings = Booking::all()->where('status', '!=', __('backend.cancelled'));
 
         $count_next_disabled = 0;
 
-        for($i = 0; $i < $hours; $i++)
-        {
+        for ($i = 0; $i < $hours; $i++) {
             // increment by 1 hour
             $minutes_to_add = $slot_duration * $i;
 
             // add 1 hour to each next slot
-            $timeslot = date('H:i:s', strtotime($hour_start)+$minutes_to_add);
+            $timeslot = date('H:i:s', strtotime($hour_start) + $minutes_to_add);
 
             //clock format choice
-            if(config('settings.clock_format')==12)
-            {
+            if (config('settings.clock_format') == 12) {
                 $list_slot[$i]['slot'] = date('h:i A', strtotime($timeslot));
-            }
-            else
-            {
+            } else {
                 $list_slot[$i]['slot'] = date('H:i', strtotime($timeslot));
             }
 
-            if($count_next_disabled!=0)
-            {
+            if ($count_next_disabled != 0) {
                 $list_slot[$i]['is_available'] = false;
                 $count_next_disabled--;
-            }
-            else
-            {
+            } else {
                 $list_slot[$i]['is_available'] = true;
             }
 
             //checking slot availability
             //checking slot availability
-            foreach ($bookings as $booking)
-            {
-                if(strtotime($booking->booking_date)==strtotime($event_date) && strtotime($booking->booking_time)==strtotime($timeslot))
-                {
+            foreach ($bookings as $booking) {
+                if (strtotime($booking->booking_date) == strtotime($event_date) && strtotime($booking->booking_time) == strtotime($timeslot)) {
                     //put multiple booking logic
 
                     //one booking at one slot
 
-                    if(config('settings.slots_method') == 1)
-                    {
+                    if (config('settings.slots_method') == 1) {
                         //prevent multiple bookings at same time
                         $list_slot[$i]['is_available'] = false;
                         $package_booking = Package::find($booking->package_id);
                         $package = Package::find($selected_package_id);
-                        if(config('settings.slots_with_package_duration'))
-                        {
+                        if (config('settings.slots_with_package_duration')) {
                             $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
-                        }
-                        else
-                        {
+                        } else {
                             $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
 
                         }
@@ -432,20 +384,15 @@ class UserBookingController extends Controller
 
                     //multiple with different package
 
-                    if(config('settings.slots_method') == 3)
-                    {
-                        if($selected_package_id == $booking->package->id)
-                        {
+                    if (config('settings.slots_method') == 3) {
+                        if ($selected_package_id == $booking->package->id) {
                             //prevent multiple bookings at same time
                             $list_slot[$i]['is_available'] = false;
                             $package_booking = Package::find($booking->package_id);
                             $package = Package::find($selected_package_id);
-                            if(config('settings.slots_with_package_duration'))
-                            {
+                            if (config('settings.slots_with_package_duration')) {
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
-                            }
-                            else
-                            {
+                            } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
 
                             }
@@ -454,20 +401,15 @@ class UserBookingController extends Controller
 
                     //multiple with different category
 
-                    if(config('settings.slots_method') == 4)
-                    {
-                        if($selected_category_id == $booking->package->category->id)
-                        {
+                    if (config('settings.slots_method') == 4) {
+                        if ($selected_category_id == $booking->package->category->id) {
                             //prevent multiple bookings at same time
                             $list_slot[$i]['is_available'] = false;
                             $package_booking = Package::find($booking->package_id);
                             $package = Package::find($selected_package_id);
-                            if(config('settings.slots_with_package_duration'))
-                            {
+                            if (config('settings.slots_with_package_duration')) {
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
-                            }
-                            else
-                            {
+                            } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
 
                             }
@@ -486,8 +428,9 @@ class UserBookingController extends Controller
     public function update_booking(Request $request, $id)
     {
         $booking = Booking::find($id);
-        if($booking->user->id != Auth::user()->id)
+        if ($booking->user->id != Auth::user()->id) {
             abort(403);
+        }
 
         $oldBooking = $booking; // for sending email
         $booking->update([
@@ -504,7 +447,7 @@ class UserBookingController extends Controller
     }
 
     /**
-     * @param BookingStep1 $request
+     * @param  BookingStep1  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function postStep1(Request $request)
@@ -527,13 +470,15 @@ class UserBookingController extends Controller
      */
     public function loadStep2()
     {
-        if(!session()->has('package_id')) return redirect('/');
+        if (! session()->has('package_id')) {
+            return redirect('/');
+        }
+
         //load step 2
         return view('select-booking-time');
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postStep2(Request $request)
@@ -547,31 +492,32 @@ class UserBookingController extends Controller
             'idcard' => 'required',
             'address' => 'required',
             'department_id' => 'required',
-        ],[
-            'postal.regex'=> __('app.postalError')
+        ], [
+            'postal.regex' => __('app.postalError'),
         ]);
 
         // search for specific pattern
         // 4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+ bonn
         // 'regex:/^(01[0-9]\d+|04[0-9]\d+|12[0-9]\d+|13[0-9]\d+|141[0-9]\d+|20[0-9]\d+)/' berlin
 
-        $validator->sometimes('postal', ['regex:/^(4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+)/'], function ($input) use ($request, $validator) {
+        $validator->sometimes('postal', ['regex:/^(4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+)/'], function ($input) use ($request) {
 
             $department = \App\Department::findOrFail($request->department_id) ?? session('department');
 
-            if ($department && $department->code == 'CBONN')
+            if ($department && $department->code == 'CBONN') {
                 // $validator->errors()->add('postal.regex', __('app.postalError', ['department'=> \Lang::has('app.' . $department->name_en, app()->getLocale()) ? __('app.' . $department->name_en) : $department->name_en]));
                 return true;
-            
+            }
+
         });
-        
+
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
                 ->withInput();
         }
         $input = $request->all();
-        
+
         //store form input into session and load next step
         $request->session()->put('email', $input['email']);
         $request->session()->put('postal', $input['postal']);
@@ -586,7 +532,6 @@ class UserBookingController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postStep3(Request $request)
@@ -594,72 +539,75 @@ class UserBookingController extends Controller
         $dateNumber = $weekday = date('N', strtotime($request->event_date));
 
         $offDaysNum = DB::table('booking_times')
-                            ->where('is_off_day', '=', '0')
-                            ->get()
-                            ->pluck('id', 'day')
-                            ->toArray();
+            ->where('is_off_day', '=', '0')
+            ->get()
+            ->pluck('id', 'day')
+            ->toArray();
 
         $holidays = session()->has('holidays') ? implode(',', session('holidays')) : null;
 
         $validator = \Validator::make($request->all(), [
-                'event_date' => 'date|required|not_in:'. $holidays,
-                'booking_slot' => 'required',
-                "participant.*.name"  => "required",
-                "participant.*.id_card"  => "required",
-                "participant.*.relation"  => "required",
-            ],[
-                'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date]),
-            ]);
+            'event_date' => 'date|required|not_in:'.$holidays,
+            'booking_slot' => 'required',
+            'participant.*.name' => 'required',
+            'participant.*.id_card' => 'required',
+            'participant.*.relation' => 'required',
+        ], [
+            'event_date.not_in' => __('app.holidays_blocked', ['date' => $request->event_date]),
+        ]);
 
         $validator->after(function ($validator) use ($dateNumber, $offDaysNum) {
-            if (!in_array($dateNumber, $offDaysNum))
-                $validator->errors()->add('event_date', __('app.weekend_blocked', ['days' => implode(', ', array_map(function($item){
-                            return __('app.' . $item);
-                        }, array_keys($offDaysNum)))]));
+            if (! in_array($dateNumber, $offDaysNum)) {
+                $validator->errors()->add('event_date', __('app.weekend_blocked', ['days' => implode(', ', array_map(function ($item) {
+                    return __('app.'.$item);
+                }, array_keys($offDaysNum)))]));
+            }
         });
 
         $validator->after(function ($validator) use ($request) {
-            if ($request->booking_type != 'emergency'){
+            if ($request->booking_type != 'emergency') {
 
                 $bookedCountInRequestedHour = Booking::whereDate('booking_date', '=', $request->event_date)
-                                                    ->where('package_id', session('package_id'))
-                                                    ->where('booking_time', $request->booking_slot)
-                                                    ->where('booking_type', '!=', 'Emergency')
-                                                    ->where('status', '!=', 'cancelled')
-                                                    ->count();
-                
+                    ->where('package_id', session('package_id'))
+                    ->where('booking_time', $request->booking_slot)
+                    ->where('booking_type', '!=', 'Emergency')
+                    ->where('status', '!=', 'cancelled')
+                    ->count();
+
                 $availableSlots = $this->availableHours($request->event_date);
-                
-                if(!in_array($request->booking_slot, $availableSlots))
+
+                if (! in_array($request->booking_slot, $availableSlots)) {
                     $validator->errors()->add('event_date', __('app.notInAvailableHours', ['time' => $request->booking_slot]));
+                }
 
                 $dailyAcceptance = Package::find(session('package_id'))->daily_acceptance;
-                
+
                 $availableInEachSlot = round($dailyAcceptance / count($availableSlots), 0, PHP_ROUND_HALF_DOWN);
 
-                if($bookedCountInRequestedHour + (session('participant') + 1) > $availableInEachSlot)
+                if ($bookedCountInRequestedHour + (session('participant') + 1) > $availableInEachSlot) {
                     $validator->errors()->add('event_date', __('app.slotBlocked', ['time' => $request->booking_slot, 'date' => $request->event_date]));
+                }
 
             }
         });
 
-        if ($validator->fails())
+        if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-
+        }
 
         $request->session()->put('event_date', $request->event_date);
         $request->session()->put('booking_slot', $request->booking_slot);
         $request->session()->put('participantInfo', $request->participant);
 
         $bookingCountInWeek = auth()
-                                ->user()
-                                ->bookings()
-                                ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
-                                ->where('created_at', '<=', now()->addWeeks(2)->endOfDay()->format('Y-m-d H:i:s'))
-                                ->get()
-                                ->count();
+            ->user()
+            ->bookings()
+            ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
+            ->where('created_at', '<=', now()->addWeeks(2)->endOfDay()->format('Y-m-d H:i:s'))
+            ->get()
+            ->count();
 
-        if($bookingCountInWeek > 0 && auth()->user()->role_id == 2){
+        if ($bookingCountInWeek > 0 && auth()->user()->role_id == 2) {
 
             $lastBooking = auth()->user()->bookings()->latest()->first();
 
@@ -667,7 +615,7 @@ class UserBookingController extends Controller
 
             abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
         }
-        
+
         \DB::beginTransaction();
         $booking = Booking::create([
             'user_id' => auth()->id(),
@@ -680,7 +628,7 @@ class UserBookingController extends Controller
             'email' => session('email'),
             'status' => 'Waiting',
         ]);
-        
+
         $info = $booking->info()->create([
             'full_name' => session('full_name'),
             'email' => session('email'),
@@ -689,9 +637,9 @@ class UserBookingController extends Controller
             'postal' => session('postal'),
             'address' => session('address'),
         ]);
-        
-        if($request->has('participant'))
-            foreach($request->participant as $key => $participant){
+
+        if ($request->has('participant')) {
+            foreach ($request->participant as $key => $participant) {
                 $info->participants()->create([
                     'full_name' => $participant['name'],
                     'id_card' => $participant['id_card'],
@@ -702,7 +650,7 @@ class UserBookingController extends Controller
                     'user_id' => $booking->user_id,
                     'package_id' => $booking->package_id,
                     'department_id' => $booking->department_id,
-                    'serial_no' => '#' . ($key + 1) .'-'.$booking->serial_no,
+                    'serial_no' => '#'.($key + 1).'-'.$booking->serial_no,
                     'booking_date' => $booking->booking_date,
                     'booking_type' => $booking->booking_type,
                     'booking_time' => $booking->booking_time,
@@ -711,7 +659,7 @@ class UserBookingController extends Controller
                 ]);
 
                 ${"var{$key}"}->info()->create([
-                    'full_name' => $info->full_name ."| {$participant['relation']}",
+                    'full_name' => $info->full_name."| {$participant['relation']}",
                     'email' => $info->email,
                     'phone' => $info->phone,
                     'id_card' => $participant['id_card'],
@@ -719,6 +667,7 @@ class UserBookingController extends Controller
                     'address' => $info->address,
                 ]);
             }
+        }
 
         \DB::commit();
 
@@ -735,7 +684,9 @@ class UserBookingController extends Controller
      */
     public function loadStep3()
     {
-        if(!session()->has('package_id')) return redirect('/');
+        if (! session()->has('package_id')) {
+            return redirect('/');
+        }
 
         $package = Package::find(Session::get('package_id'));
         $category_id = $package->category_id;
@@ -745,21 +696,17 @@ class UserBookingController extends Controller
         $off_days = DB::table('booking_times')
             ->where('is_off_day', '=', '1')
             ->get();
-        $daynum = array();
+        $daynum = [];
 
-        foreach ($off_days as $off_day)
-        {
-            if($off_day->id != 7)
-            {
+        foreach ($off_days as $off_day) {
+            if ($off_day->id != 7) {
                 $daynum[] = $off_day->id;
-            }
-            else
-            {
+            } else {
                 $daynum[] = $off_day->id - 7;
             }
         }
 
-        $disable_days_string = implode(",", $daynum);
+        $disable_days_string = implode(',', $daynum);
 
         // $holydays = DB::table('holydays')
         //     ->whereDate('date', '>=', date('Y-m-d'))
@@ -768,26 +715,28 @@ class UserBookingController extends Controller
         //     ->toArray();
 
         $dep_id = session('department_id');
-        $holydays = \App\Holidays::whereHas('departments', function ($query) use($dep_id) {
+        $holydays = \App\Holidays::whereHas('departments', function ($query) use ($dep_id) {
             $query->where('id', $dep_id);
         })->get()
             ->pluck('date')
             ->toArray();
 
-        if($holydays)
+        if ($holydays) {
             $holydays = array_merge(...$holydays);
+        }
 
         request()->session()->put('holidays', $holydays);
 
         $participants = --$package->daily_acceptance;
-        if(session()->has('participant')) $participants -= session('participant');
+        if (session()->has('participant')) {
+            $participants -= session('participant');
+        }
         // dd($participants);
-
 
         //should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
-            ->where('status','!=' ,'Cancelled')
+            ->where('status', '!=', 'Cancelled')
             ->groupBy('booking_date')
             ->having('total', '>=', $participants)
             ->having('booking_date', '>=', date('Y-m-d'))
@@ -795,12 +744,12 @@ class UserBookingController extends Controller
             ->pluck('booking_date')
             ->toArray();
 
-//        dd($bookedDates);
+        //        dd($bookedDates);
 
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
         // dd($disabledDates);
-        $daynum = array();
+        $daynum = [];
 
         return view('select-extra-services', compact('disable_days_string', 'package', 'disabledDates'));
     }
@@ -810,27 +759,27 @@ class UserBookingController extends Controller
      */
     public function loadFinalStep()
     {
-        if(!session()->has('package_id') || !session()->has('bookingId')) return redirect('/');
+        if (! session()->has('package_id') || ! session()->has('bookingId')) {
+            return redirect('/');
+        }
         $category = Package::find(Session::get('package_id'))->category->title;
         $package = Package::find(Session::get('package_id'));
-        $booking = Booking::with('department','package','info','info.participants')->find(session('bookingId'));
-        $session_addons = DB::table('session_addons')->where('session_email','=',Auth::user()->email)->get();
+        $booking = Booking::with('department', 'package', 'info', 'info.participants')->find(session('bookingId'));
+        $session_addons = DB::table('session_addons')->where('session_email', '=', Auth::user()->email)->get();
 
         //calculate total
         $total = $package->price;
         //add addons price if any
-        foreach($session_addons as $session_addon)
-        {
+        foreach ($session_addons as $session_addon) {
             $total = $total + Addon::find($session_addon->addon_id)->price;
         }
 
         //check if GST is enabled and add it to total invoice
-        if(config('settings.enable_gst'))
-        {
-            $gst_amount = ( config('settings.gst_percentage') / 100 ) * $total;
-            $gst_amount = round($gst_amount,2);
+        if (config('settings.enable_gst')) {
+            $gst_amount = (config('settings.gst_percentage') / 100) * $total;
+            $gst_amount = round($gst_amount, 2);
             $total_with_gst = $total + $gst_amount;
-            $total_with_gst = round($total_with_gst,2);
+            $total_with_gst = round($total_with_gst, 2);
         }
 
         $userId = auth()->id();
@@ -840,15 +789,17 @@ class UserBookingController extends Controller
 
         auth()->loginUsingId($userId);
 
-        if($department) request()->session()->put('department', $department);
+        if ($department) {
+            request()->session()->put('department', $department);
+        }
 
         return view('finalize-booking', compact('category',
             'package', 'session_addons', 'total', 'booking'));
     }
 
     /**
-     *
      * Thank you - payment completed
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function thankYou()
@@ -858,6 +809,7 @@ class UserBookingController extends Controller
 
     /**
      * Payment failed
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function paymentFailed()
@@ -866,10 +818,8 @@ class UserBookingController extends Controller
     }
 
     /**
-     *
      * Show booking to customer
      *
-     * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
@@ -881,32 +831,25 @@ class UserBookingController extends Controller
         $days_limit_to_cancel = config('settings.days_limit_to_cancel') * 86400;
         $today = date('Y-m-d');
 
-        if(strtotime($booking->booking_date) - strtotime($today) >= $days_limit_to_update)
-        {
+        if (strtotime($booking->booking_date) - strtotime($today) >= $days_limit_to_update) {
             $allow_to_update = true;
-        }
-        else
-        {
+        } else {
             $allow_to_update = false;
         }
 
-        if(strtotime($booking->booking_date) - strtotime($today) >= $days_limit_to_cancel)
-        {
+        if (strtotime($booking->booking_date) - strtotime($today) >= $days_limit_to_cancel) {
             $allow_to_cancel = true;
-        }
-        else
-        {
+        } else {
             $allow_to_cancel = false;
         }
 
         // load other details
         $booking->load('info', 'info.participants');
 
-        return view('customer.bookings.view' , compact('booking','allow_to_update', 'allow_to_cancel'));
+        return view('customer.bookings.view', compact('booking', 'allow_to_update', 'allow_to_cancel'));
     }
 
     /**
-     *
      * Remove addon from list of booking services
      */
     public function removeFromList()
@@ -914,32 +857,26 @@ class UserBookingController extends Controller
         $addon_id = \request('addon_id');
         $session_email = \request('session_email');
 
-        DB::table('session_addons')->where('addon_id', '=', $addon_id)->where('session_email','=',$session_email)->delete();
+        DB::table('session_addons')->where('addon_id', '=', $addon_id)->where('session_email', '=', $session_email)->delete();
 
     }
 
     /**
-     *
      * check if addon is added in list of booking services
      */
-    public function checkIfAdded($addon_id,$session_email)
+    public function checkIfAdded($addon_id, $session_email)
     {
-        $row = DB::table('session_addons')->where('addon_id', '=', $addon_id)->where('session_email','=',$session_email)->get();
-        if(count($row)==0)
-        {
+        $row = DB::table('session_addons')->where('addon_id', '=', $addon_id)->where('session_email', '=', $session_email)->get();
+        if (count($row) == 0) {
             return 0;
-        }
-        else
-        {
+        } else {
             return 1;
         }
     }
 
     /**
-     *
      * load booking update view for user
      */
-
     public function update($id)
     {
         $booking = Booking::find($id);
@@ -952,28 +889,22 @@ class UserBookingController extends Controller
             ->where('is_off_day', '=', '1')
             ->get();
 
+        $daynum = [];
 
-
-        $daynum = array();
-
-        foreach ($off_days as $off_day)
-        {
-            if($off_day->id != 7)
-            {
+        foreach ($off_days as $off_day) {
+            if ($off_day->id != 7) {
                 $daynum[] = $off_day->id;
-            }
-            else
-            {
+            } else {
                 $daynum[] = $off_day->id - 7;
             }
         }
 
-        $disable_days_string = implode(",", $daynum);
+        $disable_days_string = implode(',', $daynum);
 
         $package = $booking->package;
 
         $dep_id = $booking->department->id;
-        $holydays = \App\Holidays::whereHas('departments', function ($query) use($dep_id) {
+        $holydays = \App\Holidays::whereHas('departments', function ($query) use ($dep_id) {
             $query->where('id', $dep_id);
         })->get()->pluck('date');
 
@@ -981,7 +912,7 @@ class UserBookingController extends Controller
         //should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $booking->package->id)
-            ->where('status','!=' ,'Cancelled')
+            ->where('status', '!=', 'Cancelled')
             ->groupBy('booking_date')
             ->having('total', '>=', --$package->daily_acceptance)
             ->having('booking_date', '>=', date('Y-m-d'))
@@ -991,13 +922,10 @@ class UserBookingController extends Controller
 
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
-        if($booking->user->id == Auth::user()->id
-            && $booking->status != 'cancelled')
-        {
+        if ($booking->user->id == Auth::user()->id
+            && $booking->status != 'cancelled') {
             return view('customer.bookings.update', compact('booking', 'disable_days_string', 'disabledDates'));
-        }
-        else
-        {
+        } else {
             return view('errors.404');
         }
     }
@@ -1005,7 +933,7 @@ class UserBookingController extends Controller
     public function print($id)
     {
 
-        $booking = Booking::with('department','package')->find($id);
+        $booking = Booking::with('department', 'package')->find($id);
 
         // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
         // $qrCode = (string) $this->writeQrCode($booking->serial_no);
@@ -1022,17 +950,19 @@ class UserBookingController extends Controller
         $qrCode->setSize(200);
         // Save it to a file
         $qrCode->writeFile('temp/qrcode.png');
+
         return \Image::make('temp/qrcode.png')->encode('data-url');
     }
 
     public function printPdf($id)
     {
-        $booking = Booking::with('department','package')->find($id);
+        $booking = Booking::with('department', 'package')->find($id);
 
         // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
         // $qrCode = (string) $this->writeQrCode($booking->serial_no);
-        
+
         $pdf = \PDF::loadView('print-booking-success', compact('booking'))->setPaper('A4');
+
         return $pdf->download('booking_result.pdf');
     }
 }

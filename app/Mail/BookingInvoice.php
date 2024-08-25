@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BookingInvoice extends Mailable
 {
@@ -31,6 +30,7 @@ class BookingInvoice extends Mailable
     public function build()
     {
         $this->subject(__('emails.new_invoice_title'));
+
         return $this->view('vendor.emails.invoice');
     }
 }

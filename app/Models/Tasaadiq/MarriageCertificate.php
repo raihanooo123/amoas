@@ -12,7 +12,7 @@ class MarriageCertificate extends Model
     use SoftDeletes;
 
     protected $table = 'marriage_certificates';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -41,8 +41,11 @@ class MarriageCertificate extends Model
     ];
 
     protected static $logFillable = true;
+
     protected static $logName = 'Marraige Certificate';
+
     protected static $ignoreChangedAttributes = ['updated_at'];
+
     protected static $logOnlyDirty = true;
 
     public function department()
@@ -60,17 +63,18 @@ class MarriageCertificate extends Model
 
         $counts = self::count();
         // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
-		
-		// fixed counter
-		$fixedCounter = 390;
 
-        $serialNo = 'MC' . date('y') . '-' . ($counts + $fixedCounter);
+        // fixed counter
+        $fixedCounter = 390;
+
+        $serialNo = 'MC'.date('y').'-'.($counts + $fixedCounter);
         // check if exists
-        while(self::where('serial_no', $serialNo)->exists()) 
-            $serialNo = 'MC' . date('y') . '-' . ($counts + $fixedCounter++);
-		
-		return $serialNo;
-        
+        while (self::where('serial_no', $serialNo)->exists()) {
+            $serialNo = 'MC'.date('y').'-'.($counts + $fixedCounter++);
+        }
+
+        return $serialNo;
+
         // $counts = self::count();
         // $dayCounts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 

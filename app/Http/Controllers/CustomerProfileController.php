@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class CustomerProfileController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | Customer Profile Controller
@@ -20,34 +19,30 @@ class CustomerProfileController extends Controller
     |
     */
 
-
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         $user = Auth::user();
+
         return view('customer.profile.index', compact('user'));
     }
-
-
 
     public function update(CustomerProfileUpdate $request, $id)
     {
         $input = $request->all();
 
         //check if Auth user is making request
-        if(Auth::user()->id == $id)
-        {
+        if (Auth::user()->id == $id) {
             //check if image is selected
-            if($image = $request->file('photo_id'))
-            {
+            if ($image = $request->file('photo_id')) {
                 //give a name to image and move it to public directory
                 $image_name = time().$image->getClientOriginalName();
-                $image->move('images',$image_name);
+                $image->move('images', $image_name);
 
                 //persist data into photos table
-                $photo = Photo::create(['file'=>$image_name]);
+                $photo = Photo::create(['file' => $image_name]);
 
                 //save photo_id to user $input
                 $input['photo_id'] = $photo->id;
@@ -56,8 +51,7 @@ class CustomerProfileController extends Controller
                 $user = User::findOrFail($id);
 
                 //unlink old photo if set
-                if($user->photo != NULL)
-                {
+                if ($user->photo != null) {
                     unlink(public_path().$user->photo->file);
                 }
 
@@ -71,10 +65,9 @@ class CustomerProfileController extends Controller
             //set session message and redirect back customer.profile.index
 
             Session::flash('profile_updated', __('backend.profile_updated'));
+
             return redirect()->route('customerProfile');
-        }
-        else
-        {
+        } else {
             //show 404 page
             return view('errors.404');
         }

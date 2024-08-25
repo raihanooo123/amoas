@@ -10,7 +10,6 @@ class Transaction extends Model
 {
     use LogsActivity, SoftDeletes;
 
-
     /**
      * The attributes that are mass assignable.
      *
@@ -20,13 +19,17 @@ class Transaction extends Model
         'type',
         'amount',
         'currency',
-        'registrar_id'
+        'registrar_id',
     ];
 
     protected static $logFillable = true;
+
     protected static $logName = 'Transaction Log';
+
     protected static $ignoreChangedAttributes = ['updated_at'];
+
     protected static $logOnlyDirty = true;
+
     protected static $submitEmptyLogs = false;
 
     /**

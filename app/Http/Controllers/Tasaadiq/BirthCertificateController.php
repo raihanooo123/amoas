@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Tasaadiq;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tasaadiq\BirthCertificate;
 use Carbon\Carbon;
-use Mpdf\Mpdf;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Http\Request;
+use Mpdf\Mpdf;
 
 class BirthCertificateController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:birth certificate show'])->only(['index', 'show']);
@@ -20,6 +19,7 @@ class BirthCertificateController extends Controller
         $this->middleware(['permission:birth certificate edit'])->only(['edit', 'update']);
         $this->middleware(['permission:birth certificate delete'])->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,7 +43,6 @@ class BirthCertificateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -69,7 +68,7 @@ class BirthCertificateController extends Controller
                 'previous_name' => strtoupper($request->previous_name),
                 'sex' => strtoupper($request->sex),
                 'dob' => $request->dob,
-                'pob' => $request->filled('pob_outside') ?  strtoupper($request->pob_outside) : strtoupper($request->pob),
+                'pob' => $request->filled('pob_outside') ? strtoupper($request->pob_outside) : strtoupper($request->pob),
                 'passport_no' => strtoupper($request->passport_no),
                 'father_name' => strtoupper($request->father_name),
                 'mother_name' => strtoupper($request->mother_name),
@@ -84,10 +83,11 @@ class BirthCertificateController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        return redirect()->route('birth.show', [$newBC])->with(['print' => true ]);
+        return redirect()->route('birth.show', [$newBC])->with(['print' => true]);
     }
 
     /**
@@ -115,7 +115,6 @@ class BirthCertificateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -141,7 +140,7 @@ class BirthCertificateController extends Controller
                 'previous_name' => strtoupper($request->previous_name),
                 'sex' => strtoupper($request->sex),
                 'dob' => $request->dob,
-                'pob' => $request->filled('pob_outside') ?  strtoupper($request->pob_outside) : strtoupper($request->pob),
+                'pob' => $request->filled('pob_outside') ? strtoupper($request->pob_outside) : strtoupper($request->pob),
                 'passport_no' => strtoupper($request->passport_no),
                 'father_name' => strtoupper($request->father_name),
                 'mother_name' => strtoupper($request->mother_name),
@@ -151,6 +150,7 @@ class BirthCertificateController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollback();
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
@@ -166,19 +166,22 @@ class BirthCertificateController extends Controller
     public function destroy(BirthCertificate $birth)
     {
         $birth->delete();
+
         return redirect()->route('birth.index');
     }
 
     public function dataTable()
     {
         $births = BirthCertificate::with(['registrar:id,last_name'])->select('birth_certificates.*');
-        
-        if(!request()->order)
+
+        if (! request()->order) {
             $births->latest();
-        
+        }
+
         return datatables()::of($births)
-            ->addColumn('action', function($birth){
-                $action = '<a href="' . route('birth.show', $birth->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+            ->addColumn('action', function ($birth) {
+                $action = '<a href="'.route('birth.show', $birth->id).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
@@ -188,8 +191,9 @@ class BirthCertificateController extends Controller
 
     public function print(BirthCertificate $birth)
     {
-        if ($birth->print_type == 'new')
+        if ($birth->print_type == 'new') {
             return $this->newPrint($birth);
+        }
 
         return $this->oldPrint($birth);
     }
@@ -198,70 +202,70 @@ class BirthCertificateController extends Controller
     {
         $tempName = 'templates/birth_certificate_new_update.pdf';
 
-        try{
+        try {
 
-            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
-            
+            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob.'/AFG';
+
             ob_clean();
             header('Content-type: application/pdf');
             header('Content-Transfer-Encoding: binary');
             header('Accept-Ranges: bytes');
 
-            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables)->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
 
-            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables)->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
 
             $mpdf = new Mpdf([
                 'fontDir' => array_merge($fontDirs, [
-                    public_path()."/fonts",
+                    public_path().'/fonts',
                 ]),
                 'fontdata' => $fontData + [
                     'biosans' => [
                         'R' => 'biosans_r.ttf',
                         'B' => 'biosans_b.ttf',
-                        'I' => 'biosans_i.ttf'
-                    ]
+                        'I' => 'biosans_i.ttf',
+                    ],
                 ],
-                'default_font' => 'biosans'
+                'default_font' => 'biosans',
             ]);
 
             $pagecount = $mpdf->SetSourceFile($tempName);
             $tplIdx = $mpdf->ImportPage($pagecount);
             $mpdf->UseTemplate($tplIdx);
 
-            $mpdf->SetFont('biosans','B', 13);
-            $mpdf->WriteText(42, 68.5, $birth->serial_no . ' ');
-            
+            $mpdf->SetFont('biosans', 'B', 13);
+            $mpdf->WriteText(42, 68.5, $birth->serial_no.' ');
+
             $issueDate = Carbon::parse($birth->issue_date);
-            
-            $mpdf->WriteText(42, 82, $issueDate->format('d.m.Y') . ' ');
-            
-            $mpdf->SetFont('biosans','R', 13);
-            $mpdf->WriteText(25, 116, $birth->family_name . ' ');
 
-            $mpdf->WriteText(25, 131, $birth->given_name . ' ');
-            
-            $mpdf->WriteText(25, 145, $birth->previous_name . ' ');
+            $mpdf->WriteText(42, 82, $issueDate->format('d.m.Y').' ');
 
-            $mpdf->WriteText(25, 160, $birth->sex . ' ');
+            $mpdf->SetFont('biosans', 'R', 13);
+            $mpdf->WriteText(25, 116, $birth->family_name.' ');
+
+            $mpdf->WriteText(25, 131, $birth->given_name.' ');
+
+            $mpdf->WriteText(25, 145, $birth->previous_name.' ');
+
+            $mpdf->WriteText(25, 160, $birth->sex.' ');
 
             $dob = Carbon::parse($birth->dob);
-            $mpdf->WriteText(25, 174.5, $dob->format('d.m.Y') . ' ');
+            $mpdf->WriteText(25, 174.5, $dob->format('d.m.Y').' ');
 
-            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
-            $mpdf->WriteText(25, 189, $pob . ' ');
+            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob.'/AFG';
+            $mpdf->WriteText(25, 189, $pob.' ');
 
-            $mpdf->WriteText(25, 203.5, $birth->father_name . ' ');
+            $mpdf->WriteText(25, 203.5, $birth->father_name.' ');
 
-            $mpdf->WriteText(25, 218, $birth->mother_name . ' ');
+            $mpdf->WriteText(25, 218, $birth->mother_name.' ');
 
-            $mpdf->WriteText(25, 233, $birth->passport_no . ' ');
+            $mpdf->WriteText(25, 233, $birth->passport_no.' ');
 
             $qrCodeData = $this->getQrCode($birth);
             $mpdf->Image('temp/birth_qrcode.png', 15, 61.5, 22.2);
-            
+
             $mpdf->Output();
 
             ob_end_flush();
@@ -273,10 +277,10 @@ class BirthCertificateController extends Controller
 
     private function getQrCode(BirthCertificate $birth)
     {
-        
+
         $result = Builder::create()
-            ->writer(new PngWriter())
-            ->data('https://www.bonn.mfa.af/amoas/check/verify?type=1&code=' . base64_encode($birth->serial_no))
+            ->writer(new PngWriter)
+            ->data('https://www.bonn.mfa.af/amoas/check/verify?type=1&code='.base64_encode($birth->serial_no))
             ->size(100)
             ->margin(0)
             ->build();
@@ -288,9 +292,9 @@ class BirthCertificateController extends Controller
     {
         $tempName = 'templates/birth_certificate.pdf';
 
-        try{
+        try {
 
-            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob . '/AFG';
+            $pob = strpos($birth->pob, '/') ? $birth->pob : $birth->pob.'/AFG';
             $writableData = [
                 'family_name' => $birth->family_name,
                 'given_name' => $birth->given_name,

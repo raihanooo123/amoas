@@ -11,8 +11,8 @@ class Clearance extends Model
 {
     use LogsActivity, SoftDeletes;
 
-
     protected $table = 'clearance';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -35,11 +35,14 @@ class Clearance extends Model
     ];
 
     protected static $logFillable = true;
-    protected static $logName = 'Clearance Log';
-    protected static $ignoreChangedAttributes = ['updated_at'];
-    protected static $logOnlyDirty = true;
-    protected static $submitEmptyLogs = false;
 
+    protected static $logName = 'Clearance Log';
+
+    protected static $ignoreChangedAttributes = ['updated_at'];
+
+    protected static $logOnlyDirty = true;
+
+    protected static $submitEmptyLogs = false;
 
     public function receipts()
     {

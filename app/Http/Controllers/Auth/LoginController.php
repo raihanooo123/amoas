@@ -49,6 +49,7 @@ class LoginController extends Controller
         $user = \App\User::where(['email' => $userSocial->getEmail()])->first();
         if ($user) {
             \Auth::login($user);
+
             return redirect('/home');
         } else {
             $newUser = \App\User::create([
@@ -58,11 +59,10 @@ class LoginController extends Controller
                 'role_id' => 2, //Customer || Applicant
                 'email_verified_at' => date('Y-m-d H:i:s'),
             ]);
-            
+
             auth()->login($newUser, true);
 
             return redirect()->to('/');
         }
     }
-
 }

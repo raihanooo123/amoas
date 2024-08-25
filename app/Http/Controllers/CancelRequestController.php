@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Booking;
 use App\CancelRequest;
-use App\Mail\AdminCancellationNotification;
-use App\Mail\CancellationReceived;
-use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -21,6 +18,7 @@ class CancelRequestController extends Controller
     public function index()
     {
         $cancel_requests = CancelRequest::all();
+
         return view('cancel_requests.index', compact('cancel_requests'));
     }
 
@@ -37,7 +35,6 @@ class CancelRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,10 +43,11 @@ class CancelRequestController extends Controller
 
         $booking = Booking::find($request->booking_id);
 
-        if($booking->user->id != auth()->id())
+        if ($booking->user->id != auth()->id()) {
             abort(403);
+        }
 
-        $booking->update(['status'=>'cancelled']);
+        $booking->update(['status' => 'cancelled']);
 
         $user = auth()->user()->email;
 
@@ -84,14 +82,13 @@ class CancelRequestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $cancel_request  = CancelRequest::find($id);
+        $cancel_request = CancelRequest::find($id);
 
         $cancel_request->update($input);
 
@@ -116,5 +113,4 @@ class CancelRequestController extends Controller
 
         return redirect()->route('cancel-requests.index');
     }
-
 }

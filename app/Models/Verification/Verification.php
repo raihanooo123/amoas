@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Verification extends Model
 {
     protected $table = 'verifications';
+
     protected $fillable = [
         'department_id',
         'name',
@@ -49,7 +50,7 @@ class Verification extends Model
         'year',
         'month',
         'day',
-        'registrar_id'
+        'registrar_id',
     ];
 
     public function province()

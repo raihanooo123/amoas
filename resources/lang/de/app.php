@@ -21,7 +21,7 @@ return [
     'logout_link' => 'Logout',
     'welcome_title' => 'Willkommen zu MFA AMOAS',
     'welcome_page_title' => 'Home',
-    'welcome_subtitle' => "Online Terminbuchungssystem der afghanischen Mission",
+    'welcome_subtitle' => 'Online Terminbuchungssystem der afghanischen Mission',
     'personal_details' => 'Ihre pesönlichen Daten',
     'first_name' => 'Vorname',
     'last_name' => 'Nachname',

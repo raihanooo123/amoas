@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CancellationReceived extends Mailable
 {
@@ -31,6 +30,7 @@ class CancellationReceived extends Mailable
     public function build()
     {
         $this->subject(__('backend.cancel_request_received'));
+
         return $this->view('vendor.emails.CancellationReceived');
     }
 }

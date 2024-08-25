@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdminCategoriesController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:category show'])->only(['index', 'show']);
@@ -36,6 +35,7 @@ class AdminCategoriesController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return view('categories.index', compact('categories'));
     }
 
@@ -60,14 +60,13 @@ class AdminCategoriesController extends Controller
         $input = $request->all();
 
         //check if an image is selected
-        if($image = $request->file('photo_id'))
-        {
+        if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
-            $image->move('images',$image_name);
+            $image->move('images', $image_name);
 
             //persist data into photos table
-            $photo = Photo::create(['file'=>$image_name]);
+            $photo = Photo::create(['file' => $image_name]);
 
             //save photo_id to category $input
             $input['photo_id'] = $photo->id;
@@ -102,6 +101,7 @@ class AdminCategoriesController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
+
         return view('categories.edit', compact('category'));
     }
 
@@ -117,14 +117,13 @@ class AdminCategoriesController extends Controller
         $input = $request->all();
 
         //check if image is selected
-        if($image = $request->file('photo_id'))
-        {
+        if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
-            $image->move('images',$image_name);
+            $image->move('images', $image_name);
 
             //persist data into photos table
-            $photo = Photo::create(['file'=>$image_name]);
+            $photo = Photo::create(['file' => $image_name]);
 
             //save photo_id to category $input
             $input['photo_id'] = $photo->id;
@@ -133,8 +132,7 @@ class AdminCategoriesController extends Controller
             $category = Category::findOrFail($id);
 
             //unlink old photo if set
-            if($category->photo != NULL)
-            {
+            if ($category->photo != null) {
                 unlink(public_path().$category->photo->file);
             }
 
@@ -147,6 +145,7 @@ class AdminCategoriesController extends Controller
 
         //set session message and redirect back categories.index
         Session::flash('category_updated', __('backend.category_updated'));
+
         return redirect('/categories');
     }
 
@@ -161,8 +160,7 @@ class AdminCategoriesController extends Controller
         //find specific category
         $category = Category::findOrFail($id);
 
-        if($category->photo)
-        {
+        if ($category->photo) {
             //unlink image
             unlink(public_path().$category->photo->file);
 
@@ -175,6 +173,7 @@ class AdminCategoriesController extends Controller
 
         //set session message and redirect back to categories.index
         Session::flash('category_deleted', __('backend.category_deleted'));
+
         return redirect('/categories');
     }
 }

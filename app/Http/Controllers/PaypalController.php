@@ -31,7 +31,6 @@ use Spatie\GoogleCalendar\Event;
 
 class PaypalController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | Paypal Controller
@@ -48,24 +47,24 @@ class PaypalController extends Controller
     public function __construct()
     {
 
-        $settings = array(
+        $settings = [
 
             'mode' => config('settings.paypal_sandbox_enabled') ? 'sandbox' : 'live',
             'http.ConnectionTimeOut' => 1000,
             'log.LogEnabled' => true,
-            'log.FileName' => storage_path() . '/logs/paypal.log',
+            'log.FileName' => storage_path().'/logs/paypal.log',
             'log.LogLevel' => 'FINE',
 
-        );
+        ];
 
         // $this->_api_context->setConfig($settings);
     }
 
     /**
      * Calculate charges and initiate payment
+     *
      * @return mixed
      */
-
     public function payWithPaypal()
     {
 
@@ -102,41 +101,41 @@ class PaypalController extends Controller
 
         //create Payer
 
-        $payer = new Payer();
+        $payer = new Payer;
         $payer->setPaymentMethod('paypal');
 
         //create billable items
 
-        $item = new Item();
-        $item->setName(config('settings.business_name') . " Booking")
+        $item = new Item;
+        $item->setName(config('settings.business_name').' Booking')
             ->setCurrency(config('settings.default_currency'))
             ->setQuantity(1)
             ->setPrice($amount_to_charge);
 
-        $item_list = new ItemList();
-        $item_list->setItems(array($item));
+        $item_list = new ItemList;
+        $item_list->setItems([$item]);
 
         //set amount to be charged
 
-        $amount = new Amount();
+        $amount = new Amount;
         $amount->setCurrency(config('settings.default_currency'))
             ->setTotal($amount_to_charge);
 
         //create transaction
 
-        $transaction = new Transaction();
+        $transaction = new Transaction;
         $transaction->setAmount($amount)
             ->setItemList($item_list);
 
-        $redirect_urls = new RedirectUrls();
+        $redirect_urls = new RedirectUrls;
         $redirect_urls->setReturnUrl(route('paymentSuccessful'))
             ->setCancelUrl(route('paymentFailed'));
 
-        $payment = new Payment();
+        $payment = new Payment;
         $payment->setIntent('Sale')
             ->setPayer($payer)
             ->setRedirectUrls($redirect_urls)
-            ->setTransactions(array($transaction));
+            ->setTransactions([$transaction]);
 
         $payment->create($this->_api_context);
 
@@ -155,16 +154,16 @@ class PaypalController extends Controller
 
         //set error and redirect to finalize booking
         Session::flash('paypal_error', __('backend.paypal_error'));
+
         return redirect()->route('loadFinalStep');
 
     }
 
     /**
      * If payment is successful, save booking, send emails and show success.
-     * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-
     public function paymentSuccessful(Request $request)
     {
         //calculate total amount to be charged
@@ -216,7 +215,7 @@ class PaypalController extends Controller
         //payment is successful, lets get payment data
 
         $payment = Payment::get($payment_id, $this->_api_context);
-        $execution = new PaymentExecution();
+        $execution = new PaymentExecution;
         $execution->setPayerId(Input::get('PayerID'));
 
         //Execute the payment
@@ -232,7 +231,7 @@ class PaypalController extends Controller
 
             if (config('settings.sync_events_to_calendar') && config('settings.google_calendar_id')) {
                 //create timestamp
-                $time_string = Session::get('event_date') . " " . Session::get('booking_slot');
+                $time_string = Session::get('event_date').' '.Session::get('booking_slot');
                 $start_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'));
                 $end_instance = Carbon::createFromTimestamp(strtotime($time_string), env('LOCAL_TIMEZONE'))->addMinutes($package->duration);
 
@@ -240,7 +239,7 @@ class PaypalController extends Controller
 
                     //create google calendar event
                     $event = new Event;
-                    $event->name = $package->category->title . " - " . $package->title . " " . __('app.booking') . " - " . __('backend.processing');
+                    $event->name = $package->category->title.' - '.$package->title.' '.__('app.booking').' - '.__('backend.processing');
                     $event->startDateTime = $start_instance;
                     $event->endDateTime = $end_instance;
                     $calendarEvent = $event->save();
@@ -335,6 +334,7 @@ class PaypalController extends Controller
 
     /**
      * Payment failed
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function paymentFailed()

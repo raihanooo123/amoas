@@ -39,7 +39,7 @@ class installerSettings extends FormRequest
     public function messages()
     {
         return [
-            'lang.required' => 'Please select your language.'
+            'lang.required' => 'Please select your language.',
         ];
     }
 }

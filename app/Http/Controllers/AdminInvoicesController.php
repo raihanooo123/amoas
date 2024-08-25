@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class AdminInvoicesController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | Admin Addons Controller
@@ -40,7 +39,6 @@ class AdminInvoicesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,16 +56,13 @@ class AdminInvoicesController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
 
-        if(config('settings.enable_gst'))
-        {
-            $gst_amount = round(( config('settings.gst_percentage') / 100 ) * $invoice->amount, 2);
-        }
-        else
-        {
+        if (config('settings.enable_gst')) {
+            $gst_amount = round((config('settings.gst_percentage') / 100) * $invoice->amount, 2);
+        } else {
             $gst_amount = 0;
         }
 
-        return view('invoices.view', compact('invoice','gst_amount'));
+        return view('invoices.view', compact('invoice', 'gst_amount'));
     }
 
     /**
@@ -80,7 +75,7 @@ class AdminInvoicesController extends Controller
     {
         $invoice = Invoice::find($id);
         $invoice->update([
-            'is_paid' => 1
+            'is_paid' => 1,
         ]);
 
         return redirect()->route('unpaidInvoices');
@@ -89,7 +84,6 @@ class AdminInvoicesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

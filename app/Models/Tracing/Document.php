@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Document extends Model
 {
     protected $table = 'traceable_docs';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -46,13 +46,13 @@ class Document extends Model
         // DB counter
         $counts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 
-        $firstChars = array_map(function($word) { 
+        $firstChars = array_map(function ($word) {
             return strtoupper(substr($word, 0, 1));
-        }, explode(" ", $request->applicant));
+        }, explode(' ', $request->applicant));
 
-        $firstChars = preg_match('/[^A-Za-z]/', implode('',$firstChars)) ? [] : $firstChars;
+        $firstChars = preg_match('/[^A-Za-z]/', implode('', $firstChars)) ? [] : $firstChars;
 
-        $serialNo = $depCode . '-' . implode('',$firstChars) . date('ny') . '-' . date('j') . sprintf('%03d', ++$counts);
+        $serialNo = $depCode.'-'.implode('', $firstChars).date('ny').'-'.date('j').sprintf('%03d', ++$counts);
 
         return $serialNo;
 

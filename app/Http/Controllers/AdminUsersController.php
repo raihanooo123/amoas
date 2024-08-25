@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersUpdateRequest;
+use App\Photo;
 use App\Role;
 use App\User;
-use App\Photo;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Session;
 use Yajra\Datatables\Datatables;
 
 class AdminUsersController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:user show'])->only(['index']);
@@ -52,6 +51,7 @@ class AdminUsersController extends Controller
     public function create()
     {
         $roles = Role::all();
+
         return view('users.create', compact('roles'));
     }
 
@@ -66,14 +66,13 @@ class AdminUsersController extends Controller
         $input = $request->all();
 
         //check if an image is selected
-        if($image = $request->file('photo_id'))
-        {
+        if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
-            $image->move('images',$image_name);
+            $image->move('images', $image_name);
 
             //persist data into photos table
-            $photo = Photo::create(['file'=>$image_name]);
+            $photo = Photo::create(['file' => $image_name]);
 
             //save photo_id to user $input
             $input['photo_id'] = $photo->id;
@@ -83,10 +82,11 @@ class AdminUsersController extends Controller
         $input['password'] = bcrypt($request->password);
         $user = User::create($input);
 
-        if($request->get('verify') != 'on')
+        if ($request->get('verify') != 'on') {
             $user->update(['email_verified_at' => date('Y-m-d H:i:s')]);
-        else
+        } else {
             event(new Registered($user));
+        }
 
         //set session message
         Session::flash('user_created', __('backend.user_created'));
@@ -116,7 +116,8 @@ class AdminUsersController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        return view('users.edit',compact('user','roles'));
+
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -131,14 +132,13 @@ class AdminUsersController extends Controller
         $input = $request->all();
 
         //check if image is selected
-        if($image = $request->file('photo_id'))
-        {
+        if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
             $image_name = time().$image->getClientOriginalName();
-            $image->move('images',$image_name);
+            $image->move('images', $image_name);
 
             //persist data into photos table
-            $photo = Photo::create(['file'=>$image_name]);
+            $photo = Photo::create(['file' => $image_name]);
 
             //save photo_id to user $input
             $input['photo_id'] = $photo->id;
@@ -147,8 +147,7 @@ class AdminUsersController extends Controller
             $user = User::findOrFail($id);
 
             //unlink old photo if set
-            if($user->photo != NULL)
-            {
+            if ($user->photo != null) {
                 unlink(public_path().$user->photo->file);
             }
 
@@ -161,6 +160,7 @@ class AdminUsersController extends Controller
 
         //set session message and redirect back users.index
         Session::flash('user_updated', __('backend.user_updated'));
+
         return redirect('/users');
     }
 
@@ -175,8 +175,7 @@ class AdminUsersController extends Controller
         //find specific user
         $user = User::findOrFail($id);
 
-        if($user->photo)
-        {
+        if ($user->photo) {
             //unlink image
             unlink(public_path().$user->photo->file);
 
@@ -190,9 +189,11 @@ class AdminUsersController extends Controller
 
         //set session message and redirect back to users.index
         Session::flash('user_deleted', __('backend.user_deleted'));
+
         return redirect('/users');
 
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -201,16 +202,17 @@ class AdminUsersController extends Controller
      */
     public function reset(User $user)
     {
-        $password = 'Bonn'. date('m-d');
+        $password = 'Bonn'.date('m-d');
         $new_password = bcrypt($password);
 
         $user->update([
-            'password' => $new_password
+            'password' => $new_password,
         ]);
-        
+
         // return back()->with(['alert' => 'User password reset to: '.$password]);
         //set session message and redirect back to users.index
         Session::flash('action', 'User password reset to: '.$password);
+
         return back();
 
     }
@@ -223,11 +225,13 @@ class AdminUsersController extends Controller
     public function dataTable()
     {
         $user = User::with('role:id,name');
+
         return Datatables::of($user)
-            ->addColumn('action', function($user){
-                $action = '<a href="' . route('users.manualVerify', $user->id) .'" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>&nbsp;';
-                $action .= '<a href="' . route('users.reset', $user->id) .'" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure want to reset user password?\')"><i class="fa fa-recycle"></i></a>&nbsp;';
-                $action .= '<a href="' . route('users.edit', $user->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
+            ->addColumn('action', function ($user) {
+                $action = '<a href="'.route('users.manualVerify', $user->id).'" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>&nbsp;';
+                $action .= '<a href="'.route('users.reset', $user->id).'" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure want to reset user password?\')"><i class="fa fa-recycle"></i></a>&nbsp;';
+                $action .= '<a href="'.route('users.edit', $user->id).'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
+
                 return $action;
             })
             // ->parameters([
@@ -243,6 +247,7 @@ class AdminUsersController extends Controller
     public function verify(User $user)
     {
         $user->update(['email_verified_at' => now()->format('Y-m-d H:i:s')]);
+
         return back();
     }
 }

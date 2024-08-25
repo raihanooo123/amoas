@@ -3,17 +3,19 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class TracingStatusChanged implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $doc;
+
     public $lang;
+
     /**
      * Create a new job instance.
      *
@@ -32,9 +34,9 @@ class TracingStatusChanged implements ShouldQueue
      */
     public function handle()
     {
-        $email     = optional(optional($this->doc)->trace)->email ?? $this->doc->alt_email;
-        $sender    = env('MAIL_USERNAME');
-        
+        $email = optional(optional($this->doc)->trace)->email ?? $this->doc->alt_email;
+        $sender = env('MAIL_USERNAME');
+
         \Mail::to($email)->send(new \App\Mail\TracingStatusChanged($this->doc, $this->lang));
     }
 }

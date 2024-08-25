@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
@@ -15,6 +15,7 @@ class RolesController extends Controller
         $this->middleware(['permission:roles edit'])->only(['edit', 'update']);
         $this->middleware(['permission:roles assign or revoke'])->only(['revoke', 'assign']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,13 +25,13 @@ class RolesController extends Controller
     {
         $roles = Role::with('permissions')->get();
         $permissions = Permission::all();
+
         return view('users.role.index', compact('roles', 'permissions'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,13 +45,15 @@ class RolesController extends Controller
 
         $role = Role::create(['name' => $request->name]);
 
-        if($request->has('permissions'))
-            foreach($request->permissions as $permission)
+        if ($request->has('permissions')) {
+            foreach ($request->permissions as $permission) {
                 $role->givePermissionTo($permission);
-        
+            }
+        }
+
         \DB::commit();
 
-        return redirect(route('roles.index'))->with(['alert'=>'Role Created']);
+        return redirect(route('roles.index'))->with(['alert' => 'Role Created']);
     }
 
     /**
@@ -62,7 +65,7 @@ class RolesController extends Controller
     public function edit(Role $role)
     {
         $role->load(['permissions', 'users']);
-        $users = \App\User::with('role')->whereIn('role_id', [1,3])->get();
+        $users = \App\User::with('role')->whereIn('role_id', [1, 3])->get();
         $permissions = Permission::all();
 
         return view('users.role.edit', compact('users', 'permissions', 'role'));
@@ -71,7 +74,6 @@ class RolesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -86,10 +88,10 @@ class RolesController extends Controller
         $role->update(['name' => $request->name]);
 
         $role->syncPermissions($request->permissions);
-        
+
         \DB::commit();
 
-        return redirect(route('roles.index'))->with(['alert'=>'Role Updated']);
+        return redirect(route('roles.index'))->with(['alert' => 'Role Updated']);
     }
 
     /**
@@ -104,7 +106,7 @@ class RolesController extends Controller
         $role->permissions()->sync([]);
         $role->delete();
 
-        return back()->with(['alert'=>'Role has been deleted.']);
+        return back()->with(['alert' => 'Role has been deleted.']);
     }
 
     /**
@@ -120,7 +122,8 @@ class RolesController extends Controller
         ]);
 
         $role->users()->detach(request()->user_id);
-        return back()->with(['alert'=>'Role revoke from user.']);
+
+        return back()->with(['alert' => 'Role revoke from user.']);
     }
 
     /**
@@ -136,6 +139,7 @@ class RolesController extends Controller
         ]);
 
         $role->users()->attach(request()->user_id);
-        return back()->with(['alert'=>'Role assigned to user.']);
+
+        return back()->with(['alert' => 'Role assigned to user.']);
     }
 }

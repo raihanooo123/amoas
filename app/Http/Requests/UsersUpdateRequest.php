@@ -30,7 +30,7 @@ class UsersUpdateRequest extends FormRequest
             'email' => 'required|string|email|max:255',
             'is_active' => 'required',
             'role_id' => 'required|not_in:0',
-            'photo_id' => 'mimes:jpeg,png'
+            'photo_id' => 'mimes:jpeg,png',
         ];
     }
 }

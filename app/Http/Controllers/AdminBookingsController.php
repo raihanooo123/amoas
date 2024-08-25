@@ -11,7 +11,6 @@ use Yajra\Datatables\Datatables;
 
 class AdminBookingsController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | Admin Bookings Controller
@@ -26,15 +25,15 @@ class AdminBookingsController extends Controller
 
     public function __construct()
     {
-        $settings = array(
+        $settings = [
 
             'mode' => config('settings.paypal_sandbox_enabled') ? 'sandbox' : 'live',
             'http.ConnectionTimeOut' => 1000,
             'log.LogEnabled' => true,
-            'log.FileName' => storage_path() . '/logs/paypal.log',
+            'log.FileName' => storage_path().'/logs/paypal.log',
             'log.LogLevel' => 'FINE',
 
-        );
+        ];
 
         $this->middleware(['permission:booking show'])->only(['index', 'show']);
         $this->middleware(['permission:booking change date'])->only(['edit', 'update', 'update_booking_time']);
@@ -64,6 +63,7 @@ class AdminBookingsController extends Controller
     {
         $booking = Booking::find($id);
         $addons = $booking->addons->all();
+
         return view('bookings.view', compact('booking', 'addons'));
     }
 
@@ -81,7 +81,7 @@ class AdminBookingsController extends Controller
             ->where('is_off_day', '=', '1')
             ->get();
 
-        $daynum = array();
+        $daynum = [];
 
         foreach ($off_days as $off_day) {
             if ($off_day->id != 7) {
@@ -91,16 +91,16 @@ class AdminBookingsController extends Controller
             }
         }
 
-        $disable_days_string = implode(",", $daynum);
+        $disable_days_string = implode(',', $daynum);
 
         $booking = Booking::find($id);
+
         return view('bookings.edit', compact('booking', 'disable_days_string'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -113,18 +113,18 @@ class AdminBookingsController extends Controller
         if (config('settings.sync_events_to_calendar') && config('settings.google_calendar_id') && $booking->google_calendar_event_id != null) {
             if ($input['status'] == __('backend.processing')) {
                 $new_status = __('backend.processing');
-            } else if ($input['status'] == __('backend.in_progress')) {
+            } elseif ($input['status'] == __('backend.in_progress')) {
                 $new_status = __('backend.in_progress');
-            } else if ($input['status'] == __('backend.completed')) {
+            } elseif ($input['status'] == __('backend.completed')) {
                 $new_status = __('backend.completed');
-            } else if ($input['status'] == __('backend.cancelled')) {
+            } elseif ($input['status'] == __('backend.cancelled')) {
                 $new_status = __('backend.cancelled');
             }
 
             try {
                 //update google calendar event
                 $event = Event::find($booking->google_calendar_event_id);
-                $event->name = $booking->package->category->title . " - " . $booking->package->title . " " . __('app.booking') . " - " . $new_status;
+                $event->name = $booking->package->category->title.' - '.$booking->package->title.' '.__('app.booking').' - '.$new_status;
                 $event->save();
             } catch (\Exception $ex) {
                 //do nothing
@@ -133,6 +133,7 @@ class AdminBookingsController extends Controller
 
         //set session message and redirect back to bookings.show
         Session::flash('booking_updated', __('backend.booking_updated'));
+
         return redirect()->route('bookings.show', $id);
     }
 
@@ -160,18 +161,15 @@ class AdminBookingsController extends Controller
 
         //set session message and redirect back to bookings.index
         Session::flash('booking_deleted', __('backend.booking_deleted'));
+
         return redirect('/bookings');
     }
 
     /**
-     *
      * Cancel a booking
      *
-     * @param Request $request
-     * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-
     public function cancel(Request $request, $id)
     {
 
@@ -219,19 +217,20 @@ class AdminBookingsController extends Controller
                 $query->withCount('bookings');
             }]);
 
-        if (!request()->order) {
+        if (! request()->order) {
             $bookings->latest();
         }
 
         return Datatables::of($bookings)
             ->addColumn('action', function ($booking) {
-                $action = '<a href="' . route('bookings.show', $booking->id) . '" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+                $action = '<a href="'.route('bookings.show', $booking->id).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
+
                 // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
             ->editColumn('user.email', function ($booking) {
                 if ($booking->user->bookings_count > 1) {
-                    return '<span class="badge badge-dark">' . optional($booking->user)->bookings_count . '</span> ' . $booking->email;
+                    return '<span class="badge badge-dark">'.optional($booking->user)->bookings_count.'</span> '.$booking->email;
                 }
 
                 return $booking->email;
@@ -240,7 +239,7 @@ class AdminBookingsController extends Controller
                 return \Illuminate\Support\Str::limit($booking->email, 10);
             })
             ->editColumn('serial_no', function ($booking) {
-                return '<a href="' . route('bookings.show', $booking->id) . '">' . $booking->serial_no . '</a>';
+                return '<a href="'.route('bookings.show', $booking->id).'">'.$booking->serial_no.'</a>';
             })
             ->addIndexColumn()
             ->rawColumns([

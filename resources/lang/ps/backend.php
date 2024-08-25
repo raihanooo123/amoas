@@ -13,7 +13,6 @@ return [
     |
     */
 
-
     'home' => 'Home',
     'dashboard' => 'Home',
     'my_profile' => 'My Profile',

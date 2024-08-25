@@ -14,6 +14,7 @@ class HolidaysController extends Controller
         $this->middleware(['permission:holidays edit'])->only(['edit', 'update']);
         $this->middleware(['permission:holidays delete'])->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,6 +23,7 @@ class HolidaysController extends Controller
     public function index()
     {
         $holidays = Holidays::withCount('departments')->paginate(50);
+
         return view('holidays.index', compact('holidays'));
     }
 
@@ -30,12 +32,13 @@ class HolidaysController extends Controller
         $this->validate(request(), [
             'day' => 'numeric|required|digits_between:1,31',
             'month' => 'numeric|required|digits_between:1,12',
-            "year"  => "numeric|required|digits:4",
-            "repeated"  => "required",
+            'year' => 'numeric|required|digits:4',
+            'repeated' => 'required',
         ]);
 
         Holidays::create(request()->except(['_token']));
-        return redirect(route('holidays.index'))->with(['alert'=>'Holiday created']);
+
+        return redirect(route('holidays.index'))->with(['alert' => 'Holiday created']);
         // $holidays = Holidays::withCount('departments')->paginate(50);
         // return view('holidays.index', compact('holidays'));
     }
@@ -49,11 +52,12 @@ class HolidaysController extends Controller
     public function edit(Holidays $holiday)
     {
         $departments = $holiday->departments()->pluck('id')->toJson();
+
         // dd($departments);
         return view('holidays.edit', compact('holiday', 'departments'));
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -65,14 +69,13 @@ class HolidaysController extends Controller
         // dd(request()->all());
         $holiday->update(request()->except(['_token', 'all_department', 'departments', '_method']));
         //update data into categories table
-        if(request()->has('all_department') && request()->all_department == 'on'){
+        if (request()->has('all_department') && request()->all_department == 'on') {
             $ids = \App\Department::whereIn('type', ['embassy', 'consulate'])->where('status', 1)->get()->pluck('id');
             $holiday->departments()->sync($ids);
-        }else{
+        } else {
             $holiday->departments()->sync(request()->departments);
         }
 
-        return redirect(route('holidays.index'))->with(['alert'=>'Holiday updated successfully', 'class' => 'alert-success']);
+        return redirect(route('holidays.index'))->with(['alert' => 'Holiday updated successfully', 'class' => 'alert-success']);
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddPacakgeIdToMiscTypeTable extends Migration
 {
@@ -11,7 +11,6 @@ class AddPacakgeIdToMiscTypeTable extends Migration
      *
      * @return void
      */
-
     protected $typePackageKeyMap = [
         1 => 0,
         2 => 5,
@@ -22,17 +21,18 @@ class AddPacakgeIdToMiscTypeTable extends Migration
         7 => 0,
         8 => 3,
     ];
-            
+
     public function up()
     {
         Schema::table('miscellaneous_type', function (Blueprint $table) {
             $table->integer('package_id')->index()->nullable();
         });
 
-        foreach ($this->typePackageKeyMap as $typeId => $pacakgeId) 
+        foreach ($this->typePackageKeyMap as $typeId => $pacakgeId) {
             \DB::table('miscellaneous_type')
                 ->where('id', $typeId)
                 ->update(['package_id' => $pacakgeId]);
+        }
     }
 
     /**

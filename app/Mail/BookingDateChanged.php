@@ -5,14 +5,15 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BookingDateChanged extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $booking;
+
     public $oldBooking;
+
     public $user;
 
     /**
@@ -26,6 +27,7 @@ class BookingDateChanged extends Mailable
         $this->oldBooking = $oldBooking;
         $this->user = $user;
     }
+
     /**
      * Build the message.
      *
@@ -33,7 +35,8 @@ class BookingDateChanged extends Mailable
      */
     public function build()
     {
-        $this->subject('Your appointment date has been changed in ' . $this->booking->department->name_en);
+        $this->subject('Your appointment date has been changed in '.$this->booking->department->name_en);
+
         return $this->view('emails.booking-date-changed');
     }
 }

@@ -19,6 +19,6 @@ return [
     '500_message' => 'Something is broken. We are working to fix it soon. Please check back later.',
     'go_back_btn' => 'Go Back To Previous Page',
     'account_disabled' => 'Account Disabled',
-    'account_disabled_text' => 'Unfortunately your account is disabled. Please consult system administrator for details.'
+    'account_disabled_text' => 'Unfortunately your account is disabled. Please consult system administrator for details.',
 
 ];

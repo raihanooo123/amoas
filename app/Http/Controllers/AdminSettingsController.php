@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdminSettingsController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['permission:setting show'])->only(['index', 'show']);
@@ -38,6 +37,7 @@ class AdminSettingsController extends Controller
     public function index()
     {
         $settings = Settings::find(1);
+
         return view('settings.index', compact('settings'));
     }
 
@@ -54,7 +54,6 @@ class AdminSettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -99,81 +98,78 @@ class AdminSettingsController extends Controller
         Settings::findOrFail($id)->update($input);
 
         //check if cover image is selected
-        if($cover = $request->file('cover'))
-        {
+        if ($cover = $request->file('cover')) {
             //remove previous promo image
             unlink(public_path().'/images/promo.jpg');
 
             //upload new promo image
-            $cover->move('images','promo.jpg');
+            $cover->move('images', 'promo.jpg');
         }
 
         //check if logo-light is selected
-        if($logo_light = $request->file('business_logo_light'))
-        {
+        if ($logo_light = $request->file('business_logo_light')) {
             //remove previous promo image
             unlink(public_path().'/images/logo-light.png');
 
             //upload new promo image
-            $logo_light->move('images','logo-light.png');
+            $logo_light->move('images', 'logo-light.png');
         }
 
         //check if logo-light is selected
-        if($logo_dark = $request->file('business_logo_dark'))
-        {
+        if ($logo_dark = $request->file('business_logo_dark')) {
             //remove previous promo image
             unlink(public_path().'/images/logo-dark.png');
 
             //upload new promo image
-            $logo_dark->move('images','logo-dark.png');
+            $logo_dark->move('images', 'logo-dark.png');
         }
 
         //check if lang is changed
-        if($request->lang != config('settings.lang'))
-        {
+        if ($request->lang != config('settings.lang')) {
             App::setLocale($request->lang);
 
             //language is changed, put new day names
             BookingTime::find(1)->update([
-                'day' => __('backend.mon')
+                'day' => __('backend.mon'),
             ]);
 
             BookingTime::find(2)->update([
-                'day' => __('backend.tue')
+                'day' => __('backend.tue'),
             ]);
 
             BookingTime::find(3)->update([
-                'day' => __('backend.wed')
+                'day' => __('backend.wed'),
             ]);
 
             BookingTime::find(4)->update([
-                'day' => __('backend.thu')
+                'day' => __('backend.thu'),
             ]);
 
             BookingTime::find(5)->update([
-                'day' => __('backend.fri')
+                'day' => __('backend.fri'),
             ]);
 
             BookingTime::find(6)->update([
-                'day' => __('backend.sat')
+                'day' => __('backend.sat'),
             ]);
 
             BookingTime::find(7)->update([
-                'day' => __('backend.sun')
+                'day' => __('backend.sun'),
             ]);
 
             //put new role names
             Role::find(1)->update([
-                'name' => __('backend.administrator')
+                'name' => __('backend.administrator'),
             ]);
 
             Role::find(2)->update([
-                'name' => __('backend.customer')
+                'name' => __('backend.customer'),
             ]);
         }
 
         //set session message and redirect back admin.settings
         Session::flash('settings_saved', __('backend.settings_saved'));
+
         return redirect('/settings');
     }
 

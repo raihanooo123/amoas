@@ -10,7 +10,6 @@ class Addon extends Model
         'title', 'description', 'price', 'category_id', 'photo_id',
     ];
 
-
     public function category()
     {
         return $this->belongsTo('App\Category');

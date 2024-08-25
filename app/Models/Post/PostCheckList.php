@@ -8,7 +8,7 @@ class PostCheckList extends Model
 {
     //
     public $timestamps = false;
-    
+
     protected $table = 'post_checklists';
 
     protected $fillable = ['name', 'status'];

@@ -28,7 +28,7 @@ class CustomerProfileUpdate extends FormRequest
             'last_name' => 'required|string|max:255',
             'phone_number' => 'required|max:15',
             'email' => 'required|string|email|max:255',
-            'photo_id' => 'mimes:jpeg,png'
+            'photo_id' => 'mimes:jpeg,png',
         ];
     }
 }

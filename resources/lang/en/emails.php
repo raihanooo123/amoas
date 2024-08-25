@@ -13,12 +13,11 @@ return [
     |
     */
 
-
-    'greeting'          => 'Dear :name',
-    'afg'               => 'Islamic Republic of Afghanistan',
-    'mfa'               => 'Ministry of Foreign Affairs',
-    'adots'             => 'Applicant Documents Online Tracking System',
-    'content'           => 'این ایمیل آدرس شما بحیث راه ارتباطی نزد سیستم ما
+    'greeting' => 'Dear :name',
+    'afg' => 'Islamic Republic of Afghanistan',
+    'mfa' => 'Ministry of Foreign Affairs',
+    'adots' => 'Applicant Documents Online Tracking System',
+    'content' => 'این ایمیل آدرس شما بحیث راه ارتباطی نزد سیستم ما
                                 در :department ثبت
                                 گردیده است.<br>&nbsp;حالت مرحله&nbsp;اسناد شما
                                 تغییر کرده است، مرحله جدید اسناد شما: <span
@@ -27,11 +26,11 @@ return [
                                     </span><br>
                                 لطفاً به یادداشت ذیل را ملاحظه فرمائید
                             ',
-    'sincerly'          => 'Best Regards',
-    'p1'                => 'Your email has been registered as contact
+    'sincerly' => 'Best Regards',
+    'p1' => 'Your email has been registered as contact
                             channel to our system at :department.
                             ',
-    'p2'                => 'The status of your document has been changed to
+    'p2' => 'The status of your document has been changed to
                             <span
                                 style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, \'helvetica neue\', helvetica, arial, sans-serif;line-height:24px;color:#FFFFFF;background-color:#CC932B;">
                                 :status

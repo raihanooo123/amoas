@@ -1,7 +1,9 @@
 <?php
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
 class AddPhotoIdToUsers extends Migration
 {
     /**
@@ -15,6 +17,7 @@ class AddPhotoIdToUsers extends Migration
             $table->string('photo_id')->nullable();
         });
     }
+
     /**
      * Reverse the migrations.
      *

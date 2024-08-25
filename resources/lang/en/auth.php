@@ -25,7 +25,7 @@ return [
     'email_placeholder' => 'Email',
     'password_placeholder' => 'Password',
     'create_account' => 'Create Account',
-	'login_via' => 'Login with following social medias.',
-	'register_with_email' => 'Register with your email.',
+    'login_via' => 'Login with following social medias.',
+    'register_with_email' => 'Register with your email.',
 
 ];

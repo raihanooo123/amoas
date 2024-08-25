@@ -9,7 +9,7 @@ class Village extends Model
     protected $table = 'village';
 
     public $timestamps = false;
-    
+
     protected $fillable = [
         'name',
         'name_en',

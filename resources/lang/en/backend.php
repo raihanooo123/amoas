@@ -13,7 +13,6 @@ return [
     |
     */
 
-
     'home' => 'Home',
     'dashboard' => 'Home',
     'dashboard1' => 'Dashboard',
@@ -348,12 +347,12 @@ return [
     'acceptModal' => 'Accept the form & Reserve a time for interview.',
     'booking_applicant_details' => 'Booking Applicant Details',
     'approvedInterviewOn' => 'Approved, Interview was set on ',
-    
+
     // user admin action
     'action' => [
         'performed' => 'Action performed successfully.',
     ],
-    
+
     'rejectReason' => 'Reason/s for rejection <small>selected reason/s wil send to applicant</small>',
     'otherReason' => 'Other reason that not listed above.',
     'rejectByReason' => 'Application has been rejected.',

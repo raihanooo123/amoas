@@ -28,7 +28,7 @@ class PackageUpdateRequest extends FormRequest
             'photo_id' => 'mimes:jpeg,png',
             'category_id' => 'required|not_in:0',
             'price' => 'required',
-            'duration' => 'required'
+            'duration' => 'required',
         ];
     }
 }

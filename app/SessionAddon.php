@@ -14,5 +14,4 @@ class SessionAddon extends Model
     {
         return $this->belongsTo('App\Addon');
     }
-
 }

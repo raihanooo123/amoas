@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Passport extends Model
 {
     protected $table = 'traceable_passports';
-    
+
     /**
      * The attributes that are mass assignable.
      *
