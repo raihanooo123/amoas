@@ -19,7 +19,7 @@ return [
     'paypal' => 'PayPal',
     'my_account_link' => 'Mein Konto',
     'logout_link' => 'Logout',
-    'welcome_title' => 'Willkommen zu MFA AMOAS',
+    'welcome_title' => 'Online-Terminbuchungssystem',
     'welcome_page_title' => 'Home',
     'welcome_subtitle' => 'Online Terminbuchungssystem der afghanischen Mission',
     'personal_details' => 'Ihre pesönlichen Daten',
@@ -138,22 +138,31 @@ return [
     'department' => 'Abteilung (Mission)',
     'howToReserve' => 'Wie Reserviere ich einen Termin?',
     'guidelineStep' => '<ol>
-                        <li> <strong>Schritt 1:</strong> Wählen Sie den Service, den Sie buchen möchten.</li>
-                            <li>Wählen Sie ein Paket, das für diesen Service verfügbar ist.
-                                Sie erhalten detailierte Informationen für jedes Paket, nachdem Sie diese ausgewählt haben, bitte lesen Sie diese sorgfältig durch.
-                                <button class="btn btn-sm" onclick="return false;">
-                                    <i class="far fa-clock"></i> &nbsp; Termin Buchen
-                                </button> Schaltfläche am Ende dieser Seite.</li>
-
-                            <li> <strong>Schritt 2:</strong> Geben Sie im nächsten Teil Ihre Daten korrekt ein und klicken Sie auf
-                                <button class="btn btn-sm" onclick="return false;">
-                                        Weiter »
-                                </button>
-                                    Schaltfläche. Manche Pakete haben eine leicht veränderte Prozedur</li>
-
-                            <li> <strong>Schritt 3:</strong> Wählen Sie das Buchungsdatum und die Buchungszeit. Ausgeblendete Zeiten sind entweder Ausgebucht oder außerhabl der Arbeitszeiten</li>
-                            <li> <strong>Schritt 4:</strong> Dies ist der letzte Schritt. Sie haben erfolgreich einen Termin gebucht und die Bestätigung ausgedruckt. Dies ist erforderlich, um in usnerer Mission vorzusprechen.</li>
-                        </ol>',
+                            <li> <strong>Schritt 1: Konto erstellen</strong><br>
+                                Melden Sie sich auf unserer Plattform an, um Ihre Termine zu verwalten und auf Dienstleistungen zuzugreifen.
+                            </li>
+                            <li>
+                                <strong>Schritt 2: Dienstleistung auswählen</strong><br>
+                                Melden Sie sich an und wählen Sie die benötigte Dienstleistung aus. Überprüfen Sie die erforderlichen Dokumente 
+                                und die Details der Dienstleistung, und klicken Sie dann auf die Schaltfläche \'Weiter »\' unten.
+                            </li>
+    
+                                <li> 
+                                    <strong>Schritt 3: Persönliche Informationen eingeben</strong><br>
+                                    Füllen Sie Ihre persönlichen Daten genau aus und klicken Sie auf \'Weiter »\', um fortzufahren.
+    
+                                </li>
+    
+                                <li>
+                                    <strong>Schritt 4: Datum und Uhrzeit wählen</strong> 
+                                    Wählen Sie ein verfügbares Datum und eine Uhrzeit. Deaktivierte Daten können vollständig ausgebucht oder Feiertage sein.
+                                </li>
+                                <li>
+                                    <strong>Schritt 5: Terminbestätigung speichern/drucken</strong><br>
+                                    Sie haben Ihren Termin erfolgreich gebucht! Speichern oder drucken Sie den Bestätigungsbeleg für Ihren Besuch.
+                                    Es ist notwendig, diesen Bestätigungsbeleg bei der Mission vorzulegen.
+                                </li>
+                            </ol>',
     'quickLinks' => 'Schnellzugriffslinks',
     'quickLinksCheckVisa' => '<li>Überprüfen Sie Ihren Visastatus <a href=":href">hier.</a>
                                     <br>
@@ -291,4 +300,12 @@ return [
     'if_not_received' => 'Wenn Sie ihn nicht erhalten haben, klicken Sie einfach auf den untenstehenden Button, um einen neuen anzufordern.',
     'request_new_link' => 'Neuen Verifizierungslink anfordern',
     'email_verified' => 'Ihre E-Mail wurde verifiziert!',
+    'new_appointment' => 'Neuer Termin',
+    'appointments' => 'Termine',
+    'booking_for' => 'Buchung für',
+    'myself' => 'Mich selbst',
+    'someone_else' => 'Jemand anderen',
+    'select_option' => 'Option auswählen',
+    'current_street_house' => 'Aktuelle Straße & Hausnummer',
+    'current_city' => 'Aktuelle Stadt/Bundesland',
 ];

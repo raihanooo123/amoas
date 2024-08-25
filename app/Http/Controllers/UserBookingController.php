@@ -17,16 +17,6 @@ use Spatie\GoogleCalendar\Event;
 
 class UserBookingController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | User Booking Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller loads all frontend booking views and process
-    | all requests. Also loads specific user's bookings to view.
-    |
-    */
-
     /**
      * get user bookings and load user bookings view
      *
@@ -46,14 +36,6 @@ class UserBookingController extends Controller
      */
     public function loadBooking()
     {
-        // dd(request()->all());
-        if (request()->has('mission')) {
-            $department = \App\Department::where('code', strtoupper(request()->mission))->where('status', 1)->first();
-            if ($department) {
-                request()->session()->put('department', $department);
-            }
-        }
-
         $categories = Category::with('packages')->get();
 
         return view('welcome', compact('categories'));

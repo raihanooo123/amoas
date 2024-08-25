@@ -19,9 +19,9 @@ return [
     'paypal' => 'PayPal',
     'my_account_link' => 'My Account',
     'logout_link' => 'Logout',
-    'welcome_title' => 'Welcome to AMOAS',
+    'welcome_title' => 'Online Appointment Scheduling System',
     'welcome_page_title' => 'Home',
-    'welcome_subtitle' => "Afghanistan's missions online appointment system",
+    'welcome_subtitle' => 'AMOAS; Afghanistan missions online appointment system',
     'personal_details' => 'Your Personal Details',
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
@@ -38,7 +38,7 @@ return [
     'booking_type_personal' => 'Personal',
     'booking_type_business' => 'Business',
     'booking_category' => 'Please select a suitable category',
-    'booking_package_title' => 'Select Your Preferred Package',
+    'booking_package_title' => 'Select Service',
     'booking_package_btn_select' => 'Select',
     'booking_package_btn_selected' => 'Selected',
     'booking_package_duration_single' => 'Hour',
@@ -102,7 +102,7 @@ return [
     'offline_payment' => 'Offline Payment',
     'full_name' => 'Full Name',
     'here' => 'here ...',
-    'id_card' => 'ID Card Number',
+    'id_card' => 'ID Card/Passport Number',
     'id_card_description' => 'Please hold your ID Card will entering to Mission.',
     'postal' => 'Postal Code',
     'zip' => 'Zip Code',
@@ -136,23 +136,32 @@ return [
     ],
     'check_visa_status' => 'Check Visa status',
     'department' => 'Department (Mission)',
-    'howToReserve' => 'How to reserve a set on our mission?',
+    'howToReserve' => 'How to make an appointment here?',
     'guidelineStep' => '<ol>
-                        <li> <strong>Step 1:</strong> Select the services which you want to be done by us.</li>
-                            <li>Select the package within the selected service.
-                                The detailed information of each package will show with package selection, please read once and click on
-                                <button class="btn btn-sm" onclick="return false;">
-                                    <i class="far fa-clock"></i> &nbsp; Select Booking Time
-                                </button> button at bottom of the page.</li>
+                        <li> <strong>Step 1: Create an Account</strong><br>
+                            Sign up on our platform to manage your appointments and access services.
+                        </li>
+                        <li>
+                            <strong>Step 2: Select a Service</strong><br>
+                            Log in and choose the service you need. Review the required documents 
+                            and service details, then click the \'Next »\' button at the bottom.
+                        </li>
 
-                            <li> <strong>Step 2:</strong> On the next part, please enter you information properly and click on
-                                <button class="btn btn-sm" onclick="return false;">
-                                        Next »
-                                </button>
-                                    button, although some package may have different procedure for booking.</li>
+                            <li> 
+                                <strong>Step 3: Enter Personal Information</strong><br>
+                                Fill in your personal details accurately and click \'Next »\' to continue.
 
-                            <li> <strong>Step 3:</strong> Select the booking date and time. Dates the are disables, may already booked or it is a holyday.</li>
-                            <li> <strong>Step 4:</strong> This is final step. You have successfully booked a time and print the slip, it is necessary while entering to our mission.</li>
+                            </li>
+
+                            <li>
+                                <strong>Step 4: Choose Date and Time</strong> 
+                                Pick an available date and time. Disabled dates may be fully booked or holidays.
+                            </li>
+                            <li>
+                                <strong>Step 5: Save/Print Appointment Confirmation</strong><br>
+                                You\'ve successfully booked your appointment! Save or print the confirmation slip for your visit.
+                                It is necessary to bring show this confirmation slip at the mission.
+                            </li>
                         </ol>',
     'quickLinks' => 'Quick access links',
     'quickLinksCheckVisa' => '<li>Check your Visa status <a href=":href">here.</a>
@@ -298,4 +307,12 @@ return [
     'if_not_received' => 'If you haven\'t received it, simply click on bellow button to request a new fresh one.',
     'request_new_link' => 'Request New Verification Link',
     'email_verified' => 'Your email has been verified!',
+    'new_appointment' => 'New Appointment',
+    'appointments' => 'Appointments',
+    'booking_for' => 'Booking For',
+    'myself' => 'Myself',
+    'someone_else' => 'Someone Else',
+    'select_option' => 'Select Option',
+    'current_street_house' => 'Current Street & House No.',
+    'current_city' => 'Current City/State',
 ];
