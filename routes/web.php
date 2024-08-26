@@ -59,6 +59,9 @@ Route::post('/get_timing_slots', 'UserBookingController@getTimingSlots')->name('
 Route::post('/get_update_slots', 'UserBookingController@getUpdateSlots')->name('updateSlots');
 Route::post('/remove_session_addon', 'UserBookingController@removeFromList');
 
+// route for postalcodes
+Route::get('/postal-codes', 'PostalCodeController@postalCodeList')->name('postal-codes.list');
+
 // ** USER ROLE ADMIN ROUTES ** //
 
 Route::group(['middleware' => ['admin', 'verified']], function () {

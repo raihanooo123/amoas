@@ -29,11 +29,10 @@
                 <br>
                 <div class="row">
                     <div class="col-md-12">
-                        {{-- a label and a select with For yourself, For someone else --}}
-                        <label>{{ __('app.booking_for') }}</label>
+                        <label>{{ __('app.booking_for') }} <small>({{ __('app.required') }})</small></label>
                         <div class="form-group {{ $errors->has('booking_for') ? 'has-danger' : '' }}">
                             <select name="booking_for"
-                                class="form-control form-control-lg {{ $errors->has('booking_for') ? 'is-invalid' : '' }}">
+                                class="form-control {{ $errors->has('booking_for') ? 'is-invalid' : '' }}">
                                 <option value="" selected disabled>{{ __('app.select_option') }}</option>
                                 <option value="myself" {{ old('booking_for') == 'myself' ? 'selected' : null }}>
                                     {{ __('app.myself') }}
@@ -52,10 +51,10 @@
                     <div class="col-md-6">
                         <label>{{ __('app.provide_address') }} <small>({{ __('app.required') }})</small></label>
                         <div class="form-group">
-                            <input id="autocomplete" placeholder="{{ __('app.provide_address') }}  {{ __('app.here') }}"
+                            <input
                                 name="email" type="email"
-                                class="form-control form-control-lg {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                                value="{{ old('email', auth()->user()->email) }}">
+                                class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                value="{{ old('email') }}">
                             <small>{{ __('app.email_description') }}</small>
                             <p class="form-text text-danger d-none" id="address_error_holder">
                                 {{ __('app.address_error') }}
@@ -65,12 +64,11 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>{{ __('app.full_name') }} <small>({{ __('app.required') }})</small></label>
-                            {{-- <small>{{ __('app.email_description') }}</small> --}}
                             <div class="form-group">
-                                <input id="autocomplete" placeholder="{{ __('app.full_name') }} {{ __('app.here') }}"
+                                <input
                                     name="full_name" type="text"
-                                    class="form-control form-control-lg {{ $errors->has('full_name') ? 'is-invalid' : '' }} "
-                                    value="{{ old('full_name', auth()->user()->first_name . ' ' . auth()->user()->last_name) }}">
+                                    class="form-control {{ $errors->has('full_name') ? 'is-invalid' : '' }} "
+                                    value="{{ old('full_name') }}">
                                 <small>&nbsp;</small>
                                 <p class="form-text text-danger d-none" id="address_error_holder">
                                     {{ __('app.address_error') }}
@@ -81,13 +79,12 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>{{ __('app.phone') }}</label>
+                            <label>{{ __('app.phone') }} <small>({{ __('app.required') }})</small></label>
                             <div class="form-group">
-                                <input id="autocomplete" placeholder="{{ __('app.phone') }} {{ __('app.here') }}"
+                                <input
                                     name="phone" type="text"
-                                    class="form-control form-control-lg {{ $errors->has('phone') ? 'is-invalid' : '' }}"
+                                    class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
                                     value="{{ old('phone') }}">
-                                <small>&nbsp;</small>
                                 <p class="form-text text-danger d-none" id="address_error_holder">
                                     {{ __('app.address_error') }}
                                 </p>
@@ -95,21 +92,28 @@
                         </div>
                     </div>
 
-                    {{-- <div class="col-md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label>{{ __('app.id_card_passport_no') }}</label>
-                            <div class="form-group">
-                                <input id="autocomplete" name="idcard" type="text"
-                                    class="form-control form-control-lg {{ $errors->has('idcard') ? 'is-invalid' : '' }}"
-                                    value="{{ old('idcard') }}">
-                                <small>{{ __('app.id_card_description') }}</small>
-                                <p class="form-text text-danger d-none" id="address_error_holder">
-                                    {{ __('app.address_error') }}
-                                </p>
-                            </div>
+                            <label>{{ __('app.participant') }} <small>({{ __('app.optional') }})</small></label>
+
+                            <select name="participant"
+                                class="form-control {{ $errors->has('participant') ? 'is-invalid' : '' }}">
+                                <option value="" selected>{{ __('app.iam_alone') }}</option>
+                                @for ($i = 1; $i <= 9; $i++)
+                                    <option value="{{ $i }}" {{ old('participant') == $i ? 'selected' : null }}>
+                                        {{-- {{ $i }} {{ __('app.family_member') }} --}}
+                                        {{ trans_choice('app.family_member', $i, ['count' => $i]) }}
+                                    </option>
+                                @endfor
+                            </select>
+
+                            <p class="form-text text-danger d-none" id="address_error_holder">
+                                {{ __('app.address_error') }}
+                            </p>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
+                <hr>
                 <div class="row">
 
                     <div class="col-md-6">
@@ -117,8 +121,8 @@
                             <label>{{ __('app.current_street_house') }}
                                 <small>({{ __('app.required') }})</small></label>
                             <div class="form-group">
-                                <input id="autocomplete" name="street" type="text"
-                                    class="form-control form-control-lg {{ $errors->has('street') ? 'is-invalid' : '' }}"
+                                <input name="street" type="text"
+                                    class="form-control {{ $errors->has('street') ? 'is-invalid' : '' }}"
                                     value="{{ old('street') }}">
                                 <p class="form-text text-danger d-none">
                                     {{ __('app.street') }}
@@ -129,52 +133,30 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>{{ __('app.current_city') }}
-                                <small>({{ __('app.required') }})</small></label>
-                            <div class="form-group">
-                                <input id="autocomplete" name="city" type="text"
-                                    class="form-control form-control-lg {{ $errors->has('city') ? 'is-invalid' : '' }}"
-                                    value="{{ old('city') }}">
-                                <p class="form-text text-danger d-none">
-                                    {{ __('app.city') }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>{{ __('app.postal') }} / {{ __('app.zip') }}
-                                <small>({{ __('app.required') }})</small></label>
-                            <div class="form-group">
-                                <input id="autocomplete" name="postal" type="text"
-                                    class="form-control form-control-lg {{ $errors->has('postal') ? 'is-invalid' : '' }}"
-                                    value="{{ old('postal') }}">
-                                <small>{{ __('app.postalDesc') }}</small>
-                                <p class="form-text text-danger d-none" id="address_error_holder">
-                                    {{ __('app.address_error') }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>{{ __('app.participant') }}</label>
-
-                            <input id="autocomplete" min="1" max="8"
-                                placeholder="{{ __('app.participant') }} {{ __('app.here') }}" name="participant"
-                                type="number"
-                                class="form-control form-control-lg {{ $errors->has('participant') ? 'is-invalid' : '' }}"
-                                value="{{ old('participant') }}">
-                            <small>{{ __('app.participant_desc') }}</small>
+                            <label>{{ __('app.postal') }}
+                            <small>({{ __('app.required') }})</small></label>
+                            <select id="postal-code" name="postal" class="form-control {{ $errors->has('postal') ? 'is-invalid' : '' }}">
+                                <option value="">{{ __('app.select_option') }}</option>
+                            </select>
                             <p class="form-text text-danger d-none" id="address_error_holder">
                                 {{ __('app.address_error') }}
                             </p>
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ __('app.current_city') }}
+                            <small>({{ __('app.required') }})</small></label>
+                            <select id="city" name="city" class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}">
+                                <option value="">{{ __('app.select_option') }}</option>
+                            </select>
+                            <p class="form-text text-danger d-none">
+                                {{ __('app.city') }}
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -214,3 +196,69 @@
         </footer>
     </form>
 @endsection
+
+@section('scripts')
+<script src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+
+<script>
+    var selectedPostalCode;
+
+    $(document).ready(function() {
+        $('#postal-code').select2({
+            ajax: {
+                url: '{{ route('postal-codes.list') }}', // Route to fetch postal codes
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.zip + ' ' + item.place + ' (' + item.state + ')',
+                                id: item.zip
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            placeholder: '{{ __('app.select_option') }}',
+            minimumInputLength: 2,
+        });
+        $('#city').select2({
+            ajax: {
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            placeholder: '{{ __('app.select_option') }}',
+            minimumInputLength: 2,
+        });
+    });
+
+    var myself = @json(['email' => auth()->user()->email, 'full_name' => auth()->user()->full_name]);
+
+    // add on value change event listener to select named booking_for with jquery
+    $('select[name="booking_for"]').on('change', function () {
+        var bookingFor = $(this).val();
+        if (bookingFor === 'myself') {
+            $('input[name="email"]').val(myself.email);
+            $('input[name="full_name"]').val(myself.full_name);
+        } else {
+            $('input[name="email"]').val('');
+            $('input[name="full_name"]').val('');
+        }
+    });
+
+</script>
+@endsection
+
