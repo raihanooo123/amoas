@@ -435,14 +435,6 @@ class UserBookingController extends Controller
     public function postStep1(Request $request)
     {
         $request->session()->put('package_id', $request->package_id);
-        $package = Package::findOrFail(Session::get('package_id'));
-
-        // Check if the online visa form is selected
-        // if($package){
-        //    $visa = preg_match('/visa/i', $package->title, $output_array);
-        //    if($visa)
-        //        return redirect()->route('visa-form.fill');
-        // }
 
         return redirect()->route('loadStep2');
     }
@@ -465,15 +457,15 @@ class UserBookingController extends Controller
      */
     public function postStep2(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'email|required',
             'postal' => 'required',
             'phone' => 'required',
             'full_name' => 'required',
-            'participant' => '',
-            'idcard' => 'required',
-            'address' => 'required',
-            'department_id' => 'required',
+            'place' => 'required',
+            'booking_for' => 'required',
+            'street' => 'required',
+            'place' => 'required',
         ], [
             'postal.regex' => __('app.postalError'),
         ]);

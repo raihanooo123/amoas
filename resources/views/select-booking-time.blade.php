@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <form method="post" action="{{ route('postStep2') }}">
+    <form method="POST" action="{{ route('postStep2') }}">
         {{ csrf_field() }}
         <div class="container">
             <div class="content">
@@ -31,7 +31,7 @@
                     <div class="col-md-12">
                         <label>{{ __('app.booking_for') }} <small>({{ __('app.required') }})</small></label>
                         <div class="form-group {{ $errors->has('booking_for') ? 'has-danger' : '' }}">
-                            <select name="booking_for"
+                            <select name="booking_for" required
                                 class="form-control {{ $errors->has('booking_for') ? 'is-invalid' : '' }}">
                                 <option value="" selected disabled>{{ __('app.select_option') }}</option>
                                 <option value="myself" {{ old('booking_for') == 'myself' ? 'selected' : null }}>
@@ -51,8 +51,7 @@
                     <div class="col-md-6">
                         <label>{{ __('app.provide_address') }} <small>({{ __('app.required') }})</small></label>
                         <div class="form-group">
-                            <input
-                                name="email" type="email"
+                            <input name="email" type="email" required
                                 class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                                 value="{{ old('email') }}">
                             <small>{{ __('app.email_description') }}</small>
@@ -65,8 +64,7 @@
                         <div class="form-group">
                             <label>{{ __('app.full_name') }} <small>({{ __('app.required') }})</small></label>
                             <div class="form-group">
-                                <input
-                                    name="full_name" type="text"
+                                <input name="full_name" type="text" required
                                     class="form-control {{ $errors->has('full_name') ? 'is-invalid' : '' }} "
                                     value="{{ old('full_name') }}">
                                 <small>&nbsp;</small>
@@ -81,8 +79,7 @@
                         <div class="form-group">
                             <label>{{ __('app.phone') }} <small>({{ __('app.required') }})</small></label>
                             <div class="form-group">
-                                <input
-                                    name="phone" type="text"
+                                <input name="phone" type="text" required
                                     class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
                                     value="{{ old('phone') }}">
                                 <p class="form-text text-danger d-none" id="address_error_holder">
@@ -100,7 +97,8 @@
                                 class="form-control {{ $errors->has('participant') ? 'is-invalid' : '' }}">
                                 <option value="" selected>{{ __('app.iam_alone') }}</option>
                                 @for ($i = 1; $i <= 9; $i++)
-                                    <option value="{{ $i }}" {{ old('participant') == $i ? 'selected' : null }}>
+                                    <option value="{{ $i }}"
+                                        {{ old('participant') == $i ? 'selected' : null }}>
                                         {{-- {{ $i }} {{ __('app.family_member') }} --}}
                                         {{ trans_choice('app.family_member', $i, ['count' => $i]) }}
                                     </option>
@@ -121,7 +119,7 @@
                             <label>{{ __('app.current_street_house') }}
                                 <small>({{ __('app.required') }})</small></label>
                             <div class="form-group">
-                                <input name="street" type="text"
+                                <input name="street" type="text" required
                                     class="form-control {{ $errors->has('street') ? 'is-invalid' : '' }}"
                                     value="{{ old('street') }}">
                                 <p class="form-text text-danger d-none">
@@ -134,8 +132,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>{{ __('app.postal') }}
-                            <small>({{ __('app.required') }})</small></label>
-                            <select id="postal-code" name="postal" class="form-control {{ $errors->has('postal') ? 'is-invalid' : '' }}">
+                                <small>({{ __('app.required') }})</small></label>
+                            <select id="postal-code" name="postal" required
+                                class="form-control {{ $errors->has('postal') ? 'is-invalid' : '' }}">
                                 <option value="">{{ __('app.select_option') }}</option>
                             </select>
                             <p class="form-text text-danger d-none" id="address_error_holder">
@@ -147,12 +146,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>{{ __('app.current_city') }}
-                            <small>({{ __('app.required') }})</small></label>
-                            <select id="city" name="city" class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}">
+                                <small>({{ __('app.required') }})</small></label>
+                            <select id="place" name="place" required
+                                class="form-control {{ $errors->has('place') ? 'is-invalid' : '' }}">
                                 <option value="">{{ __('app.select_option') }}</option>
                             </select>
                             <p class="form-text text-danger d-none">
-                                {{ __('app.city') }}
+                                {{ __('app.place') }}
                             </p>
                         </div>
                     </div>
@@ -198,67 +198,81 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('plugins/select2/select2.min.js') }}"></script>
 
-<script>
-    var selectedPostalCode;
+    <script>
+        var selectedPostalCode;
 
-    $(document).ready(function() {
-        $('#postal-code').select2({
-            ajax: {
-                url: '{{ route('postal-codes.list') }}', // Route to fetch postal codes
-                dataType: 'json',
-                delay: 250,
-                processResults: function (data) {
-                    return {
-                        results: $.map(data, function (item) {
-                            return {
-                                text: item.zip + ' ' + item.place + ' (' + item.state + ')',
-                                id: item.zip
-                            }
-                        })
-                    };
+        $(document).ready(function() {
+            $('#postal-code').select2({
+                ajax: {
+                    url: "{{ route('postal-codes.list') }}", // Route to fetch postal codes
+                    dataType: 'json',
+                    delay: 50,
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    state: item.state,
+                                    place: item.place,
+                                    zip: item.zip,
+                                    text: item.zip + ' ' + item.place + ' (' + item.state + ')',
+                                    id: item.zip
+                                }
+                            })
+                        };
+                    },
+                    cache: true
                 },
-                cache: true
-            },
-            placeholder: '{{ __('app.select_option') }}',
-            minimumInputLength: 2,
-        });
-        $('#city').select2({
-            ajax: {
-                dataType: 'json',
-                delay: 250,
-                processResults: function (data) {
-                    return {
-                        results: $.map(data, function (item) {
-                            return {
-                                text: item.name,
-                                id: item.id
-                            }
-                        })
-                    };
+                placeholder: '{{ __('app.select_option') }}',
+                minimumInputLength: 2,
+            }).on('select2:select', function(e) {
+                selectedPostalCode = e.params.data;
+                // set the #city select2 value 
+                const cityValue = {
+                    id: selectedPostalCode.place,
+                    text: selectedPostalCode.place + ' (' + selectedPostalCode.state + ')'
+                };
+
+                const place = $('#place');
+
+                place.append(new Option(cityValue.text, cityValue.id, true, true));
+
+            });
+
+            $('#city').select2({
+                ajax: {
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    },
+                    cache: true
                 },
-                cache: true
-            },
-            placeholder: '{{ __('app.select_option') }}',
-            minimumInputLength: 2,
+                placeholder: '{{ __('app.select_option') }}',
+                minimumInputLength: 2,
+            });
         });
-    });
 
-    var myself = @json(['email' => auth()->user()->email, 'full_name' => auth()->user()->full_name]);
+        var myself = @json(['email' => auth()->user()->email, 'full_name' => auth()->user()->full_name]);
 
-    // add on value change event listener to select named booking_for with jquery
-    $('select[name="booking_for"]').on('change', function () {
-        var bookingFor = $(this).val();
-        if (bookingFor === 'myself') {
-            $('input[name="email"]').val(myself.email);
-            $('input[name="full_name"]').val(myself.full_name);
-        } else {
-            $('input[name="email"]').val('');
-            $('input[name="full_name"]').val('');
-        }
-    });
-
-</script>
+        // add on value change event listener to select named booking_for with jquery
+        $('select[name="booking_for"]').on('change', function() {
+            var bookingFor = $(this).val();
+            if (bookingFor === 'myself') {
+                $('input[name="email"]').val(myself.email);
+                $('input[name="full_name"]').val(myself.full_name);
+            } else {
+                $('input[name="email"]').val('');
+                $('input[name="full_name"]').val('');
+            }
+        });
+    </script>
 @endsection
-
