@@ -6,6 +6,8 @@ use App\Addon;
 use App\Booking;
 use App\BookingTime;
 use App\Category;
+use App\Jobs\FinalizeNewBooking;
+use App\Models\PostalCode;
 use App\Package;
 use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
@@ -435,6 +437,10 @@ class UserBookingController extends Controller
     public function postStep1(Request $request)
     {
         $request->session()->put('package_id', $request->package_id);
+        $package = Package::findOrFail(Session::get('package_id'));
+
+        // save the $package to session
+        $request->session()->put('package', $package);
 
         return redirect()->route('loadStep2');
     }
@@ -457,7 +463,7 @@ class UserBookingController extends Controller
      */
     public function postStep2(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = \Validator::make($request->all(), [
             'email' => 'email|required',
             'postal' => 'required',
             'phone' => 'required',
@@ -466,24 +472,32 @@ class UserBookingController extends Controller
             'booking_for' => 'required',
             'street' => 'required',
             'place' => 'required',
-        ], [
-            'postal.regex' => __('app.postalError'),
         ]);
 
-        // search for specific pattern
-        // 4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+ bonn
-        // 'regex:/^(01[0-9]\d+|04[0-9]\d+|12[0-9]\d+|13[0-9]\d+|141[0-9]\d+|20[0-9]\d+)/' berlin
+        $place = $request->place;
+        $postalCode = $request->postal;
 
-        $validator->sometimes('postal', ['regex:/^(4[0-9]\d+|5[0-9]\d+|6[0-9]\d+|3[2-6]\d+|97\d+)/'], function ($input) use ($request) {
+        $address = PostalCode::with(['mission:id,name_en,name_dr'])->where('zip', $postalCode)->where('place', $place)->first();
 
-            $department = \App\Department::findOrFail($request->department_id) ?? session('department');
+        if ($address->mission_id !== 108){
+            $validator->after(function ($validator) use ($address) {
+                $validator->errors()->add(
+                    'postal', 
+                    __('app.postal_code_not_in_range', [
+                        'zip' => $address->zip,
+                        'place' => $address->place,
+                        'mission' => $address->mission->name_en ?? 'nearest mission',
+                    ]));
 
-            if ($department && $department->code == 'CBONN') {
-                // $validator->errors()->add('postal.regex', __('app.postalError', ['department'=> \Lang::has('app.' . $department->name_en, app()->getLocale()) ? __('app.' . $department->name_en) : $department->name_en]));
-                return true;
-            }
-
-        });
+                // $validator->errors()->add(
+                //     'place', 
+                //     __('app.postal_code_not_in_range', [
+                //         'zip' => $address->zip,
+                //         'place' => $address->place,
+                //         'mission' => $address->mission->name_en ?? 'nearest mission',
+                //     ]));
+            });
+        }
 
         if ($validator->fails()) {
             return back()
@@ -494,13 +508,26 @@ class UserBookingController extends Controller
 
         //store form input into session and load next step
         $request->session()->put('email', $input['email']);
+        $request->session()->put('street', $input['street']);
         $request->session()->put('postal', $input['postal']);
         $request->session()->put('phone', $input['phone']);
         $request->session()->put('full_name', $input['full_name']);
-        $request->session()->put('idcard', $input['idcard']);
         $request->session()->put('participant', $input['participant']);
-        $request->session()->put('address', $input['address']);
-        $request->session()->put('department_id', $input['department_id']);
+
+        // construct new booking
+        $newBooking = new Booking();
+        $newBooking->user_id = auth()->id();
+        $newBooking->package_id = session('package_id');
+        $newBooking->department_id = session('department_id', 108);
+        $newBooking->serial_no = Booking::genSerialNo(session('department_id', 108), session('package_id'));
+        $newBooking->email = session('email');
+
+        // set the $newBooking to session
+        $request->session()->put('newBooking', $newBooking);
+
+        // set the $address to session
+        $request->session()->put('address', $address);
+
 
         return redirect('/select-extra-services');
     }
@@ -573,29 +600,31 @@ class UserBookingController extends Controller
         $request->session()->put('booking_slot', $request->booking_slot);
         $request->session()->put('participantInfo', $request->participant);
 
-        $bookingCountInWeek = auth()
-            ->user()
-            ->bookings()
-            ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
-            ->where('created_at', '<=', now()->addWeeks(2)->endOfDay()->format('Y-m-d H:i:s'))
-            ->get()
-            ->count();
+        // $bookingCountInWeek = auth()
+        //     ->user()
+        //     ->bookings()
+        //     ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
+        //     ->where('created_at', '<=', now()->addWeeks(2)->endOfDay()->format('Y-m-d H:i:s'))
+        //     ->get()
+        //     ->count();
 
-        if ($bookingCountInWeek > 0 && auth()->user()->role_id == 2) {
+        // if ($bookingCountInWeek > 0 && auth()->user()->role_id == 2) {
 
-            $lastBooking = auth()->user()->bookings()->latest()->first();
+        //     $lastBooking = auth()->user()->bookings()->latest()->first();
 
-            $tillDate = optional($lastBooking->created_at)->addWeeks()->addDays()->startOfDay()->format('Y-m-d H:i:s');
+        //     $tillDate = optional($lastBooking->created_at)->addWeeks()->addDays()->startOfDay()->format('Y-m-d H:i:s');
 
-            abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
-        }
+        //     abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
+        // }
+
+
 
         \DB::beginTransaction();
         $booking = Booking::create([
             'user_id' => auth()->id(),
             'package_id' => session('package_id'),
-            'department_id' => session('department_id'),
-            'serial_no' => Booking::genSerialNo(session('department_id')),
+            'department_id' => session('department_id', 108),
+            'serial_no' => Booking::genSerialNo(session('department_id', 108), session('package_id')),
             'booking_date' => $request->event_date,
             'booking_type' => ucfirst($request->booking_type) ?? 'Ordinary',
             'booking_time' => $request->booking_slot,
@@ -603,13 +632,29 @@ class UserBookingController extends Controller
             'status' => 'Waiting',
         ]);
 
+        // $newBooking = session('newBooking');
+        
+        // $newBooking->booking_date = $request->event_date;
+        // $newBooking->booking_type = ucfirst($request->booking_type) ?? 'Ordinary';
+        // $newBooking->booking_time = $request->booking_slot;
+        // $newBooking->status = 'Waiting';
+
+        // $newBooking->save();
+
+
+        // $address = session('address');
+        // $street = session('street');
+    
+        // $fullAddress = "{$street}, {$address->zip}, {$address->place}, {$address->state}, {$address->country->name_en}";
+        // $fullAddress = $street . ', ' . $address->zip . ', ' . $address->place . ', ' . $address->state . ', ' . $address->country->name_en;
+
         $info = $booking->info()->create([
             'full_name' => session('full_name'),
             'email' => session('email'),
             'phone' => session('phone'),
-            'id_card' => session('idcard'),
+            'id_card' => 'filled',
             'postal' => session('postal'),
-            'address' => session('address'),
+            'address' => session('street'),
         ]);
 
         if ($request->has('participant')) {
@@ -620,35 +665,36 @@ class UserBookingController extends Controller
                     'relation' => $participant['relation'],
                 ]);
 
-                ${"var{$key}"} = Booking::create([
-                    'user_id' => $booking->user_id,
-                    'package_id' => $booking->package_id,
-                    'department_id' => $booking->department_id,
-                    'serial_no' => '#'.($key + 1).'-'.$booking->serial_no,
-                    'booking_date' => $booking->booking_date,
-                    'booking_type' => $booking->booking_type,
-                    'booking_time' => $booking->booking_time,
-                    'email' => $booking->email,
-                    'status' => $booking->status,
-                ]);
+                // ${"var{$key}"} = Booking::create([
+                //     'user_id' => $booking->user_id,
+                //     'package_id' => $booking->package_id,
+                //     'department_id' => $booking->department_id,
+                //     'serial_no' => '#'.($key + 1).'-'.$booking->serial_no,
+                //     'booking_date' => $booking->booking_date,
+                //     'booking_type' => $booking->booking_type,
+                //     'booking_time' => $booking->booking_time,
+                //     'email' => $booking->email,
+                //     'status' => $booking->status,
+                // ]);
 
-                ${"var{$key}"}->info()->create([
-                    'full_name' => $info->full_name."| {$participant['relation']}",
-                    'email' => $info->email,
-                    'phone' => $info->phone,
-                    'id_card' => $participant['id_card'],
-                    'postal' => $info->postal,
-                    'address' => $info->address,
-                ]);
+                // ${"var{$key}"}->info()->create([
+                //     'full_name' => $info->full_name."| {$participant['relation']}",
+                //     'email' => $info->email,
+                //     'phone' => $info->phone,
+                //     'id_card' => $participant['id_card'],
+                //     'postal' => $info->postal,
+                //     'address' => $info->address,
+                // ]);
             }
         }
 
         \DB::commit();
 
         $booking->load(['user', 'info', 'package', 'department']);
-        \App\Jobs\FinalizeNewBooking::dispatch($booking);
+        FinalizeNewBooking::dispatch($booking);
 
         $request->session()->put('bookingId', $booking->id);
+        $request->session()->put('booking', $booking);
 
         return redirect('/finalize-booking');
     }

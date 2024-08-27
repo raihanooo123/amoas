@@ -140,6 +140,11 @@
                             <p class="form-text text-danger d-none" id="address_error_holder">
                                 {{ __('app.address_error') }}
                             </p>
+                            @if ($errors->has('postal'))
+                                <p class="form-text text-danger">
+                                    {{ $errors->first('postal') }}
+                                </p>
+                            @endif
                         </div>
                     </div>
 

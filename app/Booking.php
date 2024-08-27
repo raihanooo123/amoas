@@ -12,18 +12,6 @@ class Booking extends Model
         'booking_time', 'google_calendar_event_id', 'email', 'booking_type', 'status',
     ];
 
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new DepartmentScope);
-    }
-
     public function invoice()
     {
         return $this->hasOne('App\Invoice');
@@ -69,13 +57,14 @@ class Booking extends Model
         return $this->hasMany('App\Models\Post\PostalPackage');
     }
 
-    public static function genSerialNo($departmentId)
+    public static function genSerialNo($departmentId, $packageId)
     {
         $counts = self::whereDate('created_at', '=', date('Y-m-d'))->count();
 
-        $department = \App\Department::find($departmentId) ? \App\Department::find($departmentId)->code : 'AFG';
+        $department = Department::find($departmentId);
 
-        $serialNo = $department.'-'.date('ynj').'-'.sprintf('%03d', ++$counts);
+        // $serialNo = $department.'-'.date('ynj').'-'.sprintf('%03d', ++$counts);
+        $serialNo = "{$department->code}{$packageId}" . date('ynj') . sprintf('%03d', ++$counts);
 
         return $serialNo;
     }

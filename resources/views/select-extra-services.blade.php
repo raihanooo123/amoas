@@ -12,12 +12,6 @@
 <div class="jumbotron promo">
     <div class="container">
         <h1 class="text-center promo-heading">{{ __('app.welcome_title') }}</h1>
-        @if(session()->has('department'))
-            @php
-                $department = session('department');
-            @endphp
-            <h3 class="text-center promo-heading">{{ $department->name_en }}</h3>
-        @endif
         <p class="promo-desc text-center">{{ __('app.welcome_subtitle') }}</p>
     </div>
 </div>
@@ -36,7 +30,6 @@
                 </div>
             </div>
 
-            <br>
             <br>
 
             @if (count($errors) > 0)
@@ -60,21 +53,37 @@
                     <br>
                     <h5>{{ __('app.participantInfo', ['participant' => session('participant')]) }}</h5>
                     <div class="form-group row">
-                        <label class="col-3 col-form-label"><i class="fa fa-asterisk text-danger"></i> {{ __('app.full_name') }}</label>
-                        <label class="col-3 col-form-label"><i class="fa fa-asterisk text-danger"></i> {{ __('app.id_card') }}</label>
-                        <label class="col-3 col-form-label"><i class="fa fa-asterisk text-danger"></i> {{ __('app.relationType') }}</label>
-                        <label class="col-3 col-form-label"><i class="fa fa-asterisk text-danger"></i> {{ __('app.select_service') }}</label>
+                        <label class="col-3 col-form-label">{{ __('app.full_name') }} <small>({{ __('app.required') }})</small></label>
+                        <label class="col-3 col-form-label">{{ __('app.id_card') }} <small>({{ __('app.required') }})</small></label>
+                        <label class="col-3 col-form-label">{{ __('app.relationType') }} <small>({{ __('app.required') }})</small></label>
+                        <label class="col-3 col-form-label">{{ __('app.select_service') }} <small>({{ __('app.required') }})</small></label>
                     </div>
                     @for($i = 0; $i< session('participant'); $i++)
                     <div class="form-group row">
                         <div class="col-3">
-                            <input type="text" class="form-control" name="participant[{{$i}}][name]" placeholder="{{__('app.required')}} ..." value='{{old("participant[$i][name]")}}'>
+                            <input type="text" class="form-control" 
+                                name="participant[{{$i}}][name]" 
+                                value='{{old("participant[$i][name]")}}'>
                         </div>
                         <div class="col-3">
-                            <input type="text" class="form-control" name="participant[{{$i}}][id_card]" placeholder="{{__('app.required')}} ..." value='{{old("participant[$i][id_card]")}}'>
+                            <input type="text" class="form-control" 
+                                name="participant[{{$i}}][id_card]" 
+                                value='{{old("participant[$i][id_card]")}}'>
                         </div>
                         <div class="col-3">
-                            <input type="text" class="form-control" name="participant[{{$i}}][relation]" placeholder="{{__('app.required')}} ..." value='{{old("participant[$i][relation]")}}'>
+                            <select name="participant[{{$i}}][relation]" class="form-control select2" placeholder="{{__('app.required')}} ...">
+                                <option value="">{{ __('app.select_option') }}</option>
+                                <option value="father" {{ old("participant[$i][relation]") == 'father' ? 'selected' : '' }}>{{ __('app.father') }}</option>
+                                <option value="mother" {{ old("participant[$i][relation]") == 'mother' ? 'selected' : '' }}>{{ __('app.mother') }}</option>
+                                <option value="brother" {{ old("participant[$i][relation]") == 'brother' ? 'selected' : '' }}>{{ __('app.brother') }}</option>
+                                <option value="sister" {{ old("participant[$i][relation]") == 'sister' ? 'selected' : '' }}>{{ __('app.sister') }}</option>
+                                <option value="son" {{ old("participant[$i][relation]") == 'son' ? 'selected' : '' }}>{{ __('app.son') }}</option>
+                                <option value="daughter" {{ old("participant[$i][relation]") == 'daughter' ? 'selected' : '' }}>{{ __('app.daughter') }}</option>
+                                <option value="spouse" {{ old("participant[$i][relation]") == 'spouse' ? 'selected' : '' }}>{{ __('app.spouse') }}</option>
+                                <option value="grand father" {{ old("participant[$i][relation]") == 'grand_father' ? 'selected' : '' }}>{{ __('app.grand_father') }}</option>
+                                <option value="grand mother" {{ old("participant[$i][relation]") == 'grand_mother' ? 'selected' : '' }}>{{ __('app.grand_mother') }}</option>
+                                <option value="grand son" {{ old("participant[$i][relation]") == 'grand_son' ? 'selected' : '' }}>{{ __('app.grand_son') }}</option>
+                            </select>
                         </div>
                         <div class="col-3">
                             <input type="text" class="form-control" name="participant[{{$i}}][package]" placeholder="{{__('app.required')}} ..." readonly value='{{ $package->title }}'>
@@ -88,7 +97,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <br>
-                    <h5><i class="fa fa-asterisk text-danger"></i> {{ __('app.select_date') }} <small>{{ __('app.no_paticipant_including_you', ['paticipant'=> session()->has('participant') ? session('participant') + 1 : 1]) }}</small></h5>
+                    <h5>{{ __('app.select_date') }} <small>{{ __('app.no_paticipant_including_you', ['paticipant'=> session()->has('participant') ? session('participant') + 1 : 1]) }}</small></h5>
                     <div class="form-group">
                         <input type="text" class="form-control form-control-lg {{$errors->has('event_date') ? ' is-invalid' : ''}}" onkeydown="return false" name="event_date" id="event_date" placeholder="{{ __('app.date_placeholder') }}" value="{{old('event_date')}}">
                         <p class="form-text text-danger d-none" id="date_error_holder">
