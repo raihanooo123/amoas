@@ -4,6 +4,7 @@ namespace App\Models\Post;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Contracts\Activity;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class PostalPackage extends Model
@@ -102,5 +103,15 @@ class PostalPackage extends Model
         $activity->properties = $activity
             ->properties
             ->put('deliverables', $this->deliverables()->pluck('name')->toArray());
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('Postal Package\'s Logs')
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->dontSubmitEmptyLogs();
     }
 }

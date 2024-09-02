@@ -47,10 +47,19 @@ Route::get('/privacy-policy', function () {
 
 // test route
 Route::get('/test', function () {
-    //get user with id of 1
-    $user = App\User::find(1568);
-    //email the verification email
-    Mail::to($user->email)->send(new App\Mail\SendVerificationEmail($user));
+    // from holidays table get all has the year of 2024
+    // $holidays = \App\Holidays::whereYear('year', 2024)->get();
+
+    // foreach ($holidays as $holiday) {
+    // if the holiday is already associated with the department 108
+    // if ($holiday->departments()->where('department_id', 108)->exists()) {
+    //     continue;
+    // }
+
+    // associate the holiday with the department 108
+    // $holiday->departments()->attach(108);
+    // }
+
 });
 
 // ** AJAX REQUESTS ** //

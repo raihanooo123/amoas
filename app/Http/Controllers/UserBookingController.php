@@ -479,10 +479,10 @@ class UserBookingController extends Controller
 
         $address = PostalCode::with(['mission:id,name_en,name_dr'])->where('zip', $postalCode)->where('place', $place)->first();
 
-        if ($address->mission_id !== 108){
+        if ($address->mission_id !== 108) {
             $validator->after(function ($validator) use ($address) {
                 $validator->errors()->add(
-                    'postal', 
+                    'postal',
                     __('app.postal_code_not_in_range', [
                         'zip' => $address->zip,
                         'place' => $address->place,
@@ -490,7 +490,7 @@ class UserBookingController extends Controller
                     ]));
 
                 // $validator->errors()->add(
-                //     'place', 
+                //     'place',
                 //     __('app.postal_code_not_in_range', [
                 //         'zip' => $address->zip,
                 //         'place' => $address->place,
@@ -515,7 +515,7 @@ class UserBookingController extends Controller
         $request->session()->put('participant', $input['participant']);
 
         // construct new booking
-        $newBooking = new Booking();
+        $newBooking = new Booking;
         $newBooking->user_id = auth()->id();
         $newBooking->package_id = session('package_id');
         $newBooking->department_id = session('department_id', 108);
@@ -527,7 +527,6 @@ class UserBookingController extends Controller
 
         // set the $address to session
         $request->session()->put('address', $address);
-
 
         return redirect('/select-extra-services');
     }
@@ -617,8 +616,6 @@ class UserBookingController extends Controller
         //     abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
         // }
 
-
-
         \DB::beginTransaction();
         $booking = Booking::create([
             'user_id' => auth()->id(),
@@ -633,7 +630,7 @@ class UserBookingController extends Controller
         ]);
 
         // $newBooking = session('newBooking');
-        
+
         // $newBooking->booking_date = $request->event_date;
         // $newBooking->booking_type = ucfirst($request->booking_type) ?? 'Ordinary';
         // $newBooking->booking_time = $request->booking_slot;
@@ -641,10 +638,9 @@ class UserBookingController extends Controller
 
         // $newBooking->save();
 
-
         // $address = session('address');
         // $street = session('street');
-    
+
         // $fullAddress = "{$street}, {$address->zip}, {$address->place}, {$address->state}, {$address->country->name_en}";
         // $fullAddress = $street . ', ' . $address->zip . ', ' . $address->place . ', ' . $address->state . ', ' . $address->country->name_en;
 
@@ -753,7 +749,7 @@ class UserBookingController extends Controller
         }
         // dd($participants);
 
-        //should work on it
+        // should work on it
         $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
             ->where('status', '!=', 'Cancelled')
