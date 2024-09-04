@@ -162,15 +162,6 @@ Route::group(['middleware' => ['customer', 'verified']], function () {
 
 });
 
-Route::group(['prefix' => 'tazkira', 'middleware' => 'auth'], function () {
-
-    Route::get('verification/{verification}/print/excel', 'Verification\TazkiraController@printExcel')->name('verification.print.excel');
-    Route::get('verification/{verification}/print/pdf', 'Verification\TazkiraController@printPdf')->name('verification.print.pdf');
-    Route::get('verification/{verification}/print/word', 'Verification\TazkiraController@printWord')->name('verification.print.word');
-    Route::resource('verification', 'Verification\TazkiraController');
-
-});
-
 // ** COMMON ROUTES FOR AUTHENTICATED USERS ** //
 
 Route::group(['middleware' => ['authenticated', 'verified']], function () {

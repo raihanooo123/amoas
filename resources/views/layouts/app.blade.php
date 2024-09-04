@@ -109,21 +109,6 @@
     @yield('content')
     <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset(mix('/js/app.js')) }}"></script>
-    @if (config('settings.freshchat_widget') != null)
-        <script src="https://wchat.freshchat.com/js/widget.js"></script>
-        <script>
-            window.fcWidget.init({
-                token: "{{ config('settings.freshchat_widget') }}",
-                host: "https://wchat.freshchat.com"
-            });
-            @if (Auth::user())
-                window.fcWidget.setExternalId("{{ Auth::user()->id }}");
-                window.fcWidget.user.setFirstName("{{ Auth::user()->first_name }}");
-                window.fcWidget.user.setLastName("{{ Auth::user()->last_name }}");
-                window.fcWidget.user.setEmail("{{ Auth::user()->email }}");
-            @endif
-        </script>
-    @endif
     @yield('scripts')
 </body>
 

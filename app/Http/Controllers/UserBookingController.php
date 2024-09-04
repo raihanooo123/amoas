@@ -976,9 +976,10 @@ class UserBookingController extends Controller
 
         // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
         // $qrCode = (string) $this->writeQrCode($booking->serial_no);
+        $isPdf = true;
 
-        $pdf = \PDF::loadView('print-booking-success', compact('booking'))->setPaper('A4');
+        $pdf = \PDF::loadView('print-booking-success', compact('booking', 'isPdf'))->setPaper('A4');
 
-        return $pdf->download('booking_result.pdf');
+        return $pdf->download("booking-{$booking->serial_no}.pdf");
     }
 }
