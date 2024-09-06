@@ -541,8 +541,8 @@
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#131313;">
                                                                         You have requested the
-                                                                        <u style="font-family: DejaVu Sans, sans-serif;"
-                                                                            dir="rtl">{{ $booking->package->title }}</u>,
+                                                                        <u>
+                                                                            {{ $booking->package->title }}</u>,
                                                                         you must
                                                                         provide the following
                                                                         document/s before the appointment date.

@@ -760,11 +760,8 @@ class UserBookingController extends Controller
             ->pluck('booking_date')
             ->toArray();
 
-        //        dd($bookedDates);
-
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
-        // dd($disabledDates);
         $daynum = [];
 
         return view('select-extra-services', compact('disable_days_string', 'package', 'disabledDates'));
@@ -974,12 +971,36 @@ class UserBookingController extends Controller
     {
         $booking = Booking::with('department', 'package')->find($id);
 
-        // $afgLogo = (string) \Image::make('images/afg-logo.png')->encode('data-url');
-        // $qrCode = (string) $this->writeQrCode($booking->serial_no);
         $isPdf = true;
 
-        $pdf = \PDF::loadView('print-booking-success', compact('booking', 'isPdf'))->setPaper('A4');
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables)->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
 
-        return $pdf->download("booking-{$booking->serial_no}.pdf");
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables)->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'fontDir' => array_merge($fontDirs, [
+                public_path('fonts'),
+            ]),
+            'fontdata' => $fontData + [
+                'IranSans' => [
+                    'R' => 'IranSansRegular.ttf',
+                    'B' => 'IranSansBold.ttf',
+                ],
+            ],
+            'default_font' => 'IranSans',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+        ]);
+
+        // Load the view content
+        $html = view('print-booking-success-new', compact('booking', 'isPdf'))->render();
+
+        // Write the HTML content to the PDF
+        $mpdf->WriteHTML($html);
+
+        // Output the PDF as a download
+        return $mpdf->Output("booking-{$booking->serial_no}.pdf", \Mpdf\Output\Destination::DOWNLOAD);
     }
 }

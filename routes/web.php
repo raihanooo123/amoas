@@ -288,3 +288,7 @@ Route::group(['prefix' => 'passport', 'middleware' => ['web', 'auth']], function
     Route::post('/extensions/status/{extension}', 'Passport\ExtensionController@status')->name('extensions.status');
     Route::resource('/extensions', 'Passport\ExtensionController');
 });
+
+Route::get('verify/{hashSerialNo}', function () {
+    return 'verified';
+})->name('booking.verify');

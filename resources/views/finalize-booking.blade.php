@@ -93,9 +93,9 @@
                         class="btn btn-primary">
                         <i class="fa fa-print"></i> {{ __('app.print_now') }}
                     </a>
-                    <a href="{{ route('printPdf', [$booking->id]) }}" class="btn btn-primary">
+                    {{-- <a href="{{ route('printPdf', [$booking->id]) }}" class="btn btn-primary">
                         <i class="fa fa-print"></i> {{ __('app.print_pdf') }}
-                    </a>
+                    </a> --}}
                 </div>
                 <div class="col-md-8">
 
