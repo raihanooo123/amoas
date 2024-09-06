@@ -39,33 +39,17 @@
                     <br>
                     <h3>{{ __('app.booking_summary') }}</h3>
                     <br>
-                    <h5>{{ session('full_name') }}</h5>
+                    <h6><i class="fas fa-user fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->full_name }}</h6>
                     <h6><i class="fas fa-envelope fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->email }}</h6>
                     <h6><i class="fas fa-phone fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->phone }}</h6>
+                    <h6><i class="fas fa-map-marker fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->info->full_address }}
+                    </h6>
                     <h6><i class="fas fa-calendar fa-lg text-primary"></i>&nbsp;&nbsp;{{ $booking->booking_date }}
                         {{ $booking->booking_time }}</h6>
+                    </h6>
                     <br>
                     <h4>{{ __('app.booking_details') }}</h4>
-                    <h5>{{ $category }} - {{ $package->title }} - <span class="text-danger">
-                            @if (config('settings.currency_symbol_position') == __('backend.right'))
-                                {!! number_format(
-                                    (float) $package->price,
-                                    config('settings.decimal_points'),
-                                    config('settings.decimal_separator'),
-                                    config('settings.thousand_separator'),
-                                ) .
-                                    '&nbsp;' .
-                                    config('settings.currency_symbol') !!}
-                            @else
-                                {!! config('settings.currency_symbol') .
-                                    number_format(
-                                        (float) $package->price,
-                                        config('settings.decimal_points'),
-                                        config('settings.decimal_separator'),
-                                        config('settings.thousand_separator'),
-                                    ) !!}
-                            @endif
-                        </span></h5>
+                    <h5>{{ $category }} > {{ $package->title }}</h5>
                     <br>
 
                 </div>

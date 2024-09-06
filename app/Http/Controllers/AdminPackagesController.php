@@ -137,7 +137,9 @@ class AdminPackagesController extends Controller
 
             //unlink old photo if set
             if ($package->photo != null) {
-                unlink(public_path().$package->photo->file);
+                if (file_exists(public_path().$package->photo->file)) {
+                    unlink(public_path().$package->photo->file);
+                }
             }
 
             //delete data from photos table

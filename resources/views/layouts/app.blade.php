@@ -23,18 +23,6 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}">
     @yield('styles')
     @include('settings.customization')
-    <style>
-        .promo {
-            background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .7)),
-                rgba(0, 0, 0, .7) url('{{ asset('images/promo.jpg') }}') no-repeat;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .package_box {
-            height: auto;
-        }
-    </style>
 </head>
 
 <body style="background-color: #F2F2F2;">
@@ -107,7 +95,6 @@
         </div>
     </nav>
     @yield('content')
-    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset(mix('/js/app.js')) }}"></script>
     @yield('scripts')
 </body>

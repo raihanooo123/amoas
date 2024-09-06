@@ -18,6 +18,10 @@ class BookingInfo extends Model
         'address',
     ];
 
+    protected $appends = [
+        'full_address',
+    ];
+
     protected $casts = [
         // 'under_18' => 'boolean',
     ];
@@ -30,5 +34,10 @@ class BookingInfo extends Model
     public function participants()
     {
         return $this->hasMany('App\Models\Booking\Participant', 'info_id');
+    }
+
+    public function getFullAddressAttribute()
+    {
+        return "{$this->address}, {$this->postal}";
     }
 }
