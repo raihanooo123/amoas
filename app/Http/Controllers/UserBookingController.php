@@ -218,15 +218,21 @@ class UserBookingController extends Controller
 
         //get the booking count
 
-        $bookedByHours = Booking::select('booking_time', \DB::raw('count(*) as total'))
+        $bookedByHours = Booking::select('booking_time', \DB::raw('COUNT(DISTINCT bookings.id) AS total'))
+            ->leftJoin('booking_info', 'bookings.id', '=', 'booking_info.booking_id')
+            ->leftJoin('participants', 'booking_info.id', '=', 'participants.info_id')
             ->where('package_id', $package->id)
             ->where('booking_type', '!=', 'emergency')
             ->where('status', '!=', 'Cancelled')
             ->whereDate('booking_date', $event_date)
             ->groupBy('booking_time')
-            // ->having('total', '>=', $participants)
-            // ->having('booking_time', '=', $event_date)
+            ->selectRaw('count(participants.id) as participant_count')
             ->get()
+            ->map(function ($item) {
+                $item->total += $item->participant_count;
+
+                return $item;
+            })
             ->pluck('total', 'booking_time')
             ->toArray();
 
