@@ -92,6 +92,7 @@ Route::group(['middleware' => ['admin', 'verified']], function () {
 
     Route::resource('/categories', 'AdminCategoriesController');
     Route::resource('/packages', 'AdminPackagesController');
+    Route::get('/packages/{package}/pdf', 'AdminPackagesController@pdf')->name('packages.pdf');
     Route::resource('/addons', 'AdminAddonsController');
     Route::resource('/settings', 'AdminSettingsController');
     Route::resource('/booking-times', 'AdminBookingTimesController');

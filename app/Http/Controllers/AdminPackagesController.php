@@ -184,4 +184,42 @@ class AdminPackagesController extends Controller
 
         return redirect('/packages');
     }
+
+    /**
+     * Print the package details in PDF format.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf(Package $package)
+    {
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables)->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables)->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'fontDir' => array_merge($fontDirs, [
+                public_path('fonts'),
+            ]),
+            'fontdata' => $fontData + [
+                'IranSans' => [
+                    'R' => 'IranSansRegular.ttf',
+                    'B' => 'IranSansBold.ttf',
+                ],
+            ],
+            'default_font' => 'IranSans',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'charset_in' => 'UTF-8',
+            'allow_charset_conversion' => true,
+            'curlFollowLocation' => true,
+            'curlAllowUnsafeSslRequests' => false,
+        ]);
+
+        $mpdf->WriteHTML($package->description);
+
+        return $mpdf->Output();
+    }
 }
