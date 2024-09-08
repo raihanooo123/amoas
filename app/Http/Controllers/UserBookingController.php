@@ -9,6 +9,7 @@ use App\Category;
 use App\Jobs\FinalizeNewBooking;
 use App\Models\PostalCode;
 use App\Package;
+use App\Services\PDFService;
 use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -979,40 +980,13 @@ class UserBookingController extends Controller
     {
         $booking = Booking::with('department', 'package')->find($id);
 
-        $isPdf = true;
+        $pdfContent = (new PDFService)->generateBookingConfirmationPdf($booking);
 
-        $defaultConfig = (new \Mpdf\Config\ConfigVariables)->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
+        $pdfName = "booking-confirmation-{$booking->serial_no}.pdf";
 
-        $defaultFontConfig = (new \Mpdf\Config\FontVariables)->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-
-        $mpdf = new \Mpdf\Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                public_path('fonts'),
-            ]),
-            'fontdata' => $fontData + [
-                'IranSans' => [
-                    'R' => 'IranSansRegular.ttf',
-                    'B' => 'IranSansBold.ttf',
-                ],
-            ],
-            'default_font' => 'IranSans',
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'charset_in' => 'UTF-8',
-            'allow_charset_conversion' => true,
-            'curlFollowLocation' => true,
-            'curlAllowUnsafeSslRequests' => false,
-        ]);
-
-        // Load the view content
-        $html = view('print-booking-success-new', compact('booking', 'isPdf'))->render();
-
-        // Write the HTML content to the PDF
-        $mpdf->WriteHTML($html);
-
-        // Output the PDF as a download
-        return $mpdf->Output("booking-confirmation-{$booking->serial_no}.pdf", \Mpdf\Output\Destination::DOWNLOAD);
+        // return to download the pdf
+        return response($pdfContent)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="'.$pdfName.'"');
     }
 }

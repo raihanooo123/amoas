@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Mail\NewTimeBooked;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use SMTPValidateEmail\Validator as SmtpEmailValidator;
 
 class FinalizeNewBooking implements ShouldQueue
 {
@@ -38,15 +38,15 @@ class FinalizeNewBooking implements ShouldQueue
         }
 
         $email = $this->booking->email ?? $this->booking->info->email ?? $this->booking->user->email;
-        //        $sender    = env('MAIL_USERNAME');
-        // $validator = new SmtpEmailValidator($email, $sender);
 
-        // If debug mode is turned on, logged data is printed as it happens:
-        // $results   = $validator->validate();
+        $pdfContent = (new \App\Services\PDFService)->generateBookingConfirmationPdf($this->booking);
+        $pdfName = "booking-confirmation-{$this->booking->serial_no}.pdf";
 
-        // if (!array_key_exists($email, $results) || $results[$email] == false)
-        // return 'The email provided was not a real email.';
+        $emailTemplate = new NewTimeBooked($this->booking);
+        $emailTemplate->attachData($pdfContent, $pdfName, [
+            'mime' => 'application/pdf',
+        ]);
 
-        \Mail::to($email)->send(new \App\Mail\NewTimeBooked($this->booking));
+        \Mail::to($email)->send($emailTemplate);
     }
 }
