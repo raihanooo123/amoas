@@ -2,7 +2,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/select2/select2-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/select2-bootstrap4.min.css') }}">
 @endsection
 
 @section('content')
@@ -239,6 +239,7 @@
                 },
                 placeholder: '{{ __('app.select_option') }}',
                 minimumInputLength: 2,
+                theme: 'bootstrap4',
             }).on('select2:select', function(e) {
                 selectedPostalCode = e.params.data;
                 // set the #city select2 value 
@@ -271,6 +272,7 @@
                 },
                 placeholder: '{{ __('app.select_option') }}',
                 minimumInputLength: 2,
+                theme: 'bootstrap4',
             });
         });
 
