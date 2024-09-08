@@ -34,7 +34,7 @@ class AdminCategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::withCount('packages')->get();
 
         return view('categories.index', compact('categories'));
     }
@@ -160,9 +160,19 @@ class AdminCategoriesController extends Controller
         //find specific category
         $category = Category::findOrFail($id);
 
+        // has any package related to this category
+        if ($category->packages->count() > 0) {
+            //set session message and redirect back to categories.index
+            Session::flash('category_deleted', __('It is not possible to delete category containing packages. Please remove/delete packages first.'));
+
+            return redirect('/categories');
+        }
+
         if ($category->photo) {
-            //unlink image
-            unlink(public_path().$category->photo->file);
+            // if file exists, unlink it
+            if (file_exists(public_path().$category->photo->file)) {
+                unlink(public_path().$category->photo->file);
+            }
 
             //delete from photo table
             Photo::destroy($category->photo_id);

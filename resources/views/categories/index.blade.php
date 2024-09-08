@@ -1,7 +1,6 @@
 @extends('layouts.admin', ['title' => __('backend.categories')])
 
 @section('content')
-
     <div class="page-title">
         <h3>{{ __('backend.manage_booking_categories') }}</h3>
         <div class="page-breadcrumb">
@@ -27,11 +26,11 @@
 
                             <form method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data">
 
-                                {{csrf_field()}}
+                                {{ csrf_field() }}
 
-                                <div class="form-group{{$errors->has('title') ? ' has-error' : ''}}">
+                                <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                                     <label class="control-label" for="title">{{ __('backend.title') }}</label>
-                                    <input type="text" class="form-control" name="title" value="{{old('title')}}">
+                                    <input type="text" class="form-control" name="title" value="{{ old('title') }}">
                                     @if ($errors->has('title'))
                                         <span class="help-block">
                                             <strong class="text-danger">{{ $errors->first('title') }}</strong>
@@ -40,7 +39,7 @@
                                 </div>
 
 
-                                <div class="form-group{{$errors->has('photo_id') ? ' has-error' : ''}}">
+                                <div class="form-group{{ $errors->has('photo_id') ? ' has-error' : '' }}">
                                     <label for="photo_id" class="control-label">{{ __('backend.select_image') }}</label>
                                     <input type="file" id="photo_id" name="photo_id">
                                     @if ($errors->has('photo_id'))
@@ -54,7 +53,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg">{{ __('backend.add_category') }}</button>
+                                    <button type="submit"
+                                        class="btn btn-primary btn-lg">{{ __('backend.add_category') }}</button>
                                 </div>
 
                             </form>
@@ -72,62 +72,75 @@
                             <div class="table-responsive">
                                 <table id="xtreme-table" class="display table" style="width: 100%; cellspacing: 0;">
                                     <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ __('backend.image') }}</th>
-                                        <th>{{ __('backend.title') }}</th>
-                                        <th>{{ __('backend.created') }}</th>
-                                        <th>{{ __('backend.updated') }}</th>
-                                        <th>{{ __('backend.actions') }}</th>
-                                    </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ __('backend.image') }}</th>
+                                            <th>{{ __('backend.title') }}</th>
+                                            <th>{{ __('Services') }}</th>
+                                            <th>{{ __('backend.created') }}</th>
+                                            <th>{{ __('backend.updated') }}</th>
+                                            <th>{{ __('backend.actions') }}</th>
+                                        </tr>
                                     </thead>
                                     <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{ __('backend.image') }}</th>
-                                        <th>{{ __('backend.title') }}</th>
-                                        <th>{{ __('backend.created') }}</th>
-                                        <th>{{ __('backend.updated') }}</th>
-                                        <th>{{ __('backend.actions') }}</th>
-                                    </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ __('backend.image') }}</th>
+                                            <th>{{ __('backend.title') }}</th>
+                                            <th>{{ __('Services') }}</th>
+                                            <th>{{ __('backend.created') }}</th>
+                                            <th>{{ __('backend.updated') }}</th>
+                                            <th>{{ __('backend.actions') }}</th>
+                                        </tr>
                                     </tfoot>
                                     <tbody>
-                                    @foreach($categories as $category)
-                                        <tr>
-                                            <td>{{ $category->id }}</td>
-                                            <td><img src="{{ asset($category->photo->file) }}" width="40" height="40"></td>
-                                            <td>{{ $category->title }}</td>
-                                            <td>{{ $category->created_at->diffForHumans() }}</td>
-                                            <td>{{ $category->updated_at->diffForHumans() }}</td>
-                                            <td>
-                                                <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                                                <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#{{ $category->id }}"><i class="fa fa-trash-o"></i></a>
-                                                <!-- Category Delete Modal -->
-                                                <div id="{{ $category->id }}" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                <h4 class="modal-title">{{ __('backend.confirm') }}</h4>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>{{ __('backend.delete_category_message') }}</p>
-                                                            </div>
-                                                            <form method="post" action="{{ route('categories.destroy', $category->id) }}">
-                                                                <div class="modal-footer">
-                                                                    {{csrf_field()}}
-                                                                    {{ method_field('DELETE') }}
-                                                                    <button type="submit" class="btn btn-danger">{{ __('backend.delete_btn') }}</button>
-                                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('backend.no') }}</button>
+                                        @foreach ($categories as $category)
+                                            <tr>
+                                                <td>{{ $category->id }}</td>
+                                                <td><img src="{{ asset($category->photo->file) }}" width="40"
+                                                        height="40"></td>
+                                                <td>{{ $category->title }}</td>
+                                                <td>{{ $category->packages_count }}</td>
+                                                <td>{{ $category->created_at->diffForHumans() }}</td>
+                                                <td>{{ $category->updated_at->diffForHumans() }}</td>
+                                                <td>
+                                                    <a href="{{ route('categories.edit', $category->id) }}"
+                                                        class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                                    <a class="btn btn-danger btn-xs" data-toggle="modal"
+                                                        data-target="#{{ $category->id }}"><i
+                                                            class="fa fa-trash-o"></i></a>
+                                                    <!-- Category Delete Modal -->
+                                                    <div id="{{ $category->id }}" class="modal fade" role="dialog"
+                                                        data-keyboard="false" data-backdrop="static">
+                                                        <div class="modal-dialog">
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal">&times;</button>
+                                                                    <h4 class="modal-title">{{ __('backend.confirm') }}
+                                                                    </h4>
                                                                 </div>
-                                                            </form>
+                                                                <div class="modal-body">
+                                                                    <p>{{ __('backend.delete_category_message') }}</p>
+                                                                </div>
+                                                                <form method="post"
+                                                                    action="{{ route('categories.destroy', $category->id) }}">
+                                                                    <div class="modal-footer">
+                                                                        {{ csrf_field() }}
+                                                                        {{ method_field('DELETE') }}
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">{{ __('backend.delete_btn') }}</button>
+                                                                        <button type="button" class="btn btn-primary"
+                                                                            data-dismiss="modal">{{ __('backend.no') }}</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -138,5 +151,4 @@
             </div>
         </div>
     </div>
-
 @endsection

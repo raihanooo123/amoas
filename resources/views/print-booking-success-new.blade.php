@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
+    @php
+        $cssUrl = isset($isPdf) && $isPdf ? public_path('css/bootstrap.slim.css') : asset('css/app.css');
+    @endphp
+    <link rel="stylesheet" href="{{ $cssUrl }}" type="text/css">
+    {{-- <link rel="stylesheet" href="{{ public_path('css/bootstrap.slim.css') }}" type="text/css"> --}}
 
     <style>
         body {
@@ -38,17 +42,6 @@
         .list-group-item {
             display: list-item;
         }
-
-        @media print {
-            .container {
-                width: 150mm;
-                height: 390mm;
-            }
-
-            .list-option li {
-                padding-top: 3rem;
-            }
-        }
     </style>
 </head>
 
@@ -66,26 +59,23 @@
                 <h4>Islamic Republic of Afghanistan</h4>
                 <h4>Ministry of Foreign Affairs</h4>
             </div>
-            <div class="col-md-10 offset-md-1 mt-5 text-center">
-                <h5>You have successfully booked an appointment on <span
-                        style="background-color:#5163af; color:white;">{{ $booking->booking_date . ' ' . $booking->booking_time }}</span>
-                    at our mission in {{ $booking->department->name_en }}.</h5>
-            </div>
         </div>
-        <div class="row p-3 mt-4">
+        <div class="row p-3">
             <div class="col-md-12 offset-0 text-center shadow-lg rounder e-logo"
                 style="background-color: #5163af; height: 5rem;">
-                <i class="fa fa-envelope-open pt-3" style="font-size: 50px; color:white;"></i>
+                <span style="font-size: 50px; color:white;">&#9993;</span>
             </div>
             <div class="col-md-12 text-left small bg-white pb-3 pt-4">
                 <h4>Dear
                     {{ $name ?? isset($booking->info->full_name) ? $booking->info->full_name : null ?? $booking->user->first_name . ' ' . $booking->user->last_name }},
                 </h4>
-                <p style="font-size:15px">You have successfully booked a time at {{ $booking->department->name_en }},
-                    please
-                    be present earlier from the time that mentioned above.The following <u>Serial Number</u> is
-                    necessary while entering to our
-                    mission.</p>
+                <p style="font-size:15px">
+                    We're pleased to confirm your appointment for
+                    <strong>{{ $booking->booking_date . ' ' . $booking->booking_time }}</strong>
+                    at our mission in
+                    <u>{{ $booking->department->name_en }}</u>.
+                    Please arrive promptly and present your printed appointment confirmation.
+                </p>
             </div>
             <div class="col-md-12 text-center mt-4">
                 <span
@@ -110,31 +100,35 @@
                     alt="barcode" />
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <p>
-                    You have also booked&nbsp;appointment/s for
-                    your following relatives. <i>Participant/s
-                        are not allowed to&nbsp;enter in our
-                        mission without you</i>, so please be
-                    ontime all together.</p>
-                <ol>
-                    @foreach ($booking->info->participants as $relative)
-                        <li>
-                            <u>{{ $relative->full_name }},</u>
-                            IDCard:&nbsp;<u>{{ $relative->id_card }},</u>
-                            Family:&nbsp;<u>{{ $relative->relation }}</u>
-                        </li>
-                    @endforeach
-                </ol>
+        @if ($booking->info->participants->count() > 0)
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <p>
+                        Please be aware that you have also booked appointments for your family members.
+                        To facilitate a seamless visit for everyone, we kindly request that you arrive together at the
+                        scheduled time.
+
+                    <ol>
+                        @foreach ($booking->info->participants as $relative)
+                            <li>
+                                <u>{{ $relative->full_name }},</u>
+                                IDCard:&nbsp;<u>{{ $relative->id_card }},</u>
+                                Family:&nbsp;<u>{{ $relative->relation }}</u>
+                            </li>
+                        @endforeach
+                    </ol>
+                </div>
             </div>
-        </div>
+        @endif
         <div class="row mt-3">
             <div class="col-md-12 text-left small mt-4 list-option">
-                <p style="font-size:15px">You have requested for {{ $booking->package->title }}, you must provide the
+                <p style="font-size:15px">You have requested for <strong>{{ $booking->package->title }}</strong>, you
+                    must provide the
                     following document before the booking</p>
 
-                <div style="font-size: 15px; text-indent: 10px; padding: 0 30px 0 29px;">
+                <div>
+                    <strong>Service conditions and requirements:</strong>
+                    <hr>
 
                     {!! $booking->package->description !!}
 

@@ -16,6 +16,8 @@ class BookingInfo extends Model
         'id_card',
         'postal',
         'address',
+        'city',
+        'state',
     ];
 
     protected $appends = [
@@ -38,6 +40,6 @@ class BookingInfo extends Model
 
     public function getFullAddressAttribute()
     {
-        return "{$this->address}, {$this->postal}";
+        return "{$this->address}, {$this->postal}, {$this->city}, {$this->state}";
     }
 }

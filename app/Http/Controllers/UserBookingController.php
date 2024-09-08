@@ -510,6 +510,8 @@ class UserBookingController extends Controller
         $request->session()->put('email', $input['email']);
         $request->session()->put('street', $input['street']);
         $request->session()->put('postal', $input['postal']);
+        $request->session()->put('place', $input['place']);
+        $request->session()->put('state', $address->state);
         $request->session()->put('phone', $input['phone']);
         $request->session()->put('full_name', $input['full_name']);
         $request->session()->put('participant', $input['participant']);
@@ -648,9 +650,11 @@ class UserBookingController extends Controller
             'full_name' => session('full_name'),
             'email' => session('email'),
             'phone' => session('phone'),
-            'id_card' => 'filled',
+            'id_card' => 'N/A',
             'postal' => session('postal'),
             'address' => session('street'),
+            'city' => session('place'),
+            'state' => session('state'),
         ]);
 
         if ($request->has('participant')) {
@@ -747,10 +751,8 @@ class UserBookingController extends Controller
         if (session()->has('participant')) {
             $participants -= session('participant');
         }
-        // dd($participants);
-
         // should work on it
-        $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
+        $bookedDates = Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $package->id)
             ->where('status', '!=', 'Cancelled')
             ->groupBy('booking_date')
@@ -923,7 +925,7 @@ class UserBookingController extends Controller
 
         $holydays = array_merge(...$holydays);
         //should work on it
-        $bookedDates = \App\Booking::select('booking_date', \DB::raw('count(*) as total'))
+        $bookedDates = Booking::select('booking_date', \DB::raw('count(*) as total'))
             ->where('package_id', $booking->package->id)
             ->where('status', '!=', 'Cancelled')
             ->groupBy('booking_date')
@@ -992,6 +994,10 @@ class UserBookingController extends Controller
             'default_font' => 'IranSans',
             'mode' => 'utf-8',
             'format' => 'A4',
+            'charset_in' => 'UTF-8',
+            'allow_charset_conversion' => true,
+            'curlFollowLocation' => true,
+            'curlAllowUnsafeSslRequests' => false,
         ]);
 
         // Load the view content
@@ -1001,6 +1007,6 @@ class UserBookingController extends Controller
         $mpdf->WriteHTML($html);
 
         // Output the PDF as a download
-        return $mpdf->Output("booking-{$booking->serial_no}.pdf", \Mpdf\Output\Destination::DOWNLOAD);
+        return $mpdf->Output("booking-confirmation-{$booking->serial_no}.pdf", \Mpdf\Output\Destination::DOWNLOAD);
     }
 }

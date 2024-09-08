@@ -166,8 +166,11 @@ class AdminPackagesController extends Controller
         $package = Package::findOrFail($id);
 
         if ($package->photo) {
-            //unlink image
-            unlink(public_path().$package->photo->file);
+
+            // check if photo exists and unlink it
+            if (file_exists(public_path().$package->photo->file)) {
+                unlink(public_path().$package->photo->file);
+            }
 
             //delete from photo table
             Photo::destroy($package->photo_id);

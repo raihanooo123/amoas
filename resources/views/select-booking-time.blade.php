@@ -179,6 +179,9 @@
                         </span>
                     </div>
                     <div class="col-md-6 text-right">
+                        <button type="button" class="navbar-btn btn btn-light btn-lg mr-2" onclick="history.back()">
+                            {!! __('pagination.previous') !!}
+                        </button>
                         <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
                             {!! __('pagination.next') !!}
                         </button>
@@ -191,8 +194,13 @@
         <footer class="footer d-block d-sm-block d-md-none d-lg-none d-xl-none">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12 text-center">
-                        <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                    <div class="col-6 text-left">
+                        <button type="button" class="navbar-btn btn btn-light btn-lg" onclick="history.back()">
+                            {!! __('pagination.previous') !!}
+                        </button>
+                    </div>
+                    <div class="col-6 text-right">
+                        <button type="submit" class="navbar-btn btn btn-primary btn-lg">
                             {!! __('pagination.next') !!}
                         </button>
                     </div>

@@ -242,6 +242,9 @@ class AdminBookingsController extends Controller
                 return '<a href="'.route('bookings.show', $booking->id).'">'.$booking->serial_no.'</a>';
             })
             ->addIndexColumn()
+            ->setRowClass(function ($booking) {
+                return $booking->status == 'Cancelled' ? 'danger' : '';
+            })
             ->rawColumns([
                 'serial_no',
                 'action',
