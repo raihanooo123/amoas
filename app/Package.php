@@ -7,8 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
     protected $fillable = [
-        'title', 'description', 'price', 'category_id', 'photo_id', 'duration', 'daily_acceptance',
-        'emergency_acceptance',
+        'title', 
+        'description', 
+        'price', 
+        'category_id', 
+        'photo_id', 
+        'duration', 
+        'daily_acceptance',
+        'emergency_acceptance', 
+        'config'
+    ];
+
+    protected $casts = [
+        'config' => 'array'
     ];
 
     public function category()

@@ -12,7 +12,7 @@
                     : 0)
                 : $eachSlotAvailablity;
         @endphp
-        @if ($availiblity > 0)
+        @if (!$isAlreadyBooked && $availiblity > 0)
             <div class="col-md-4">
                 <a class="btn btn-outline-dark btn-lg btn-block btn-slot {{ $availiblity >= session('participant') + 1 ? '' : 'disabled' }}"
                     data-slot-time="{{ $hour }}">

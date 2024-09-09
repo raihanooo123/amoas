@@ -39,8 +39,7 @@ class UserBookingController extends Controller
      */
     public function loadBooking()
     {
-        $categories = Category::with('packages')->get();
-
+        $categories = Category::with(['packages', 'packages.photo'])->get();
         return view('welcome', compact('categories'));
     }
 
@@ -217,6 +216,19 @@ class UserBookingController extends Controller
         $startSeconds = strtotime($hour_start);
         $endSeconds = strtotime($hour_end);
 
+        $hours = [];
+        while ($startSeconds < $endSeconds) {
+
+            $time = date('g:i A', $startSeconds);
+
+            $hours[] = $time;
+
+            $startSeconds += 60 * 60;
+
+        }
+
+        $eachSlotAvailablity = round($package->daily_acceptance / count($hours), 0, PHP_ROUND_HALF_DOWN);
+
         //get the booking count
 
         $bookedByHours = Booking::select('booking_time', \DB::raw('COUNT(DISTINCT bookings.id) AS total'))
@@ -246,20 +258,22 @@ class UserBookingController extends Controller
                 ->count();
         }
 
-        $hours = [];
-        while ($startSeconds < $endSeconds) {
+        $isAlreadyBooked = false;
 
-            $time = date('g:i A', $startSeconds);
-
-            $hours[] = $time;
-
-            $startSeconds += 60 * 60;
-
+        // set the total slots to 0 if in the package config mentioned
+        if ($package->config && $package->config['show_already_booked']) {
+            $alreadyBookedTill = $package->config['already_booked_till'] ?? null;
+            if ($alreadyBookedTill) {
+                // compare the $alreadyBookedTill with $event_date
+                // if $event_date is less than or equal to $alreadyBookedTill then set the $bookedByHours to 0
+                if (strtotime($event_date) <= strtotime($alreadyBookedTill)) {
+                    // set the $bookedByHours to $eachSlotAvailablity
+                    $isAlreadyBooked = true;
+                }
+            }
         }
 
-        $eachSlotAvailablity = round($package->daily_acceptance / count($hours), 0, PHP_ROUND_HALF_DOWN);
-
-        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity', 'urgentBookingCount', 'package'));
+        return view('blocks.new-slots', compact('bookedByHours', 'hours', 'eachSlotAvailablity', 'urgentBookingCount', 'package', 'isAlreadyBooked'));
     }
 
     public function availableHours($event_date)
