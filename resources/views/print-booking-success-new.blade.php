@@ -85,7 +85,7 @@
         <div class="row mt-3">
             <div class="col-md-12">
                 @php
-                    $hash = md5($booking->serial_no);
+                    $hash = Crypt::encryptString($booking->serial_no);
                     $url = route('booking.verify', $hash);
                 @endphp
                 <div class="p-2 bg-white mx-auto text-center">
