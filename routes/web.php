@@ -11,6 +11,7 @@
 |
  */
 
+use App\Http\Controllers\VerifyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -290,6 +291,4 @@ Route::group(['prefix' => 'passport', 'middleware' => ['web', 'auth']], function
     Route::resource('/extensions', 'Passport\ExtensionController');
 });
 
-Route::get('verify/{hashSerialNo}', function () {
-    return 'verified';
-})->name('booking.verify');
+Route::get('verify/{hashSerialNo}', [VerifyController::class, 'verifyQrCode'])->name('booking.verify');
