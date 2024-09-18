@@ -508,16 +508,15 @@ class UserBookingController extends Controller
                         'zip' => $address->zip,
                         'place' => $address->place,
                         'mission' => $address->mission->name_en ?? 'nearest mission',
-                    ]));
-
-                // $validator->errors()->add(
-                //     'place',
-                //     __('app.postal_code_not_in_range', [
-                //         'zip' => $address->zip,
-                //         'place' => $address->place,
-                //         'mission' => $address->mission->name_en ?? 'nearest mission',
-                //     ]));
+                    ])
+                );
             });
+
+            // log the using spatie laravel activity log
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['postal' => $postalCode, 'place' => $place, 'state' => $address->state])
+                ->log("Postal code belongs to {$address->mission->name_en}");
         }
 
         if ($validator->fails()) {
