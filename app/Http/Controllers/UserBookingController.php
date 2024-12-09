@@ -6,10 +6,12 @@ use App\Addon;
 use App\Booking;
 use App\BookingTime;
 use App\Category;
+use App\Holidays;
 use App\Jobs\FinalizeNewBooking;
 use App\Models\PostalCode;
 use App\Package;
 use App\Services\PDFService;
+use Carbon\Carbon;
 use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -748,22 +750,31 @@ class UserBookingController extends Controller
 
         $disable_days_string = implode(',', $daynum);
 
-        // $holydays = DB::table('holydays')
-        //     ->whereDate('date', '>=', date('Y-m-d'))
-        //     ->get()
-        //     ->pluck('date')
-        //     ->toArray();
+        $now = Carbon::now();
 
-        $dep_id = session('department_id');
-        $holydays = \App\Holidays::whereHas('departments', function ($query) use ($dep_id) {
-            $query->where('id', $dep_id);
-        })->get()
-            ->pluck('date')
-            ->toArray();
+        $holydays = Holidays::where(function ($query) use ($now) {
+            $query->where('repeated', 1)
+                ->orWhere(function ($query) use ($now) {
+                    $query->where('year', '>', $now->year)
+                        ->orWhere(function ($query) use ($now) {
+                            $query->where('year', '=', $now->year)
+                                ->where('month', '>', $now->month);
+                        })
+                        ->orWhere(function ($query) use ($now) {
+                            $query->where('year', '=', $now->year)
+                                ->where('month', '=', $now->month)
+                                ->where('day', '>=', $now->day);
+                        });
+                });
+        })->get();
 
-        if ($holydays) {
-            $holydays = array_merge(...$holydays);
-        }
+        $holydays = array_merge(
+            $holydays->where('repeated_date', '>=', $now->format('Y-m-d'))->pluck('repeated_date')->toArray(),
+            $holydays->where('date', '>=', $now->format('Y-m-d'))->pluck('date')->toArray(),
+            $holydays->where('next_year_repeated_date', '<=', $now->addMonths(7)->format('Y-m-d'))->pluck('next_year_repeated_date')->toArray(),
+        );
+
+        $holydays = array_unique($holydays);
 
         request()->session()->put('holidays', $holydays);
 

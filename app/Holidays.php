@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Holidays extends Model
 {
-    protected $appends = ['date'];
+    protected $appends = [
+        'date',
+        'repeated_date',
+        'next_year_repeated_date'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -21,29 +25,36 @@ class Holidays extends Model
         'description',
     ];
 
+    protected $casts = [
+        'repeated' => 'boolean',
+    ];
+
     public function departments()
     {
         return $this->belongsToMany('App\Department', 'department_holidays');
     }
 
     /**
-     * Get the user's full name.
+     * Get the date.
      *
      * @return string
      */
     public function getDateAttribute()
     {
-        $dates = [];
-        if ($this->repeated == 1) {
-            for ($i = 0; $i < 3; $i++) {
-                $dateRaw = strtotime("{$this->year}-{$this->month}-{$this->day}");
-                $date = strtotime($i.' years', $dateRaw);
-                $dates[] = date('Y-m-d', $date);
-            }
-        } else {
-            $dates[] = date('Y-m-d', strtotime("{$this->year}-{$this->month}-{$this->day}"));
-        }
+        return $this->year . '-' . sprintf('%02d', $this->month) . '-' . sprintf('%02d', $this->day);
+    }
 
-        return $dates;
+    public function getRepeatedDateAttribute()
+    {
+        $thisYear = date('Y');
+        return $this->repeated ? $thisYear . '-' . sprintf('%02d', $this->month) . '-' . sprintf('%02d', $this->day) : null;
+    }
+
+    public function getNextYearRepeatedDateAttribute()
+    {
+        $thisYear = date('Y');
+        $nextYearDate = ($thisYear + 1) . '-' . sprintf('%02d', $this->month) . '-' . sprintf('%02d', $this->day);
+
+        return $this->repeated ? $nextYearDate : null;
     }
 }
