@@ -98,7 +98,6 @@ class UserBookingController extends Controller
         //decide how many slots will be generated
         if (strtotime($hour_start) > strtotime($hour_end)) {
             $hours = round((strtotime($hour_start) - strtotime($hour_end)) / $slot_duration, 1);
-
         } elseif (strtotime($hour_end) > strtotime($hour_start)) {
             $hours = round((strtotime($hour_end) - strtotime($hour_start)) / $slot_duration, 1);
         } elseif (strtotime($hour_start) == strtotime($hour_end)) {
@@ -150,7 +149,6 @@ class UserBookingController extends Controller
                             $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
                         } else {
                             $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
-
                         }
                     }
 
@@ -166,7 +164,6 @@ class UserBookingController extends Controller
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
                             } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
-
                             }
                         }
                     }
@@ -183,19 +180,16 @@ class UserBookingController extends Controller
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
                             } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
-
                             }
                             break;
                         }
                     }
                 }
             }
-
         }
         dd($hours);
 
         return view('blocks.slots', compact('list_slot', 'hours'));
-
     }
 
     public function getNewTimingSlots()
@@ -226,7 +220,6 @@ class UserBookingController extends Controller
             $hours[] = $time;
 
             $startSeconds += 60 * 60;
-
         }
 
         $eachSlotAvailablity = round($package->daily_acceptance / count($hours), 0, PHP_ROUND_HALF_DOWN);
@@ -263,7 +256,7 @@ class UserBookingController extends Controller
         $isAlreadyBooked = false;
 
         // set the total slots to 0 if in the package config mentioned
-        if ($package->config && $package->config['show_already_booked']) {
+        if ($package->config && ($package->config['show_already_booked'] ?? false)) {
             $alreadyBookedTill = $package->config['already_booked_till'] ?? null;
             if ($alreadyBookedTill) {
                 // compare the $alreadyBookedTill with $event_date
@@ -302,7 +295,6 @@ class UserBookingController extends Controller
             $hours[] = $time;
 
             $startSeconds += 60 * 60;
-
         }
 
         return $hours;
@@ -385,7 +377,6 @@ class UserBookingController extends Controller
                             $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
                         } else {
                             $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
-
                         }
                     }
 
@@ -401,7 +392,6 @@ class UserBookingController extends Controller
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
                             } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
-
                             }
                         }
                     }
@@ -418,18 +408,15 @@ class UserBookingController extends Controller
                                 $count_next_disabled = ($package_booking->duration / $package->duration) - 1;
                             } else {
                                 $count_next_disabled = ($package_booking->duration / config('settings.slot_duration')) - 1;
-
                             }
                             break;
                         }
                     }
                 }
             }
-
         }
 
         return view('blocks.backendSlots', compact('list_slot', 'hours'));
-
     }
 
     public function update_booking(Request $request, $id)
@@ -450,7 +437,6 @@ class UserBookingController extends Controller
         \App\Jobs\BookingDateChangedEmail::dispatch($booking, $oldBooking, $user);
 
         return redirect()->route('customerBookings');
-
     }
 
     /**
@@ -461,9 +447,6 @@ class UserBookingController extends Controller
     {
         $request->session()->put('package_id', $request->package_id);
         $package = Package::findOrFail(Session::get('package_id'));
-
-        // save the $package to session
-        $request->session()->put('package', $package);
 
         return redirect()->route('loadStep2');
     }
@@ -500,9 +483,16 @@ class UserBookingController extends Controller
         $place = $request->place;
         $postalCode = $request->postal;
 
+        // get the selected package from session
+        $package = Package::findOrfail(session('package_id'));
+
+        $isLockedForAnyMission = $package->config['is_locked_for_any_mission'] ?? false;
+        $missionAreLocked = $package->config['lock_for_missions'] ?? [];
+
         $address = PostalCode::with(['mission:id,name_en,name_dr'])->where('zip', $postalCode)->where('place', $place)->first();
 
-        if ($address->mission_id !== 108) {
+        if ($address->mission_id !== 108 && $isLockedForAnyMission && in_array($address->mission_id, $missionAreLocked)) {
+
             $validator->after(function ($validator) use ($address) {
                 $validator->errors()->add(
                     'postal',
@@ -571,7 +561,7 @@ class UserBookingController extends Controller
         $holidays = session()->has('holidays') ? implode(',', session('holidays')) : null;
 
         $validator = \Validator::make($request->all(), [
-            'event_date' => 'date|required|not_in:'.$holidays,
+            'event_date' => 'date|required|not_in:' . $holidays,
             'booking_slot' => 'required',
             'participant.*.name' => 'required',
             'participant.*.id_card' => 'required',
@@ -583,7 +573,7 @@ class UserBookingController extends Controller
         $validator->after(function ($validator) use ($dateNumber, $offDaysNum) {
             if (! in_array($dateNumber, $offDaysNum)) {
                 $validator->errors()->add('event_date', __('app.weekend_blocked', ['days' => implode(', ', array_map(function ($item) {
-                    return __('app.'.$item);
+                    return __('app.' . $item);
                 }, array_keys($offDaysNum)))]));
             }
         });
@@ -611,7 +601,6 @@ class UserBookingController extends Controller
                 if ($bookedCountInRequestedHour + (session('participant') + 1) > $availableInEachSlot) {
                     $validator->errors()->add('event_date', __('app.slotBlocked', ['time' => $request->booking_slot, 'date' => $request->event_date]));
                 }
-
             }
         });
 
@@ -623,22 +612,6 @@ class UserBookingController extends Controller
         $request->session()->put('booking_slot', $request->booking_slot);
         $request->session()->put('participantInfo', $request->participant);
 
-        // $bookingCountInWeek = auth()
-        //     ->user()
-        //     ->bookings()
-        //     ->where('created_at', '>=', now()->startOfDay()->format('Y-m-d H:i:s'))
-        //     ->where('created_at', '<=', now()->addWeeks(2)->endOfDay()->format('Y-m-d H:i:s'))
-        //     ->get()
-        //     ->count();
-
-        // if ($bookingCountInWeek > 0 && auth()->user()->role_id == 2) {
-
-        //     $lastBooking = auth()->user()->bookings()->latest()->first();
-
-        //     $tillDate = optional($lastBooking->created_at)->addWeeks()->addDays()->startOfDay()->format('Y-m-d H:i:s');
-
-        //     abort(403, __('app.max_limit', ['tillDate' => $tillDate]));
-        // }
 
         \DB::beginTransaction();
         $booking = Booking::create([
@@ -652,21 +625,6 @@ class UserBookingController extends Controller
             'email' => session('email'),
             'status' => 'Waiting',
         ]);
-
-        // $newBooking = session('newBooking');
-
-        // $newBooking->booking_date = $request->event_date;
-        // $newBooking->booking_type = ucfirst($request->booking_type) ?? 'Ordinary';
-        // $newBooking->booking_time = $request->booking_slot;
-        // $newBooking->status = 'Waiting';
-
-        // $newBooking->save();
-
-        // $address = session('address');
-        // $street = session('street');
-
-        // $fullAddress = "{$street}, {$address->zip}, {$address->place}, {$address->state}, {$address->country->name_en}";
-        // $fullAddress = $street . ', ' . $address->zip . ', ' . $address->place . ', ' . $address->state . ', ' . $address->country->name_en;
 
         $info = $booking->info()->create([
             'full_name' => session('full_name'),
@@ -839,8 +797,13 @@ class UserBookingController extends Controller
             request()->session()->put('department', $department);
         }
 
-        return view('finalize-booking', compact('category',
-            'package', 'session_addons', 'total', 'booking'));
+        return view('finalize-booking', compact(
+            'category',
+            'package',
+            'session_addons',
+            'total',
+            'booking'
+        ));
     }
 
     /**
@@ -904,7 +867,6 @@ class UserBookingController extends Controller
         $session_email = \request('session_email');
 
         DB::table('session_addons')->where('addon_id', '=', $addon_id)->where('session_email', '=', $session_email)->delete();
-
     }
 
     /**
@@ -968,8 +930,10 @@ class UserBookingController extends Controller
 
         $disabledDates = json_encode(array_merge($holydays, $bookedDates));
 
-        if ($booking->user->id == Auth::user()->id
-            && $booking->status != 'cancelled') {
+        if (
+            $booking->user->id == Auth::user()->id
+            && $booking->status != 'cancelled'
+        ) {
             return view('customer.bookings.update', compact('booking', 'disable_days_string', 'disabledDates'));
         } else {
             return view('errors.404');
@@ -1011,6 +975,6 @@ class UserBookingController extends Controller
         // return to download the pdf
         return response($pdfContent)
             ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="'.$pdfName.'"');
+            ->header('Content-Disposition', 'attachment; filename="' . $pdfName . '"');
     }
 }

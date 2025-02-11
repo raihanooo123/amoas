@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Department;
 use App\Http\Requests\PackageRequest;
 use App\Http\Requests\PackageUpdateRequest;
+use App\Models\PostalCode;
 use App\Package;
 use App\Photo;
 use Illuminate\Support\Facades\Session;
@@ -65,7 +67,7 @@ class AdminPackagesController extends Controller
         //check if an image is selected
         if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
-            $image_name = time().$image->getClientOriginalName();
+            $image_name = time() . $image->getClientOriginalName();
             $image->move('images', $image_name);
 
             //persist data into photos table
@@ -106,7 +108,23 @@ class AdminPackagesController extends Controller
         $package = Package::findOrFail($id);
         $categories = Category::all();
 
-        return view('packages.edit', compact('package', 'categories'));
+        $departmentIds = PostalCode::select('mission_id')->distinct()->pluck('mission_id')->toArray();
+
+        $availablePostCodeForMissions = Department::whereIn('id', $departmentIds)->pluck('name_en', 'id')->toArray();
+
+        // remove the authencate user's department_id key from availablePostCodeForMissions
+        unset($availablePostCodeForMissions[auth()->user()->department_id]);
+
+        $isLockedForAnyMission = $package->config['is_locked_for_any_mission'] ?? null;
+        $missionAreLocked = $package->config['lock_for_missions'] ?? [];
+
+        return view('packages.edit', [
+            'package' => $package,
+            'categories' => $categories,
+            'availablePostCodeForMissions' => $availablePostCodeForMissions,
+            'isLockedForAnyMission' => $isLockedForAnyMission,
+            'missionAreLocked' => $missionAreLocked,
+        ]);
     }
 
     /**
@@ -123,7 +141,7 @@ class AdminPackagesController extends Controller
         //check if image is selected
         if ($image = $request->file('photo_id')) {
             //give a name to image and move it to public directory
-            $image_name = time().$image->getClientOriginalName();
+            $image_name = time() . $image->getClientOriginalName();
             $image->move('images', $image_name);
 
             //persist data into photos table
@@ -137,8 +155,8 @@ class AdminPackagesController extends Controller
 
             //unlink old photo if set
             if ($package->photo != null) {
-                if (file_exists(public_path().$package->photo->file)) {
-                    unlink(public_path().$package->photo->file);
+                if (file_exists(public_path() . $package->photo->file)) {
+                    unlink(public_path() . $package->photo->file);
                 }
             }
 
@@ -146,8 +164,31 @@ class AdminPackagesController extends Controller
             Photo::destroy($package->photo_id);
         }
         //update data into packages table
-        Package::findOrFail($id)->update($input);
+        $package = Package::findOrFail($id);
 
+        // edit $package->config which is an json field
+        $config = $package->config;
+
+        // remove null from input->lock_for_missions
+        $lockForMissions = array_filter($input['lock_for_missions']);
+
+        if (! empty($lockForMissions)) {
+            // add is_locked_for_any_mission to config
+            $config['is_locked_for_any_mission'] = true;
+
+            // add lock_for_missions to config
+            $config['lock_for_missions'] = $lockForMissions;
+        } else {
+            // remove is_locked_for_any_mission from config
+            unset($config['is_locked_for_any_mission']);
+
+            // remove lock_for_missions from config
+            unset($config['lock_for_missions']);
+        }
+
+        $input['config'] = $config;
+
+        $package->update($input);
         //set session message and redirect back packages.index
         Session::flash('package_updated', __('backend.package_updated'));
 
@@ -168,8 +209,8 @@ class AdminPackagesController extends Controller
         if ($package->photo) {
 
             // check if photo exists and unlink it
-            if (file_exists(public_path().$package->photo->file)) {
-                unlink(public_path().$package->photo->file);
+            if (file_exists(public_path() . $package->photo->file)) {
+                unlink(public_path() . $package->photo->file);
             }
 
             //delete from photo table

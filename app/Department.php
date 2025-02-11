@@ -7,8 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     protected $fillable = [
-        'name_en', 'name_dr', 'name_pa', 'parent_id', 'user_id', 'type', 'code',
+        'name_en',
+        'name_dr',
+        'name_pa',
+        'parent_id',
+        'user_id',
+        'type',
+        'code',
     ];
+
+    protected $appends = ['title_abbr_str_en', 'title_abbr_str_dr'];
 
     protected static $logAttributes = ['*'];
 
@@ -52,7 +60,7 @@ class Department extends Model
 
     public static function printTree($child)
     {
-        $tree = app()->isLocale('en') ? '<li>'.$child->name_en : '<li>'.$child->name_dr;
+        $tree = app()->isLocale('en') ? '<li>' . $child->name_en : '<li>' . $child->name_dr;
 
         if ($child->hasChildren()) {
             $tree .= '<ul>';
@@ -105,7 +113,7 @@ class Department extends Model
         $tokenized = explode(' ', $full);
 
         if (count($tokenized) == 1) {
-            $this->code = $prefix.strtoupper(substr($full, 0, 4));
+            $this->code = $prefix . strtoupper(substr($full, 0, 4));
         }
 
         if (count($tokenized) == 2) {
@@ -113,7 +121,7 @@ class Department extends Model
             foreach ($tokenized as $t) {
                 $token .= strtoupper(substr($t, 0, 3));
             }
-            $this->code = $prefix.$token;
+            $this->code = $prefix . $token;
         }
 
         if (count($tokenized) > 2) {
@@ -124,11 +132,23 @@ class Department extends Model
                 }
                 $token .= strtoupper(substr($t, 0, 2));
             }
-            $this->code = $prefix.$token;
+            $this->code = $prefix . $token;
         }
 
         $this->save();
 
         return $this->code;
+    }
+
+    public function getTitleAbbrStrEnAttribute()
+    {
+        if ($this->type == 'consulate' || $this->type == 'embassy')
+            return str_replace(["Embassy of the Islamic Republic of Afghanistan ", "Consulate General of the Islamic Republic of Afghanistan "], '', $this->name_en);
+    }
+
+    public function getTitleAbbrStrDrAttribute()
+    {
+        if ($this->type == 'consulate' || $this->type == 'embassy')
+            return str_replace(['سفارت جمهوری اسلامی افغانستان', 'جنرال قونسلگری جمهوری اسلامی افغانستان'], '', $this->name_dr);
     }
 }
