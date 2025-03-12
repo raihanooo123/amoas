@@ -18,3 +18,4 @@ composer.phar
 appointment.sql
 public/appointment.sql
 public/temp/*
+public/images/*
