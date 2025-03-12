@@ -10,15 +10,6 @@
                             src="{{ asset('images/logo-dark.png') }}" class="img-responsive"></a>
                 </p>
 
-                {{-- <div class="form-group">
-                    <a href="{{ url('login/facebook') }}" class="btn btn-block btn-social-icon btn-facebook"><i
-                            class="fa fa-facebook"></i> Login Via Facebook</a>
-                    <a href="#" class="btn btn-block btn-social-icon btn-twitter"><i
-                            class="fa fa-facebook-f"></i> Login Via Twitter (soon...)</a>
-                    <a href="{{ url('login/google') }}" class="btn btn-block btn-social-icon btn-google"><i
-                            class="fa fa-google-plus"></i> Login Via Google</a>
-            </div> --}}
-
                 <p class="text-center m-t-md">{{ __('auth.login_title') }}</p>
 
                 @if ($errors->has('email'))

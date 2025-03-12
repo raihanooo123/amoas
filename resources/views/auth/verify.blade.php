@@ -22,7 +22,6 @@
                             @csrf
                             <button type="submit" class="btn btn-primary">{{ __('app.request_new_link') }}</button>
                         </form>
-
                     </div>
                 </div>
             </div>
