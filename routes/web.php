@@ -33,10 +33,7 @@ Route::get('/lang/{lang}', function ($lang) {
 
 Auth::routes(['verify' => true]);
 
-Route::get('/login/{social}', 'Auth\LoginController@redirectToProvider')
-    ->where('social', 'twitter|facebook|google');
-Route::get('/login/{social}/callback', 'Auth\LoginController@handleProviderCallback')
-    ->where('social', 'twitter|facebook|google');
+
 // ** DASHBOARD ROUTE ** //
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -45,23 +42,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/privacy-policy', function () {
     return view('privacy-policy');
 })->name('privacy-policy');
-
-// test route
-Route::get('/test', function () {
-    // from holidays table get all has the year of 2024
-    // $holidays = \App\Holidays::whereYear('year', 2024)->get();
-
-    // foreach ($holidays as $holiday) {
-    // if the holiday is already associated with the department 108
-    // if ($holiday->departments()->where('department_id', 108)->exists()) {
-    //     continue;
-    // }
-
-    // associate the holiday with the department 108
-    // $holiday->departments()->attach(108);
-    // }
-
-});
 
 // ** AJAX REQUESTS ** //
 Route::post('/get_packages', 'UserBookingController@getPackages')->name('packages');
@@ -145,7 +125,6 @@ Route::group(['middleware' => ['admin', 'verified']], function () {
         Route::get('/visa-form/d-table', 'Visa\VisaFormController@dataTable')->name('visa-form.data');
         Route::resource('/visa-form', 'Visa\VisaFormController');
     });
-
 });
 
 // ** USER ROLE CUSTOMER ROUTES ** //
@@ -161,7 +140,6 @@ Route::group(['middleware' => ['customer', 'verified']], function () {
     Route::post('/cancel-request', 'CancelRequestController@store')->name('cancelRequest');
     Route::get('/update-booking/{id}', 'UserBookingController@update')->name('updateBooking');
     Route::patch('/booking/{id}', 'UserBookingController@update_booking')->name('postUpdateBooking');
-
 });
 
 // ** COMMON ROUTES FOR AUTHENTICATED USERS ** //
@@ -203,7 +181,6 @@ Route::group(['middleware' => ['authenticated', 'verified']], function () {
 
     Route::get('/password/update', 'UserPasswordController@index')->name('changePassword');
     Route::patch('/password/update/{id}', 'UserPasswordController@update')->name('postChangePassword');
-
 });
 
 Route::group(['prefix' => 'verification'], function () {
@@ -232,7 +209,7 @@ Route::get('ajax-request', 'AjaxController@ajax')->name('ajaxRequest');
 Route::group(['middleware' => ['web']], function () {
     Route::get('img/{drive}/{folder}/{filename}', function ($drive, $folder, $filename) {
         // return storage_path() . "\\app\\{$drive}\\{$folder}\\" . $filename;
-        return \Image::make(storage_path()."/app/{$drive}/{$folder}/".$filename)->response();
+        return \Image::make(storage_path() . "/app/{$drive}/{$folder}/" . $filename)->response();
     });
 });
 
