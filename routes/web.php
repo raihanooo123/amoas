@@ -31,7 +31,21 @@ Route::get('/lang/{lang}', function ($lang) {
     return redirect()->back();
 })->name('lang');
 
-Auth::routes(['verify' => true]);
+Auth::routes([
+    'register' => true, 
+    'reset' => true, 
+    'verify' => false 
+]);
+
+Route::group(['middleware' => ['web', 'guest']], function () {
+
+    Route::get('/verify-phone/notice', 'PhoneVerificationController@showNotice')->name('verification.phone.notice');
+
+    Route::get('/verify-phone', 'PhoneVerificationController@showVerificationForm')->name('verification.phone.form');
+
+    Route::post('/verify-phone', 'PhoneVerificationController@verify')->name('verification.phone.verify');
+
+});
 
 
 // ** DASHBOARD ROUTE ** //
@@ -54,7 +68,7 @@ Route::get('/postal-codes', 'PostalCodeController@postalCodeList')->name('postal
 
 // ** USER ROLE ADMIN ROUTES ** //
 
-Route::group(['middleware' => ['admin', 'verified']], function () {
+Route::group(['middleware' => ['admin']], function () {
 
     Route::get('/users/d-table', 'AdminUsersController@dataTable')->name('users.data');
     Route::get('/users/verify/{user}', 'AdminUsersController@verify')->name('users.manualVerify');
@@ -129,7 +143,7 @@ Route::group(['middleware' => ['admin', 'verified']], function () {
 
 // ** USER ROLE CUSTOMER ROUTES ** //
 
-Route::group(['middleware' => ['customer', 'verified']], function () {
+Route::group(['middleware' => ['customer']], function () {
 
     Route::get('/customer/bookings', 'UserBookingController@index')->name('customerBookings');
     Route::get('/customer/booking/{id}', 'UserBookingController@show')->name('showBooking');
@@ -144,7 +158,7 @@ Route::group(['middleware' => ['customer', 'verified']], function () {
 
 // ** COMMON ROUTES FOR AUTHENTICATED USERS ** //
 
-Route::group(['middleware' => ['authenticated', 'verified']], function () {
+Route::group(['middleware' => ['authenticated']], function () {
 
     // ** BOOKING FORM ROUTES ** //
 
