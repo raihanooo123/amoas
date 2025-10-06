@@ -578,10 +578,37 @@ class UserBookingController extends Controller
             }
         });
 
+        // --- START: NEW DAILY ACCEPTANCE VALIDATION (TOTAL PEOPLE) ---
+        $newBookingParticipants = (int) session('participant', 0) + 1; 
+        $packageId = session('package_id');
+        $package = \App\Package::find($packageId);
+        $bookingDate = $request->event_date;
+        
+        // Get total people already booked
+        $bookedParticipants = \App\Booking::countParticipantsForPackageAndDate($packageId, $bookingDate);
+
+        $dailyLimit = $package->daily_acceptance;
+        $totalPeopleAfterNewBooking = $bookedParticipants + $newBookingParticipants;
+        
+        if ($totalPeopleAfterNewBooking > $dailyLimit) {
+            $validator->errors()->add(
+                'event_date',
+                __('app.daily_acceptance_exceeded', [
+                    'date' => $bookingDate,
+                    'limit' => $dailyLimit,
+                    'booked' => $bookedParticipants,
+                    'new' => $newBookingParticipants,
+                    'available' => max(0, $dailyLimit - $bookedParticipants)
+                ])
+            );
+        }
+        
+        // --- END: NEW DAILY ACCEPTANCE VALIDATION ---
+
         $validator->after(function ($validator) use ($request) {
             if ($request->booking_type != 'emergency') {
 
-                $bookedCountInRequestedHour = Booking::whereDate('booking_date', '=', $request->event_date)
+                $bookedCountInRequestedHour = \App\Booking::whereDate('booking_date', '=', $request->event_date)
                     ->where('package_id', session('package_id'))
                     ->where('booking_time', $request->booking_slot)
                     ->where('booking_type', '!=', 'Emergency')
@@ -589,16 +616,17 @@ class UserBookingController extends Controller
                     ->count();
 
                 $availableSlots = $this->availableHours($request->event_date);
-
+                $dailyAcceptance = \App\Package::find(session('package_id'))->daily_acceptance;
+                $newBookingParticipants = (int) session('participant', 0) + 1; 
+                
                 if (! in_array($request->booking_slot, $availableSlots)) {
                     $validator->errors()->add('event_date', __('app.notInAvailableHours', ['time' => $request->booking_slot]));
                 }
 
-                $dailyAcceptance = Package::find(session('package_id'))->daily_acceptance;
-
+                // Hourly check (uses your original method of distributing daily capacity across slots)
                 $availableInEachSlot = round($dailyAcceptance / count($availableSlots), 0, PHP_ROUND_HALF_DOWN);
 
-                if ($bookedCountInRequestedHour + (session('participant') + 1) > $availableInEachSlot) {
+                if ($bookedCountInRequestedHour + $newBookingParticipants > $availableInEachSlot) {
                     $validator->errors()->add('event_date', __('app.slotBlocked', ['time' => $request->booking_slot, 'date' => $request->event_date]));
                 }
             }
@@ -614,11 +642,11 @@ class UserBookingController extends Controller
 
 
         \DB::beginTransaction();
-        $booking = Booking::create([
+        $booking = \App\Booking::create([
             'user_id' => auth()->id(),
             'package_id' => session('package_id'),
             'department_id' => session('department_id', 108),
-            'serial_no' => Booking::genSerialNo(session('department_id', 108), session('package_id')),
+            'serial_no' => \App\Booking::genSerialNo(session('department_id', 108), session('package_id')),
             'booking_date' => $request->event_date,
             'booking_type' => ucfirst($request->booking_type) ?? 'Ordinary',
             'booking_time' => $request->booking_slot,
@@ -644,27 +672,6 @@ class UserBookingController extends Controller
                     'id_card' => $participant['id_card'],
                     'relation' => $participant['relation'],
                 ]);
-
-                // ${"var{$key}"} = Booking::create([
-                //     'user_id' => $booking->user_id,
-                //     'package_id' => $booking->package_id,
-                //     'department_id' => $booking->department_id,
-                //     'serial_no' => '#'.($key + 1).'-'.$booking->serial_no,
-                //     'booking_date' => $booking->booking_date,
-                //     'booking_type' => $booking->booking_type,
-                //     'booking_time' => $booking->booking_time,
-                //     'email' => $booking->email,
-                //     'status' => $booking->status,
-                // ]);
-
-                // ${"var{$key}"}->info()->create([
-                //     'full_name' => $info->full_name."| {$participant['relation']}",
-                //     'email' => $info->email,
-                //     'phone' => $info->phone,
-                //     'id_card' => $participant['id_card'],
-                //     'postal' => $info->postal,
-                //     'address' => $info->address,
-                // ]);
             }
         }
 
@@ -683,80 +690,103 @@ class UserBookingController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function loadStep3()
-    {
-        if (! session()->has('package_id')) {
-            return redirect('/');
-        }
-
-        $package = Package::find(Session::get('package_id'));
-        $category_id = $package->category_id;
-
-        //generating a string for off days
-
-        $off_days = DB::table('booking_times')
-            ->where('is_off_day', '=', '1')
-            ->get();
-        $daynum = [];
-
-        foreach ($off_days as $off_day) {
-            if ($off_day->id != 7) {
-                $daynum[] = $off_day->id;
-            } else {
-                $daynum[] = $off_day->id - 7;
-            }
-        }
-
-        $disable_days_string = implode(',', $daynum);
-
-        $now = Carbon::now();
-
-        $holydays = Holidays::where(function ($query) use ($now) {
-            $query->where('repeated', 1)
-                ->orWhere(function ($query) use ($now) {
-                    $query->where('year', '>', $now->year)
-                        ->orWhere(function ($query) use ($now) {
-                            $query->where('year', '=', $now->year)
-                                ->where('month', '>', $now->month);
-                        })
-                        ->orWhere(function ($query) use ($now) {
-                            $query->where('year', '=', $now->year)
-                                ->where('month', '=', $now->month)
-                                ->where('day', '>=', $now->day);
-                        });
-                });
-        })->get();
-
-        $holydays = array_merge(
-            $holydays->where('repeated_date', '>=', $now->format('Y-m-d'))->pluck('repeated_date')->toArray(),
-            $holydays->where('date', '>=', $now->format('Y-m-d'))->pluck('date')->toArray(),
-            $holydays->where('next_year_repeated_date', '<=', $now->addMonths(7)->format('Y-m-d'))->pluck('next_year_repeated_date')->toArray(),
-        );
-
-        $holydays = array_unique($holydays);
-
-        request()->session()->put('holidays', $holydays);
-
-        $participants = --$package->daily_acceptance;
-        if (session()->has('participant')) {
-            $participants -= session('participant');
-        }
-        // should work on it
-        $bookedDates = Booking::select('booking_date', \DB::raw('count(*) as total'))
-            ->where('package_id', $package->id)
-            ->where('status', '!=', 'Cancelled')
-            ->groupBy('booking_date')
-            ->having('total', '>=', $participants)
-            ->having('booking_date', '>=', date('Y-m-d'))
-            ->get()
-            ->pluck('booking_date')
-            ->toArray();
-
-        $disabledDates = json_encode(array_merge($holydays, $bookedDates));
-
-        $daynum = [];
-
-        return view('select-extra-services', compact('disable_days_string', 'package', 'disabledDates'));
+{
+    if (! session()->has('package_id')) {
+        return redirect('/');
     }
+
+    $package = \App\Package::find(\Session::get('package_id'));
+    $category_id = $package->category_id;
+
+    // ... (Your existing logic for off-days and holidays) ...
+
+    $off_days = \DB::table('booking_times')
+        ->where('is_off_day', '=', '1')
+        ->get();
+    $daynum = [];
+
+    foreach ($off_days as $off_day) {
+        if ($off_day->id != 7) {
+            $daynum[] = $off_day->id;
+        } else {
+            $daynum[] = $off_day->id - 7;
+        }
+    }
+
+    $disable_days_string = implode(',', $daynum);
+
+    $now = \Carbon\Carbon::now();
+
+    $holydays = Holidays::where(function ($query) use ($now) {
+        $query->where('repeated', 1)
+            ->orWhere(function ($query) use ($now) {
+                $query->where('year', '>', $now->year)
+                    ->orWhere(function ($query) use ($now) {
+                        $query->where('year', '=', $now->year)
+                            ->where('month', '>', $now->month);
+                    })
+                    ->orWhere(function ($query) use ($now) {
+                        $query->where('year', '=', $now->year)
+                            ->where('month', '=', $now->month)
+                            ->where('day', '>=', $now->day);
+                    });
+            });
+    })->get();
+
+    $holydays = array_merge(
+        $holydays->where('repeated_date', '>=', $now->format('Y-m-d'))->pluck('repeated_date')->toArray(),
+        $holydays->where('date', '>=', $now->format('Y-m-d'))->pluck('date')->toArray(),
+        $holydays->where('next_year_repeated_date', '<=', $now->addMonths(7)->format('Y-m-d'))->pluck('next_year_repeated_date')->toArray(),
+    );
+
+    $holydays = array_unique($holydays);
+
+    request()->session()->put('holidays', $holydays);
+
+    // --- START: CORRECTED LOGIC FOR DISABLING FULLY BOOKED DATES ---
+    $dailyLimit = $package->daily_acceptance;
+    $newBookingParticipants = (int) session('participant', 0) + 1;
+
+    // The correct approach is to join, group by booking_date, and then sum the
+    // participants *per booking* (using a subquery) and the main bookings.
+    
+    // Subquery to count participants per booking
+    $participantsPerBooking = \DB::table('participants')
+        ->join('booking_info', 'participants.info_id', '=', 'booking_info.id')
+        ->groupBy('booking_info.booking_id')
+        ->select('booking_info.booking_id', \DB::raw('COUNT(*) as participant_count'));
+
+    $bookedDates = \App\Booking::query()
+        ->select('bookings.booking_date')
+        // Join with booking info (to ensure a participant count can be attached)
+        ->join('booking_info as BI', 'bookings.id', '=', 'BI.booking_id')
+        // Left join the subquery result to get the participant count for each booking
+        ->leftJoinSub($participantsPerBooking, 'T1', function ($join) {
+            $join->on('bookings.id', '=', 'T1.booking_id');
+        })
+        
+        ->where('bookings.package_id', $package->id)
+        ->whereIn('bookings.status', ['Processing', 'Waiting', 'Confirmed']) 
+        ->where('bookings.booking_date', '>=', date('Y-m-d'))
+        
+        ->groupBy('bookings.booking_date')
+        
+        // Sum the total people: (T1.participant_count + 1 for the main user)
+        ->selectRaw('SUM(COALESCE(T1.participant_count, 0) + 1) as total_booked_people')
+        
+        // HAVING: Disable the date if remaining capacity is less than the new booking size.
+        ->having(\DB::raw($dailyLimit . ' - total_booked_people'), '<', $newBookingParticipants)
+        ->pluck('booking_date')
+        ->toArray();
+        
+    // --- END: CORRECTED LOGIC ---
+
+    $disabledDates = json_encode(array_merge($holydays, $bookedDates));
+
+    $daynum = [];
+
+    return view('select-extra-services', compact('disable_days_string', 'package', 'disabledDates'));
+}
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

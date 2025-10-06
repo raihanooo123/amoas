@@ -21,6 +21,7 @@ class Participant extends Model
 
     public function info()
     {
-        return $this->belongsTo('App\Model\Booking\Participant', 'info_id');
+        // FIX: Relationship should point to BookingInfo, not back to Participant
+        return $this->belongsTo('App\Models\Booking\BookingInfo', 'info_id');
     }
 }

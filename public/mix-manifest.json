@@ -1,4 +1,19 @@
 {
-    "/js/app.js": "/js/app.js?id=8769e2a2726c6a38112c23be5540d967",
-    "/css/app.css": "/css/app.css?id=9afb058655288ea0d2416a6f7baeb51a"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/fonts/fa-solid-900.eot?e06e610cfe8cb1fb0d5039ca779a146b": "/fonts/fa-solid-900.eot?e06e610cfe8cb1fb0d5039ca779a146b",
+    "/fonts/fa-solid-900.woff2?802ad9928206725a2dd76046dac11595": "/fonts/fa-solid-900.woff2?802ad9928206725a2dd76046dac11595",
+    "/fonts/fa-solid-900.woff?d5470f7ed65bd4a4a4a964df431eb133": "/fonts/fa-solid-900.woff?d5470f7ed65bd4a4a4a964df431eb133",
+    "/fonts/fa-solid-900.ttf?23c7bf7501abe9ce9c820cfd753b69a4": "/fonts/fa-solid-900.ttf?23c7bf7501abe9ce9c820cfd753b69a4",
+    "/fonts/fa-solid-900.svg?ed9355946036f371e1b5ad89b65318f8": "/fonts/fa-solid-900.svg?ed9355946036f371e1b5ad89b65318f8",
+    "/fonts/fa-regular-400.eot?b216eafd9cc06aaf0607cb59d140a704": "/fonts/fa-regular-400.eot?b216eafd9cc06aaf0607cb59d140a704",
+    "/fonts/fa-regular-400.woff2?df2b4a8c31fdf3a323e8f3b166d934f4": "/fonts/fa-regular-400.woff2?df2b4a8c31fdf3a323e8f3b166d934f4",
+    "/fonts/fa-regular-400.woff?146f21dc3c9d567b5b287638f8d96285": "/fonts/fa-regular-400.woff?146f21dc3c9d567b5b287638f8d96285",
+    "/fonts/fa-regular-400.ttf?71dde0b632d6617713b51e947b79e186": "/fonts/fa-regular-400.ttf?71dde0b632d6617713b51e947b79e186",
+    "/fonts/fa-regular-400.svg?c03d4bda54cf5dcbbc7361183b9cb197": "/fonts/fa-regular-400.svg?c03d4bda54cf5dcbbc7361183b9cb197",
+    "/fonts/fa-brands-400.eot?5a2d4d61269c14c076df7544e21d13c6": "/fonts/fa-brands-400.eot?5a2d4d61269c14c076df7544e21d13c6",
+    "/fonts/fa-brands-400.woff2?e5b597e403345784bd0532b79c03bcb1": "/fonts/fa-brands-400.woff2?e5b597e403345784bd0532b79c03bcb1",
+    "/fonts/fa-brands-400.woff?7ef6210924cbd3f9a6bf0166fc31be9e": "/fonts/fa-brands-400.woff?7ef6210924cbd3f9a6bf0166fc31be9e",
+    "/fonts/fa-brands-400.ttf?7592ba4bf137bb663193a01affaa03e1": "/fonts/fa-brands-400.ttf?7592ba4bf137bb663193a01affaa03e1",
+    "/fonts/fa-brands-400.svg?7eab84dcc17972dd82c9b8119db4de77": "/fonts/fa-brands-400.svg?7eab84dcc17972dd82c9b8119db4de77"
 }

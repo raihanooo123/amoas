@@ -208,48 +208,81 @@ class AdminBookingsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+   
     public function dataTable()
     {
-        $bookings = Booking::select('bookings.*')->with([
-            'package:id,title',
-            'info',
-            'user' => function ($query) {
-                $query->withCount('bookings');
-            }]);
+        $participantCountSubquery = \DB::table('participants')
+            ->selectRaw('booking_info.booking_id, count(participants.id) as participants_count')
+            ->join('booking_info', 'participants.info_id', '=', 'booking_info.id')
+            ->groupBy('booking_info.booking_id');
+
+        $bookings = Booking::select('bookings.*')
+            
+            ->selectRaw('COALESCE(T1.participants_count, 0) as participants_count')
+
+            ->leftJoinSub($participantCountSubquery, 'T1', function ($join) {
+                $join->on('bookings.id', '=', 'T1.booking_id');
+            })
+            
+            ->with([
+                'package:id,title',
+                'info',
+                'user' => function ($query) {
+                    $query->withCount('bookings');
+                }
+            ]);
 
         if (! request()->order) {
             $bookings->latest();
         }
 
         return Datatables::of($bookings)
+            
+            ->addColumn('participant_info', function ($booking) {
+                $count = $booking->participants_count + 1; 
+
+                if ($count > 1) {
+                    return '<strong>Family</strong> <br><span class="badge badge-primary">'.$count.' participants</span>';
+                }
+                
+                return 'Single';
+            })
+
             ->addColumn('action', function ($booking) {
                 $action = '<a href="'.route('bookings.show', $booking->id).'" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>&nbsp;';
-
-                // $action .= '<a href="' . route('bookings.edit', $booking->id) .'" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>';
                 return $action;
             })
+            
             ->editColumn('user.email', function ($booking) {
-                if ($booking->user->bookings_count > 1) {
-                    return '<span class="badge badge-dark">'.optional($booking->user)->bookings_count.'</span> '.$booking->email;
+                if (optional($booking->user)->bookings_count > 1) {
+                    return '<span class="badge badge-dark">'.optional($booking->user)->bookings_count.'</span> '.optional($booking->user)->email;
                 }
 
-                return $booking->email;
+                return optional($booking->user)->email;
             })
+            
             ->editColumn('email', function ($booking) {
                 return \Illuminate\Support\Str::limit($booking->email, 10);
             })
+            
             ->editColumn('serial_no', function ($booking) {
                 return '<a href="'.route('bookings.show', $booking->id).'">'.$booking->serial_no.'</a>';
             })
+            
             ->addIndexColumn()
+            
             ->setRowClass(function ($booking) {
                 return $booking->status == 'Cancelled' ? 'danger' : '';
             })
+            
             ->rawColumns([
                 'serial_no',
                 'action',
                 'user.email',
+                'participant_info',
             ])
+            
             ->make(true);
     }
+
 }

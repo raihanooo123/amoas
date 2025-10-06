@@ -7,17 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
     public function handle($request, Closure $next)
     {
         if (Auth::user()) {
-            if (Auth::user()->isAdmin() || Auth::user()->isSuperAdmin()) {
-                if (Auth::user()->is_active) {
+            $user = Auth::user();
+
+      
+            $user->load('roles.permissions'); 
+
+            if ($user->isAdmin() || $user->isSuperAdmin()) {
+                if ($user->is_active) {
                     return $next($request);
                 } else {
                     return redirect('/account-disabled');
