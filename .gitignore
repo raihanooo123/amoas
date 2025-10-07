@@ -1,13 +1,7 @@
 /node_modules
-/vendor
-/.env
-/.env.local
-/storage/*.key
-/storage/logs/*.log
 /public/hot
 /public/storage
-/public/build
-/bootstrap/cache/*.php
+/storage/*.key
 /.idea
 /.vscode
 /.vagrant
@@ -15,10 +9,13 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+/vendor
+.env
+storage/fonts/*
+bootstrap/*
+composer.lock
 composer.phar
 appointment.sql
 public/appointment.sql
 public/temp/*
-public/images/* # KEEP THIS if these are user uploads
-storage/fonts/*
-.DS_Store
+public/images/*
