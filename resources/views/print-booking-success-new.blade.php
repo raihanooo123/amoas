@@ -88,11 +88,11 @@
                     $hash = Crypt::encryptString($booking->serial_no);
                     $url = route('booking.verify', $hash);
                 @endphp
+
                 <div class="p-2 bg-white mx-auto text-center">
                     <img src="data:image/png;base64,{{ \DNS2D::getBarcodePNG("$url", 'QRCODE') }}" alt="barcode" />
                 </div>
             </div>
-
         </div>
         <div class="row mt-3 text-center">
             <div class="col-md-12">
