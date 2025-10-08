@@ -9,27 +9,45 @@ use Illuminate\Support\Facades;
 
 class VerifyController extends Controller
 {
+
     public function verifyQrCode($hashSerialNo)
     {
-        $isMd5Hash = preg_match('/^[a-f0-9]{32}$/', $hashSerialNo);
-
-        if ($isMd5Hash) {
-            // decrypt the hashSerialNo to get the original serial number
+        // 1. Check for the old MD5 hash format (for backwards compatibility)
+        if (preg_match('/^[a-f0-9]{32}$/', $hashSerialNo)) {
             return $this->getMd5Hash($hashSerialNo);
-        } else {
-            return "Invalid QR Code";
         }
 
-        // try catch block
+        // 2. Attempt Decryption for the NEW QR code hash format
         try {
-            // decrypt the hashSerialNo to get the original serial number
             $serialNo = \Crypt::decryptString($hashSerialNo);
-            return $serialNo;
+            
+            // Eager load necessary relationships for the view to prevent N+1 queries
+            $booking = Booking::with(['info', 'package', 'department', 'participants', 'invoice'])
+                                ->where('serial_no', $serialNo)
+                                ->first();
 
+            if ($booking) {
+                // Success: Booking found. Load the verification page.
+                
+                // Pass the booking data to the professional view
+                return view('verification.show', compact('booking')); 
+
+            } else {
+                // Decrypted hash was valid, but no matching booking was found.
+                // It's professional to use a dedicated error view or a generic message.
+                return view('verification.error', ['message' => "Booking not found for reference: {$serialNo}"]);
+            }
+
+        } catch (DecryptException $e) {
+            \Log::warning("QR Code Decryption Failed (Invalid Format): " . $hashSerialNo);
+            return view('verification.error', ['message' => "Invalid QR Code format. Please ensure you are scanning a valid code."]);
+            
         } catch (\Throwable $th) {
-            //throw $th;
+            \Log::error("QR Code Verification Internal Error: " . $th->getMessage());
+            return view('verification.error', ['message' => "An internal system error occurred. Please contact support."]);
         }
     }
+
 
     private function getMd5Hash($hashSerialNo)
     {
