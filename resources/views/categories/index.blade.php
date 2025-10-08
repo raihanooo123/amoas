@@ -97,7 +97,7 @@
                                         @foreach ($categories as $category)
                                             <tr>
                                                 <td>{{ $category->id }}</td>
-                                                <td><img src="{{ asset($category->photo->file) }}" width="40"
+                                                <td><img src="{{ asset($category?->photo?->file) }}" width="40"
                                                         height="40"></td>
                                                 <td>{{ $category->title }}</td>
                                                 <td>{{ $category->packages_count }}</td>

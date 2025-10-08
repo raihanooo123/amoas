@@ -42,7 +42,9 @@ class UserBookingController extends Controller
     public function loadBooking()
     {
         $categories = Category::with(['packages', 'packages.photo'])->get();
-        return view('welcome', compact('categories'));
+        $packages = Package::with(['category', 'photo'])->get();
+        // dd($packages);
+        return view('welcome', compact('categories', 'packages'));
     }
 
     public function ajaxPackageInfo(Request $request)
