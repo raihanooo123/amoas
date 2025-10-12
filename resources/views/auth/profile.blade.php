@@ -2,14 +2,33 @@
 
 @section('content')
 
-    <div class="jumbotron promo">
+    {{-- <div class="jumbotron promo">
         <div class="container">
             <h1 class="text-center promo-heading">{{ __('app.my_profile') }}</h1>
             <p class="promo-desc text-center">
                 {{ __('app.my_profile_subtitle') }}
             </p>
         </div>
-    </div>
+    </div> --}}
+ 
+        <div class="page-title-area bg-img bg-cover" data-bg-image="{{ asset('images/promo.jpg') }}">
+            <div class="container">
+                <h1 class="text-center promo-heading">{{ __('app.my_profile') }}</h1>
+                <p class="promo-desc text-center">
+                    {{ __('app.my_profile_subtitle') }}
+                </p>
+                <div class="content">
+                    <h2>{{ __('app.my_profile') }}</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('index') }}">{{ __('app.home') }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('app.my_profile') }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
 
     <div class="user-dashboard pt-100 pb-60">
         <div class="container">
