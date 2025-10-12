@@ -79,7 +79,7 @@ class HomeController extends Controller
             $user = Auth::user();
             $bookings = $user->bookings()->where('status', '!=', __('backend.cancelled'))->count('id');
             $recent_bookings = $user->bookings()->orderBy('created_at', 'ASC')->limit('5')->get();
-
+            $appointments = $user->bookings()->orderBy('created_at', 'ASC')->get();
             //find successful invoices and calculate total
             $successful_invoices = $user->invoices()->where('is_refunded', '=', 0)->get();
             $total_paid = 0;
@@ -97,7 +97,7 @@ class HomeController extends Controller
             $bookings_cancelled = $user->bookings()->where('status', '=', __('backend.cancelled'))->count('id');
 
             return view('auth.profile', compact('bookings', 'total_paid',
-                'bookings_cancelled', 'recent_bookings', 'total_refunded', 'user'));
+                'bookings_cancelled', 'recent_bookings', 'total_refunded', 'user', 'appointments'));
         }
     }
 }

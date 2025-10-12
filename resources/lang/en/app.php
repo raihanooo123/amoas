@@ -335,4 +335,8 @@ return [
     'profile' => 'Profile',
     'edit_profile' => 'Edit Profile',
     'reset_password' => 'Reset Password',  
+    'user' => 'User',
+    'name' => 'Name',
+    'postal_code' => 'Postal Code',
+    'dashboard' => 'Dashboard',
 ];

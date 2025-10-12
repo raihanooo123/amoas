@@ -328,5 +328,9 @@ return [
     'profile' => 'Profil',
     'edit_profile' => 'Profil bearbeiten',
     'reset_password' => 'Passwort zurücksetzen', 
+    'user' => 'Benutzer',
+    'name' => 'Name',
+    'postal_code' => 'Postleitzahl',
+    'dashboard' => 'Dashboard',
 ];
     
