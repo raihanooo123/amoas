@@ -96,8 +96,8 @@ class HomeController extends Controller
 
             $bookings_cancelled = $user->bookings()->where('status', '=', __('backend.cancelled'))->count('id');
 
-            return view('dashboard.customer', compact('bookings', 'total_paid',
-                'bookings_cancelled', 'recent_bookings', 'total_refunded'));
+            return view('auth.profile', compact('bookings', 'total_paid',
+                'bookings_cancelled', 'recent_bookings', 'total_refunded', 'user'));
         }
     }
 }

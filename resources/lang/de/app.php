@@ -322,4 +322,11 @@ return [
     'grand_father' => 'Großvater',
     'grand_mother' => 'Großmutter',
     'grand_son' => 'Enkel',
+    'my_profile' => 'Mein Profil',
+    'my_profile_subtitle' => 'Verwalten Sie Ihre Profilinformationen',
+    'account_information' => 'Kontoinformationen', 
+    'profile' => 'Profil',
+    'edit_profile' => 'Profil bearbeiten',
+    'reset_password' => 'Passwort zurücksetzen', 
 ];
+    

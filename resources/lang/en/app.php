@@ -329,4 +329,10 @@ return [
     'grand_father' => 'Grand father',
     'grand_mother' => 'Grand mother',
     'grand_son' => 'Grandson',
+    'my_profile' => 'My Profile',
+    'my_profile_subtitle' => 'Manage your profile information',
+    'account_information' => 'Account Information', 
+    'profile' => 'Profile',
+    'edit_profile' => 'Edit Profile',
+    'reset_password' => 'Reset Password',  
 ];

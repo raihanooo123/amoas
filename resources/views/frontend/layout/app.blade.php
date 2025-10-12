@@ -10,9 +10,9 @@
     <meta name="author" content="KreativDev">
 
     <!-- Title -->
-    <title>Bookapp - Appointment Booking Html Template</title>
+    <title>AMOAS</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/images/logo/fav.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('/images/logo-light.png') }}" type="image/x-icon">
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -105,9 +105,38 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="item">
-                            <a href="login.html" class="btn btn-md btn-primary btn-gradient icon-start" title="Login" target="_self"><i class="fal fa-sign-in-alt"></i> Login</a>
+                        @if (!Auth::user())
+                            <div class="item d-flex p-2">
+                                <a href="{{ route('login') }}" class="btn btn-md btn-primary btn-gradient icon-start mx-auto p-2" title="Login" target="_self"><i class="fal fa-sign-in-alt"></i> {{ __('auth.login_btn') }}</a>
+                                &nbsp;
+                                <a href="{{ route('register') }}" class="btn btn-md btn-primary btn-gradient icon-start" title="Login" target="_self"><i class="fal fa-sign-in-alt"></i> {{ __('auth.create_account') }}</a>
+                            </div>
+                        @else
+                        <div class="collapse navbar-collapse">
+                            <ul id="mainMenu" class="navbar-nav mobile-item mx-auto">
+                                <li class="nav-item">
+                                    <a href="#home" class="nav-link toggle">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} <i class="fal fa-arrow-down"></i></a>
+                                    <ul class="menu-dropdown">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('customerProfile') }}">{{ __('backend.my_profile') }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('changePassword') }}">{{ __('backend.change_password') }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('backend.logout') }}</a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
+                        @endif
+
+
+
                     </div>
                 </nav>
             </div>
@@ -123,7 +152,7 @@
                         <div class="navbar-brand mt-10">
                             <span></span>
                             <a href="index.html" target="_self" title="Link">
-                                <img src="{{ asset('frontend/assets/images/logo/logo-1.png') }}" alt="Brand Logo">
+                                <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo">
                             </a>
                             <span></span>
                         </div>
@@ -141,30 +170,26 @@
                             <a href="https://www.twitter.com/" target="_blank" title="twitter"><i class="fab fa-twitter"></i></a>
                             <a href="https://www.youtube.com/" target="_blank" title="youtube"><i class="fab fa-youtube"></i></a>
                         </div>
-                        <div class="newsletter-form mx-auto mt-30">
+                        {{-- <div class="newsletter-form mx-auto mt-30">
                             <form id="newsletterForm">
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Enter email here..." type="text" name="EMAIL" required="" autocomplete="off">
                                     <button class="btn btn-md btn-primary btn-gradient no-animation" type="submit">Subscribe</button>
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
+                        <br>
                         <ul class="footer-links list-unstyled mt-30">
                             <li class="nav-item">
                                 <a href="index.html" class="nav-link" target="_self" title="link">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="about-us.html" class="nav-link" target="_self" title="link">About</a>
+                                <a href="about-us.html" class="nav-link" target="_self" title="link">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a href="services.html" class="nav-link" target="_self" title="link">Services</a>
+                                <a href="services.html" class="nav-link" target="_self" title="link">Register</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="vendors.html" class="nav-link" target="_self" title="link">Shops</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="contact.html" class="nav-link" target="_self" title="link">Contact</a>
-                            </li>
+                             
                         </ul>
                     </div>
                 </div>
@@ -174,7 +199,8 @@
             <div class="container">
                 <div class="copy-right-content">
                     <span>
-                        Copyright <i class="fal fa-copyright"></i><span id="footerDate"></span> <a href="index.html" target="_self" title="Bookapp" class="color-primary">Bookapp</a>. All Rights Reserved
+                        Copyright <i class="fal fa-copyright"></i><span id="footerDate">
+                            </span> <a href="index.html" target="_self" title="Bookapp" class="color-primary">َAMOAS</a>. All Rights Reserved
                     </span>
                 </div>
             </div>
