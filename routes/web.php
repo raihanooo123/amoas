@@ -59,7 +59,7 @@ Route::get('/privacy-policy', function () {
 
 // ** AJAX REQUESTS ** //
 Route::post('/get_packages', 'UserBookingController@getPackages')->name('packages');
-Route::post('/get_timing_slots', 'UserBookingController@getTimingSlots')->name('slots');
+Route::post('/get-timing-slots', 'UserBookingController@getTimingSlots')->name('get-timing-slots');
 Route::post('/get_update_slots', 'UserBookingController@getUpdateSlots')->name('updateSlots');
 Route::post('/remove_session_addon', 'UserBookingController@removeFromList');
 

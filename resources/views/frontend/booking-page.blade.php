@@ -169,7 +169,7 @@
                                                             <select name="participant" id="participant"
                                                                 v-model="form.participant"
                                                                 class="form-control form-control-lg {{ $errors->has('participant') ? 'is-invalid' : '' }}">
-                                                                <option value="" selected>{{ __('app.iam_alone') }}
+                                                                <option value="0" selected>{{ __('app.iam_alone') }}
                                                                 </option>
                                                                 @for ($i = 1; $i <= 9; $i++)
                                                                     <option value="{{ $i }}"
@@ -264,9 +264,10 @@
                                                                 <input type="text" v-model="form.event_date"
                                                                     class="form-control form-control-lg {{ $errors->has('event_date') ? ' is-invalid' : '' }}"
                                                                     onkeydown="return false" name="event_date"
-                                                                    id="event_date"
-                                                                    placeholder="{{ __('app.date_placeholder') }}"
-                                                                    value="{{ old('event_date') }}">
+                                                                     
+                                                                    @input="getTimingSlots"
+                                                                    placeholder="{{ __('app.date_placeholder') }}" >
+
                                                                 <p class="form-text text-danger d-none"
                                                                     id="date_error_holder">
                                                                     {{ __('app.date_error') }}
@@ -467,7 +468,7 @@
                         street: '{{ old('street') }}',
                         postal: '{{ old('postal') }}',
                         place: '{{ old('place') }}',
-                        event_date: '{{ old('event_date') }}',
+                        event_date: '',
                         booking_slot: '{{ old('booking_slot') }}',
                         participantInfo: [],
                         booking_type: '',
@@ -476,14 +477,31 @@
                         booking_time: '',
                         status: '',
                         serial_no: '',
+                        disabled_dates: '',
+                        disable_days_string: '',
+                        list_slot: [],
+                        hours: [],
                     },
                     errors: [],
                 }
             },
+
             methods: {
+                getTimingSlots() {
+                    axios.post('{{ route('get-timing-slots') }}', {
+                        event_date: this.form.event_date,
+                        package_id: this.form.package_id,
+                    }).then(response => {
+                        this.form.list_slot = response.data.list_slot;
+                        this.form.hours = response.data.hours;
+                        console.log('ssssssss',this.form.list_slot);
+                        console.log('hhhhhhhhhhhhhhh',this.form.hours);
+                    });
+                },
                 nextStep() {
                     // Get current step
                     const currentStep = this.getCurrentStep();
+
                     this.validateForm(currentStep);
                     if (Object.keys(this.errors).length === 0) {
                         bookingStepper.next();
@@ -491,9 +509,29 @@
                     if (currentStep === 1) {
                         axios.post('{{ route('get-available-dates') }}', {
                             package_id: this.form.package_id,
+                            participant: this.form.participant??0,
                         }).then(response => {
-                            console.log(response);
+                            this.form.disabled_dates = response.data.disabledDates;
+                            this.form.disable_days_string = response.data.disable_days_string;
                         });
+                    }
+
+                    if (currentStep === 2) {
+                        var nowDate = new Date();
+                        var firstDay = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+                        var lastDay = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0);
+                        var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+                        $('#event_date').datepicker({
+                        orientation: "auto right",
+                        autoclose: true,
+                        startDate: today,
+                        endDate: new Date(lastDay.setMonth(lastDay.getMonth() + 6)),
+                        datesDisabled: this.form.disabled_dates,
+                        format: 'yyyy-mm-dd',
+                        // format: 'dd-mm-yyyy',
+                        daysOfWeekDisabled: this.form.disable_days_string,
+                        language: "{{ App::getLocale() }}"
+                    });
                     }
 
                 },
@@ -547,14 +585,13 @@
                         if (this.form.place === '') {
                             this.errors.place = 'The place field is required';
                         }
-                    } else if (step === 2) {
-                        // Time step validation
-                        // if (this.form.event_date === '') {
-                        //     this.errors.event_date = 'The event date field is required';
-                        // }
-                        // if (this.form.booking_slot === '') {
-                        //     this.errors.booking_slot = 'The booking slot field is required';
-                        // }
+                    } else if (step === 2) { 
+                        if (this.form.event_date === '') {
+                            this.errors.event_date = 'The event date field is required';
+                        }
+                        if (this.form.booking_slot === '') {
+                            this.errors.booking_slot = 'The booking slot field is required';
+                        }
                     } else if (step === 3) {
                         // Confirmation step validation (if needed)
                         if (this.form.participantInfo.length === 0) {

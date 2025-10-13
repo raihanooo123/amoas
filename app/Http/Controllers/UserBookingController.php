@@ -66,14 +66,15 @@ class UserBookingController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getTimingSlots()
+    public function getTimingSlots(Request $request)
     {
-        return $this->getNewTimingSlots();
+ 
+        // return $this->getNewTimingSlots();
         //get selected event date
-        $event_date = \request('event_date');
+        $event_date = $request->event_date;
 
         //get selected package_id
-        $selected_package_id = Session::get('package_id');
+        $selected_package_id = $request->package_id;
 
         //get selected category_id
         $selected_category_id = Package::find($selected_package_id)->category->id;
@@ -81,11 +82,11 @@ class UserBookingController extends Controller
         //get day name to select slot timings
         $timestamp_for_event = strtotime($event_date);
         $today_number = date('N', $timestamp_for_event);
-        $booking_time = BookingTime::findOrFail($today_number);
+        $booking_time = BookingTime::find($today_number);
 
         //decide starting and ending hours for selected date
-        $hour_start = $booking_time->opening_time;
-        $hour_end = $booking_time->closing_time;
+        $hour_start = $booking_time?->opening_time;
+        $hour_end = $booking_time?->closing_time;
 
         //decide what will be the duration of each slot
         if (config('settings.slots_with_package_duration')) {
@@ -188,10 +189,10 @@ class UserBookingController extends Controller
                     }
                 }
             }
-        }
-        dd($hours);
+        } 
 
-        return view('blocks.slots', compact('list_slot', 'hours'));
+        return response()->json(['list_slot' => $list_slot, 'hours' => $hours]);
+        // return view('blocks.slots', compact('list_slot', 'hours'));
     }
 
     public function getNewTimingSlots()
@@ -1152,7 +1153,7 @@ class UserBookingController extends Controller
     
         // --- START: CORRECTED LOGIC FOR DISABLING FULLY BOOKED DATES ---
         $dailyLimit = $package->daily_acceptance;
-        $newBookingParticipants = (int) session('participant', 0) + 1;
+        $newBookingParticipants = $request->participant + 1;
     
         // The correct approach is to join, group by booking_date, and then sum the
         // participants *per booking* (using a subquery) and the main bookings.
@@ -1187,8 +1188,12 @@ class UserBookingController extends Controller
             ->toArray();
             
         // --- END: CORRECTED LOGIC ---
-    
-        $disabledDates = json_encode(array_merge($holydays, $bookedDates));
+        $isAdmin = auth()->user()->role && (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin());
+        if ($isAdmin) {
+            $disabledDates = [];
+        } else {
+            $disabledDates = json_encode(array_merge($holydays, $bookedDates));
+        }
         return response()->json(['disabledDates' => $disabledDates, 'disable_days_string' => $disable_days_string]);
     }
 }
