@@ -42,7 +42,7 @@ class UserPasswordController extends Controller
 
             Session::flash('password_changed', __('backend.password_changed'));
 
-            return redirect()->route('changePassword');
+            return redirect()->back();
         } else {
             Session::flash('password_error', __('backend.password_error'));
 
