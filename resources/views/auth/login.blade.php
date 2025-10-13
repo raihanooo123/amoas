@@ -58,74 +58,58 @@
     <!-- Authentication Start -->
     <div class="authentication-area bg-light">
         <div class="container">
-            <div class="row min-vh-100 align-items-center">
-                <div class="col-12">
+            <div class="row min-vh-75 align-items-center justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-10">
                     <div class="wrapper shadow-md radius-lg bg-white">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 bg-primary-light">
-                                <div class="content">
-                                    <div class="logo mb-3 p-30">
-                                        <a href="{{ url('/') }}" target="_self" title="Teeno"><img src="{{ asset('/images/logo-dark.png') }}" alt="Logo"></a>
-                                    </div>
-                                    <div class="svg-image">
-                                        <img class="lazyload" src="{{ asset('frontend/assets/images/banner/placeholder.png') }}" data-src="{{ asset('frontend/assets/images/banner/login.svg') }}" alt="Image">
+                        <div class="main-form p-25" style="max-width: 400px; margin: 0 auto;">
+                            <a href="{{ url('/') }}" class="icon-link" title="Go back to home" target="_self"><i class="fal fa-home"></i></a>
+                            <div class="text-center mb-20">
+                                <a href="{{ url('/') }}" target="_self" title="AMOAS">
+                                    <img src="{{ asset('/images/logo-dark.png') }}" alt="Logo" style="max-height: 50px;">
+                                </a>
+                            </div>
+                            <div class="title text-center">
+                                <h5 class="mb-20 fw-semibold">Login to AMOAS</h5>
+                            </div>
+                            @if ($errors->has('email'))
+                            <div class="alert alert-danger">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </div>
+                        @endif
+                            <form method="post" action="{{ route('login') }}" class="auth-form" novalidate>
+                                @csrf
+                                <div class="form-group mb-15">
+                                    <label for="email" class="form-label color-dark fs-6">{{ __('auth.email_placeholder') }}<span class="color-red">*</span></label>
+                                    <input type="text" id="email" name="email"
+                                    placeholder="{{ __('auth.email_placeholder') }}" value="{{ old('email') }}" class="form-control form-control-sm" required autofocus>
+                                </div>
+                                <div class="form-group mb-15">
+                                    <label for="password" class="form-label color-dark fs-6">{{ __('auth.password_placeholder') }}<span class="color-red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password" id="password" class="form-control form-control-sm" placeholder="{{ __('auth.password_placeholder') }}" required>
+                                        <span class="show-password-field">
+                                            <i class="show-icon"></i>
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="col-lg-6">
-                                <div class="main-form">
-                                    <a href="{{ url('/') }}" class="icon-link" title="Go back to home" target="_self"><i class="fal fa-home"></i></a>
-                                    <div class="title">
-                                        <h3 class="mb-30">Login to AMOAS</h3>
+                                <div class="form-group mb-15">
+                                    <div class="custom-checkbox font-sm">
+                                        <input class="input-checkbox" type="checkbox" name="checkbox" id="checkbox4" value="">
+                                        <label class="form-check-label" for="checkbox4"><span> I agree with AMOAS's <a href="{{ route('privacy-policy') }}">Terms & Conditions</a></span></label>
                                     </div>
-                                    @if ($errors->has('email'))
-                                    <div class="alert alert-danger">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </div>
-                                @endif
-                                    <form method="post" action="{{ route('login') }}" class="auth-form" novalidate>
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="userName2" class="form-label color-dark">{{ __('auth.email_placeholder') }}<span class="color-red">*</span></label>
-                                                    <input type="text" id="email" name="email"
-                                                    placeholder="{{ __('auth.email_placeholder') }}" value="{{ old('email') }}" class="form-control" required autofocus>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="password" class="form-label color-dark">{{ __('auth.password_placeholder') }}<span class="color-red">*</span></label>
-                                                    <div class="position-relative">
-                                                        <input type="password" name="password" id="password" class="form-control" {{ __('auth.password_placeholder') }} required>
-                                                        <span class="show-password-field">
-                                                            <i class="show-icon"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="custom-checkbox mb-10 font-sm">
-                                                    <input class="input-checkbox" type="checkbox" name="checkbox" id="checkbox4" value="">
-                                                    <label class="form-check-label" for="checkbox4"><span> I agree with AMOAS's <a href="{{ route('privacy-policy') }}">Terms & Conditions</a></span></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center mt-10 mb-15">
-                                            <button class="btn btn-lg btn-primary btn-gradient w-100" type="submit" aria-label="Login">{{ __('auth.login_btn') }}</button>
-                                        </div>
-                                        <div class="d-flex justify-content-between flex-wrap gap-2">
-                                            <div class="link font-sm">
-                                                <a href="{{ route('password.request') }}" title="Forgot Password">{{ __('auth.forgot_password_title') }}</a>
-                                            </div>
-                                            <div class="link font-sm">
-                                                Don't have an account? <a href="{{ route('register') }}" title="Go Signup" target="_self">Click Here</a> to Signup
-                                            </div>
-                                        </div>
-                                    </form>
                                 </div>
-                            </div>
+                                <div class="text-center mb-15">
+                                    <button class="btn btn-primary btn-gradient w-100 btn-sm" type="submit" aria-label="Login">{{ __('auth.login_btn') }}</button>
+                                </div>
+                                <div class="d-flex justify-content-between flex-wrap gap-1 text-center" style="font-size: 0.8rem;">
+                                    <div class="link">
+                                        <a href="{{ route('password.request') }}" title="Forgot Password">{{ __('auth.forgot_password_title') }}</a>
+                                    </div>
+                                    <div class="link">
+                                        Don't have an account? <a href="{{ route('register') }}" title="Go Signup" target="_self">Click Here</a> to Signup
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

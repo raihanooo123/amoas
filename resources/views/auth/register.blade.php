@@ -58,129 +58,105 @@
     <!-- Authentication-area start -->
     <div class="authentication-area bg-light">
         <div class="container">
-            <div class="row min-vh-100 align-items-center">
-                <div class="col-12">
+            <div class="row min-vh-75 align-items-center justify-content-center">
+                <div class="col-lg-7 col-md-9 col-sm-10">
                     <div class="wrapper shadow-md radius-lg bg-white">
-                        <div class="row align-items-center">
+                        <div class="main-form p-25" style="max-width: 500px; margin: 0 auto;">
+                            <a href="{{ url('/') }}" class="icon-link" title="Go back to home" target="_self"><i class="fal fa-home"></i></a>
+                            <div class="text-center mb-20">
+                                <a href="{{ url('/') }}" target="_self" title="AMOAS">
+                                    <img src="{{ asset('/images/logo-dark.png') }}" alt="Logo" style="max-height: 50px;">
+                                </a>
+                            </div>
+                            <div class="title text-center">
+                                <h5 class="mb-20 fw-semibold">Signup to AMOAS</h5>
+                            </div>
+                            <form id="#authForm" method="POST" action="{{ route('register') }}">
+                                @csrf
+                                <div class="form-group mb-15">
+                                    <label for="first_name" class="form-label color-dark fs-6">{{ __('app.first_name') }}  <span class="color-red">*</span></label>
+                                    <input type="text" name="first_name" id="first_name" class="form-control form-control-sm" placeholder="{{ __('app.first_name') }}" required>
+                                    @if ($errors->has('first_name'))
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('first_name') }}</strong></span>
+                                    @endif
+                                </div>
 
-                            <div class="col-lg-6 bg-primary-light">
-                                <div class="content">
-                                    <div class="logo mb-3 p-30">
-                                        <a href="{{ url('/') }}" target="_self" title="Teeno"><img src="{{ asset('/images/logo-dark.png') }}" alt="Logo"></a>
+                                <div class="form-group mb-15">
+                                    <label for="last_name" class="form-label color-dark fs-6">{{ __('app.last_name') }}<span class="color-red">*</span></label>
+                                    <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}" class="form-control form-control-sm" placeholder="{{ __('app.last_name') }}" required>
+                                    @if ($errors->has('last_name'))
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('last_name') }}</strong></span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group mb-15">
+                                    <label for="phone_number" class="form-label color-dark fs-6">{{ __('app.phone_number') }}   <span class="color-red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="tel" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" class="form-control form-control-sm" placeholder="{{ __('app.phone_number') }}" required>
+                                        <span class="show-password-field">
+                                            <i class="show-icon"></i>
+                                        </span>
                                     </div>
-                                    <div class="svg-image">
-                                        <img class="lazyload" src="{{ asset('frontend/assets/images/banner/placeholder.png') }}" data-src="{{ asset('frontend/assets/images/banner/login.svg') }}" alt="Image">
+                                    @if ($errors->has('phone_number'))
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('phone_number') }}</strong></span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group mb-15">
+                                    <label for="email" class="form-label color-dark fs-6">{{ __('app.email') }}   <span class="color-red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control form-control-sm" placeholder="{{ __('app.email') }}" required>
+                                        <span class="show-password-field">
+                                            <i class="show-icon"></i>
+                                        </span>
+                                    </div>
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group mb-15">
+                                    <label for="password3" class="form-label color-dark fs-6">{{ __('app.password') }}   <span class="color-red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password" id="password3" value="{{ old('password') }}" class="form-control form-control-sm" placeholder="{{ __('app.password') }}" required>
+                                        <span class="show-password-field">
+                                            <i class="show-icon"></i>
+                                        </span>
+                                    </div>
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group mb-15">
+                                    <label for="confirmPassword" class="form-label color-dark fs-6">{{ __('app.password_confirmation') }}   <span class="color-red">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password_confirmation" id="confirmPassword" class="form-control form-control-sm" placeholder="{{ __('app.password_confirmation') }}" required>
+                                        <span class="show-password-field">
+                                            <i class="show-icon"></i>
+                                        </span>
+                                    </div>
+                                    @if ($errors->has('password_confirmation'))
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password_confirmation') }}</strong></span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group mb-15">
+                                    <div class="custom-checkbox font-sm">
+                                        <input class="input-checkbox" type="checkbox" name="checkbox" id="checkbox4" value="">
+                                        <label class="form-check-label" for="checkbox4"><span> I agree with AMOAS's
+                                            <a href="{{ route('privacy-policy') }}">Terms & Conditions</a></span></label>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="col-lg-6">
-                                <div class="main-form">
-                                    <a href="{{ url('/') }}" class="icon-link" title="Go back to home" target="_self"><i class="fal fa-home"></i></a>
-                                    <div class="title">
-                                        <h3 class="mb-30">Signup to AMOAS</h3>
-                                    </div>
-                                    <form id="#authForm" method="POST" action="{{ route('register') }}">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="userName" class="form-label color-dark">{{ __('app.first_name') }}  <span class="color-red">*</span></label>
-                                                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="{{ __('app.first_name') }}" required>
-                                                </div>
-                                                @if ($errors->has('first_name'))
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $errors->first('first_name') }}</strong></span>
-                                                @endif
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="last_name" class="form-label color-dark">{{ __('app.last_name') }}<span class="color-red">*</span></label>
-                                                    <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}" class="form-control" placeholder="{{ __('app.last_name') }}" required>
-                                                </div>
-                                                @if ($errors->has('last_name'))
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $errors->first('last_name') }}</strong></span>
-                                                @endif
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="password3" class="form-label color-dark">{{ __('app.phone_number') }}   <span class="color-red">*</span></label>
-                                                    <div class="position-relative">
-                                                        <input type="tel" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" class="form-control" placeholder="{{ __('app.phone_number') }}" required>
-                                                        <span class="show-password-field">
-                                                            <i class="show-icon"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                @if ($errors->has('phone_number'))
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $errors->first('phone_number') }}</strong></span>
-                                                @endif
-                                            </div> 
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="password3" class="form-label color-dark">{{ __('app.email') }}   <span class="color-red">*</span></label>
-                                                    <div class="position-relative">
-                                                        <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control" placeholder="{{ __('app.email') }}" required>
-                                                        <span class="show-password-field">
-                                                            <i class="show-icon"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                @if ($errors->has('email'))
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $errors->first('email') }}</strong></span>
-                                                @endif
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="password3" class="form-label color-dark">{{ __('app.password') }}   <span class="color-red">*</span></label>
-                                                    <div class="position-relative">
-                                                        <input type="password" name="password" id="password3" value="{{ old('password') }}" class="form-control" placeholder="{{ __('app.password') }}" required>
-                                                        <span class="show-password-field">
-                                                            <i class="show-icon"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                @if ($errors->has('password'))
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-                                                @endif
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group mb-20">
-                                                    <label for="confirmPassword" class="form-label color-dark">{{ __('app.password_confirmation') }}   <span class="color-red">*</span></label>
-                                                    <div class="position-relative">
-                                                        <input type="password" name="password" id="confirmPassword" value="{{ old('password') }}" class="form-control" placeholder="{{ __('app.password_confirmation') }}" required>
-                                                        <span class="show-password-field">
-                                                            <i class="show-icon"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                @if ($errors->has('password'))
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-                                                @endif
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="custom-checkbox font-sm">
-                                                    <input class="input-checkbox" type="checkbox" name="checkbox" id="checkbox4" value="">
-                                                    <label class="form-check-label" for="checkbox4"><span> I agree with AMOAS's 
-                                                        <a href="{{ route('privacy-policy') }}">Terms & Conditions</a></span></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center mt-20">
-                                            <button class="btn btn-lg btn-primary btn-gradient w-100" type="submit" aria-label="Signup">Signup</button>
-                                            <div class="link font-sm mt-15">
-                                                Already a member? <a href="{{ route('login') }}" target="_self" title="Login Now">Login Now</a> 
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div class="text-center mb-15">
+                                    <button class="btn btn-primary btn-gradient w-100 btn-sm" type="submit" aria-label="Signup">Signup</button>
                                 </div>
-                            </div>
+                                <div class="text-center" style="font-size: 0.8rem;">
+                                    <div class="link">
+                                        Already a member? <a href="{{ route('login') }}" target="_self" title="Login Now">Login Now</a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
