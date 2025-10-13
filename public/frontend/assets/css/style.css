@@ -1388,8 +1388,8 @@ button.mfp-close {
 .form-control {
   border: 1px solid var(--border-color);
   border-radius: 5px;
-  height: 55px;
-  line-height: 55px;
+  height: 44px;
+  line-height: 44px;
   padding: 0;
   padding-inline-start: 18px;
   font-size: 14px;

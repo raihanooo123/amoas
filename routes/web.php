@@ -145,6 +145,7 @@ Route::group(['middleware' => ['admin']], function () {
 
 Route::group(['middleware' => ['customer']], function () {
 
+    Route::post('/get-available-dates', 'UserBookingController@getAvailableDates')->name('get-available-dates');
     Route::get('/customer/bookings', 'UserBookingController@index')->name('customerBookings');
     Route::get('/customer/booking/{id}', 'UserBookingController@show')->name('showBooking');
     Route::get('/customer/invoices', 'CustomerInvoiceController@index')->name('customerInvoices');
@@ -162,6 +163,7 @@ Route::group(['middleware' => ['authenticated']], function () {
 
     // ** BOOKING FORM ROUTES ** //
 
+    Route::get('/book-package/{package}', 'UserBookingController@bookPackage')->name('bookPackage');
     Route::post('/postStep1', 'UserBookingController@postStep1')->name('postStep1');
     Route::get('/select-booking-time', 'UserBookingController@loadStep2')->name('loadStep2');
     Route::post('/postStep2', 'UserBookingController@postStep2')->name('postStep2');

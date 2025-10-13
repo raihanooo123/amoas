@@ -234,6 +234,8 @@
         <script src="{{ asset('js/map.js') }}"></script>
         <script
             src="https://maps.googleapis.com/maps/api/js?key={{ config('settings.google_maps_api_key') }}&libraries=places&callback=initAutocomplete"
-            async defer></script>
+            async defer>
+            
+            </script>
     @endif
 @endsection

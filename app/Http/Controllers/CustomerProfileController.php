@@ -26,7 +26,7 @@ class CustomerProfileController extends Controller
     {
         $user = Auth::user();
 
-        return view('customer.profile.index', compact('user'));
+        return view('auth.profile', compact('user'));
     }
 
     public function update(CustomerProfileUpdate $request, $id)

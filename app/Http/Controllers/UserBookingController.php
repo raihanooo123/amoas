@@ -1009,4 +1009,186 @@ class UserBookingController extends Controller
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="' . $pdfName . '"');
     }
+
+    public function bookPackage(Package $package)
+    { 
+    $category_id = $package->category_id;
+
+    $off_days = \DB::table('booking_times')
+        ->where('is_off_day', '=', '1')
+        ->get();
+    $daynum = [];
+
+    foreach ($off_days as $off_day) {
+        if ($off_day->id != 7) {
+            $daynum[] = $off_day->id;
+        } else {
+            $daynum[] = $off_day->id - 7;
+        }
+    }
+
+    $disable_days_string = implode(',', $daynum);
+
+    $now = \Carbon\Carbon::now();
+
+    $holydays = Holidays::where(function ($query) use ($now) {
+        $query->where('repeated', 1)
+            ->orWhere(function ($query) use ($now) {
+                $query->where('year', '>', $now->year)
+                    ->orWhere(function ($query) use ($now) {
+                        $query->where('year', '=', $now->year)
+                            ->where('month', '>', $now->month);
+                    })
+                    ->orWhere(function ($query) use ($now) {
+                        $query->where('year', '=', $now->year)
+                            ->where('month', '=', $now->month)
+                            ->where('day', '>=', $now->day);
+                    });
+            });
+    })->get();
+
+    $holydays = array_merge(
+        $holydays->where('repeated_date', '>=', $now->format('Y-m-d'))->pluck('repeated_date')->toArray(),
+        $holydays->where('date', '>=', $now->format('Y-m-d'))->pluck('date')->toArray(),
+        $holydays->where('next_year_repeated_date', '<=', $now->addMonths(7)->format('Y-m-d'))->pluck('next_year_repeated_date')->toArray(),
+    );
+
+    $holydays = array_unique($holydays);
+
+    request()->session()->put('holidays', $holydays);
+
+    // --- START: CORRECTED LOGIC FOR DISABLING FULLY BOOKED DATES ---
+    $dailyLimit = $package->daily_acceptance;
+    $newBookingParticipants = (int) session('participant', 0) + 1;
+
+    // The correct approach is to join, group by booking_date, and then sum the
+    // participants *per booking* (using a subquery) and the main bookings.
+    
+    // Subquery to count participants per booking
+    $participantsPerBooking = \DB::table('participants')
+        ->join('booking_info', 'participants.info_id', '=', 'booking_info.id')
+        ->groupBy('booking_info.booking_id')
+        ->select('booking_info.booking_id', \DB::raw('COUNT(*) as participant_count'));
+
+    $bookedDates = \App\Booking::query()
+        ->select('bookings.booking_date')
+        // Join with booking info (to ensure a participant count can be attached)
+        ->join('booking_info as BI', 'bookings.id', '=', 'BI.booking_id')
+        // Left join the subquery result to get the participant count for each booking
+        ->leftJoinSub($participantsPerBooking, 'T1', function ($join) {
+            $join->on('bookings.id', '=', 'T1.booking_id');
+        })
+        
+        ->where('bookings.package_id', $package->id)
+        ->whereIn('bookings.status', ['Processing', 'Waiting', 'Confirmed']) 
+        ->where('bookings.booking_date', '>=', date('Y-m-d'))
+        
+        ->groupBy('bookings.booking_date')
+        
+        // Sum the total people: (T1.participant_count + 1 for the main user)
+        ->selectRaw('SUM(COALESCE(T1.participant_count, 0) + 1) as total_booked_people')
+        
+        // HAVING: Disable the date if remaining capacity is less than the new booking size.
+        ->having(\DB::raw($dailyLimit . ' - total_booked_people'), '<', $newBookingParticipants)
+        ->pluck('booking_date')
+        ->toArray();
+        
+    // --- END: CORRECTED LOGIC ---
+
+    $disabledDates = json_encode(array_merge($holydays, $bookedDates));
+
+    $daynum = [];
+        return view('frontend.booking-page', compact('package', 'disable_days_string', 'disabledDates'));
+    }
+
+    public function getAvailableDates(Request $request)
+    {
+        $package_id = $request->package_id;
+        $package = Package::find($package_id);
+        $category_id = $package->category_id;
+
+        $off_days = \DB::table('booking_times')
+            ->where('is_off_day', '=', '1')
+            ->get();
+        $daynum = [];
+    
+        foreach ($off_days as $off_day) {
+            if ($off_day->id != 7) {
+                $daynum[] = $off_day->id;
+            } else {
+                $daynum[] = $off_day->id - 7;
+            }
+        }
+    
+        $disable_days_string = implode(',', $daynum);
+    
+        $now = \Carbon\Carbon::now();
+    
+        $holydays = Holidays::where(function ($query) use ($now) {
+            $query->where('repeated', 1)
+                ->orWhere(function ($query) use ($now) {
+                    $query->where('year', '>', $now->year)
+                        ->orWhere(function ($query) use ($now) {
+                            $query->where('year', '=', $now->year)
+                                ->where('month', '>', $now->month);
+                        })
+                        ->orWhere(function ($query) use ($now) {
+                            $query->where('year', '=', $now->year)
+                                ->where('month', '=', $now->month)
+                                ->where('day', '>=', $now->day);
+                        });
+                });
+        })->get();
+    
+        $holydays = array_merge(
+            $holydays->where('repeated_date', '>=', $now->format('Y-m-d'))->pluck('repeated_date')->toArray(),
+            $holydays->where('date', '>=', $now->format('Y-m-d'))->pluck('date')->toArray(),
+            $holydays->where('next_year_repeated_date', '<=', $now->addMonths(7)->format('Y-m-d'))->pluck('next_year_repeated_date')->toArray(),
+        );
+    
+        $holydays = array_unique($holydays);
+    
+        request()->session()->put('holidays', $holydays);
+    
+        // --- START: CORRECTED LOGIC FOR DISABLING FULLY BOOKED DATES ---
+        $dailyLimit = $package->daily_acceptance;
+        $newBookingParticipants = (int) session('participant', 0) + 1;
+    
+        // The correct approach is to join, group by booking_date, and then sum the
+        // participants *per booking* (using a subquery) and the main bookings.
+        
+        // Subquery to count participants per booking
+        $participantsPerBooking = \DB::table('participants')
+            ->join('booking_info', 'participants.info_id', '=', 'booking_info.id')
+            ->groupBy('booking_info.booking_id')
+            ->select('booking_info.booking_id', \DB::raw('COUNT(*) as participant_count'));
+    
+        $bookedDates = \App\Booking::query()
+            ->select('bookings.booking_date')
+            // Join with booking info (to ensure a participant count can be attached)
+            ->join('booking_info as BI', 'bookings.id', '=', 'BI.booking_id')
+            // Left join the subquery result to get the participant count for each booking
+            ->leftJoinSub($participantsPerBooking, 'T1', function ($join) {
+                $join->on('bookings.id', '=', 'T1.booking_id');
+            })
+            
+            ->where('bookings.package_id', $package->id)
+            ->whereIn('bookings.status', ['Processing', 'Waiting', 'Confirmed']) 
+            ->where('bookings.booking_date', '>=', date('Y-m-d'))
+            
+            ->groupBy('bookings.booking_date')
+            
+            // Sum the total people: (T1.participant_count + 1 for the main user)
+            ->selectRaw('SUM(COALESCE(T1.participant_count, 0) + 1) as total_booked_people')
+            
+            // HAVING: Disable the date if remaining capacity is less than the new booking size.
+            ->having(\DB::raw($dailyLimit . ' - total_booked_people'), '<', $newBookingParticipants)
+            ->pluck('booking_date')
+            ->toArray();
+            
+        // --- END: CORRECTED LOGIC ---
+    
+        $disabledDates = json_encode(array_merge($holydays, $bookedDates));
+        return response()->json(['disabledDates' => $disabledDates, 'disable_days_string' => $disable_days_string]);
+    }
 }

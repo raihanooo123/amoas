@@ -483,6 +483,13 @@
             linear: true,
             animation: true
         });
+
+        // Add event listener for step changes to clear validation errors
+        document.querySelector('#booking-stepper').addEventListener('shown.bs-stepper', function () {
+            if (window.vueApp && window.vueApp.onStepChange) {
+                window.vueApp.onStepChange();
+            }
+        });
     }
     // Reset stepper on close modal
     $(".booking-modal").on('hide.bs.modal', function() {

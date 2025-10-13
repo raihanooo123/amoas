@@ -107,8 +107,9 @@
                             there live the blind.
                         </p>
                         <div class="mt-30">
-                            <button class="btn btn-lg btn-primary btn-gradient icon-start" data-bs-toggle="modal"
-                                data-bs-target="#makeBooking" type="button" aria-label="Book Now">
+                            <button class="btn btn-lg btn-primary btn-gradient icon-start btn-book-package"
+                                data-bs-toggle="modal" data-bs-target="#makeBooking" type="button" aria-label="Book Now"
+                                data-package-id="" data-package-title="General Booking" data-package-price="">
                                 <i class="fal fa-calendar-check"></i>
                                 Book Now
                             </button>
@@ -267,9 +268,9 @@
                                                     <span class="h6 new-price">{{ $package->price }}</span>
                                                     {{-- <span class="prev-price font-sm">{{ $package->price }}</span> --}}
                                                 </div>
-                                                <a href="javaScript:void(0)" class="btn btn-sm btn-outline-2"
-                                                    data-bs-toggle="modal" data-bs-target="#makeBooking" title="Book Now"
-                                                    target="_self">Book Now</a>
+                                                <a href="{{ route('bookPackage', $package->id) }}"
+                                                    class="btn btn-sm btn-outline-2 btn-book-package">Book
+                                                    Now</a>
                                             </div>
                                         </div>
                                     </div><!-- product-default -->
@@ -293,10 +294,30 @@
 
 @section('scripts')
     <script>
-        //append form with selected package_id
+        // Handle package booking modal opening
+        $('body').on('click', '.btn-book-package', function() {
+            var packageId = $(this).attr('data-package-id');
+            var packageTitle = $(this).attr('data-package-title');
+            var packagePrice = $(this).attr('data-package-price');
 
+            // Store package data for modal use
+            $('#makeBooking').attr('data-selected-package-id', packageId);
+            $('#makeBooking').attr('data-selected-package-title', packageTitle);
+            $('#makeBooking').attr('data-selected-package-price', packagePrice);
+
+            // If package is selected, add hidden input to the form
+            if (packageId && packageId !== '') {
+                // Remove any existing package_id input
+                $('#booking-modal-form #package_id').remove();
+
+                // Add new package_id input
+                $('#booking-modal-form').prepend('<input type="hidden" name="package_id" id="package_id" value="' +
+                    packageId + '">');
+            }
+        });
+
+        // Legacy code for old package selection (keeping for backward compatibility)
         $('body').on('click', 'a.btn_package_select', function() {
-
             var package_id = $(this).attr('data-package-id');
             $('#package_error').addClass('d-none');
 
@@ -315,7 +336,6 @@
             $.get("{{ URL('/ajax_package_info') }}", {
                 id: package_id
             }, function(data) {
-
                 $('#package_desc_container').removeClass('d-none');
                 $('#package_desc').html(data);
 
@@ -327,7 +347,6 @@
 
                 // set progress bar 25%
                 $('#progressbar').css('width', '25%').attr('aria-valuenow', 25).text('25%');
-
             });
         });
     </script>

@@ -49,6 +49,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/responsive.css') }}">
+    @yield('styles')
+
 </head>
 
 <body class="theme-color-1">
@@ -129,7 +131,7 @@
                                         <ul class="menu-dropdown">
                                             <li class="nav-item">
                                                 <a class="nav-link"
-                                                    href="{{ route('customerProfile') }}">{{ __('backend.my_profile') }}</a>
+                                                    href="{{ route('home') }}">{{ __('backend.my_profile') }}</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link"
@@ -159,7 +161,7 @@
     @yield('content')
     <footer class="footer-area mt-30 bg-primary-light">
         <div class="go-top"><i class="fal fa-long-arrow-up"></i></div>
-        <div class="footer-top pt-100 pb-70 text-center">
+        <div class="footer-top pt-40 pb-30 text-center">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5" data-aos="fade-up">
@@ -170,7 +172,7 @@
                             </a>
                             <span></span>
                         </div>
-                        <ul class="info-list mt-20">
+                        <ul class="info-list mt-15">
                             <li>
                                 <a href="mailto:live@example.com">live@example.com</a>
                             </li>
@@ -178,7 +180,7 @@
                                 <a href="tel:9992233555">+999 22 33 5555</a>
                             </li>
                         </ul>
-                        <div class="social-link mt-20">
+                        <div class="social-link mt-15">
                             <a href="https://www.instagram.com/" target="_blank" title="instagram"><i
                                     class="fab fa-instagram"></i></a>
                             <a href="https://www.dribbble.com/" target="_blank" title="dribbble"><i
@@ -197,7 +199,7 @@
                             </form>
                         </div> --}}
                         <br>
-                        <ul class="footer-links list-unstyled mt-30">
+                        <ul class="footer-links list-unstyled mt-20">
                             <li class="nav-item">
                                 <a href="{{ url('/') }}" class="nav-link" target="_self"
                                     title="link">Home</a>
@@ -214,7 +216,7 @@
                 </div>
             </div>
         </div>
-        <div class="copy-right-area border-top ptb-30">
+        <div class="copy-right-area border-top ptb-15">
             <div class="container">
                 <div class="copy-right-content">
                     <span>
@@ -265,6 +267,8 @@
     <script src="{{ asset('frontend/assets/js/vendors/bs-stepper.min.js') }}"></script>
     <!-- Main script JS -->
     <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
+    <script src="{{ asset(mix('/js/app.js')) }}"></script>
+
     @yield('scripts')
 
 </body>

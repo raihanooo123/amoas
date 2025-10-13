@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Holidays extends Model
 {
+    protected $table = 'holydays';
     protected $appends = [
         'date',
         'repeated_date',
