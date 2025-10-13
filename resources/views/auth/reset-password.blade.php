@@ -1,4 +1,4 @@
-<div class="col-lg-9" id="reset-password-content">
+<div class="col-lg-9" id="reset-password-content" style="display: none;">
     <div class="user-profile-details mb-40">
         <div class="account-info radius-md">
             <div class="title">
