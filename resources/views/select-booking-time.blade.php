@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-gradient-primary text-white" style="margin-bottom: -180px !important;">
+    <div class="bg-gradient-primary " style="margin-bottom: -100px !important;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 mx-auto text-center">
@@ -56,9 +56,10 @@
         </div>
     </div>
 
+
     <form method="POST" action="{{ route('postStep2') }}" style="margin-top: -30px;">
         {{ csrf_field() }}
-        <div class="container">
+        <div class="container border rounded-3 shadow-sm" style="background: rgba(43, 59, 101, 0.08); color: #2b3b65;">
             <div class="content">
                 <!-- Modern Progress Section -->
                 <div class="row">
@@ -112,7 +113,7 @@
                 </div>
 
                 <!-- Contact Information Card -->
-                <div class="row">
+                <div class="row p-3">
                     <div class="col-md-12">
                         <div class="contact-info-card card shadow-sm">
                             <div class="card-header bg-success text-white">
@@ -120,7 +121,7 @@
                                     <i class="fas fa-address-book mr-2"></i>Contact Information
                                 </h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="padding: 1.5rem;">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label class="form-label">{{ __('app.provide_address') }} <span
@@ -172,7 +173,7 @@
                     </div>
                 </div>
                 <!-- Address Information Card -->
-                <div class="row">
+                <div class="row p-3">
                     <div class="col-md-12">
                         <div class="address-info-card card shadow-sm">
                             <div class="card-header bg-info text-white">
@@ -225,9 +226,10 @@
                 </div>
             </div>
 
-            <br>
-            <br>
         </div> <!-- Closing the container div -->
+
+        <!-- Bottom spacing -->
+        <div style="height: 100px;"></div>
 
         <!-- Modern Footer -->
         {{-- <footer class="modern-footer">

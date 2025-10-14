@@ -220,7 +220,7 @@
                 </div>
             </div>
         </div>
-        <div class="copy-right-area border-top ptb-15" style="background: rgba(43, 59, 101, 0.08); color: #2b3b65;">
+        <div class="copy-right-area border-top ptb-15" style="background: transparent; color: #2b3b65;">
             <div class="container">
                 <div class="copy-right-content">
                     <span>
