@@ -105,7 +105,7 @@ $(document).ready(function () {
         //prepare to send ajax request
         $.ajax({
             type: 'POST',
-            url: URL_CONCAT + '/get-timing-slots',
+            url: URL_CONCAT + '/get_timing_slots',
             data: {
                 event_date: selected_date
             },

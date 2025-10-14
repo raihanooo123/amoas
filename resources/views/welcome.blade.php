@@ -252,7 +252,7 @@
                                                     title="{{ $package->title }}">{{ $package->title }}</a>
                                             </h6>
                                             <div class="product-description mt-2">
-                                                {!! $package->description !!}
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($package->description), 50, '...') }}
                                             </div>
                                             {{-- <div class="author mb-10 mt-10">
                                             <img class="lazyload blur-up" src="{{ asset($package->photo->file) }}" data-src="{{ asset($package->photo->file) }}" alt="Image">
@@ -268,8 +268,8 @@
                                                     <span class="h6 new-price">{{ $package->price }}</span>
                                                     {{-- <span class="prev-price font-sm">{{ $package->price }}</span> --}}
                                                 </div>
-                                                <a href="{{ route('bookPackage', $package->id) }}"
-                                                    class="btn btn-sm btn-outline-2 btn-book-package">Book
+                                                <a class="btn btn-sm btn-outline-2 btn-book-package btn_package_select"
+                                                    data-package-id="{{ $package->id }}">Book
                                                     Now</a>
                                             </div>
                                         </div>
@@ -288,7 +288,9 @@
     <!-- Booking Modal Start -->
     @include('frontend.booking-modal')
     <!-- Booking Modal End -->
-
+    <!-- Package Details Modal Start -->
+    @include('frontend.package-details-modal')
+    <!-- Package Details Modal End -->
     <!-- Service-area end -->
 @endsection
 
@@ -304,7 +306,10 @@
             $('#makeBooking').attr('data-selected-package-id', packageId);
             $('#makeBooking').attr('data-selected-package-title', packageTitle);
             $('#makeBooking').attr('data-selected-package-price', packagePrice);
-
+            $('#package-details-modal').attr('data-selected-package-id', packageId);
+            $('#package-details-modal').attr('data-selected-package-title', packageTitle);
+            $('#package-details-modal').attr('data-selected-package-price', packagePrice);
+            $('#package-details-modal').modal('show');
             // If package is selected, add hidden input to the form
             if (packageId && packageId !== '') {
                 // Remove any existing package_id input

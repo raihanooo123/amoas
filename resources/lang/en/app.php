@@ -339,4 +339,7 @@ return [
     'name' => 'Name',
     'postal_code' => 'Postal Code',
     'dashboard' => 'Dashboard',
+    'book_package' => 'Book Package',
+    'close' => 'Close',
+    'home' => 'Home',
 ];

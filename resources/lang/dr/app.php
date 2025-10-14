@@ -109,4 +109,5 @@ return [
     'uidTracing' => 'یوآیدی: :uid',
     'depTracing' => 'مرجع: :dep',
     'processingState' => 'در حال طی مراحل قانونی',
+    'home' => 'Home',
 ];

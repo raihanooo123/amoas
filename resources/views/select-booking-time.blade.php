@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => __('app.step_two_page_title')])
+@extends('frontend.layout.app', ['title' => __('app.step_two_page_title')])
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
@@ -7,7 +7,21 @@
 
 @section('content')
     <!-- Modern Hero Section -->
-    <div class="bg-gradient-primary text-white jumbotron promo" style="margin-bottom: -180px !important;">
+
+    <div class="page-title-area bg-img bg-cover" data-bg-image="{{ asset('images/promo.jpg') }}">
+        <div class="container">
+            <div class="content">
+                <h2>{{ __('app.my_profile') }}</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('index') }}">{{ __('app.home') }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('app.my_profile') }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gradient-primary text-white" style="margin-bottom: -180px !important;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 mx-auto text-center">
@@ -53,15 +67,16 @@
                             <div class="progress-info text-center mb-3">
                                 <small class="text-muted">Booking Progress - Step 2 of 4</small>
                             </div>
-                            <div class="progress modern-progress">
+                            <div class="progress modern-progress" style="height: 30px;">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                    style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                                    style="width: 50%; height: 30px;" aria-valuenow="50" aria-valuemin="0"
+                                    aria-valuemax="100">50%</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Booking Information Card -->
-                <div class="row">
+                <div class="row p-3">
                     <div class="col-md-12">
                         <div class="booking-info-card card shadow-sm">
                             <div class="card-header bg-info text-white">
@@ -198,9 +213,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary btn-lg modern-btn">
+                                        <i class="fas fa-arrow-right mr-2"></i>{!! __('pagination.next') !!}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -209,7 +230,7 @@
         </div> <!-- Closing the container div -->
 
         <!-- Modern Footer -->
-        <footer class="modern-footer">
+        {{-- <footer class="modern-footer">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-6">
@@ -231,10 +252,10 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> --}}
 
         <!-- Mobile Footer -->
-        <footer class="mobile-footer d-block d-sm-block d-md-none">
+        {{-- <footer class="mobile-footer d-block d-sm-block d-md-none">
             <div class="container">
                 <div class="row">
                     <div class="col-6 text-left">
@@ -249,7 +270,7 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> --}}
     </form>
 @endsection
 

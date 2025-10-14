@@ -332,5 +332,8 @@ return [
     'name' => 'Name',
     'postal_code' => 'Postleitzahl',
     'dashboard' => 'Dashboard',
+    'book_package' => 'Paket buchen',
+    'close' => 'Schließen',
+    'home' => 'Startseite',
 ];
     

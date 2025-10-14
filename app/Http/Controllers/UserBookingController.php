@@ -66,15 +66,14 @@ class UserBookingController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getTimingSlots(Request $request)
+    public function getTimingSlots()
     {
- 
-        // return $this->getNewTimingSlots();
+        return $this->getNewTimingSlots();
         //get selected event date
-        $event_date = $request->event_date;
+        $event_date = \request('event_date');
 
         //get selected package_id
-        $selected_package_id = $request->package_id;
+        $selected_package_id = Session::get('package_id');
 
         //get selected category_id
         $selected_category_id = Package::find($selected_package_id)->category->id;
@@ -82,11 +81,11 @@ class UserBookingController extends Controller
         //get day name to select slot timings
         $timestamp_for_event = strtotime($event_date);
         $today_number = date('N', $timestamp_for_event);
-        $booking_time = BookingTime::find($today_number);
+        $booking_time = BookingTime::findOrFail($today_number);
 
         //decide starting and ending hours for selected date
-        $hour_start = $booking_time?->opening_time;
-        $hour_end = $booking_time?->closing_time;
+        $hour_start = $booking_time->opening_time;
+        $hour_end = $booking_time->closing_time;
 
         //decide what will be the duration of each slot
         if (config('settings.slots_with_package_duration')) {
@@ -189,10 +188,10 @@ class UserBookingController extends Controller
                     }
                 }
             }
-        } 
+        }
+        dd($hours);
 
-        return response()->json(['list_slot' => $list_slot, 'hours' => $hours]);
-        // return view('blocks.slots', compact('list_slot', 'hours'));
+        return view('blocks.slots', compact('list_slot', 'hours'));
     }
 
     public function getNewTimingSlots()
@@ -536,7 +535,7 @@ class UserBookingController extends Controller
         $newBooking->user_id = auth()->id();
         $newBooking->package_id = session('package_id');
         $newBooking->department_id = session('department_id', 108);
-        $newBooking->serial_no = Booking::genSerialNo(session('department_id', 108), session('package_id'));
+        $newBooking->serial_no = Booking::genSerialNo(session('department_id', 96), session('package_id'));
         $newBooking->email = session('email');
 
         // set the $newBooking to session

@@ -19,6 +19,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600&amp;display=swap"
         rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/bootstrap.min.css') }}">
     <!-- Data Tables CSS -->
@@ -174,10 +175,10 @@
                         </div>
                         <ul class="info-list mt-15">
                             <li>
-                                <a href="mailto:live@example.com">live@example.com</a>
+                                <a href="mailto:live@example.com">tazkira@afghanconsulatemuc.de</a>
                             </li>
                             <li>
-                                <a href="tel:9992233555">+999 22 33 5555</a>
+                                <a href="tel:9992233555">+49 89255523030</a>
                             </li>
                         </ul>
                         <div class="social-link mt-15">
@@ -202,13 +203,13 @@
                         <ul class="footer-links list-unstyled mt-20">
                             <li class="nav-item">
                                 <a href="{{ url('/') }}" class="nav-link" target="_self"
-                                    title="link">Home</a>
+                                    title="link">{{ __('app.home') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="about-us.html" class="nav-link" target="_self" title="link">Login</a>
+                                <a href="about-us.html" class="nav-link" target="_self" title="link">{{ __('auth.login_btn') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="services.html" class="nav-link" target="_self" title="link">Register</a>
+                                <a href="services.html" class="nav-link" target="_self" title="link">{{ __('auth.create_account') }}</a>
                             </li>
 
                         </ul>

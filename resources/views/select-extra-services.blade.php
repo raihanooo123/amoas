@@ -1,25 +1,46 @@
-@extends('layouts.app', ['title' => __('app.step_three_title')])
+@extends('frontend.layout.app', ['title' => __('app.step_three_title')])
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('plugins/datepicker/css/bootstrap-datepicker.min.css') }}">
+
+    <style type="text/css">
+        input[type=date].form-control,
+        input[type=time].form-control,
+        input[type=datetime-local].form-control,
+        input[type=month].form-control {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        } 
+        .datepicker table {
+            width: 300px !important;
+            height: 300px !important;
+        }
+    </style>
 @endsection
 
 
 @section('content')
 
-    <div class="jumbotron promo">
+    <div class="page-title-area bg-img bg-cover" data-bg-image="{{ asset('images/promo.jpg') }}">
         <div class="container">
-            <h1 class="text-center promo-heading">{{ __('app.welcome_title') }}</h1>
-            <p class="promo-desc text-center">{{ __('app.welcome_subtitle') }}</p>
+            <div class="content">
+                <h2>{{ __('app.my_profile') }}</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('index') }}">{{ __('app.home') }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('app.my_profile') }}</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
     </div>
 
     <form method="post" id="booking_step_2" action="{{ route('postStep3') }}">
         <input type="hidden" name="session_email" value="{{ Auth::user()->email }}">
         {{ csrf_field() }}
-        <div class="container">
+        <div class="container p-3 border rounded-3 shadow-sm">
             <div class="content">
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="progress mx-lg-12" style="height: 30px;">
@@ -157,13 +178,24 @@
                     </div>
                 </div>
 
+                <div class="text-end pt-10">
+                    <div class=" ">
+                        <button type="button" class="navbar-btn btn btn-light btn-lg mr-2" onclick="history.back()">
+                            {!! __('pagination.previous') !!}
+                        </button>
+                        <button type="submit" class="navbar-btn btn btn-primary btn-lg ml-auto">
+                            {!! __('pagination.next') !!}
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <br>
         <br>
 
-        <footer class="footer d-none d-sm-none d-md-block d-lg-block d-xl-block">
+        {{-- <footer class="footer d-none d-sm-none d-md-block d-lg-block d-xl-block">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
@@ -182,7 +214,7 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> --}}
 
         {{-- FOOTER FOR PHONES --}}
         <footer class="footer d-block d-sm-block d-md-none d-lg-none d-xl-none">
@@ -234,8 +266,6 @@
         <script src="{{ asset('js/map.js') }}"></script>
         <script
             src="https://maps.googleapis.com/maps/api/js?key={{ config('settings.google_maps_api_key') }}&libraries=places&callback=initAutocomplete"
-            async defer>
-            
-            </script>
+            async defer></script>
     @endif
 @endsection
