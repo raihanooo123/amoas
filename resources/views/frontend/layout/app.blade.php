@@ -160,9 +160,10 @@
         </div>
     </header>
     @yield('content')
-    <footer class="footer-area mt-30 bg-primary-light">
+    <footer class="footer-area mt-30"
+        style="background: linear-gradient(135deg, rgba(43, 59, 101, 0.1) 0%, rgba(43, 59, 101, 0.05) 100%);">
         <div class="go-top"><i class="fal fa-long-arrow-up"></i></div>
-        <div class="footer-top pt-40 pb-30 text-center">
+        <div class="footer-top pt-40 pb-30 text-center" style="color: #2b3b65;">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5" data-aos="fade-up">
@@ -206,10 +207,12 @@
                                     title="link">{{ __('app.home') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="about-us.html" class="nav-link" target="_self" title="link">{{ __('auth.login_btn') }}</a>
+                                <a href="about-us.html" class="nav-link" target="_self"
+                                    title="link">{{ __('auth.login_btn') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="services.html" class="nav-link" target="_self" title="link">{{ __('auth.create_account') }}</a>
+                                <a href="services.html" class="nav-link" target="_self"
+                                    title="link">{{ __('auth.create_account') }}</a>
                             </li>
 
                         </ul>
@@ -217,13 +220,12 @@
                 </div>
             </div>
         </div>
-        <div class="copy-right-area border-top ptb-15">
+        <div class="copy-right-area border-top ptb-15" style="background: rgba(43, 59, 101, 0.08); color: #2b3b65;">
             <div class="container">
                 <div class="copy-right-content">
                     <span>
-                        Copyright <i class="fal fa-copyright"></i><span id="footerDate">
-                        </span> <a href="index.html" target="_self" title="Bookapp"
-                            class="color-primary">َAMOAS</a>. All Rights Reserved
+                        {{ __('auth.copyrights') }}. &copy; {{ date('Y') }}. {{ __('auth.rights_reserved') }}
+                        {{ config('settings.business_name', 'َAMOAS') }}
                     </span>
                 </div>
             </div>
