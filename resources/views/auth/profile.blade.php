@@ -1,21 +1,58 @@
 @extends('frontend.layout.app', ['title' => __('app.welcome_page_title')])
-
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
+@endsection
 @section('content')
-    <div class="page-title-area bg-img bg-cover" data-bg-image="{{ asset('images/promo.jpg') }}">
-        <div class="container">
-            <div class="content">
-                <h2>{{ __('app.my_profile') }}</h2>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('index') }}">{{ __('app.home') }}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ __('app.my_profile') }}</li>
-                    </ol>
-                </nav>
+    <div class="page-title-area bg-img bg-cover position-relative overflow-hidden"
+        data-bg-image="{{ asset('images/promo.jpg') }}">
+        <!-- Overlay with gradient -->
+        <div class="page-title-overlay"></div>
+
+        <!-- Animated particles -->
+        <div class="particles-container">
+            <div class="particle particle-1"></div>
+            <div class="particle particle-2"></div>
+            <div class="particle particle-3"></div>
+            <div class="particle particle-4"></div>
+            <div class="particle particle-5"></div>
+        </div>
+
+        <div class="container position-relative">
+            <div class="content text-center">
+                <div class="page-title-content">
+                    <h2 class="page-title animate-title">{{ __('app.my_profile') }}</h2>
+                    <div class="title-divider"></div>
+                    <nav aria-label="breadcrumb" class="breadcrumb-container">
+                        <ol class="breadcrumb modern-breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ url('/') }}" class="breadcrumb-link">
+                                    <i class="fas fa-home mr-1"></i>{{ __('app.home') }}
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <span class="breadcrumb-current">
+                                    <a href="{{ route('home') }}"> <i class="fas fa-user-circle ml-1"></i>&nbsp
+                                        {{ __('app.my_profile') }}</a>
+                                </span>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
+        </div>
+
+        <!-- Decorative wave -->
+        <div class="title-wave">
+            <svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,60 C300,100 600,20 900,60 C1050,80 1200,40 1200,40 L1200,120 L0,120 Z"
+                    fill="rgba(255,255,255,0.1)" />
+            </svg>
         </div>
     </div>
 
-    <div class="user-dashboard pt-100 pb-60">
+    <div class="user-dashboard pt-4">
+        @include('alerts.profile')
+        @include('alerts.customerPassword')
         <div class="container">
             <div class="row gx-xl-5">
                 <div class="col-lg-3">

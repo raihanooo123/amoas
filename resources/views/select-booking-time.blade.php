@@ -31,13 +31,14 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-container">
                         <ol class="breadcrumb modern-breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('index') }}" class="breadcrumb-link">
+                                <a href="{{ url('/') }}" class="breadcrumb-link">
                                     <i class="fas fa-home mr-1"></i>{{ __('app.home') }}
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 <span class="breadcrumb-current">
-                                    <i class="fas fa-user-circle mr-1"></i>{{ __('app.my_profile') }}
+                                    <a href="/home"> <i class="fas fa-user-circle ml-1"></i>&nbsp
+                                        {{ __('app.my_profile') }}</a>
                                 </span>
                             </li>
                         </ol>
@@ -66,7 +67,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-8 mx-auto text-center">
                     <h1 class="display-4 font-weight-bold animate-fade-in">
-                        <i class="fas fa-calendar-alt mr-3 pulse-icon"></i>{{ __('app.step_two_page_title') }}
+                        <i class="fas fa-calendar-alt mr-3 pulse-icon"></i>&nbsp {{ __('app.step_two_page_title') }}
                     </h1>
                     <p class="lead animate-fade-in-delay text-white-50">
                         Please provide your personal and contact information for the booking process.

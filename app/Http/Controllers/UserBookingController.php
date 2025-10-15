@@ -865,8 +865,7 @@ class UserBookingController extends Controller
      */
     public function show($id)
     {
-        $booking = Booking::find($id);
-
+        $booking = Booking::find($id); 
         //checking booking date to allow update or cancel
         $days_limit_to_update = config('settings.days_limit_to_update') * 86400;
         $days_limit_to_cancel = config('settings.days_limit_to_cancel') * 86400;

@@ -77,7 +77,7 @@
 
                 <div class="logo">
                     <a href="{{ url('/') }}" target="_self" title="Superv">
-                        <img src="{{ asset('/images/logo/logo-1.png') }}" alt="Brand logo">
+                        <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand logo" height="40">
                     </a>
                 </div>
                 <!-- Menu toggle button -->
@@ -94,7 +94,7 @@
                 <nav class="navbar navbar-expand-lg">
                     <!-- Logo -->
                     <a class="navbar-brand" href="{{ url('/') }}" target="_self" title="Superv">
-                        <img src="{{ asset('frontend/assets/images/logo/logo-1.png') }}" alt="Brand Logo">
+                        <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo" height="50">
                     </a>
                     <!-- Navigation items -->
                     <div class="collapse navbar-collapse">
@@ -133,10 +133,6 @@
                                             <li class="nav-item">
                                                 <a class="nav-link"
                                                     href="{{ route('home') }}">{{ __('backend.my_profile') }}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link"
-                                                    href="{{ route('changePassword') }}">{{ __('backend.change_password') }}</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ route('logout') }}"
@@ -220,7 +216,7 @@
                 </div>
             </div>
         </div>
-        <div class="copy-right-area border-top ptb-15" style="background: transparent; color: #2b3b65;">
+        <div class="copy-right-area border-top ptb-15" style="background: rgba(43, 59, 101, 0.08); color: #2b3b65;">
             <div class="container">
                 <div class="copy-right-content">
                     <span>

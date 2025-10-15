@@ -66,7 +66,7 @@ class CustomerProfileController extends Controller
 
             Session::flash('profile_updated', __('backend.profile_updated'));
 
-            return redirect()->route('customerProfile');
+            return redirect()->back();
         } else {
             //show 404 page
             return view('errors.404');

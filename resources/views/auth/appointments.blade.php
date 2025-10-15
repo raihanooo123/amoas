@@ -17,6 +17,7 @@
                                     <th>{{ __('backend.time') }}</th>
                                     <th>{{ __('backend.status') }}</th>
                                     <th>{{ __('backend.created') }}</th>
+                                    <th>{{ __('backend.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,7 +32,11 @@
                                                 class="label {{ $booking->status == __('backend.cancelled') ? 'label-danger' : 'label-success' }}">{{ $booking->status }}</span>
                                         </td>
                                         <td>{{ $booking->created_at->diffForHumans() }}</td>
-
+                                        <td>
+                                            <a href="{{ route('showBooking', $booking->id) }}" class="btn btn-primary">
+                                                {{ __('backend.details') }}
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
 

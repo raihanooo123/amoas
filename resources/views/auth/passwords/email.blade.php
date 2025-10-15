@@ -1,206 +1,158 @@
-@extends('layouts.login', ['title' => __('passwords.page_title')])
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="auth-wrapper">
-        <div class="auth-card">
-            <a href="{{ route('index') }}" class="brand">
-                <img src="{{ asset('images/logo-dark.png') }}" alt="Logo" class="img-responsive">
-            </a>
-            <h1 class="auth-title">{{ __('passwords.page_title') }}</h1>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="KreativDev">
 
-            @if (session('status'))
-                <div class="alert alert-success">{{ session('status') }}</div>
-            @endif
+    <!-- Title -->
+    <title>{{ __('passwords.page_title') }} - AMOAS</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('/images/logo-light.png') }}" type="image/x-icon">
 
-            <form method="post" action="{{ route('password.email') }}" class="auth-form" novalidate>
-                @csrf
-                <div class="field{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email">{{ __('auth.email_placeholder') }}</label>
-                    <input type="email" class="form-control modern-input" id="email" name="email"
-                        placeholder="{{ __('auth.email_placeholder') }}" value="{{ old('email') }}" autocomplete="email"
-                        required>
-                    @if ($errors->has('email'))
-                        <p class="text-danger">{{ $errors->first('email') }}</p>
-                    @endif
+    <!-- Google font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600&amp;display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/bootstrap.min.css') }}">
+    <!-- Data Tables CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/datatables.min.css') }}">
+    <!-- Fontawesome Icon CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/fonts/fontawesome/css/all.min.css') }}">
+    <!-- Icomoon Icon CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/fonts/icomoon/style.css') }}">
+    <!-- Date-range Picker -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/daterangepicker.css') }}">
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/magnific-popup.min.css') }}">
+    <!-- Swiper Slider -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/swiper-bundle.min.css') }}">
+    <!-- Nice Select -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/nice-select.css') }}">
+    <!-- NoUi Range Slider -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/nouislider.min.css') }}">
+    <!--====== Stepper css ======-->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/bs-stepper.min.css') }}">
+    <!--====== calendar css ======-->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/pignose.calendar.min.css') }}">
+    <!-- AOS Animation CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/aos.min.css') }}">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendors/animate.min.css') }} ">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/responsive.css') }}">
+</head>
+
+<body class="theme-color-1">
+    <!-- Preloader start -->
+    <div id="preLoader">
+        <div class="loader"></div>
+    </div>
+    <!-- Preloader end -->
+
+    <!-- Authentication Start -->
+    <div class="authentication-area bg-light">
+        <div class="container">
+            <div class="row min-vh-75 align-items-center justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-10">
+                    <div class="wrapper shadow-md radius-lg bg-white">
+                        <div class="main-form p-25" style="max-width: 400px; margin: 0 auto;">
+                            <a href="{{ url('/') }}" class="icon-link" title="Go back to home" target="_self"><i
+                                    class="fal fa-home"></i></a>
+                            <div class="text-center mb-20">
+                                <a href="{{ url('/') }}" target="_self" title="AMOAS">
+                                    <img src="{{ asset('/images/logo-dark.png') }}" alt="Logo"
+                                        style="max-height: 50px;">
+                                </a>
+                            </div>
+                            <div class="title text-center">
+                                <h5 class="mb-20 fw-semibold">{{ __('passwords.page_title') }}</h5>
+                            </div>
+
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+
+                            @if ($errors->has('email'))
+                                <div class="alert alert-danger">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </div>
+                            @endif
+
+                            <form method="post" action="{{ route('password.email') }}" class="auth-form" novalidate>
+                                @csrf
+                                <div class="form-group mb-15">
+                                    <label for="email"
+                                        class="form-label color-dark fs-6">{{ __('auth.email_placeholder') }}<span
+                                            class="color-red">*</span></label>
+                                    <input type="email" id="email" name="email"
+                                        placeholder="{{ __('auth.email_placeholder') }}" value="{{ old('email') }}"
+                                        class="form-control form-control-sm" autocomplete="email" required autofocus>
+                                </div>
+
+                                <div class="text-center mb-15">
+                                    <button class="btn btn-primary btn-gradient w-100 btn-sm" type="submit"
+                                        aria-label="Send Reset Link">{{ __('passwords.reset_btn') }}</button>
+                                </div>
+                                <div class="d-flex justify-content-between flex-wrap gap-1 text-center"
+                                    style="font-size: 0.8rem;">
+                                    <div class="link">
+                                        {{ __('passwords.remembered') }}
+                                    </div>
+                                    <div class="link">
+                                        <a href="{{ route('login') }}"
+                                            title="Back to Login">{{ __('passwords.back_to_login_btn') }}</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn modern-btn">{{ __('passwords.reset_btn') }}</button>
-                <div class="auth-links">
-                    <span>{{ __('passwords.remembered') }}</span>
-                    <a href="{{ route('login') }}">{{ __('passwords.back_to_login_btn') }}</a>
-                </div>
-            </form>
-
-            <p class="auth-footer text-center m-t-xs text-sm">
-                {{ __('auth.copyrights') }}. &copy; {{ date('Y') }}. {{ __('auth.rights_reserved') }}
-                {{ config('settings.business_name', 'Bookify') }}.
-            </p>
+            </div>
         </div>
     </div>
-@endsection
-@section('styles')
-    <style>
-        .auth-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background: radial-gradient(1200px 600px at 10% -10%, rgba(79, 70, 229, .08), transparent 60%), radial-gradient(1000px 600px at 110% 110%, rgba(59, 130, 246, .08), transparent 60%), linear-gradient(#f9fafb, #eef2ff);
-        }
+    <!-- Authentication End -->
 
-        .auth-card {
-            width: 100%;
-            max-width: 420px;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
-            padding: 32px 28px;
-        }
+    <!-- Jquery JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/jquery.min.js') }}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/bootstrap.min.js') }}"></script>
+    <!-- Data Tables JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/datatables.min.js') }}"></script>
+    <!-- Date-range Picker JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/moment.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/vendors/daterangepicker.js') }}"></script>
+    <!-- Nice Select JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/jquery.nice-select.min.js') }}"></script>
+    <!-- Magnific Popup JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/jquery.magnific-popup.min.js') }}"></script>
+    <!-- Calendar js -->
+    <script src="{{ asset('frontend/assets/js/vendors/pignose.calendar.full.min.js') }}"></script>
+    <!-- Swiper Slider JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/swiper-bundle.min.js') }} "></script>
+    <!-- Lazysizes -->
+    <script src="{{ asset('frontend/assets/js/vendors/lazysizes.min.js') }}"></script>
+    <!-- Noui Range Slider JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/nouislider.min.js') }}"></script>
+    <!-- Twinmax JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/tweenMax.min.js') }}"></script>
+    <!-- Simple Parallax JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/parallax.min.js') }}"></script>
+    <!-- AOS JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/aos.min.js') }}"></script>
+    <!-- Mouse Hover JS -->
+    <script src="{{ asset('frontend/assets/js/vendors/mouse-hover-move.js') }}"></script>
+    <!--====== Stepper js ======-->
+    <script src="{{ asset('frontend/assets/js/vendors/bs-stepper.min.js') }}"></script>
+    <!-- Main script JS -->
+    <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
+</body>
 
-        .brand img {
-            display: block;
-            margin: 0 auto 8px;
-            max-width: 160px;
-            height: auto;
-        }
-
-        .auth-title {
-            text-align: center;
-            margin: 8px 0 20px;
-            font-size: 20px;
-            color: #111827;
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
-
-        .alert {
-            border-radius: 12px;
-        }
-
-        .field {
-            margin-bottom: 14px;
-        }
-
-        .field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        .modern-input {
-            height: 46px;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            padding: 10px 14px;
-            transition: box-shadow .2s, border-color .2s;
-        }
-
-        .modern-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, .15);
-            outline: none;
-        }
-
-        .modern-btn {
-            width: 100%;
-            height: 46px;
-            border-radius: 12px;
-            background: linear-gradient(90deg, #4f46e5, #3b82f6);
-            color: #fff;
-            border: 0;
-            font-weight: 600;
-            letter-spacing: .2px;
-            transition: transform .05s ease, box-shadow .2s, opacity .2s;
-        }
-
-        .modern-btn:hover {
-            opacity: .95;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, .35);
-        }
-
-        .modern-btn:active {
-            transform: translateY(1px);
-        }
-
-        .auth-links {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            margin-top: 14px;
-            font-size: 14px;
-            align-items: center;
-        }
-
-        .auth-links a {
-            color: #4f46e5;
-            text-decoration: none;
-        }
-
-        .auth-links a:hover {
-            text-decoration: underline;
-        }
-
-        .auth-footer {
-            margin-top: 18px;
-            color: #6b7280;
-            font-size: 12px;
-        }
-
-        @media (max-width: 420px) {
-            .auth-card {
-                padding: 24px 18px;
-                border-radius: 14px;
-            }
-
-            .brand img {
-                max-width: 140px;
-            }
-
-            .auth-links {
-                flex-direction: column;
-                gap: 6px;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .auth-wrapper {
-                background: linear-gradient(#0b0c10, #0b0c10) !important;
-            }
-
-            .auth-card {
-                background: #111318;
-                color: #e5e7eb;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, .5);
-            }
-
-            .auth-title {
-                color: #f9fafb;
-            }
-
-            .field label {
-                color: #e5e7eb;
-            }
-
-            .modern-input {
-                background: #0b0c10;
-                border-color: #1f2937;
-                color: #e5e7eb;
-            }
-
-            .modern-input::placeholder {
-                color: #6b7280;
-            }
-
-            .auth-footer {
-                color: #9ca3af;
-            }
-
-            .auth-links a {
-                color: #60a5fa;
-            }
-        }
-    </style>
-@endsection
+</html>

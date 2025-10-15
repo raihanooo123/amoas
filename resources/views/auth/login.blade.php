@@ -91,13 +91,7 @@
                                             <i class="show-icon"></i>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="form-group mb-15">
-                                    <div class="custom-checkbox font-sm">
-                                        <input class="input-checkbox" type="checkbox" name="checkbox" id="checkbox4" value="">
-                                        <label class="form-check-label" for="checkbox4"><span> I agree with AMOAS's <a href="{{ route('privacy-policy') }}">Terms & Conditions</a></span></label>
-                                    </div>
-                                </div>
+                                </div> 
                                 <div class="text-center mb-15">
                                     <button class="btn btn-primary btn-gradient w-100 btn-sm" type="submit" aria-label="Login">{{ __('auth.login_btn') }}</button>
                                 </div>
