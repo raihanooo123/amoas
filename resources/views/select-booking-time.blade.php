@@ -128,7 +128,7 @@
                             <div class="card-header bg-info text-white position-relative overflow-hidden">
                                 <div class="card-header-bg"></div>
                                 <h5 class="mb-0 position-relative">
-                                    <i class="fas fa-user-circle mr-2"></i>{{ __('app.booking_for') }}
+                                    <i class="fas fa-user-circle mr-2"></i> &nbsp {{ __('app.booking_for') }}
                                 </h5>
                             </div>
                             <div class="card-body">
@@ -165,7 +165,7 @@
                             <div class="card-header bg-success text-white position-relative overflow-hidden">
                                 <div class="card-header-bg"></div>
                                 <h5 class="mb-0 position-relative">
-                                    <i class="fas fa-address-book mr-2"></i>Contact Information
+                                    <i class="fas fa-address-book mr-2"></i> &nbsp Contact Information
                                 </h5>
                             </div>
                             <div class="card-body" style="padding: 1.5rem;">
@@ -226,7 +226,7 @@
                             <div class="card-header bg-info text-white position-relative overflow-hidden">
                                 <div class="card-header-bg"></div>
                                 <h5 class="mb-0 position-relative">
-                                    <i class="fas fa-map-marker-alt mr-2"></i>Address Information
+                                    <i class="fas fa-map-marker-alt mr-2"></i> &nbsp Address Information
                                 </h5>
                             </div>
                             <div class="card-body">
