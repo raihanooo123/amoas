@@ -13,7 +13,7 @@
     <!-- Title -->
     <title>AMOAS</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('/images/logo-light.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('/images/logo-dark.png') }}" type="image/x-icon">
 
     <!-- Google font -->
     <link
@@ -77,7 +77,7 @@
 
                 <div class="logo">
                     <a href="{{ url('/') }}" target="_self" title="Superv">
-                        <img src="{{ asset('/images/logo-light.png') }}" alt="Brand logo" height="40">
+                        <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand logo" height="40">
                     </a>
                 </div>
                 <!-- Menu toggle button -->
@@ -94,7 +94,7 @@
                 <nav class="navbar navbar-expand-lg">
                     <!-- Logo -->
                     <a class="navbar-brand" href="{{ url('/') }}" target="_self" title="Superv">
-                        <img src="{{ asset('/images/logo-light.png') }}" alt="Brand Logo" height="50">
+                        <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo" height="50">
                     </a>
                     <!-- Navigation items -->
                     <div class="collapse navbar-collapse">
@@ -166,7 +166,7 @@
                         <div class="navbar-brand mt-10">
                             <span></span>
                             <a href="{{ url('/') }}" target="_self" title="Link">
-                                <img src="{{ asset('/images/logo-light.png') }}" alt="Brand Logo">
+                                <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo">
                             </a>
                             <span></span>
                         </div>
@@ -203,11 +203,11 @@
                                     title="link">{{ __('app.home') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="about-us.html" class="nav-link" target="_self"
+                                <a href="{{url('login')}}" class="nav-link" target="_self"
                                     title="link">{{ __('auth.login_btn') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="services.html" class="nav-link" target="_self"
+                                <a href="{{url('register')}}" class="nav-link" target="_self"
                                     title="link">{{ __('auth.create_account') }}</a>
                             </li>
 

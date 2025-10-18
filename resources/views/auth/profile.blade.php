@@ -26,7 +26,7 @@
                         <ol class="breadcrumb modern-breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="{{ url('/') }}" class="breadcrumb-link">
-                                    <i class="fas fa-home mr-1"></i>{{ __('app.home') }}
+                                    <i class="fas fa-home mr-1"></i>&nbsp; {{ __('app.home') }}
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
