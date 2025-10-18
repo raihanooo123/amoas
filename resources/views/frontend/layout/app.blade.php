@@ -77,7 +77,7 @@
 
                 <div class="logo">
                     <a href="{{ url('/') }}" target="_self" title="Superv">
-                        <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand logo" height="40">
+                        <img src="{{ asset('/images/logo-light.png') }}" alt="Brand logo" height="40">
                     </a>
                 </div>
                 <!-- Menu toggle button -->
@@ -94,7 +94,7 @@
                 <nav class="navbar navbar-expand-lg">
                     <!-- Logo -->
                     <a class="navbar-brand" href="{{ url('/') }}" target="_self" title="Superv">
-                        <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo" height="50">
+                        <img src="{{ asset('/images/logo-light.png') }}" alt="Brand Logo" height="50">
                     </a>
                     <!-- Navigation items -->
                     <div class="collapse navbar-collapse">
@@ -166,7 +166,7 @@
                         <div class="navbar-brand mt-10">
                             <span></span>
                             <a href="{{ url('/') }}" target="_self" title="Link">
-                                <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo">
+                                <img src="{{ asset('/images/logo-light.png') }}" alt="Brand Logo">
                             </a>
                             <span></span>
                         </div>

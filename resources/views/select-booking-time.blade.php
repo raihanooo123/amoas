@@ -10,7 +10,7 @@
     <!-- Modern Hero Section -->
 
     <div class="page-title-area bg-img bg-cover position-relative overflow-hidden"
-        data-bg-image="{{ asset('images/promo.jpg') }}">
+        data-bg-image="{{ asset('images/promo/7.jpg') }}">
         <!-- Overlay with gradient -->
         <div class="page-title-overlay"></div>
 

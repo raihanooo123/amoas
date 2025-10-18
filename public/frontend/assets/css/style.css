@@ -72,9 +72,9 @@
   --font-size--h4: 24px;
   --font-size--h5: 20px;
   --font-size--h6: 18px;
-  --color-primary: #2b3b65;
-  --color-secondary: #2b3b65;
-  --color-red: #2b3b65;
+  --color-primary: #1d70b8;
+  --color-secondary: #1d70b8;
+  --color-red: #1d70b8;
   --color-green: #00B67A;
   --color-white: #ffffff;
   --color-black: #000000;
@@ -879,7 +879,7 @@ ul.list-bullet li {
 ----------------------------------------- */
 /* Theme Color CSS */
 .theme-color-1 {
-  --color-primary: #2b3b65;
+  --color-primary: #1d70b8;
   --color-primary-rgb: 255, 0, 55;
 }
 
@@ -891,7 +891,7 @@ ul.list-bullet li {
 }
 
 .theme-color-3 {
-  --color-primary: #2b3b65;
+  --color-primary: #1d70b8;
   --color-secondary: #F09819;
   --color-primary-rgb: 255, 81, 47;
   --gradient-1: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
