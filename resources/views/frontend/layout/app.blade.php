@@ -8,7 +8,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="KreativDev">
+    <meta name="author" content="Ghafoor fahim">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="title" content="{{ $title }}" />
+    <meta name="description" content="{{ config('settings.business_name') }} booking portal." />
+    <meta name="keywords" content="Booking, Calender, Make Booking, Laravel" />
+    <meta name="index" content="{{ route('index') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title -->
     <title>AMOAS</title>
@@ -203,11 +209,11 @@
                                     title="link">{{ __('app.home') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{url('login')}}" class="nav-link" target="_self"
+                                <a href="{{ url('login') }}" class="nav-link" target="_self"
                                     title="link">{{ __('auth.login_btn') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{url('register')}}" class="nav-link" target="_self"
+                                <a href="{{ url('register') }}" class="nav-link" target="_self"
                                     title="link">{{ __('auth.create_account') }}</a>
                             </li>
 
