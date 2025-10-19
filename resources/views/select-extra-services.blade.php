@@ -186,11 +186,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="date-selection hover-lift">
-                            <div class="date-header">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-calendar-alt mr-2"></i>{{ __('app.select_date') }}
+                            <div class="date-header ">
+                                <h5 class="mb-0 text-white">
+                                    <i class="fas fa-calendar-alt mr-2"></i>&nbsp;{{ __('app.select_date') }}
                                     <small
-                                        class="d-block mt-1">{{ __('app.no_paticipant_including_you', ['paticipant' => session()->has('participant') ? session('participant') + 1 : 1]) }}</small>
+                                        class="d-block mt-1 text-white">{{ __('app.no_paticipant_including_you', ['paticipant' => session()->has('participant') ? session('participant') + 1 : 1]) }}</small>
                                 </h5>
                             </div>
                             <div class="form-group">
