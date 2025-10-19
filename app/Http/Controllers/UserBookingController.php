@@ -795,6 +795,7 @@ class UserBookingController extends Controller
      */
     public function loadFinalStep()
     {
+ 
         if (! session()->has('package_id') || ! session()->has('bookingId')) {
             return redirect('/');
         }

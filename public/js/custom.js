@@ -124,18 +124,27 @@ $(document).ready(function () {
 
     //append selected slot to booking_step_2 form
 
-    $('#slots_holder').on('click', 'a.btn-slot', function () {
+    $('#slots_holder').on('click', '.btn-slot:not(.disabled)', function () {
         var slot_time = $(this).attr('data-slot-time');
         var type = $(this).attr('type');
-        $('#slots_holder').find('.btn-slot').removeClass('slot-picked');
+
+        // Remove selected class from all slots
+        $('.btn-slot').removeClass('selected');
+        // Remove existing booking slot input
         $('#booking_slot').remove();
+
+        // Add hidden input for booking slot
         $('#booking_step_2').append('<input type="hidden" name="booking_slot" id="booking_slot" value="' + slot_time + '">');
-        if (type !== undefined && type ==='urgent'){
+
+        // Handle emergency booking type
+        if (type !== undefined && type === 'urgent') {
             $('#emergency_holder').html('<input type="hidden" name="booking_type" value="emergency">');
-        } else{
+        } else {
             $('#emergency_holder').html('<span></span>');
         }
-        $(this).addClass('slot-picked');
+
+        // Add selected class to the chosen slot
+        $(this).addClass('selected');
     });
 
     //handle form submission of step 2
