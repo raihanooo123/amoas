@@ -36,7 +36,7 @@
     <div class="authentication-area bg-light" style="min-height: 100vh;">
         <div class="container">
             <div class="row min-vh-100 align-items-center justify-content-center py-5">
-                <div class="col-md-10 col-lg-8 mx-auto">
+                <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
                     <div class="wrapper shadow-lg radius-xl bg-white p-30 p-sm-50">
                         <div class="main-form" style="margin: 0 auto;">
                             <div class="text-center mb-40">

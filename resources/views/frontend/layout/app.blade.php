@@ -171,9 +171,9 @@
                     <div class="col-lg-5" data-aos="fade-up">
                         <div class="navbar-brand mt-10">
                             <span></span>
-                            <a href="{{ url('/') }}" target="_self" title="Link">
+                            <!-- <a href="{{ url('/') }}" target="_self" title="Link">
                                 <img src="{{ asset('/images/logo-dark.png') }}" alt="Brand Logo">
-                            </a>
+                            </a> -->
                             <span></span>
                         </div>
                         <ul class="info-list mt-15">
