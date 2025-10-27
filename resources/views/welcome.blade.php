@@ -7,10 +7,9 @@
                 <div class="col-lg-6">
                     <div class="fluid-left">
                         <div class="banner-content mb-40">
-                            <h1 class="title mb-30" data-aos="fade-up" data-aos-delay="100"> Find Anything From Nearest
-                                Location To Make A Booking </h1>
-                            <p class="text" data-aos="fade-up" data-aos-delay="100">Link Build is an advanced and
-                                modern-looking directory script with rich SEO features where you can create your. </p>
+                            <h1 class="title mb-30" data-aos="fade-up" data-aos-delay="100"> Streamline Your Official Document Process
+                                Book Appointments Online, Anytime. </h1>
+                            <p class="text" data-aos="fade-up" data-aos-delay="100">Our platform provides a simple and secure way to schedule appointments for passport extensions, visa applications, Tazkira services, and other essential legal documents for Afghanistan </p>
                             <div class="banner-filter-form mt-40" data-aos="fade-up" data-aos-delay="150">
                                 <div class="form-wrapper shadow-md bg-white p-20 radius-md">
                                     {{-- <form action="#">
@@ -61,7 +60,7 @@
                     </div>
                 </div>
                 <div class="col-12" data-aos="fade-up">
-                    <div class="swiper category-slider" id="category-slider-1" data-slides-per-view="5"
+                    <div class="swiper category-slider text-center" id="category-slider-1" data-slides-per-view="5"
                         data-swiper-loop="false">
                         <div class="swiper-wrapper">
                             @foreach ($categories as $category)
@@ -103,8 +102,7 @@
                             How appointment Booking System Works
                         </h2>
                         <p class="color-white">
-                            Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-                            there live the blind.
+                            We've designed a transparent and easy-to-follow process to help you manage your legal document needs with confidence.
                         </p>
                         <div class="mt-30">
                             <button class="btn btn-lg btn-primary btn-gradient icon-start btn-book-package"

@@ -1854,6 +1854,19 @@ Lazyload CSS
   -webkit-transform-style: preserve-3d;
 }
 
+/* Category slider centering */
+.category-slider .swiper-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-slider .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .swiper-pagination .swiper-pagination-bullet {
   width: 10px;
   height: 10px;

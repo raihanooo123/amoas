@@ -133,6 +133,7 @@
             loop: loops,
             spaceBetween: 24,
             speed: 1000,
+            centeredSlides: true,
             autoplay: {
                 delay: 3000,
             },
@@ -152,16 +153,20 @@
 
             breakpoints: {
                 320: {
-                    slidesPerView: 1
+                    slidesPerView: 1,
+                    centeredSlides: true
                 },
                 576: {
-                    slidesPerView: 2
+                    slidesPerView: 2,
+                    centeredSlides: true
                 },
                 992: {
-                    slidesPerView: 3
+                    slidesPerView: 3,
+                    centeredSlides: true
                 },
                 1440: {
-                    slidesPerView: slidePerView
+                    slidesPerView: slidePerView,
+                    centeredSlides: false
                 },
             }
         })
