@@ -98,7 +98,8 @@ class Booking extends Model
         $department = Department::find($departmentId);
 
         // $serialNo = $department.'-'.date('ynj').'-'.sprintf('%03d', ++$counts);
-        $serialNo = "{$department->code}{$packageId}" . date('ynj') . sprintf('%03d', ++$counts);
+        $serialNo = "{$packageId}" . date('ynj') . sprintf('%03d', ++$counts);
+        // $serialNo = "{$department->code}{$packageId}" . date('ynj') . sprintf('%03d', ++$counts);
 
         return $serialNo;
     }

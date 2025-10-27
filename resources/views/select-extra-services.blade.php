@@ -9,7 +9,7 @@
 @section('content')
 
     <div class="page-title-area bg-img bg-cover position-relative overflow-hidden"
-        data-bg-image="{{ asset('images/promo.jpg') }}">
+        data-bg-image="{{ asset('images/promo/7.jpg') }}">
         <!-- Overlay with gradient -->
         <div class="page-title-overlay"></div>
 
@@ -31,12 +31,12 @@
                         <ol class="breadcrumb modern-breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('index') }}" class="breadcrumb-link">
-                                    <i class="fas fa-home mr-1"></i>{{ __('app.home') }}
+                                    <i class="fas fa-home mr-1"></i>&nbsp; {{ __('app.home') }}
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 <span class="breadcrumb-current">
-                                    <i class="fas fa-calendar-check mr-1"></i>{{ __('app.step_three_title') }}
+                                    <i class="fas fa-calendar-check mr-1"></i> &nbsp; {{ __('app.step_three_title') }}
                                 </span>
                             </li>
                         </ol>
@@ -70,7 +70,7 @@
                                 style="height: 35px; border-radius: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated position-relative"
                                     role="progressbar"
-                                    style="width: 75%; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
+                                    style="width: 75%; height: 35px; background: linear-gradient(135deg, #1d70b8 0%, #1d70b8 100%); border-radius: 20px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
                                     aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                                     <span class="progress-text">75%</span>
                                 </div>
@@ -186,11 +186,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="date-selection hover-lift">
-                            <div class="date-header">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-calendar-alt mr-2"></i>{{ __('app.select_date') }}
+                            <div class="date-header ">
+                                <h5 class="mb-0 text-white">
+                                    <i class="fas fa-calendar-alt mr-2"></i>&nbsp;{{ __('app.select_date') }}
                                     <small
-                                        class="d-block mt-1">{{ __('app.no_paticipant_including_you', ['paticipant' => session()->has('participant') ? session('participant') + 1 : 1]) }}</small>
+                                        class="d-block mt-1 text-white">{{ __('app.no_paticipant_including_you', ['paticipant' => session()->has('participant') ? session('participant') + 1 : 1]) }}</small>
                                 </h5>
                             </div>
                             <div class="form-group">

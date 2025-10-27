@@ -10,7 +10,7 @@
     <!-- Modern Hero Section -->
 
     <div class="page-title-area bg-img bg-cover position-relative overflow-hidden"
-        data-bg-image="{{ asset('images/promo.jpg') }}">
+        data-bg-image="{{ asset('images/promo/7.jpg') }}">
         <!-- Overlay with gradient -->
         <div class="page-title-overlay"></div>
 
@@ -113,7 +113,7 @@
                                 style="height: 35px; border-radius: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated position-relative"
                                     role="progressbar"
-                                    style="width: 50%; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
+                                    style="width: 50%; height: 35px; background: linear-gradient(135deg, #1d70b8 0%, #1d70b8 100%); border-radius: 20px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
                                     aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
                                     <span class="progress-text">50%</span>
                                 </div>
