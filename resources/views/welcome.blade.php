@@ -7,9 +7,12 @@
                 <div class="col-lg-6">
                     <div class="fluid-left">
                         <div class="banner-content mb-40">
-                            <h1 class="title mb-30" data-aos="fade-up" data-aos-delay="100"> Streamline Your Official Document Process
+                            <h1 class="title mb-30" data-aos="fade-up" data-aos-delay="100"> Streamline Your Official Document
+                                Process
                                 Book Appointments Online, Anytime. </h1>
-                            <p class="text" data-aos="fade-up" data-aos-delay="100">Our platform provides a simple and secure way to schedule appointments for passport extensions, visa applications, Tazkira services, and other essential legal documents for Afghanistan </p>
+                            <p class="text" data-aos="fade-up" data-aos-delay="100">Our platform provides a simple and
+                                secure way to schedule appointments for passport extensions, visa applications, Tazkira
+                                services, and other essential legal documents for Afghanistan </p>
                             <div class="banner-filter-form mt-40" data-aos="fade-up" data-aos-delay="150">
                                 <div class="form-wrapper shadow-md bg-white p-20 radius-md">
                                     {{-- <form action="#">
@@ -102,16 +105,17 @@
                             How appointment Booking System Works
                         </h2>
                         <p class="color-white">
-                            We've designed a transparent and easy-to-follow process to help you manage your legal document needs with confidence.
+                            We've designed a transparent and easy-to-follow process to help you manage your legal document
+                            needs with confidence.
                         </p>
-                        <div class="mt-30">
+                        {{-- <div class="mt-30">
                             <button class="btn btn-lg btn-primary btn-gradient icon-start btn-book-package"
                                 data-bs-toggle="modal" data-bs-target="#makeBooking" type="button" aria-label="Book Now"
                                 data-package-id="" data-package-title="General Booking" data-package-price="">
                                 <i class="fal fa-calendar-check"></i>
                                 Book Now
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-lg-7">
@@ -205,79 +209,62 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="section-title title-inline mb-50" data-aos="fade-up">
+                    <div class="section-title title-center mb-50" data-aos="fade-up">
                         <h2 class="title">Our Top Featured Services</h2>
-                        <!-- Slider navigation buttons -->
-                        <div class="slider-navigation">
-                            <button type="button" title="Slide prev" class="slider-btn" id="product-slider-1-prev">
-                                <i class="fal fa-angle-left"></i>
-                            </button>
-                            <button type="button" title="Slide next" class="slider-btn" id="product-slider-1-next">
-                                <i class="fal fa-angle-right"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 <div class="col-12">
-                    <!-- Slider main container -->
-                    <div class="swiper product-slider" id="product-slider-1" data-slides-per-view="4"
-                        data-swiper-loop="true" data-aos="fade-up">
-                        <!-- Additional required wrapper -->
-                        <div class="swiper-wrapper">
-                            <!-- Slides -->
-                            @foreach ($packages as $package)
-                                <div class="swiper-slide">
-                                    <div class="product-default border radius-md p-15 mb-25">
+                    <!-- Grid layout for packages -->
+                    <div class="row" data-aos="fade-up">
+                        @foreach ($packages as $package)
+                            <div class="col-lg-3 col-md-6 col-sm-6 mb-25">
+                                <div class="product-default border radius-md p-15">
 
-                                        <figure class="product-img mb-15">
-                                            <a href="service-details.html" title="Image" target="_self"
-                                                class="lazy-container radius-sm ratio ratio-2-3">
-                                                <img class="lazyload" src="{{ asset($package->photo->file) }}"
-                                                    alt="Product">
+                                    <figure class="product-img mb-15">
+                                        <a href="service-details.html" title="Image" target="_self"
+                                            class="lazy-container radius-sm ratio ratio-2-3">
+                                            <img class="lazyload" src="{{ asset($package->photo->file) }}"
+                                                alt="Product">
+                                        </a>
+                                    </figure>
+
+                                    <div class="product-details">
+                                        <div class="d-flex align-items-center justify-content-between gap-2">
+                                            <span class="tag font-sm">{{ $package->category->title }}</span>
+                                            <a href="wishlist.html" class="btn btn-icon border radius-sm"
+                                                title="Save to Wishlist">
+                                                <i class="fal fa-heart"></i>
                                             </a>
-                                        </figure>
-
-                                        <div class="product-details">
-                                            <div class="d-flex align-items-center justify-content-between gap-2">
-                                                <span class="tag font-sm">{{ $package->category->title }}</span>
-                                                <a href="wishlist.html" class="btn btn-icon border radius-sm"
-                                                    title="Save to Wishlist">
-                                                    <i class="fal fa-heart"></i>
-                                                </a>
-                                            </div>
-                                            <h6 class="product-title mb-0">
-                                                <a href="service-details.html" target="_self"
-                                                    title="{{ $package->title }}">{{ $package->title }}</a>
-                                            </h6>
-                                            <div class="product-description mt-2">
-                                                {{ \Illuminate\Support\Str::limit(strip_tags($package->description), 50, '...') }}
-                                            </div>
-                                            {{-- <div class="author mb-10 mt-10">
-                                            <img class="lazyload blur-up" src="{{ asset($package->photo->file) }}" data-src="{{ asset($package->photo->file) }}" alt="Image">
-                                            <span class="font-sm">
-                                                 <a href="javaScript:void(0)" target="_self" title="John Doe">
-                                                    {{ $package->category->title }}</a>
-                                            </span>
-                                        </div> --}}
-                                            {{-- <span class="font-sm icon-start"><i class="fal fa-map-marker-alt"></i>City
-                                            {{ $package->category->title }}</span> --}}
-                                            <div class="d-flex align-items-center justify-content-between gap-2 mt-10">
-                                                <div class="product-price">
-                                                    <span class="h6 new-price">{{ $package->price }}</span>
-                                                    {{-- <span class="prev-price font-sm">{{ $package->price }}</span> --}}
-                                                </div>
-                                                <a class="btn btn-sm btn-outline-2 btn-book-package btn_package_select"
-                                                    data-package-id="{{ $package->id }}">Book
-                                                    Now</a>
-                                            </div>
                                         </div>
-                                    </div><!-- product-default -->
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <!-- If we need pagination -->
-                        <div class="swiper-pagination position-static" id="product-slider-1-pagination"></div>
+                                        <h6 class="product-title mb-0">
+                                            <a href="service-details.html" target="_self"
+                                                title="{{ $package->title }}">{{ $package->title }}</a>
+                                        </h6>
+                                        <div class="product-description mt-2">
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($package->description), 50, '...') }}
+                                        </div>
+                                        {{-- <div class="author mb-10 mt-10">
+                                        <img class="lazyload blur-up" src="{{ asset($package->photo->file) }}" data-src="{{ asset($package->photo->file) }}" alt="Image">
+                                        <span class="font-sm">
+                                             <a href="javaScript:void(0)" target="_self" title="John Doe">
+                                                {{ $package->category->title }}</a>
+                                        </span>
+                                    </div> --}}
+                                        {{-- <span class="font-sm icon-start"><i class="fal fa-map-marker-alt"></i>City
+                                        {{ $package->category->title }}</span> --}}
+                                        <div class="d-flex align-items-center justify-content-between gap-2 mt-10">
+                                            <div class="product-price">
+                                                <span class="h6 new-price">{{ $package->price }}</span>
+                                                {{-- <span class="prev-price font-sm">{{ $package->price }}</span> --}}
+                                            </div>
+                                            <a class="btn btn-sm btn-outline-2 btn-book-package btn_package_select"
+                                                data-package-id="{{ $package->id }}">Book
+                                                Now</a>
+                                        </div>
+                                    </div>
+                                </div><!-- product-default -->
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
